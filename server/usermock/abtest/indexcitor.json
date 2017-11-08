@@ -1,0 +1,91 @@
+{
+    "code": 0,
+    "msg": "success",
+    "result": [
+        {
+            "parameterId": "ORDER_NUM",
+            "parameterName": "订单数",
+            "showType": "num"
+        },
+        {
+            "parameterId": "NEED_NUM",
+            "parameterName": "需求数",
+            "showType": "num"
+        },
+        {
+            "parameterId": "GRAB_ORDER_RATE",
+            "parameterName": "抢单率",
+            "showType": "rate"
+        },
+        {
+            "parameterId": "ORDER_FINISH_RATE",
+            "parameterName": "订单完成率",
+            "showType": "rate"
+        },
+        {
+            "parameterId": "NEED_FINISH_RATE",
+            "parameterName": "需求完成率",
+            "showType": "rate"
+        },
+        {
+            "parameterId": "GRAB_FINISH_RATE",
+            "parameterName": "抢单订单完成率",
+            "showType": "rate"
+        },
+        {
+            "parameterId": "USER_DISCOUNT_RATE",
+            "parameterName": "单均优惠",
+            "showType": "amt"
+        },
+        {
+            "parameterId": "DRIVER_DISCOUNT_RATE",
+            "parameterName": "单均补贴",
+            "showType": "amt"
+        },
+        {
+            "parameterId": "PREMIUM_ORDER_NUM",
+            "parameterName": "涨价订单数",
+            "showType": "num"
+        },
+        {
+            "parameterId": "IS_PREMIUM_RATE",
+            "parameterName": "涨价订单比例",
+            "showType": "rate"
+        },
+        {
+            "parameterId": "PREMIUM_RATE",
+            "parameterName": "平均涨价倍数",
+            "showType": "num_2"
+        },
+        {
+            "parameterId": "PREMIUM_FINISH_RATE",
+            "parameterName": "涨价订单完成率",
+            "showType": "rate"
+        },
+        {
+            "parameterId": "GRAB_DRIVER_RATE",
+            "parameterName": "单均抢单司机数",
+            "showType": "num_2"
+        },
+        {
+            "parameterId": "ASSIGN_ORDER_RATE",
+            "parameterName": "订单反选（指派）率",
+            "showType": "rate"
+        },
+        {
+            "parameterId": "PRICE_QUERY_RATE",
+            "parameterName": "用户接受率",
+            "showType": "rate"
+        },
+        {
+            "parameterId": "PUSH_AVG_DISTANCE",
+            "parameterName": "平均推送距离",
+            "showType": "num_2"
+        },
+        {
+            "parameterId": "PUSH_MIDDISTANCE",
+            "parameterName": "推送距离中位数",
+            "showType": "num_2"
+        }
+    ]
+}

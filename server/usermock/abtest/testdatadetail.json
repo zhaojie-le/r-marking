@@ -1,0 +1,36 @@
+{
+    "code": 0,
+    "msg": "success",
+    "result": [
+        {
+            "DT": "20170913",
+            "version_290": 38243,
+            "showType": "num",
+            "version_289": 57303
+        },
+        {
+            "DT": "20170912",
+            "version_290": 37696,
+            "showType": "num",
+            "version_289": 56747
+        },
+        {
+            "DT": "20170911",
+            "version_290": 37596,
+            "showType": "num",
+            "version_289": 56724
+        },
+        {
+            "DT": "20170910",
+            "version_290": 32790,
+            "showType": "num",
+            "version_289": 48489
+        },
+        {
+            "DT": "20170909",
+            "version_290": 37402,
+            "showType": "num",
+            "version_289": 55878
+        }
+    ]
+}

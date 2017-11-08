@@ -1,0 +1,38 @@
+{
+    "code": 0, 
+    "msg": "success", 
+    "result": [
+        {
+            "creator": "114749987786723328",
+            "ctime": 1502272504000,
+            "modifior": "114749987786723328",
+            "name": "系统管理",
+            "pageId": "sys_manage",
+            "pageRouter": "/sys-manage", 
+            "resourceId": "118046607555039232",
+            "sortNum": 1, 
+            "utime": 1502849164000
+        }, 
+        {
+            "creator": "114749987786723328", 
+            "ctime": 1502334747000, 
+            "modifior": "115129019279740928", 
+            "name": "A/B测试", 
+            "pageId": "ab_test", 
+            "pageRouter": "/ab-test", 
+            "resourceId": "118307675124666368", 
+            "sortNum": 2, 
+            "utime": 1502680852000
+        }, 
+        {
+            "creator": "114749987786723328", 
+            "ctime": 1502871813000, 
+            "name": "工具箱", 
+            "pageId": "tool_box", 
+            "pageRouter": "/tool-box", 
+            "resourceId": "120560159352295424", 
+            "sortNum": 10, 
+            "utime": 1502871813000
+        }
+    ]
+}

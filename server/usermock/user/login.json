@@ -1,0 +1,10 @@
+{
+    "code": 0,
+    "msg": "success",
+    "result": {
+        "email": "xxx@daojia.com",
+        "name": "某某",
+        "token": "2234sdsdfksdf",
+        "userName": "xxx"
+    }
+}

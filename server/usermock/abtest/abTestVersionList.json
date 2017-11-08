@@ -1,0 +1,98 @@
+{
+    "code": 0,
+    "msg": "success",
+    "result": {
+        "abTestVersionList": [
+            {
+                "abTestVersionParameterList": [
+                    {
+                        "parameterArray": [],
+                        "parameterId": "city_id",
+                        "parameterRelation": "",
+                        "parameterValue": ""
+                    },
+                    {
+                        "parameterArray": [],
+                        "parameterId": "car_type",
+                        "parameterRelation": "",
+                        "parameterValue": ""
+                    },
+                    {
+                        "parameterArray": [
+                            "0",
+                            "1",
+                            "2",
+                            "3",
+                            "4"
+                        ],
+                        "parameterId": "TAIL_USER_ID",
+                        "parameterRelation": "in",
+                        "parameterValue": "0,1,2,3,4"
+                    },
+                    {
+                        "parameterArray": [],
+                        "parameterId": "TAIL_ORDER_ID",
+                        "parameterRelation": "",
+                        "parameterValue": ""
+                    }
+                ],
+                "parameter": "[{\"parameterArray\":[],\"parameterId\":\"city_id\",\"parameterRelation\":\"\",\"parameterValue\":\"\"},{\"parameterArray\":[],\"parameterId\":\"car_type\",\"parameterRelation\":\"\",\"parameterValue\":\"\"},{\"parameterArray\":[\"0\",\"1\",\"2\",\"3\",\"4\"],\"parameterId\":\"TAIL_USER_ID\",\"parameterRelation\":\"in\",\"parameterValue\":\"0,1,2,3,4\"},{\"parameterArray\":[],\"parameterId\":\"TAIL_ORDER_ID\",\"parameterRelation\":\"\",\"parameterValue\":\"\"}]",
+                "testId": 45,
+                "versionDesc": "",
+                "versionId": 289,
+                "versionName": "v0",
+                "versionType": 1
+            },
+            {
+                "abTestVersionParameterList": [
+                    {
+                        "parameterArray": [],
+                        "parameterId": "city_id",
+                        "parameterRelation": "",
+                        "parameterValue": ""
+                    },
+                    {
+                        "parameterArray": [],
+                        "parameterId": "car_type",
+                        "parameterRelation": "",
+                        "parameterValue": ""
+                    },
+                    {
+                        "parameterArray": [
+                            "5",
+                            "6",
+                            "8",
+                            "7",
+                            "9"
+                        ],
+                        "parameterId": "TAIL_USER_ID",
+                        "parameterRelation": "in",
+                        "parameterValue": "5,6,8,7,9"
+                    },
+                    {
+                        "parameterArray": [],
+                        "parameterId": "TAIL_ORDER_ID",
+                        "parameterRelation": "",
+                        "parameterValue": ""
+                    }
+                ],
+                "parameter": "[{\"parameterArray\":[],\"parameterId\":\"city_id\",\"parameterRelation\":\"\",\"parameterValue\":\"\"},{\"parameterArray\":[],\"parameterId\":\"car_type\",\"parameterRelation\":\"\",\"parameterValue\":\"\"},{\"parameterArray\":[\"5\",\"6\",\"8\",\"7\",\"9\"],\"parameterId\":\"TAIL_USER_ID\",\"parameterRelation\":\"in\",\"parameterValue\":\"5,6,8,7,9\"},{\"parameterArray\":[],\"parameterId\":\"TAIL_ORDER_ID\",\"parameterRelation\":\"\",\"parameterValue\":\"\"}]",
+                "testId": 45,
+                "versionDesc": "",
+                "versionId": 290,
+                "versionName": "v1",
+                "versionType": 2
+            }
+        ],
+        "categoryId": 1,
+        "createTime": 1502159165000,
+        "creator": "wanqinghua",
+        "creatorId": "115768948213026816",
+        "deleted": 0,
+        "id": 45,
+        "operator": "liuyanlong",
+        "operatorId": "119856807329009664",
+        "testDesc": "",
+        "testName": "v1"
+    }
+}

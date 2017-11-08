@@ -1,0 +1,29 @@
+{
+    "code": 0,
+    "msg": "success",
+    "result": {
+        "amount": 1,
+        "list": [
+            {
+                "categoryId": 1,
+                "createTime": 1502159165000,
+                "creator": "wanqinghua",
+                "creatorId": "115768948213026816",
+                "deleted": 0,
+                "id": 45,
+                "operator": "wanqinghua",
+                "operatorId": "115768948213026816",
+                "testDesc": "",
+                "testName": "v1"
+            }
+        ],
+        "next": 0,
+        "page": 1,
+        "pageSize": 10,
+        "prev": 0,
+        "slidePages": [
+            1
+        ],
+        "totalPage": 1
+    }
+}

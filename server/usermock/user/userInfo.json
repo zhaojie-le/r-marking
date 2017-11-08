@@ -1,0 +1,27 @@
+{
+    "code": 0,
+    "msg": "success", 
+    "result": {
+        "accountType": "inpass",
+        "email": "liujiangping@daojia.com",
+        "name": "刘江平",
+        "roles": [
+        {
+            "key": "1",
+            "appId": "118046607555039232",
+            "appName": "系统管理",
+            "desc": "系统管理下所有模块的增删改查操作",
+            "name": "管理员",
+            "roleId": "118076735009984512",
+            "updateTime": 1502762189000,
+            "updator": "115821259018866688"
+        }
+        ], 
+        "userId": "115821259018866688",
+        "userInfo": {
+            "department": "58到家-技术中心-数据智能部-数据平台部",
+            "city": "北京"
+        }, 
+        "userName": "liujiangping"
+    }
+}
