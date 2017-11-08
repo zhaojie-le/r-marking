@@ -4,7 +4,7 @@ import { StoreState } from '../types/index';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Button } from 'antd';
-import './Hello.scss';
+import './List.scss';
 
 export interface Props {
   name: string;

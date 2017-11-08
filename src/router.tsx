@@ -7,8 +7,15 @@ import {
   Switch
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import Hello from './containers/Hello';
 import store from './store';
+
+function Hello() {
+  return (
+    <div>
+      ssss
+    </div>
+  );
+}
 
 function App() {
   return (
@@ -22,10 +29,10 @@ function App() {
 }
 
 const Home = () => (
-  <div>
-    <Hello />
-    1111
-  </div>
+    <div>
+        <Hello />
+        1111
+    </div>
 );
 
 const About = () => (
