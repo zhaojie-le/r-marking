@@ -29,7 +29,7 @@ class List extends React.Component<Props, object> {
         <div className="hello">
           <Button>22</Button>
           <div className="greeting">
-            Hello {name + getExclamationMarks(enthusiasmLevel)}
+            let‘s begin do {name + getExclamationMarks(enthusiasmLevel)}
           </div>
         </div>
       );

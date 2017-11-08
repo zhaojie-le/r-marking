@@ -11,7 +11,7 @@ const store = createStore<StoreState>(
     enthusiasm, 
     {
         enthusiasmLevel: 1,
-        languageName: 'TypeScript',
+        languageName: 'marketing',
     }, 
     composeWithDevTools(applyMiddleware(epicMiddleware1))
 );
