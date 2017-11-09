@@ -1,17 +1,17 @@
 import * as actions from '../actions/list';
-import { StoreState } from '../types/index';
+import { ListState } from '../types/index';
 import { INCREMENT_ENTHUSIASM, DECREMENT_ENTHUSIASM } from '../constants/index';
 
-interface RList { list: (state: StoreState, action: actions.EnthusiasmAction) => StoreState; }
+interface RList { list: (state: ListState, action: actions.EnthusiasmAction) => ListState; }
 
-function enthusiasm(state: StoreState = { enthusiasmLevel: 1, languageName: 'marketing'}, action: actions.EnthusiasmAction): StoreState {
+function enthusiasm(state: ListState = { enthusiasmLevel: 1, languageName: 'marketing'}, action: actions.EnthusiasmAction): ListState {
     switch (action.type) {
         case INCREMENT_ENTHUSIASM:
             return { ...state, enthusiasmLevel: state.enthusiasmLevel + 1 };
         case DECREMENT_ENTHUSIASM:
             return { ...state, enthusiasmLevel: Math.max(1, state.enthusiasmLevel - 1) };
         default:
-            return state;
+            return { ...state };
     }
 }
 
