@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as actions from '../actions/';
+import * as actions from '../actions/list';
 import { StoreState } from '../types/index';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';

@@ -1,18 +1,22 @@
 import { createStore, applyMiddleware } from 'redux';
 import { StoreState } from './types/index';
-import { enthusiasm } from './reducers/index';
+import reducer from './reducers/index';
 import { createEpicMiddleware, EpicMiddleware } from 'redux-observable';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { rootEpic } from './epics';
 
 const epicMiddleware1: EpicMiddleware<any, any> = createEpicMiddleware(rootEpic);
 
-const store = createStore<StoreState>(
-    enthusiasm, 
-    {
+const initialState = {
+    list: {
         enthusiasmLevel: 1,
         languageName: 'marketing',
-    }, 
+    }
+};
+
+const store = createStore<StoreState>(
+    reducer as any, 
+    initialState as any, 
     composeWithDevTools(applyMiddleware(epicMiddleware1))
 );
 
