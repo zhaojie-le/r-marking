@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as actions from '../actions/list';
-import { StoreState } from '../types/index';
+// import { StoreState } from '../types/index';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Button } from 'antd';
@@ -36,10 +36,11 @@ class List extends React.Component<Props, object> {
     }
   }
 
-export function mapStateToProps({ enthusiasmLevel, languageName }: StoreState) {
+export function mapStateToProps(state: any) {
+  console.log(state);
   return {
-    enthusiasmLevel,
-    name: languageName,
+    enthusiasmLevel: state.list.enthusiasmLevel,
+    name: state.list.languageName,
   };
 }
 
