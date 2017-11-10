@@ -1,7 +1,4 @@
-export interface ListState {
-    languageName: string;
-    enthusiasmLevel: number;
-}
+import { ListState } from './list';
 
 export interface StoreState {
     list: ListState;

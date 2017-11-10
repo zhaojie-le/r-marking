@@ -1,5 +1,5 @@
 import * as actions from '../actions/list';
-import { ListState } from '../types/index';
+import { ListState } from '../types/list';
 import { INCREMENT_ENTHUSIASM, DECREMENT_ENTHUSIASM } from '../constants/index';
 
 interface RList { list: (state: ListState, action: actions.EnthusiasmAction) => ListState; }

@@ -7,15 +7,8 @@ import {
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import List from './containers/List';
+import CreateOrderStrategy from './containers/CreateOrderStrategy';
 import store from './store';
-
-const UserSubLayout = props => (
-  <div className="user-sub-layout">
-    <div className="primary-content">
-      XXXXXXXX
-    </div>
-  </div>
-);
 
 const NotFound = () => (
   <div>
@@ -27,9 +20,9 @@ const Routes = () => (
     <Provider store={store}>
       <Router>
         <div> 
-          <List />
           <Switch>
-            <Route path="/users" component={UserSubLayout} />
+            <Route path="/createOrderStrategy" component={CreateOrderStrategy} />
+            <Route path="/" component={List} />
             <Route component={NotFound} />
           </Switch>
         </div>
