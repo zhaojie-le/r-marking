@@ -5,6 +5,6 @@ import EnterRoute from './App';
 import './index.scss';
 
 ReactDOM.render(
-  <EnterRoute />,
-  document.getElementById('root') as HTMLElement
+    <EnterRoute />,
+    document.getElementById('root') as HTMLElement
 );
