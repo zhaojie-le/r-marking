@@ -36,7 +36,7 @@ const increment: Epic<any, any> = (action$, store) => {
     return action$.ofType(constants.INCREMENT_ENTHUSIASM).
         switchMap(
             (action): Observable<any> => {
-                return ajax.getJSON(`/api/abtest-baseinfo/get-baseinfo-byid`).
+                return ajax.getJSON(`/marketStrategy/list`).
                     map((response: {code: number, result: object}) => {
                         if (response.code === 0) {
                             return (incrementSuccess(response.result));
@@ -52,7 +52,7 @@ const decrement: Epic<any, any>  = (action$, store) => {
     return action$.ofType(constants.DECREMENT_ENTHUSIASM).
         switchMap(
             (action): Observable<any>  => {
-                return ajax.getJSON(`/api/abtest-baseinfo/get-baseinfo-byid`).
+                return ajax.getJSON(`/marketStrategy/list`).
                     map((response: {code: number, result: object}) => {
                         if (response.code === 0) {
                             return (decrementSuccess(response.result));
