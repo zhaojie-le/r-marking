@@ -14,84 +14,89 @@ import cfg from './cfg';
 
 export interface Props {
     name: string;
+    listData: any;
+    totalInfo: number;
     enthusiasmLevel?: number;
     onIncrement?: () => void;
     onDecrement?: () => void;
+    strategyList?: () => void;
     form?: any;
 }
 
 const columns = [{
     title: '策略ID',
-    dataIndex: 'name',
-    key: '1'
+    dataIndex: 'pkId',
+    key: 'pkId'
   }, {
     title: '策略名称',
-    className: 'column-money',
-    dataIndex: 'money',
-    key: '2'
+    dataIndex: 'strategyName',
+    key: 'strategyName'
   }, {
     title: '策略状态',
-    dataIndex: 'address',
-    key: '3'
+    dataIndex: 'strategyState',
+    key: 'strategyState'
 }, {
     title: '创建时间',
-    dataIndex: 'address',
-    key: '4'
+    dataIndex: 'createTime',
+    key: 'createTime'
 }, {
     title: '有效时间',
-    dataIndex: 'address',
-    key: '5'
+    dataIndex: 'effectiveTime',
+    key: 'effectiveTime'
+}, {
+    title: '失效时间',
+    dataIndex: 'invalidTime',
+    key: 'invalidTime'
 }, {
     title: '触发事件',
-    dataIndex: 'address',
-    key: '6'
+    dataIndex: 'marketingTypeInt',
+    key: 'marketingTypeInt'
 }, {
     title: '营销方式',
     dataIndex: 'address',
     key: '7'
 }, {
     title: '营销类型',
-    dataIndex: 'address',
-    key: '8'
+    dataIndex: 'marketingType',
+    key: 'marketingType'
 }, {
     title: '推送人数',
-    dataIndex: 'address',
-    key: '9'
+    dataIndex: 'pushAmount',
+    key: 'pushAmount'
 }, {
     title: '创建人邮箱',
-    dataIndex: 'address',
-    key: '10'
+    dataIndex: 'createrEmail',
+    key: 'createrEmail'
 }, {
-    title: '策略状态',
-    dataIndex: 'address',
-    key: '11',
+    title: '操作',
+    dataIndex: 'dataReport',
+    key: 'dataReport',
     render: (text, record) => (
-        <span>
-          点击
-        </span>
+        <Button>点击</Button>
       ),
   }];
-  
-  const data = [{
-    'strategyName': 'lxn页面挂件测试',
-    'pkId': '243813584004464720',
-    'marketingType': '支付',
-    'pushAmount': 0,
-    'effectiveTime': '2017-11-03 19:04:11',
-    'dataReport': true,
-    'invalidTime': '2017-11-06 19:04:12',
-    'strategyTypeInt': 7,
-    'strategyType': '页面挂件',
-    'activityId': 0,
-    'createrEmail': 'liuxiaonan@daojia.com',
-    'marketingTypeInt': 7,
-    'createTime': '2017-11-03 19:08:07',
-    'marketingLimit': 0,
-    'actionExpression': '7',
-    'updateContent': '无',
-    'strategyState': '未开始'
-  }];
+//   const data = [{
+//     'showEdit': true,                        //是否显示修改按钮
+//     'strategyName': 'lxn页面挂件测试',         // 策略名称
+//     'pkId': '243813584004464720',            // 策略id
+//     'marketingType': '支付',                  // 营销类型
+//     'pushAmount': 0,                         // 推送人数
+//     'effectiveTime': '2017-11-03 19:04:11',  // 生效时间
+//     'dataReport': true,
+//     'invalidTime': '2017-11-06 19:04:12',    // 失效时间
+//     'strategyTypeInt': 7,               
+//     'strategyType': '页面挂件',               // 触发事件  
+//     'activityId': 0,
+//     'createrEmail': 'liuxiaonan@daojia.com', // 创建者邮箱
+//     'marketingTypeInt': 7,
+//     'createTime': '2017-11-03 19:08:07',     // 创建时间
+//     'marketingLimit': 0,
+//     'actionExpression': '7',
+//     'updateContent': '无',
+//     'strategyState': '未开始'                 // 策略状态
+//   }];
 
+// 对获取的值进一步处理
 function getExclamationMarks(numChars: number) {
     return Array(numChars + 1).join('!');
 }
@@ -101,20 +106,35 @@ class List extends React.Component<Props, object> {
         super(props, context);
     }
     componentDidMount() {
+        const { strategyList = () => {}} = this.props;
         console.log('component');
-        actions.decrementEnthusiasm();
+        strategyList();
+
+        this.props.form.validateFields();
     }
-    handleFormLayoutChange = (e) => {
-        this.setState({ formLayout: e.target.value });
+    // 搜索清空
+    handleReset = () => {
+        this.props.form.resetFields();
+    }
+
+    handleSearch = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+            }
+        });
     }
 
     render() {
-        const { name, enthusiasmLevel = 1, onIncrement, onDecrement } = this.props;
+        const { listData, name, enthusiasmLevel = 1, onIncrement = () => {}, onDecrement = () => {} } = this.props;
+        // 设置表单的排列间隙
         const formItemLayout = {
             labelCol: { span: 8 },
             wrapperCol: { span: 15 },
-          };
-        const { getFieldDecorator } = this.props.form;
+        };
+        // 添加input自动校验
+        // const { getFieldDecorator } = this.props.form;
         // 策略状态项
         let strategyStatus = cfg.strategyStatus;
         let strategyStatusChildren = strategyStatus.map((item) => {
@@ -134,16 +154,16 @@ class List extends React.Component<Props, object> {
                 <Layout>
                     <Content className="content-wrap">
                         <div className="search-box">
-                            <Form layout={'inline'} className="form-box">
+                            <Form layout={'inline'} className="form-box" onSubmit={this.handleSearch}>
                                 <Row gutter={50} style={{ margin: '20px' }}>
                                     <Col span={8} style={{ textAlign: 'left' }}>
                                         <FormItem label="策略ID" {...formItemLayout} >
-                                            {/* <Input placeholder="请输入策略ID" /> */}
-                                            {getFieldDecorator('number', {
+                                            <Input placeholder="请输入策略ID" maxLength="30"/>
+                                            {/* {getFieldDecorator('number', {
                                                 rules: [{ type: 'number' }],
                                             })(
                                                 <Input placeholder="请输入策略ID" maxLength="30"/>
-                                            )}
+                                            )} */}
                                         </FormItem>
                                     </Col>
                                     <Col span={8} style={{ textAlign: 'left' }}>
@@ -191,8 +211,8 @@ class List extends React.Component<Props, object> {
                                     </Col>
                                     <Col span={8} style={{ textAlign: 'left' }}>
                                         <FormItem {...formItemLayout} >
-                                            <Button type="primary">查询</Button>
-                                            <Button >重置</Button> 
+                                            <Button type="primary" htmlType="submit">查询</Button>
+                                            <Button onClick={this.handleReset}>重置</Button> 
                                         </FormItem>
                                     </Col>
                                 </Row>
@@ -202,11 +222,11 @@ class List extends React.Component<Props, object> {
                             <div className="greeting">
                                 let‘s begin do {name + getExclamationMarks(enthusiasmLevel)}
                             </div>
-                            <Button onClick={onDecrement}>-</Button>
+                            <Button onClick={() => { onDecrement(); }}>-</Button>
                             <Button onClick={onIncrement}>+</Button>
                         </div>
 
-                        <Table style={{background: '#fff'}} columns={columns} dataSource={data} bordered />
+                        <Table style={{background: '#fff'}} columns={columns} dataSource={listData} bordered/>
                     </Content>
                 </Layout>
             </Layout>
@@ -216,18 +236,19 @@ class List extends React.Component<Props, object> {
 }
 
 const WrappedAdvancedSearchForm = Form.create()(List as any);
-
 export function mapStateToProps(state: StoreState) {
     return {
         enthusiasmLevel: state.list.enthusiasmLevel,
         name: state.list.languageName,
+        listData: state.list.listData
     };
 }
 
 export const mapDispatchToProps = (dispatch: Dispatch<actions.EnthusiasmAction>) => bindActionCreators(
     {
         onIncrement: actions.incrementEnthusiasm,
-        onDecrement: actions.decrementEnthusiasm
+        onDecrement: actions.decrementEnthusiasm,
+        strategyList: actions.StrategyList
     },
     dispatch
 );

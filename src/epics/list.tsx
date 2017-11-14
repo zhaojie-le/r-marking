@@ -31,15 +31,29 @@ const decrementFail = (error) => {
         error: error
     };
 };
+// 获取列表页数据
+const strategyListSuccess = (response) => {
+    return {
+        type: constants.STRATEGY_LIST_SUC,
+        response: response
+    };
+};
+
+const strategyListFail = (response) => {
+    return {
+        type: constants.STRATEGY_LIST_FAIL,
+        responses: response
+    };
+};
 
 const increment: Epic<any, any> = (action$, store) => {
     return action$.ofType(constants.INCREMENT_ENTHUSIASM).
         switchMap(
             (action): Observable<any> => {
                 return ajax.getJSON(`/marketStrategy/list`).
-                    map((response: {code: number, result: object}) => {
+                    map((response: {code: number, data: object}) => {
                         if (response.code === 0) {
-                            return (incrementSuccess(response.result));
+                            return (incrementSuccess(response));
                         } else {
                             return (incrementFail(response));
                         }
@@ -55,7 +69,7 @@ const decrement: Epic<any, any>  = (action$, store) => {
                 return ajax.getJSON(`/marketStrategy/list`).
                     map((response: {code: number, result: object}) => {
                         if (response.code === 0) {
-                            return (decrementSuccess(response.result));
+                            return (strategyListSuccess(response.result));
                         } else {
                             return (decrementFail(response));
                         }
@@ -64,6 +78,22 @@ const decrement: Epic<any, any>  = (action$, store) => {
         );
 };
 
-const epics = [increment, decrement];
+const strategyList: Epic<any, any>  = (action$, store) => {
+    return action$.ofType(constants.STRATEGY_LIST).
+        switchMap(
+            (action): Observable<any>  => {
+                return ajax.getJSON(`/marketStrategy/list`).
+                    map((response: {code: number, result: object}) => {
+                        if (response.code === 0) {
+                            return (decrementSuccess(response.result));
+                        } else {
+                            return (strategyListFail(response));
+                        }
+                    });
+            }
+        );
+};
+
+const epics = [increment, decrement, strategyList];
 
 export default epics;

@@ -1,11 +1,7 @@
 export interface ListState {
     languageName: string;
-    enthusiasmLevel: number
-}
-
-
-export interface AllList {
-    data: any;
+    enthusiasmLevel: number;
+    listData: any;
     totalInfo: number;
-
+    
 }
