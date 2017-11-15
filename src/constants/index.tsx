@@ -14,3 +14,7 @@ console.log(typeof STRATEGY_LIST_SUC);
 // 获取列表事件－失败
 export const STRATEGY_LIST_FAIL = 'STRATEGY_LIST_FAIL';
 export type STRATEGY_LIST_FAIL = typeof STRATEGY_LIST_FAIL;
+
+// 同步修改收入框内容
+export const CHANGE_PARAMS = 'CHANGE_PARAMS';
+export type CHANGE_PARAMS = typeof CHANGE_PARAMS;

@@ -69,7 +69,7 @@ const decrement: Epic<any, any>  = (action$, store) => {
                 return ajax.getJSON(`/marketStrategy/list`).
                     map((response: {code: number, result: object}) => {
                         if (response.code === 0) {
-                            return (strategyListSuccess(response.result));
+                            return (strategyListSuccess(response));
                         } else {
                             return (decrementFail(response));
                         }
@@ -85,7 +85,8 @@ const strategyList: Epic<any, any>  = (action$, store) => {
                 return ajax.getJSON(`/marketStrategy/list`).
                     map((response: {code: number, result: object}) => {
                         if (response.code === 0) {
-                            return (decrementSuccess(response.result));
+                            console.log('list', response)
+                            return (decrementSuccess(response));
                         } else {
                             return (strategyListFail(response));
                         }
