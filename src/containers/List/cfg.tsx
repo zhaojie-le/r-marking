@@ -23,7 +23,7 @@ export default {
     ],
 
     // 触发事件
-    strategyType:[
+    strategyType: [
         {id: '1', name: '订单事件'},
         {id: '2', name: '导入用户'},
         {id: '3', name: '支付预约页面营销'},

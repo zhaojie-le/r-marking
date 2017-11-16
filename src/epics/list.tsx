@@ -19,20 +19,20 @@ const incrementFail = (error) => {
     };
 };
 
-const decrementSuccess = (result) => {
-    return {
-        type: `${constants.INCREMENT_ENTHUSIASM}Success`,
-        result: result
-    };
-};
+// const decrementSuccess = (result) => {
+//     return {
+//         type: `${constants.INCREMENT_ENTHUSIASM}Success`,
+//         result: result
+//     };
+// };
 
-const decrementFail = (error) => {
-    return {
-        type: `${constants.INCREMENT_ENTHUSIASM}Fail`,
-        error: error
-    };
-};
-// 获取列表页数据
+// const decrementFail = (error) => {
+//     return {
+//         type: `${constants.INCREMENT_ENTHUSIASM}Fail`,
+//         error: error
+//     };
+// };
+// 获取列表页数据成功
 const strategyListSuccess = (response) => {
     return {
         type: constants.STRATEGY_LIST_SUC,
@@ -46,6 +46,7 @@ const strategyListFail = (response) => {
         responses: response
     };
 };
+
 
 const increment: Epic<any, any> = (action$, store) => {
     return action$.ofType(constants.INCREMENT_ENTHUSIASM).
@@ -63,30 +64,29 @@ const increment: Epic<any, any> = (action$, store) => {
         );
 };
 
-const decrement: Epic<any, any>  = (action$, store) => {
-    return action$.ofType(constants.DECREMENT_ENTHUSIASM).
-        switchMap(
-            (action): Observable<any>  => {
-                return ajax.getJSON(`/marketStrategy/list`).
-                    map((response: {code: number, result: object}) => {
-                        if (response.code === 0) {
-                            return (decrementSuccess(response));
-                        } else {
-                            return (decrementFail(response));
-                        }
-                    });
-            }
-        );
-};
+// const decrement: Epic<any, any>  = (action$, store) => {
+//     return action$.ofType(constants.DECREMENT_ENTHUSIASM).
+//         switchMap(
+//             (action): Observable<any>  => {
+//                 return ajax.getJSON(`/marketStrategy/list`).
+//                     map((response: {code: number, result: object}) => {
+//                         if (response.code === 0) {
+//                             return (decrementSuccess(response));
+//                         } else {
+//                             return (decrementFail(response));
+//                         }
+//                     });
+//             }
+//         );
+// };
 // 获取列表页列表数据
-const strategyList: Epic<any, any>  = (action$, store) => {
+const strategyList: Epic<any, any, any>  = (action$, store, params) => {
     return action$.ofType(constants.STRATEGY_LIST).
         switchMap(
             (action): Observable<any>  => {
                 return ajax.getJSON(`/marketStrategy/list`).
                     map((response: ListResponseType) => {
                         if (response.code === 0) {
-                            console.log('list', response)
                             return (strategyListSuccess(response));
                         } else {
                             return (strategyListFail(response));
@@ -96,6 +96,6 @@ const strategyList: Epic<any, any>  = (action$, store) => {
         );
 };
 
-const epics = [increment, decrement, strategyList];
+const epics = [increment, strategyList];
 
 export default epics;

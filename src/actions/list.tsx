@@ -13,7 +13,7 @@ export interface DecrementEnthusiasm {
 
 export interface StrategyList {
     type: constants.STRATEGY_LIST;
-    response?: object;
+    params: any;
 }
 
 export interface StrategyListSuccess {
@@ -26,7 +26,12 @@ export interface ChangeParams {
     params?: object;
 }
 
-export type EnthusiasmAction = IncrementEnthusiasm | DecrementEnthusiasm | StrategyList | StrategyListSuccess | ChangeParams ;
+export interface ChangePage {
+    type: constants.CHANGE_PAGE;
+    page: number;
+}
+
+export type EnthusiasmAction = IncrementEnthusiasm | DecrementEnthusiasm | StrategyList | StrategyListSuccess | ChangeParams | ChangePage;
 
 export function incrementEnthusiasm(): IncrementEnthusiasm {
     return {
@@ -40,9 +45,10 @@ export function decrementEnthusiasm(): DecrementEnthusiasm {
     };
 }
 
-export function StrategyList(): StrategyList {
+export function StrategyList(params: any): StrategyList {
     return {
-        type: constants.STRATEGY_LIST
+        type: constants.STRATEGY_LIST,
+        params: params
     };
 }
 
@@ -57,5 +63,12 @@ export function ChangeParams(params: object): ChangeParams {
     return {
         type: constants.CHANGE_PARAMS,
         params: params
+    };
+}
+
+export function ChangePage(page: number): ChangePage {
+    return {
+        type: constants.CHANGE_PAGE,
+        page: page
     };
 }

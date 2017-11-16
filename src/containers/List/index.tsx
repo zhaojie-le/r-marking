@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Button, Layout, Table, DatePicker } from 'antd';
-import { Form, Input, Row, Col, Select } from 'antd';
+import { Form, Input, Row, Col, Select, Pagination } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const { Header, Content } = Layout;
@@ -34,11 +34,13 @@ export interface Props {
     form?: any;
     params?: any;
 }
-
+// 表格头部设置参数
 const columns = [{
     title: '策略ID',
     dataIndex: 'pkId',
-    key: 'pkId'
+    key: 'pkId',
+    // 跳转连接方式
+    render: text => <a href="https://bj.daojia.com/">{text}</a>,
   }, {
     title: '策略名称',
     dataIndex: 'strategyName',
@@ -84,7 +86,7 @@ const columns = [{
     dataIndex: 'dataReport',
     key: 'dataReport',
     render: (text, record) => (
-        <Button>点击</Button>
+        <Button size='small'>点击</Button>
       ),
   }];
 //   const data = [{
@@ -108,12 +110,11 @@ const columns = [{
 //     'strategyState': '未开始'                 // 策略状态
 //   }];
 
-// 对获取的值进一步处理
-function getExclamationMarks(numChars: number) {
-    return Array(numChars + 1).join('!');
-}
-
 class List extends React.Component<Props, object> {
+    // 组件内部变量
+    // state = {
+    //     page:0
+    // }
     constructor(props: Props, context: any) {
         super(props, context);
     }
@@ -134,37 +135,40 @@ class List extends React.Component<Props, object> {
             }
         });
     }
-    // 输入框赋值
+    // 输入框赋值,策略id
     pkIdChange = (e) => {
         e.target.value = this.limitNumberInput(e.target.value);   
         this.props.params.pkId = e.target.value;
         console.log('this.props.params', this.props.params);
     }
+    // 输入框赋值,活动id
     activityIdChange = (e) => {
         e.target.value = this.limitNumberInput(e.target.value);
         this.props.params.activityId = e.target.value;
     }
+    // 输入框赋值,策略名称
     strategyNameChange = (e) => {
         e.target.value = this.limitNumberInput(e.target.value);
         this.props.params.strategyName = e.target.value;
     }
+    // 输入框赋值,策略状态
     strategyStatusChange = (value) => {
         // console.log(`selected ${value}`);
-        this.props.params.strategyState = `selected ${value}`;
+        this.props.params.strategyState = `${value}`;
     }
+    // 输入框赋值,营销类型
     marketingTypeChange = (value) => {
-        this.props.params.marketingType = `selected ${value}`;
+        this.props.params.marketingType = `${value}`;
     }
-    // 限制输入纯数字
+    // 输入框，限制输入纯数字
     limitNumberInput = (n) => {
-       return n = n.replace(/[^\d]/g, '');
-       
+       return n = n.replace(/[^\d]/g, '');  
     }
 
     onDateChange = () => {
 
     }
-
+    // 选择时间后，获取时间
     onTimeChange = (value,dateString) => {
         console.log('Selected Time: ', value); // 未转换格式
         console.log('Formatted Selected Time: ', dateString); // 转换后格式
@@ -176,16 +180,30 @@ class List extends React.Component<Props, object> {
     }
     // 点击查询按钮
     searchClick = () => {
-
+        console.log(this.props.params)
     }
 
     // 搜索清空
     searchReset = () => {
-        this.props.form.resetFields();
+        this.props.params.pageSize = 10,       // 每页列表数
+        this.props.params.pkId = '',           // 策略ID
+        this.props.params.activityId = '',     // 活动ID
+        this.props.params.strategyName = '',   // 策略名称
+        this.props.params.strategyState = '',  // 策略状态
+        this.props.params.effectiveTime = '',  // 起始时间
+        this.props.params.invalidTime = '',    // 结束时间
+        this.props.params.strategyType = '',   // 触发事件
+        this.props.params.marketingType = ''   // 营销类型
+    }
+
+    // 分页器
+    pageChange = (page) => {
+        this.props.params.page = page;
+        console.log(this.props.params)
     }
 
     render() {
-        const { listData, name, enthusiasmLevel = 1, onIncrement = () => {}, onDecrement = () => {} } = this.props;
+        const { listData, totalInfo } = this.props;
         // 设置表单的排列间隙
         const formItemLayout = {
             labelCol: { span: 8 },
@@ -274,21 +292,26 @@ class List extends React.Component<Props, object> {
                                         </FormItem>
                                     </Col>
                                     <Col span={12} style={{ textAlign: 'left' }}>
-                                        <Button type="primary" htmlType="submit" onClick={this.searchClick}>查询</Button>
+                                        <Button type="primary" onClick={this.searchClick}>查询</Button>
                                         <Button onClick={this.searchReset} style={{ marginLeft: '15px' }}>重置</Button>
                                     </Col>
                                 </Row>
                             </Form>
                         </div>                   
-                        <div className="list">
+                        {/* <div className="list">
                             <div className="greeting">
                                 let‘s begin do {name + getExclamationMarks(enthusiasmLevel)}
                             </div>
                             <Button onClick={() => { onDecrement(); }}>-</Button>
                             <Button onClick={onIncrement}>+</Button>
+                        </div> */}
+                        {/* 列表表格 */}
+                        <div style={{background: '#fff'}}>
+                            <Table style={{background: '#fff'}} columns={columns} dataSource={listData} bordered pagination={false}/>
+                            <div style={{position: 'relative', height: '70px'}}>
+                                <Pagination style={{position: 'absolute', right: '0', top: '18px'}} onChange={this.pageChange} defaultCurrent={1} total={totalInfo} />
+                            </div>
                         </div>
-
-                        <Table style={{background: '#fff'}} columns={columns} dataSource={listData} bordered/>
                     </Content>
                 </Layout>
             </Layout>
@@ -302,6 +325,7 @@ export function mapStateToProps(state: StoreState) {
     return {
         enthusiasmLevel: state.list.enthusiasmLevel,
         name: state.list.languageName,
+        totalInfo: state.list.totalInfo,
         listData: state.list.listData,             // 列表数组
         page: state.list.page,                     // 发送请求页数
         pageSize: state.list.pageSize,             // 每页列表条数
@@ -314,23 +338,26 @@ export function mapStateToProps(state: StoreState) {
         strategyType: state.list.strategyType,     // 触发事件
         marketingType: state.list.marketingType,   // 营销类型
         params: {
-            pkId: '',           //策略ID
-            activityId: '',     //活动ID
-            strategyName: '',   //策略名称
-            strategyState: '',  //策略状态
-            effectiveTime: '',  //起始时间
-            invalidTime: '',    //结束时间
-            strategyType: '',   //触发事件
-            marketingType: ''   //营销类型
+            page: 1,            // 翻页值
+            pageSize: 10,       // 每页列表数
+            pkId: '',           // 策略ID
+            activityId: '',     // 活动ID
+            strategyName: '',   // 策略名称
+            strategyState: '',  // 策略状态
+            effectiveTime: '',  // 起始时间
+            invalidTime: '',    // 结束时间
+            strategyType: '',   // 触发事件
+            marketingType: ''   // 营销类型
         }
     };
 }
 
 export const mapDispatchToProps = (dispatch: Dispatch<actions.EnthusiasmAction>) => bindActionCreators(
     {
-        onIncrement: actions.incrementEnthusiasm,
-        onDecrement: actions.decrementEnthusiasm,
-        strategyList: actions.StrategyList
+        // onIncrement: actions.incrementEnthusiasm,
+        // onDecrement: actions.decrementEnthusiasm,
+        strategyList: actions.StrategyList,
+        changePage: actions.ChangePage
     },
     dispatch
 );
