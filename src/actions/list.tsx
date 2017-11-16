@@ -1,5 +1,6 @@
 
 import * as constants from '../constants';
+import { ListResponseType } from '../types';
 
 export interface IncrementEnthusiasm {
     type: constants.INCREMENT_ENTHUSIASM;
@@ -17,7 +18,7 @@ export interface StrategyList {
 
 export interface StrategyListSuccess {
     type: constants.STRATEGY_LIST_SUC;
-    response?: object;
+    response: ListResponseType;
 }
 
 export interface ChangeParams {
@@ -45,16 +46,16 @@ export function StrategyList(): StrategyList {
     };
 }
 
-export function StrategyListSuccess(response: object): StrategyListSuccess {
+export function StrategyListSuccess(response: ListResponseType): StrategyListSuccess {
     return {
         type: constants.STRATEGY_LIST_SUC,
         response: response
     };
 }
 
-export function ChangeParams(params: object): ChangeParams{
+export function ChangeParams(params: object): ChangeParams {
     return {
         type: constants.CHANGE_PARAMS,
         params: params
-    }
+    };
 }

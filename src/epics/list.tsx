@@ -1,6 +1,7 @@
 import { ajax } from 'rxjs/observable/dom/ajax';
 import * as constants from '../constants';
 import { Observable } from 'rxjs/Rx';
+import { ListResponseType } from '../types';
 import 'rxjs';
 import { Epic } from 'redux-observable';
 
@@ -69,7 +70,7 @@ const decrement: Epic<any, any>  = (action$, store) => {
                 return ajax.getJSON(`/marketStrategy/list`).
                     map((response: {code: number, result: object}) => {
                         if (response.code === 0) {
-                            return (strategyListSuccess(response));
+                            return (decrementSuccess(response));
                         } else {
                             return (decrementFail(response));
                         }
@@ -77,16 +78,16 @@ const decrement: Epic<any, any>  = (action$, store) => {
             }
         );
 };
-
+// 获取列表页列表数据
 const strategyList: Epic<any, any>  = (action$, store) => {
     return action$.ofType(constants.STRATEGY_LIST).
         switchMap(
             (action): Observable<any>  => {
                 return ajax.getJSON(`/marketStrategy/list`).
-                    map((response: {code: number, result: object}) => {
+                    map((response: ListResponseType) => {
                         if (response.code === 0) {
                             console.log('list', response)
-                            return (decrementSuccess(response));
+                            return (strategyListSuccess(response));
                         } else {
                             return (strategyListFail(response));
                         }

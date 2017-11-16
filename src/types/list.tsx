@@ -14,3 +14,11 @@ export interface ListState {
     strategyType: number,    // 触发事件
     marketingType: number    // 营销类型
 }
+// 列表接口数据格式
+export interface ListGetSuccess {
+    data: any;
+    totalInfo: number;
+    code: number;
+    strategyTypeList: number[];
+    strategyType: number;
+}

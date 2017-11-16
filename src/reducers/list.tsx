@@ -26,17 +26,19 @@ function enthusiasm(state: ListState = {
         strategyType: 0,      // 触发事件
         marketingType: 0      // 营销类型 
     }, action: actions.EnthusiasmAction): ListState {
+        console.log(action.type);
         switch (action.type) {
             case STRATEGY_LIST:
                 return { ...state};
             case STRATEGY_LIST_SUC:
-                return {...state, listData: action.response};
+                
+                return {...state, listData: action.response.data};
             case INCREMENT_ENTHUSIASM:
                 return { ...state, enthusiasmLevel: state.enthusiasmLevel + 1 };
             case DECREMENT_ENTHUSIASM:
                 return { ...state, enthusiasmLevel: Math.max(1, state.enthusiasmLevel - 1) };
             case CHANGE_PARAMS:
-                return {...state}
+                return {...state};
             default:
                 return { ...state };
     }
