@@ -81,6 +81,7 @@ const increment: Epic<any, any> = (action$, store) => {
 // };
 // 获取列表页列表数据
 const strategyList: Epic<any, any, any>  = (action$, store, params) => {
+    console.log('ajax', params)
     return action$.ofType(constants.STRATEGY_LIST).
         switchMap(
             (action): Observable<any>  => {
