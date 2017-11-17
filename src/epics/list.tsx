@@ -52,7 +52,8 @@ const increment: Epic<any, any> = (action$, store) => {
     return action$.ofType(constants.INCREMENT_ENTHUSIASM).
         switchMap(
             (action): Observable<any> => {
-                return ajax.getJSON(`/marketStrategy/list`).
+                console.log(action.params.page);
+                return ajax.getJSON(`/marketStrategy/list?page=${action.params.page}`).
                     map((response: {code: number, data: object}) => {
                         if (response.code === 0) {
                             return (incrementSuccess(response));
@@ -80,18 +81,18 @@ const increment: Epic<any, any> = (action$, store) => {
 //         );
 // };
 // 获取列表页列表数据
-const strategyList: Epic<any, any, any>  = (action$, store, params) => {
-    console.log('ajax', params)
+const strategyList: Epic<any, any, any>  = (action$, store) => {
     return action$.ofType(constants.STRATEGY_LIST).
         switchMap(
             (action): Observable<any>  => {
-                return ajax.getJSON(`/marketStrategy/list`).
+                console.log('ajax', action.params);
+                return ajax.getJSON(`/marketStrategy/list?page=${action.params.pkId?action.params.page:''}`).
                     map((response: ListResponseType) => {
-                        if (response.code === 0) {
-                            return (strategyListSuccess(response));
-                        } else {
-                            return (strategyListFail(response));
-                        }
+                            if (response.code === 0) {
+                                return (strategyListSuccess(response));
+                            } else {
+                                return (strategyListFail(response));
+                            }
                     });
             }
         );

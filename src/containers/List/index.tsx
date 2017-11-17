@@ -116,6 +116,7 @@ class List extends React.Component<Props, object> {
         super(props, context);
     }
     componentDidMount() {
+
         const { strategyList = (params) => {}} = this.props;
 
         strategyList(this.props.params);
@@ -178,6 +179,8 @@ class List extends React.Component<Props, object> {
     // 点击查询按钮
     searchClick = () => {
         console.log(this.props.params);
+        const { strategyList = (params) => {}} = this.props;
+        strategyList(this.props.params);
     }
 
     // 表格搜索清空
