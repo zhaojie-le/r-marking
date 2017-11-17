@@ -195,7 +195,7 @@ class List extends React.Component<Props, object> {
         this.props.params.invalidTime = '',    // 结束时间
         this.props.params.strategyType = '',   // 触发事件
         this.props.params.marketingType = '';   // 营销类型
-        console.log('resetparmas', this.props.params)
+        console.log('resetparmas', this.props.params);
     }
 
     // 分页器
