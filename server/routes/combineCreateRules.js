@@ -5,18 +5,17 @@ var util = require('util');
 const fs = require('fs');
 const config = require('./config');
 
-
 //判断环境 是否是mock
 var isMock = process.env.isMock;
 
-router.get('/get-parameter-by', function(req, res, next) {
-    fs.readFile(__dirname + '/../usermock/abtest/params.json', 'utf8', (err, data) => {
+router.get('/getRule', function(req, res, next) {
+    fs.readFile(__dirname + '/../usermock/createRules/rules.json', 'utf8', (err, data) => {
         res.json(JSON.parse(data));
     });
 });
 
-router.get('/get-index-by', function(req, res, next) {
-    fs.readFile(__dirname + '/../usermock/abtest/indexcitor.json', 'utf8', (err, data) => {
+router.post('/save', function(req, res, next) {
+    fs.readFile(__dirname + '/../usermock/createRules/rules.json', 'utf8', (err, data) => {
         res.json(JSON.parse(data));
     });
 });

@@ -6,12 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 //mock数据
-var combineUser = require('./routes/combineUser');
-var combineRole = require('./routes/combineRole');
-var combineResource = require('./routes/combineResource');
 var combineAbtest = require('./routes/combineAbtest');
-var combineAbtestCategory = require('./routes/combineAbtestCategory');
-var combineToolBox = require('./routes/combineToolBox');
+var combineCreateRules = require('./routes/combineCreateRules');
 
 var app = express();
 var preview = process.env.preview;
@@ -28,13 +24,9 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-  
-app.use('/api/user', combineUser);
-app.use('/api/role', combineRole);
-app.use('/api/resource', combineResource);
+
 app.use('/api/abtest-baseinfo', combineAbtest);
-app.use('/api/abtest-category', combineAbtestCategory);
-app.use('/api/sem-keyword', combineToolBox);
+app.use('/marketStrategy', combineCreateRules);
 
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
