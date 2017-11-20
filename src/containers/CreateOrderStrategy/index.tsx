@@ -50,8 +50,8 @@ export function mapStateToProps(state: StoreState) {
 
 export const mapDispatchToProps = (dispatch: Dispatch<actions.EnthusiasmAction>) => bindActionCreators(
   {
-    onIncrement: actions.incrementEnthusiasm,
-    onDecrement: actions.decrementEnthusiasm
+    // onIncrement: actions.incrementEnthusiasm,
+    // onDecrement: actions.decrementEnthusiasm
   }, 
   dispatch
 );

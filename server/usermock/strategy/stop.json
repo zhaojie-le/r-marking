@@ -1,0 +1,23 @@
+{
+  "code": 0,
+  "data": {
+    "showEdit": true,
+    "strategyName": "lxn订单修改test",
+    "pkId": "228892188602288956",
+    "marketingType": "用券",
+    "pushAmount": 0,
+    "effectiveTime": "2017-09-23 14:54:54",
+    "resultCode": 1,
+    "invalidTime": "2017-11-11 15:54:55",
+    "strategyTypeInt": 1,
+    "strategyType": "订单触发",
+    "activityId": 0,
+    "createrEmail": "liuxiaonan@daojia.com",
+    "marketingTypeInt": 2,
+    "createTime": "2017-09-23 14:55:44",
+    "marketingLimit": 0,
+    "actionExpression": "2,6",
+    "updateContent": "2017-09-23 14:58:44:修改营销方式",
+    "strategyState": "暂停"
+    }
+}

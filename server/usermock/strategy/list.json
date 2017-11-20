@@ -19,7 +19,7 @@
       "marketingLimit": 0,
       "actionExpression": "7",
       "updateContent": "无",
-      "strategyState": "未开始"
+      "strategyState": "进行中"
     },
     {
       "showEdit": false,
@@ -39,7 +39,7 @@
       "marketingLimit": 0,
       "actionExpression": "6",
       "updateContent": "无",
-      "strategyState": "未开始"
+      "strategyState": "暂停"
     }
   ],
   "strategyTypeList": [1, 2, 3, 4, 5, 6],

@@ -27,65 +27,11 @@ export interface Props {
     invalidTime: string;     // 结束时间
     strategyType: number;    // 触发事件
     marketingType: number;   // 营销类型
-    strategyList: () => void;
+    strategyList: (params: any) => void;
     form?: any;
     params?: any;
 }
-// 表格头部设置参数
-const columns = [{
-    title: '策略ID',
-    dataIndex: 'pkId',
-    key: 'pkId',
-    // 跳转连接方式
-    render: text => <a href="https://bj.daojia.com/">{text}</a>,
-  }, {
-    title: '策略名称',
-    dataIndex: 'strategyName',
-    key: 'strategyName'
-  }, {
-    title: '策略状态',
-    dataIndex: 'strategyState',
-    key: 'strategyState'
-}, {
-    title: '创建时间',
-    dataIndex: 'createTime',
-    key: 'createTime'
-}, {
-    title: '有效时间',
-    dataIndex: 'effectiveTime',
-    key: 'effectiveTime'
-}, {
-    title: '失效时间',
-    dataIndex: 'invalidTime',
-    key: 'invalidTime'
-}, {
-    title: '触发事件',
-    dataIndex: 'marketingTypeInt',
-    key: 'marketingTypeInt'
-}, {
-    title: '营销方式',
-    dataIndex: 'address',
-    key: '7'
-}, {
-    title: '营销类型',
-    dataIndex: 'marketingType',
-    key: 'marketingType'
-}, {
-    title: '推送人数',
-    dataIndex: 'pushAmount',
-    key: 'pushAmount'
-}, {
-    title: '创建人邮箱',
-    dataIndex: 'createrEmail',
-    key: 'createrEmail'
-}, {
-    title: '操作',
-    dataIndex: 'dataReport',
-    key: 'dataReport',
-    render: (text, record) => (
-        <Button size="small">点击</Button>
-      ),
-  }];
+
 //   const data = [{
 //     'showEdit': true,                        //是否显示修改按钮
 //     'strategyName': 'lxn页面挂件测试',         // 策略名称
@@ -106,15 +52,82 @@ const columns = [{
 //     'updateContent': '无',
 //     'strategyState': '未开始'                 // 策略状态
 //   }];
-
-class List extends React.Component<Props, object> {
+class List extends React.Component<Props, {}> {
     // 组件内部变量
     // state = {
     //     page:0
     // }
+    private columns;
     constructor(props: Props, context: any) {
         super(props, context);
+        // 表格头部设置参数
+        this.columns = [{
+            title: '策略ID',
+            dataIndex: 'pkId',
+            key: 'pkId',
+            // 跳转连接方式
+            render: text => <a href="https://bj.daojia.com/">{text}</a>,
+        }, {
+            title: '策略名称',
+            dataIndex: 'strategyName',
+            key: 'strategyName'
+        }, {
+            title: '策略状态',
+            dataIndex: 'strategyState',
+            key: 'strategyState'
+        }, {
+            title: '创建时间',
+            dataIndex: 'createTime',
+            key: 'createTime'
+        }, {
+            title: '有效时间',
+            dataIndex: 'effectiveTime',
+            key: 'effectiveTime'
+        }, {
+            title: '失效时间',
+            dataIndex: 'invalidTime',
+            key: 'invalidTime'
+        }, {
+            title: '触发事件',
+            dataIndex: 'marketingTypeInt',
+            key: 'marketingTypeInt'
+        }, {
+            title: '营销方式',
+            dataIndex: 'address',
+            key: '7'
+        }, {
+            title: '营销类型',
+            dataIndex: 'marketingType',
+            key: 'marketingType'
+        }, {
+            title: '推送人数',
+            dataIndex: 'pushAmount',
+            key: 'pushAmount'
+        }, {
+            title: '创建人邮箱',
+            dataIndex: 'createrEmail',
+            key: 'createrEmail'
+        }, {
+            title: '操作',
+            dataIndex: 'dataReport',
+            key: 'dataReport',
+            render: (text, record) => {
+                // 接口值有待优化
+                if (record.strategyState === '未开始') {
+                    return '';
+                } else if (record.strategyState === '进行中' || record.strategyState === '待开始') {
+                    return <Button size="small" onClick={this.editStop.bind(this, record.pkId)}>暂停</Button>;
+                } else if (record.strategyState === '暂停') {
+                    return <Button size="small" onClick={this.editStart.bind(this, record.pkId)}>开始</Button>;
+                } else if (record.strategyState === '已完成' || record.strategyState === '已过期') {
+                    return '';
+                } else {
+                    return ''
+                }
+            }
+        }];
     }
+
     componentDidMount() {
         const { strategyList = (params) => {}} = this.props;
 
@@ -122,15 +135,13 @@ class List extends React.Component<Props, object> {
 
         this.props.form.validateFields();
     }
-
-    handleSearch = (e) => {
-        e.preventDefault();
-        console.log(this.props.form.getFieldsValue());
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-            }
-        });
+    // 列表数据暂停
+    editStop = (id) => {
+        console.log('stop', id)
+    }
+    // 列表数据启动
+    editStart = (id) => {
+        console.log('start', id)
     }
     // 输入框赋值,策略id
     pkIdChange = (e) => {
@@ -178,6 +189,8 @@ class List extends React.Component<Props, object> {
     // 点击查询按钮
     searchClick = () => {
         console.log(this.props.params);
+        const { strategyList = (params) => {}} = this.props;
+        strategyList(this.props.params);
     }
 
     // 表格搜索清空
@@ -192,13 +205,15 @@ class List extends React.Component<Props, object> {
         this.props.params.invalidTime = '',    // 结束时间
         this.props.params.strategyType = '',   // 触发事件
         this.props.params.marketingType = '';   // 营销类型
-        console.log('resetparmas', this.props.params)
+        console.log('resetparmas', this.props.params);
     }
 
     // 分页器
     pageChange = (page) => {
         this.props.params.page = page;
         console.log(this.props.params);
+        const { strategyList = (params) => {}} = this.props;
+        strategyList(this.props.params);
     }
 
     render() {
@@ -240,7 +255,7 @@ class List extends React.Component<Props, object> {
                 <Layout>
                     <Content className="content-wrap">
                         <div className="search-box">
-                            <Form className="form-box" onSubmit={this.handleSearch}>
+                            <Form className="form-box">
                                 <Row>
                                     <Col span={8}>
                                         <FormItem label="策略ID" {...formItemLayout}>
@@ -316,7 +331,7 @@ class List extends React.Component<Props, object> {
                         </div>
                         {/* 列表表格 */}
                         <div style={{background: '#fff'}}>
-                            <Table style={{background: '#fff'}} columns={columns} dataSource={listData} bordered pagination={false}/>
+                            <Table style={{background: '#fff'}} columns={this.columns} dataSource={listData} bordered pagination={false}/>
                             <div style={{position: 'relative', height: '70px'}}>
                                 <Pagination style={{position: 'absolute', right: '0', top: '18px'}} onChange={this.pageChange} defaultCurrent={1} total={totalInfo} />
                             </div>
@@ -365,7 +380,8 @@ export function mapStateToProps(state: StoreState) {
 export const mapDispatchToProps = (dispatch: Dispatch<actions.EnthusiasmAction>) => bindActionCreators(
     {
         strategyList: actions.StrategyList,
-        changePage: actions.ChangePage
+        editStart: actions.EditStart,
+        editStop: actions.EditStop
     },
     dispatch
 );

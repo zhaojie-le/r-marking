@@ -1,15 +1,7 @@
 
-import * as constants from '../constants';
+import * as constants from '../constants/list';
 import { ListResponseType } from '../types';
 
-export interface IncrementEnthusiasm {
-    type: constants.INCREMENT_ENTHUSIASM;
-    searchkey?: number;
-}
-
-export interface DecrementEnthusiasm {
-    type: constants.DECREMENT_ENTHUSIASM;
-}
 
 export interface StrategyList {
     type: constants.STRATEGY_LIST;
@@ -21,37 +13,26 @@ export interface StrategyListSuccess {
     response: ListResponseType;
 }
 
-export interface ChangeParams {
-    type: constants.CHANGE_PARAMS;
-    params?: object;
+export interface EditStart {
+    type: constants.EDIT_START;
+    id: string;
 }
 
-export interface ChangePage {
-    type: constants.CHANGE_PAGE;
-    page: number;
+export interface EditStop {
+    type: constants.EDIT_STOP;
+    id: string;
 }
 
-export type EnthusiasmAction = IncrementEnthusiasm | DecrementEnthusiasm | StrategyList | StrategyListSuccess | ChangeParams | ChangePage;
+export type EnthusiasmAction =  StrategyList | StrategyListSuccess | EditStart | EditStop;
 
-export function incrementEnthusiasm(): IncrementEnthusiasm {
-    return {
-        type: constants.INCREMENT_ENTHUSIASM
-    };
-}
-
-export function decrementEnthusiasm(): DecrementEnthusiasm {
-    return {
-        type: constants.DECREMENT_ENTHUSIASM
-    };
-}
-
+// 获取列表数据
 export function StrategyList(params: any): StrategyList {
     return {
         type: constants.STRATEGY_LIST,
         params: params
     };
 }
-
+// 列表数据获取成功
 export function StrategyListSuccess(response: ListResponseType): StrategyListSuccess {
     return {
         type: constants.STRATEGY_LIST_SUC,
@@ -59,16 +40,16 @@ export function StrategyListSuccess(response: ListResponseType): StrategyListSuc
     };
 }
 
-export function ChangeParams(params: object): ChangeParams {
+export function EditStart(id: string): EditStart {
     return {
-        type: constants.CHANGE_PARAMS,
-        params: params
+        type: constants.EDIT_START,
+        id: id
     };
 }
 
-export function ChangePage(page: number): ChangePage {
+export function EditStop(id: string): EditStop {
     return {
-        type: constants.CHANGE_PAGE,
-        page: page
+        type: constants.EDIT_STOP,
+        id: id
     };
 }
