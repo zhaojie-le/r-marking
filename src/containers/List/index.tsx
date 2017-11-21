@@ -1,17 +1,28 @@
+import './index.scss';
+import cfg from './cfg';
 import * as React from 'react';
 import * as actions from '../../actions/list';
 import { StoreState } from '../../types/index';
 import { bindActionCreators } from 'redux';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Button, Layout, Table, DatePicker } from 'antd';
-import { Form, Input, Row, Col, Select, Pagination } from 'antd';
+
+import { Button, 
+        Layout, 
+        Table, 
+        DatePicker,
+        Form,
+        Input,
+        Row,
+        Col,
+        Select,
+        Pagination
+    } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const { Header, Content } = Layout;
 const { RangePicker } = DatePicker;
-import './index.scss';
-import cfg from './cfg';
+
 
 export interface Props {
     name: string;
@@ -26,8 +37,10 @@ export interface Props {
     effectiveTime: string;   // 起始时间
     invalidTime: string;     // 结束时间
     strategyType: number;    // 触发事件
-    marketingType: number;   // 营销类型
+    marketingType: number;   // 营销类型  
     strategyList: (params: any) => void;
+    editStart: (id: number, index: number) => void;
+    editStop: (id: number, index: number) => void;
     form?: any;
     params?: any;
 }
@@ -61,71 +74,37 @@ class List extends React.Component<Props, {}> {
     constructor(props: Props, context: any) {
         super(props, context);
         // 表格头部设置参数
-        this.columns = [{
-            title: '策略ID',
-            dataIndex: 'pkId',
-            key: 'pkId',
+        this.columns = [
+            {title: '策略ID', dataIndex: 'pkId', key: '0',
             // 跳转连接方式
-            render: text => <a href="https://bj.daojia.com/">{text}</a>,
-        }, {
-            title: '策略名称',
-            dataIndex: 'strategyName',
-            key: 'strategyName'
-        }, {
-            title: '策略状态',
-            dataIndex: 'strategyState',
-            key: 'strategyState'
-        }, {
-            title: '创建时间',
-            dataIndex: 'createTime',
-            key: 'createTime'
-        }, {
-            title: '有效时间',
-            dataIndex: 'effectiveTime',
-            key: 'effectiveTime'
-        }, {
-            title: '失效时间',
-            dataIndex: 'invalidTime',
-            key: 'invalidTime'
-        }, {
-            title: '触发事件',
-            dataIndex: 'marketingTypeInt',
-            key: 'marketingTypeInt'
-        }, {
-            title: '营销方式',
-            dataIndex: 'address',
-            key: '7'
-        }, {
-            title: '营销类型',
-            dataIndex: 'marketingType',
-            key: 'marketingType'
-        }, {
-            title: '推送人数',
-            dataIndex: 'pushAmount',
-            key: 'pushAmount'
-        }, {
-            title: '创建人邮箱',
-            dataIndex: 'createrEmail',
-            key: 'createrEmail'
-        }, {
-            title: '操作',
-            dataIndex: 'dataReport',
-            key: 'dataReport',
-            render: (text, record) => {
-                // 接口值有待优化
-                if (record.strategyState === '未开始') {
-                    return '';
-                } else if (record.strategyState === '进行中' || record.strategyState === '待开始') {
-                    return <Button size="small" onClick={this.editStop.bind(this, record.pkId)}>暂停</Button>;
-                } else if (record.strategyState === '暂停') {
-                    return <Button size="small" onClick={this.editStart.bind(this, record.pkId)}>开始</Button>;
-                } else if (record.strategyState === '已完成' || record.strategyState === '已过期') {
-                    return '';
-                } else {
-                    return ''
+                render: text => <a href="https://bj.daojia.com/">{text}</a>,
+            }, 
+            {title: '策略名称', dataIndex: 'strategyName', key: '1'}, 
+            {title: '策略状态', dataIndex: 'strategyState', key: '2'}, 
+            {title: '创建时间', dataIndex: 'createTime', key: '3'},
+            {title: '有效时间', dataIndex: 'effectiveTime', key: '4'}, 
+            {title: '失效时间', dataIndex: 'invalidTime', key: '5'}, 
+            {title: '触发事件', dataIndex: 'marketingTypeInt', key: '6'}, 
+            {title: '营销方式', dataIndex: 'address', key: '7'}, 
+            {title: '营销类型', dataIndex: 'marketingType', key: '8'}, 
+            {title: '推送人数', dataIndex: 'pushAmount', key: '9'}, 
+            {title: '创建人邮箱', dataIndex: 'createrEmail', key: '10'}, 
+            {title: '操作', dataIndex: 'dataReport', key: '11',
+                render: (text, record, index) => {
+                    // 接口值有待优化
+                    if (record.strategyState === '未开始') {
+                        return '';
+                    } else if (record.strategyState === '进行中' || record.strategyState === '待开始') {
+                        return <Button size="small" onClick={this.editStopClick.bind(this, record.pkId, index)}>暂停</Button>;
+                    } else if (record.strategyState === '暂停') {
+                        return <Button size="small" onClick={this.editStartClick.bind(this, record.pkId, index)}>开始</Button>;
+                    } else if (record.strategyState === '已完成' || record.strategyState === '已过期') {
+                        return '';
+                    } else {
+                        return '';
+                    }
                 }
-            }
-        }];
+            }];
     }
 
     componentDidMount() {
@@ -137,12 +116,17 @@ class List extends React.Component<Props, {}> {
         this.props.form.validateFields();
     }
     // 列表数据暂停
-    editStop = (id) => {
-        console.log('stop', id)
+    editStopClick = (id, index) => {
+        console.log('stop', id);
+        console.log('stopIndex', index);
+        const { editStop = (id, index) => {}} = this.props;
+        editStop(id, index);
     }
     // 列表数据启动
-    editStart = (id) => {
-        console.log('start', id)
+    editStartClick = (id, index) => {
+        console.log('startIndex', index);
+        const { editStart = (id, index) => {}} = this.props;
+        editStart(id, index);
     }
     // 输入框赋值,策略id
     pkIdChange = (e) => {
@@ -189,7 +173,7 @@ class List extends React.Component<Props, {}> {
     }
     // 点击查询按钮
     searchClick = () => {
-        console.log(this.props.params);
+        console.log('search', this.props.params);
         const { strategyList = (params) => {}} = this.props;
         strategyList(this.props.params);
     }
@@ -349,8 +333,6 @@ const WrappedAdvancedSearchForm = Form.create()(List as any);
 
 export function mapStateToProps(state: StoreState) {
     return {
-        enthusiasmLevel: state.list.enthusiasmLevel,
-        name: state.list.languageName,
         totalInfo: state.list.totalInfo,
         listData: state.list.listData,             // 列表数组
         page: state.list.page,                     // 发送请求页数

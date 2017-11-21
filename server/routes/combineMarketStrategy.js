@@ -15,13 +15,13 @@ router.post('/list', function(req, res, next) {
     });
 });
 
-router.post('/start', function(req, res, next) {
+router.get('/start', function(req, res, next) {
     fs.readFile(__dirname + '/../usermock/strategy/start.json', 'utf8', (err, data) => {
         res.json(JSON.parse(data));
     });
 });
 
-router.post('/stop', function(req, res, next) {
+router.get('/stop', function(req, res, next) {
     fs.readFile(__dirname + '/../usermock/strategy/stop.json', 'utf8', (err, data) => {
         res.json(JSON.parse(data));
     });

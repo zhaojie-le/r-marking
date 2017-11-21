@@ -43,8 +43,8 @@ class List extends React.Component<Props, object> {
 
 export function mapStateToProps(state: StoreState) {
   return {
-    enthusiasmLevel: state.list.enthusiasmLevel,
-    name: state.list.languageName,
+    // enthusiasmLevel: state.list.enthusiasmLevel,
+    // name: state.list.languageName,
   };
 }
 

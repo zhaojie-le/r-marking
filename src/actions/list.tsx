@@ -16,14 +16,25 @@ export interface StrategyListSuccess {
 export interface EditStart {
     type: constants.EDIT_START;
     id: string;
+    inx: number;
+}
+export interface EditStartSuc {
+    type: constants.EDIT_START_SUC;
+    item: any;
+    inx: number;
 }
 
 export interface EditStop {
     type: constants.EDIT_STOP;
     id: string;
+    inx: number;
 }
-
-export type EnthusiasmAction =  StrategyList | StrategyListSuccess | EditStart | EditStop;
+export interface EditStopSuc {
+    type: constants.EDIT_STOP_SUC;
+    item: any;
+    inx: number;
+}
+export type EnthusiasmAction =  StrategyList | StrategyListSuccess | EditStart | EditStop | EditStartSuc | EditStopSuc;
 
 // 获取列表数据
 export function StrategyList(params: any): StrategyList {
@@ -40,16 +51,33 @@ export function StrategyListSuccess(response: ListResponseType): StrategyListSuc
     };
 }
 
-export function EditStart(id: string): EditStart {
+export function EditStart(id: string, index: number): EditStart {
     return {
         type: constants.EDIT_START,
-        id: id
+        id: id,
+        inx: index
     };
 }
 
-export function EditStop(id: string): EditStop {
+export function EditStartSuc(item: any, inx: number): EditStartSuc {
+    return {
+        type: constants.EDIT_START_SUC,
+        item: item,
+        inx: inx
+    };
+}
+
+export function EditStop(id: string, index: number): EditStop {
     return {
         type: constants.EDIT_STOP,
-        id: id
+        id: id,
+        inx: index
+    };
+}
+export function EditStopSuc(item: any, inx: number): EditStopSuc {
+    return {
+        type: constants.EDIT_STOP_SUC,
+        item: item,
+        inx: inx
     };
 }

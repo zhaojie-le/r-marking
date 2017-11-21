@@ -19,10 +19,10 @@ const strategyListFail = (response) => {
     };
 };
 
-const editStartSuc = (id) => {
+const editStartSuc = (item) => {
     return {
         type: constants.EDIT_START_SUC,
-        id: id
+        item: item
     };
 };
 
@@ -33,10 +33,10 @@ const editStartFail = (id) => {
     };
 };
 
-const editStopSuc = (id) => {
+const editStopSuc = (item) => {
     return {
-        type: constants.EDIT_STOP_FAIL,
-        id: id
+        type: constants.EDIT_STOP_SUC,
+        item: item
     };
 };
 
@@ -51,10 +51,10 @@ const editStart: Epic<any, any>  = (action$, store) => {
     return action$.ofType(constants.EDIT_START).
         switchMap(
             (action): Observable<any>  => {
-                return ajax.getJSON(`/marketStrategy/list`).
-                    map((response: {code: number, result: object}) => {
+                return ajax.getJSON(`/marketStrategy/start?StrategyId=${action.id}`).
+                    map((response: {code: number, data: object}) => {
                         if (response.code === 0) {
-                            return (editStartSuc(response));
+                            return (editStartSuc(response.data));
                         } else {
                             return (editStartFail(response));
                         }
@@ -67,10 +67,10 @@ const editStop: Epic<any, any>  = (action$, store) => {
     return action$.ofType(constants.EDIT_STOP).
         switchMap(
             (action): Observable<any>  => {
-                return ajax.getJSON(`/marketStrategy/list`).
-                    map((response: {code: number, result: object}) => {
+                return ajax.getJSON(`/marketStrategy/stop?StrategyId=${action.id}`).
+                    map((response: {code: number, data: object}) => {
                         if (response.code === 0) {
-                            return (editStopSuc(response));
+                            return (editStopSuc(response.data));
                         } else {
                             return (editStopFail(response));
                         }
@@ -106,6 +106,6 @@ const strategyList: Epic<any, any, any>  = (action$, store, params) => {
         );
 };
 
-const epics = [strategyList,editStart,editStop];
+const epics = [strategyList, editStart, editStop];
 
 export default epics;
