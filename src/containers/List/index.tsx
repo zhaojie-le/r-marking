@@ -129,6 +129,7 @@ class List extends React.Component<Props, {}> {
     }
 
     componentDidMount() {
+
         const { strategyList = (params) => {}} = this.props;
 
         strategyList(this.props.params);
