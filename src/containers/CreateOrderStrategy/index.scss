@@ -15,6 +15,9 @@ body {
     .wrapperContainer {
         background: #fff;
         padding: 30px;
+        label[for="serviceOptions"]:after {
+            content: ' '
+        }
         .wrapperRules {
             display: flex;
             background: #eee;

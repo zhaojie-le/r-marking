@@ -15,7 +15,25 @@ router.get('/getRule', function(req, res, next) {
 });
 
 router.post('/save', function(req, res, next) {
-    fs.readFile(__dirname + '/../usermock/createRules/rules.json', 'utf8', (err, data) => {
+    fs.readFile(__dirname + '/../usermock/createRules/save.json', 'utf8', (err, data) => {
+        res.json(JSON.parse(data));
+    });
+});
+
+router.get('/getService', function(req, res, next) {
+    fs.readFile(__dirname + '/../usermock/createRules/serviceData.json', 'utf8', (err, data) => {
+        res.json(JSON.parse(data));
+    });
+});
+
+router.get('/getOrderState', function(req, res, next) {
+    fs.readFile(__dirname + '/../usermock/createRules/orderState.json', 'utf8', (err, data) => {
+        res.json(JSON.parse(data));
+    });
+});
+
+router.get('/toAddChannel', function(req, res, next) {
+    fs.readFile(__dirname + '/../usermock/createRules/addChannel.json', 'utf8', (err, data) => {
         res.json(JSON.parse(data));
     });
 });
