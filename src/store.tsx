@@ -7,12 +7,7 @@ import { rootEpic } from './epics';
 
 const epicMiddleware1: EpicMiddleware<any, any> = createEpicMiddleware(rootEpic);
 
-const initialState = {
-    list: {
-        enthusiasmLevel: 1,
-        languageName: 'marketing',
-    }
-};
+const initialState = {};
 
 const store = createStore<StoreState>(
     reducer as any, 
