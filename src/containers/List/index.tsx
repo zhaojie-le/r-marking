@@ -17,9 +17,6 @@ import { Button,
         Col,
         Select,
         Pagination,
-        Menu,
-        Icon, 
-        Dropdown
     } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -205,8 +202,9 @@ class List extends React.Component<Props, {}> {
         strategyList(this.props.params);
     }
     // 新增策略按钮
-    handleMenuClick = (e) => {
-        console.log('click', e);
+    newStrategyClick = (value) => {
+        console.log(`selected ${value}`);
+        // TODU  跳转至新增策略页面，将触发事件id带入
     }
 
     render() {
@@ -230,18 +228,15 @@ class List extends React.Component<Props, {}> {
         let strategyStatusChildren = strategyStatus.map((item) => {
             return <Option value={item.id} key={item.id}>{item.name}</Option>;
         });
-
+        // 输入框固定宽
         const inputWidth = {
             width: '123px'
         };
-
-        const menu = (
-            <Menu onClick={this.handleMenuClick}>
-              <Menu.Item key="1">1st item</Menu.Item>
-              <Menu.Item key="2">2nd item</Menu.Item>
-              <Menu.Item key="3">3rd item</Menu.Item>
-            </Menu>
-        )
+        // 新建项目，触发事件
+        let strategyType = cfg.strategyType
+        let strategyTypeChildren = strategyType.map((item) => {
+            return <Option value={item.id} key={item.id}>{item.name}</Option>;
+        });
           
         // 营销类型
         let marketingType = cfg.marketingType;
@@ -253,11 +248,9 @@ class List extends React.Component<Props, {}> {
                 <Header className="list-head">
                     营销管理平台
                     {/* <Button style={{ marginLeft: '10px' }}>新增策略</Button> */}
-                    <Dropdown overlay={menu}>
-                        <Button style={{ marginLeft: '10px' }}>
-                            新增策略 <Icon type="down" />
-                        </Button>
-                    </Dropdown>
+                    <Select placeholder="新增策略" style={{ marginLeft: '10px', width: '130px' }} onChange={this.newStrategyClick}>
+                        {strategyTypeChildren}
+                    </Select>
                 </Header>
                 <Layout>
                     <Content className="content-wrap">
@@ -323,6 +316,7 @@ class List extends React.Component<Props, {}> {
                                                 format="YYYY-MM-DD HH:mm"
                                                 placeholder={['Start Time', 'End Time']}
                                                 onChange={this.onTimeChange}
+                                                style={{width:250}}
                                             />
                                         )} 
                                         </FormItem>
@@ -357,28 +351,19 @@ export function mapStateToProps(state: StoreState) {
     return {
         totalInfo: state.list.totalInfo,
         listData: state.list.listData,             // 列表数组
-        page: state.list.page,                     // 发送请求页数
-        pageSize: state.list.pageSize,             // 每页列表条数
-        pkId: state.list.pkId,                     // 策略ID
-        activityId: state.list.activityId,         // 活动ID
-        strategyName: state.list.strategyName,     // 策略名称
-        strategyState: state.list.strategyState,   // 策略状态
-        effectiveTime: state.list.effectiveTime,   // 起始时间
-        invalidTime: state.list.invalidTime,       // 结束时间
-        strategyType: state.list.strategyType,     // 触发事件
-        marketingType: state.list.marketingType,   // 营销类型
-        params: {
-            page: 1,            // 翻页值
-            pageSize: 10,       // 每页列表数
-            pkId: '',           // 策略ID
-            activityId: '',     // 活动ID
-            strategyName: '',   // 策略名称
-            strategyState: '',  // 策略状态
-            effectiveTime: '',  // 起始时间
-            invalidTime: '',    // 结束时间
-            strategyType: '',   // 触发事件
-            marketingType: ''   // 营销类型
-        }
+        params: state.list.params
+        // params: {
+        //     page: 1,            // 翻页值
+        //     pageSize: 10,       // 每页列表数
+        //     pkId: '',           // 策略ID
+        //     activityId: '',     // 活动ID
+        //     strategyName: '',   // 策略名称
+        //     strategyState: '',  // 策略状态
+        //     effectiveTime: '',  // 起始时间
+        //     invalidTime: '',    // 结束时间
+        //     strategyType: '',   // 触发事件
+        //     marketingType: ''   // 营销类型
+        // }
     };
 }
 

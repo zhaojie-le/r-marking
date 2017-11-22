@@ -13,18 +13,20 @@ import {
 interface RList { list: (state: ListState, action: actions.EnthusiasmAction) => ListState; }
 
 function enthusiasm(state: ListState = {
+        params: {
+            page: 1,
+            pageSize: 10,
+            pkId: '',           // 策略ID
+            activityId: '',     // 活动ID
+            strategyName: '',   // 策略名称
+            strategyState: 0,   // 策略状态
+            effectiveTime: '',  // 起始时间
+            invalidTime: '',    // 结束时间
+            strategyType: 0,    // 触发事件
+            marketingType: 0    // 营销类型
+        },
         listData: [], 
         totalInfo: 0,
-        page: 0,              // 发送请求页数
-        pageSize: 10,         // 每页列表条数
-        pkId: '',             // 策略ID
-        activityId: '',       // 活动ID
-        strategyName: '',     // 策略名称
-        strategyState: '',    // 策略状态
-        effectiveTime: '',    // 起始时间
-        invalidTime: '',      // 结束时间
-        strategyType: 0,      // 触发事件
-        marketingType: 0,     // 营销类型 
         editStartId: '',      // 列表开启id
         editStopId: '',       // 列表暂停id
         editStartInx: -1,     // 列表数据启动下标
@@ -32,7 +34,7 @@ function enthusiasm(state: ListState = {
     }, action: actions.EnthusiasmAction): ListState {
         switch (action.type) {
             case STRATEGY_LIST:
-                return { ...state};
+                return { ...state, params: action.params};
             case STRATEGY_LIST_SUC:               
                 return {...state, listData: action.response.data, totalInfo: action.response.totalInfo};
             case EDIT_START:
