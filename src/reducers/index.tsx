@@ -1,8 +1,11 @@
 import { combineReducers } from 'redux';
 import { createOrderStrategyReducer } from './createOrderStrategy';
+import { ListReducer } from './list';
+
 
 const reducers = {
-    ...createOrderStrategyReducer
+    ...createOrderStrategyReducer,
+    ...ListReducer
 };
 
 export default combineReducers(reducers);

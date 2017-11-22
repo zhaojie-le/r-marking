@@ -1,0 +1,47 @@
+{
+  "code":0,
+  "totalInfo": 245,
+  "data": [{
+      "showEdit": true,
+      "strategyName": "lxn页面挂件测试",
+      "pkId": "243813584004464720",
+      "marketingType": "支付",
+      "pushAmount": 0,
+      "effectiveTime": "2017-11-03 19:04:11",
+      "dataReport": true,
+      "invalidTime": "2017-11-06 19:04:12",
+      "strategyTypeInt": 7,
+      "strategyType": "页面挂件",
+      "activityId": 0,
+      "createrEmail": "liuxiaonan@daojia.com",
+      "marketingTypeInt": 7,
+      "createTime": "2017-11-03 19:08:07",
+      "marketingLimit": 0,
+      "actionExpression": "7",
+      "updateContent": "无",
+      "strategyState": "进行中"
+    },
+    {
+      "showEdit": false,
+      "strategyName": "czx速运17",
+      "pkId": "228839595943414564",
+      "marketingType": "发券",
+      "pushAmount": 0,
+      "effectiveTime": "1970-01-01 08:00:00",
+      "dataReport": true,
+      "invalidTime": "1970-01-01 08:00:00",
+      "strategyTypeInt": 4,
+      "strategyType": "外推消息",
+      "activityId": 100131,
+      "createrEmail": "chenzixu@daojia.com",
+      "marketingTypeInt": 1,
+      "createTime": "2017-09-23 11:26:51",
+      "marketingLimit": 0,
+      "actionExpression": "6",
+      "updateContent": "无",
+      "strategyState": "暂停"
+    }
+  ],
+  "strategyTypeList": [1, 2, 3, 4, 5, 6],
+  "strategyType": 1
+}
