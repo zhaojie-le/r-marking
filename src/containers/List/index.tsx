@@ -23,7 +23,6 @@ const Option = Select.Option;
 const { Header, Content } = Layout;
 const { RangePicker } = DatePicker;
 
-
 export interface Props {
     name: string;
     listData: any;
@@ -110,7 +109,7 @@ class List extends React.Component<Props, {}> {
 
     componentDidMount() {
 
-        const { strategyList = (params) => {}} = this.props;
+        const { strategyList } = this.props;
 
         strategyList(this.props.params);
 
@@ -118,16 +117,13 @@ class List extends React.Component<Props, {}> {
     }
     // 列表数据暂停
     editStopClick = (id, index) => {
-        console.log('stop', id);
-        console.log('stopIndex', index);
-        const { editStop = (id, index) => {}} = this.props;
-        editStop(id, index);
+        const { editStop } = this.props;
+        editStop!(id, index);
     }
     // 列表数据启动
     editStartClick = (id, index) => {
-        console.log('startIndex', index);
-        const { editStart = (id, index) => {}} = this.props;
-        editStart(id, index);
+        const { editStart } = this.props;
+        editStart!(id, index);
     }
     // 输入框赋值,策略id
     pkIdChange = (e) => {
@@ -159,9 +155,6 @@ class List extends React.Component<Props, {}> {
        return n = n.replace(/[^\d]/g, '');  
     }
 
-    onDateChange = () => {
-
-    }
     // 选择时间后，获取时间
     onTimeChange = (value, dateString) => {
         console.log('Selected Time: ', value); // 未转换格式
@@ -175,7 +168,7 @@ class List extends React.Component<Props, {}> {
     // 点击查询按钮
     searchClick = () => {
         console.log('search', this.props.params);
-        const { strategyList = (params) => {}} = this.props;
+        const { strategyList } = this.props;
         strategyList(this.props.params);
     }
 
@@ -198,7 +191,7 @@ class List extends React.Component<Props, {}> {
     pageChange = (page) => {
         this.props.params.page = page;
         console.log(this.props.params);
-        const { strategyList = (params) => {}} = this.props;
+        const { strategyList } = this.props;
         strategyList(this.props.params);
     }
     // 新增策略按钮
@@ -233,7 +226,7 @@ class List extends React.Component<Props, {}> {
             width: '123px'
         };
         // 新建项目，触发事件
-        let strategyType = cfg.strategyType
+        let strategyType = cfg.strategyType;
         let strategyTypeChildren = strategyType.map((item) => {
             return <Option value={item.id} key={item.id}>{item.name}</Option>;
         });
@@ -316,7 +309,7 @@ class List extends React.Component<Props, {}> {
                                                 format="YYYY-MM-DD HH:mm"
                                                 placeholder={['Start Time', 'End Time']}
                                                 onChange={this.onTimeChange}
-                                                style={{width:250}}
+                                                style={{width: 250}}
                                             />
                                         )} 
                                         </FormItem>
@@ -332,7 +325,7 @@ class List extends React.Component<Props, {}> {
                         </div>
                         {/* 列表表格 */}
                         <div style={{background: '#fff'}}>
-                            <Table style={{background: '#fff'}} columns={this.columns} dataSource={listData} bordered pagination={false}/>
+                            <Table style={{background: '#fff'}} columns={this.columns} dataSource={listData} bordered={true} pagination={false}/>
                             <div style={{position: 'relative', height: '70px'}}>
                                 <Pagination style={{position: 'absolute', right: '0', top: '18px'}} onChange={this.pageChange} defaultCurrent={1} total={totalInfo} />
                             </div>
@@ -358,7 +351,7 @@ export function mapStateToProps(state: StoreState) {
         //     pkId: '',           // 策略ID
         //     activityId: '',     // 活动ID
         //     strategyName: '',   // 策略名称
-        //     strategyState: '',  // 策略状态
+        //     strategyState: '',  // 策略状态 
         //     effectiveTime: '',  // 起始时间
         //     invalidTime: '',    // 结束时间
         //     strategyType: '',   // 触发事件

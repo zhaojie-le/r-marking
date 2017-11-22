@@ -1,7 +1,6 @@
 
 import * as constants from '../constants';
 
-
 export interface StrategyList {
     type: constants.STRATEGY_LIST;
     params: any;
