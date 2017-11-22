@@ -204,9 +204,9 @@ class List extends React.Component<Props, {}> {
         const { strategyList = (params) => {}} = this.props;
         strategyList(this.props.params);
     }
-
-    handleMenuClick = () => {
-
+    // 新增策略按钮
+    handleMenuClick = (e) => {
+        console.log('click', e);
     }
 
     render() {
@@ -254,8 +254,8 @@ class List extends React.Component<Props, {}> {
                     营销管理平台
                     {/* <Button style={{ marginLeft: '10px' }}>新增策略</Button> */}
                     <Dropdown overlay={menu}>
-                        <Button>
-                            Actions <Icon type="down" />
+                        <Button style={{ marginLeft: '10px' }}>
+                            新增策略 <Icon type="down" />
                         </Button>
                     </Dropdown>
                 </Header>
