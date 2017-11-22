@@ -1,7 +1,7 @@
 import './index.scss';
 import cfg from './cfg';
 import * as React from 'react';
-import * as actions from '../../actions/list';
+import * as actions from '../../actions';
 import { StoreState } from '../../types/index';
 import { bindActionCreators } from 'redux';
 import { connect, Dispatch } from 'react-redux';
@@ -16,7 +16,10 @@ import { Button,
         Row,
         Col,
         Select,
-        Pagination
+        Pagination,
+        Menu,
+        Icon, 
+        Dropdown
     } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -65,6 +68,7 @@ export interface Props {
 //     'updateContent': '无',
 //     'strategyState': '未开始'                 // 策略状态
 //   }];
+
 class List extends React.Component<Props, {}> {
     // 组件内部变量
     // state = {
@@ -201,6 +205,10 @@ class List extends React.Component<Props, {}> {
         strategyList(this.props.params);
     }
 
+    handleMenuClick = () => {
+
+    }
+
     render() {
         const { listData, totalInfo } = this.props;
         // 设置表单的排列间隙
@@ -226,6 +234,15 @@ class List extends React.Component<Props, {}> {
         const inputWidth = {
             width: '123px'
         };
+
+        const menu = (
+            <Menu onClick={this.handleMenuClick}>
+              <Menu.Item key="1">1st item</Menu.Item>
+              <Menu.Item key="2">2nd item</Menu.Item>
+              <Menu.Item key="3">3rd item</Menu.Item>
+            </Menu>
+        )
+          
         // 营销类型
         let marketingType = cfg.marketingType;
         let marketingTypeChildren = marketingType.map((item) => {
@@ -235,7 +252,12 @@ class List extends React.Component<Props, {}> {
             <Layout>
                 <Header className="list-head">
                     营销管理平台
-                    <Button style={{ marginLeft: '10px' }}>新增策略</Button>
+                    {/* <Button style={{ marginLeft: '10px' }}>新增策略</Button> */}
+                    <Dropdown overlay={menu}>
+                        <Button>
+                            Actions <Icon type="down" />
+                        </Button>
+                    </Dropdown>
                 </Header>
                 <Layout>
                     <Content className="content-wrap">

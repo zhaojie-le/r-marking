@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as actions from '../../actions/list';
+import * as actions from '../../actions';
 import { StoreState } from '../../types/index';
 import { bindActionCreators } from 'redux';
 import { connect, Dispatch } from 'react-redux';

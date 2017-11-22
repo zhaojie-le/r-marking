@@ -1,5 +1,5 @@
 
-import * as constants from '../constants/list';
+import * as constants from '../constants';
 import { ListResponseType } from '../types';
 
 

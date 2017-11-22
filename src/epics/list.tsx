@@ -1,5 +1,5 @@
 import { ajax } from 'rxjs/observable/dom/ajax';
-import * as constants from '../constants/list';
+import * as constants from '../constants';
 import { Observable } from 'rxjs/Rx';
 // import { ListResponseType } from '../types';
 import 'rxjs';

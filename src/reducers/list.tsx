@@ -1,4 +1,4 @@
-import * as actions from '../actions/list';
+import * as actions from '../actions';
 import { ListState } from '../types/list';
 
 import { 
@@ -8,7 +8,7 @@ import {
         EDIT_STOP_SUC, 
         STRATEGY_LIST, 
         STRATEGY_LIST_SUC 
-    } from '../constants/list';
+    } from '../constants';
 
 interface RList { list: (state: ListState, action: actions.EnthusiasmAction) => ListState; }
 
