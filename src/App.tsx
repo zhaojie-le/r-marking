@@ -6,27 +6,27 @@ import {
   Switch
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import List from './containers/List';
 import CreateOrderStrategy from './containers/CreateOrderStrategy';
+import List from './containers/List';
 import store from './store';
 
 const NotFound = () => (
-  <div>
-    333
-  </div>
+    <div>
+        the page has been eated by xuping
+    </div>
 );
 
 const Routes = () => (
     <Provider store={store}>
-      <Router>
-        <div> 
-          <Switch>
-            <Route path="/createOrderStrategy" component={CreateOrderStrategy} />
-            <Route path="/" component={List} />
-            <Route component={NotFound} />
-          </Switch>
-        </div>
-      </Router>
+        <Router>
+            <div> 
+                <Switch>
+                    <Route path="/createOrderStrategy" component={CreateOrderStrategy} />
+                    <Route path="/" component={List} />
+                    <Route component={NotFound} />
+                </Switch>
+            </div>
+        </Router>
     </Provider>
 );
 

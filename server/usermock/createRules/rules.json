@@ -3,207 +3,207 @@
         {
             "list": [
                 {
-                    "childs": [
+                    "children": [
                         {
-                            "name": "充值",
+                            "label": "充值",
                             "value": "255"
                         },
                         {
-                            "name": "运动健身",
+                            "label": "运动健身",
                             "value": "246"
                         },
                         {
-                            "name": "票务",
+                            "label": "票务",
                             "value": "245"
                         },
                         {
-                            "name": "健康",
+                            "label": "健康",
                             "value": "223"
                         },
                         {
-                            "name": "维修",
+                            "label": "维修",
                             "value": "221"
                         },
                         {
-                            "name": "宠物",
+                            "label": "宠物",
                             "value": "220"
                         },
                         {
-                            "name": "速递",
+                            "label": "速递",
                             "value": "219"
                         },
                         {
-                            "name": "回收",
+                            "label": "回收",
                             "value": "218"
                         },
                         {
-                            "name": "餐饮",
+                            "label": "餐饮",
                             "value": "217"
                         },
                         {
-                            "name": "汽车服务",
+                            "label": "汽车服务",
                             "value": "216"
                         }
                     ],
-                    "name": "三方合作",
+                    "label": "三方合作",
                     "value": "113"
                 },
                 {
-                    "childs": [
+                    "children": [
                         {
-                            "name": "电脑数码维修",
+                            "label": "电脑数码维修",
                             "value": "261"
                         },
                         {
-                            "name": "家电清洗",
+                            "label": "家电清洗",
                             "value": "260"
                         },
                         {
-                            "name": "家电维修",
+                            "label": "家电维修",
                             "value": "259"
                         },
                         {
-                            "name": "教学",
+                            "label": "教学",
                             "value": "258"
                         },
                         {
-                            "name": "保姆月嫂",
+                            "label": "保姆月嫂",
                             "value": "257"
                         },
                         {
-                            "name": "保洁",
+                            "label": "保洁",
                             "value": "256"
                         },
                         {
-                            "name": "咨询",
+                            "label": "咨询",
                             "value": "254"
                         },
                         {
-                            "name": "生活兴趣",
+                            "label": "生活兴趣",
                             "value": "253"
                         },
                         {
-                            "name": "运动健身",
+                            "label": "运动健身",
                             "value": "252"
                         },
                         {
-                            "name": "便民服务",
+                            "label": "便民服务",
                             "value": "251"
                         },
                         {
-                            "name": "旅游",
+                            "label": "旅游",
                             "value": "250"
                         },
                         {
-                            "name": "充值",
+                            "label": "充值",
                             "value": "249"
                         },
                         {
-                            "name": "摄影",
+                            "label": "摄影",
                             "value": "248"
                         },
                         {
-                            "name": "丽人",
+                            "label": "丽人",
                             "value": "247"
                         },
                         {
-                            "name": "送水服务",
+                            "label": "送水服务",
                             "value": "244"
                         },
                         {
-                            "name": "发现",
+                            "label": "发现",
                             "value": "243"
                         },
                         {
-                            "name": "休闲娱乐",
+                            "label": "休闲娱乐",
                             "value": "242"
                         },
                         {
-                            "name": "洗护",
+                            "label": "洗护",
                             "value": "239"
                         },
                         {
-                            "name": "婚庆",
+                            "label": "婚庆",
                             "value": "238"
                         },
                         {
-                            "name": "母婴",
+                            "label": "母婴",
                             "value": "237"
                         },
                         {
-                            "name": "医药健康",
+                            "label": "医药健康",
                             "value": "235"
                         },
                         {
-                            "name": "家庭装修",
+                            "label": "家庭装修",
                             "value": "234"
                         },
                         {
-                            "name": "鲜花速递",
+                            "label": "鲜花速递",
                             "value": "233"
                         },
                         {
-                            "name": "汽车",
+                            "label": "汽车",
                             "value": "232"
                         },
                         {
-                            "name": "回收",
+                            "label": "回收",
                             "value": "231"
                         },
                         {
-                            "name": "维修",
+                            "label": "维修",
                             "value": "230"
                         },
                         {
-                            "name": "健康",
+                            "label": "健康",
                             "value": "229"
                         },
                         {
-                            "name": "宠物服务",
+                            "label": "宠物服务",
                             "value": "228"
                         },
                         {
-                            "name": "美食生鲜",
+                            "label": "美食生鲜",
                             "value": "225"
                         },
                         {
-                            "name": "美食服务",
+                            "label": "美食服务",
                             "value": "224"
                         },
                         {
-                            "name": "兴趣教育",
+                            "label": "兴趣教育",
                             "value": "215"
                         }
                     ],
-                    "name": "平台",
+                    "label": "平台",
                     "value": "112"
                 },
                 {
-                    "childs": [
+                    "children": [
                         {
-                            "name": "速运",
+                            "label": "速运",
                             "value": "204"
                         },
                         {
-                            "name": "搬家",
+                            "label": "搬家",
                             "value": "203"
                         }
                     ],
-                    "name": "司机",
+                    "label": "司机",
                     "value": "103"
                 },
                 {
-                    "childs": [
+                    "children": [
                         {
-                            "name": "保姆育儿嫂",
+                            "label": "保姆育儿嫂",
                             "value": "212"
                         },
                         {
-                            "name": "小时工",
+                            "label": "小时工",
                             "value": "201"
                         }
                     ],
-                    "name": "家政",
+                    "label": "家政",
                     "value": "101"
                 }
             ],

@@ -1,8 +1,0 @@
-{
-    "code": 0,
-    "msg": "success", 
-    "result": {
-        "ab_test":false,
-        "sys_manage":true
-    }
-}

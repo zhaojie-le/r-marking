@@ -1,5 +1,10 @@
 import { combineEpics } from 'redux-observable';
-// import { Observable } from 'rxjs/Rx';
-import helloEpic from './list';
+import cosEpic from './createOrderStrategy';
+import listEpic from './list';
 
-export const rootEpic = combineEpics(...helloEpic);
+const epicRegistry = [
+    ...cosEpic,
+    ...listEpic
+];
+
+export const rootEpic = combineEpics(...epicRegistry);

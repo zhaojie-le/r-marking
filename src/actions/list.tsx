@@ -1,6 +1,5 @@
 
 import * as constants from '../constants';
-import { ListResponseType } from '../types';
 
 
 export interface StrategyList {
@@ -10,7 +9,7 @@ export interface StrategyList {
 
 export interface StrategyListSuccess {
     type: constants.STRATEGY_LIST_SUC;
-    response: ListResponseType;
+    response: any;
 }
 
 export interface EditStart {
@@ -44,7 +43,7 @@ export function StrategyList(params: any): StrategyList {
     };
 }
 // 列表数据获取成功
-export function StrategyListSuccess(response: ListResponseType): StrategyListSuccess {
+export function StrategyListSuccess(response: any): StrategyListSuccess {
     return {
         type: constants.STRATEGY_LIST_SUC,
         response: response
