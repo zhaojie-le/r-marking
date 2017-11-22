@@ -12,7 +12,8 @@ import {
 
 interface RList { list: (state: ListState, action: actions.EnthusiasmAction) => ListState; }
 
-function enthusiasm(state: ListState = {
+function enthusiasm(
+    state: ListState = {
         params: {
             page: 1,
             pageSize: 10,
@@ -31,7 +32,9 @@ function enthusiasm(state: ListState = {
         editStopId: '',       // 列表暂停id
         editStartInx: -1,     // 列表数据启动下标
         editStopInx: -1       // 列表数据暂停下标
-    }, action: actions.EnthusiasmAction): ListState {
+    }, 
+    action: actions.EnthusiasmAction
+): ListState {
         switch (action.type) {
             case STRATEGY_LIST:
                 return { ...state, params: action.params};
