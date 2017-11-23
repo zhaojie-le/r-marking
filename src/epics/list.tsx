@@ -46,7 +46,7 @@ const editStopFail = (id) => {
         id: id
     };
 };
-
+// 列表项－启动请求事件
 const editStart: Epic<any, any>  = (action$, store) => {
     return action$.ofType(constants.EDIT_START).
         switchMap(
@@ -62,7 +62,7 @@ const editStart: Epic<any, any>  = (action$, store) => {
             }
         );
 };
-
+// 列表项－暂停请求事件
 const editStop: Epic<any, any>  = (action$, store) => {
     return action$.ofType(constants.EDIT_STOP).
         switchMap(
@@ -80,7 +80,6 @@ const editStop: Epic<any, any>  = (action$, store) => {
 };
 // 获取列表页列表数据
 const strategyList: Epic<any, any, any>  = (action$, store, params) => {
-    console.log('ajax', params);
     return action$.ofType(constants.STRATEGY_LIST).
         switchMap(
             (action): Observable<any>  => {
