@@ -38,6 +38,11 @@ export interface SaveRule {
     type: constants.SAVE_RULE;
 }
 
+export interface SaveModel {
+    modelJsonString: string;
+    type: constants.SAVE_MODEL;
+}
+
 export interface ServiceParam {
     cateId: number;
     lineId: number;
@@ -79,5 +84,12 @@ export function saveRule(rjs: string): SaveRule {
     return {
         type: constants.SAVE_RULE,
         ruleJsonString: rjs,
+    };
+}
+
+export function saveModel(mjs: string): SaveModel {
+    return {
+        type: constants.SAVE_MODEL,
+        modelJsonString: mjs,
     };
 }

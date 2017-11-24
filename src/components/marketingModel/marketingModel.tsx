@@ -15,6 +15,13 @@ const FormItem = Form.Item;
 
 export interface RuleProps {
     form?: any;
+    onSaveModel: (modelData: string) => void;
+}
+
+interface Model {
+    type: 'Sms' | 'DaojiaApp';
+    label: '短信' | '58到家-APP push' | '58速运-APP push' | '58到家公众号';
+    properties: string[];
 }
 
 namespace layout {
@@ -38,8 +45,10 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
     state: any = {
         editing: false,
         channels: [],
-        channelType: [[1, '短信'], [2, '58到家-APP push'], [3, '58到家-APP push'], [4, '58到家公众号']],
+        showData: [],
+        channelType: [[1, '短信'], [2, '58到家-APP push'], [3, '58速运-APP push'], [4, '58到家公众号']],
     };
+    private fields: Model[] = [];
 
     constructor(props: any, context: any) {
         super(props, context);
@@ -52,7 +61,51 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
     }
 
     onSave = () => {
-        console.log(1);
+        this.state.channels.forEach((item, i) => {
+            switch (item) {
+                case ChannelType.Sms:
+                    this.fields.push({type: 'Sms', label: '短信', properties: ['copyWritingSms', 'jumpLinkSms']});
+                    break;
+                case ChannelType.DaojiaApp:
+                    this.fields.push({type: 'DaojiaApp', label: '58到家-APP push', properties: ['channelTileDjapp', 'copyWritingDjapp', 'jumpLinkDjapp']});
+                    break;    
+                default:
+                    break;
+            }
+        });
+        const validateFields = this.fields.map((item) => item.properties).reduce((lastItems, item) => lastItems.concat(item), []);
+        this.props.form.validateFields(validateFields, (err, values) => {
+            if (!err) {
+                this.computeShowData(values);
+                this.props.onSaveModel(JSON.stringify(values));
+            }
+        });
+    }
+
+    computeShowData = (values: any) => {
+        const fieldData = this.fields.map((item1) => {
+            return { 
+                ...item1, 
+                properties: item1.properties.map((item2) => {
+                    switch (item2) {
+                        case 'copyWritingSms':
+                            return `文案: ${values.copyWritingSms}`;
+                        case 'jumpLinkSms':
+                            return `跳转链接: ${values.jumpLinkSms}`;
+                        case 'channelTileDjapp':
+                            return `标题: ${values.channelTileDjapp}`;
+                        case 'copyWritingDjapp':
+                            return `文案: ${values.copyWritingDjapp}`;
+                        case 'jumpLinkDjapp':
+                            return `跳转链接: ${values.jumpLinkDjapp}`;
+                        default:
+                            return item2;
+                    }
+                })
+            };
+        });
+        this.setState({showData: fieldData});
+        this.onEdit(false);
     }
 
     handleMenuClick = (e) => {
@@ -90,7 +143,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
         const rowStyle = {
             marginBottom: 20
         };
-        
+
         return this.state.channels.map((item, i) => {
             const index = i + 1;
             switch (item) {
@@ -108,7 +161,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                                 </Col>
                             </Row>
                             <FormItem {...layout.formItemLayout} label="文案" hasFeedback={false}>
-                                {getFieldDecorator('copyWriting', {
+                                {getFieldDecorator('copyWritingSms', {
                                     rules: [{
                                         required: true, message: '文案不能为空！',
                                     }],
@@ -117,7 +170,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                                 )}
                             </FormItem>
                             <FormItem {...layout.formItemLayout} label="跳转链接" hasFeedback={false}>
-                                {getFieldDecorator('jumpLink', {
+                                {getFieldDecorator('jumpLinkSms', {
                                     rules: [{
                                         required: true, message: '跳转链接不能为空',
                                     }],
@@ -141,7 +194,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                                 </Col>
                             </Row>
                             <FormItem {...layout.formItemLayout} label="标题" hasFeedback={false}>
-                                {getFieldDecorator('channelTile', {
+                                {getFieldDecorator('channelTileDjapp', {
                                     rules: [{
                                         required: true, message: '标题不能为空！',
                                     }],
@@ -150,7 +203,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                                 )}
                             </FormItem>
                             <FormItem {...layout.formItemLayout} label="文案" hasFeedback={false}>
-                                {getFieldDecorator('copyWriting', {
+                                {getFieldDecorator('copyWritingDjapp', {
                                     rules: [{
                                         required: true, message: '文案不能为空！',
                                     }],
@@ -159,7 +212,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                                 )}
                             </FormItem>
                             <FormItem {...layout.formItemLayout} label="跳转链接" hasFeedback={false}>
-                                {getFieldDecorator('jumpLink', {
+                                {getFieldDecorator('jumpLinkDjapp', {
                                     rules: [{
                                         required: true, message: '跳转链接不能为空',
                                     }],
@@ -214,6 +267,18 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
             return (
                 <div>
                     <p><span style={{color: 'red'}}>消息推送</span> 优先级：渠道1>渠道2>渠道3 优先渠道送达后，其他渠道将不再推送</p>
+                    {
+                        this.state.showData.map((item, i) => {
+                            const {label, properties} = item;
+                            return (
+                                <p key={i}>
+                                    <span>渠道{i + 1}</span>
+                                    <span>{label}</span>
+                                    <span>{properties.join()}</span>
+                                </p>
+                            );
+                        })
+                    }
                 </div>
             );
         }

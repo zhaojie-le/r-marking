@@ -23,3 +23,6 @@ export const SAVE_STRATEGYRULE_FAIL = 'SAVE_STRATEGYRULE_FAIL';
 
 export const SAVE_RULE = 'SAVE_RULE';
 export type SAVE_RULE = typeof SAVE_RULE;
+
+export const SAVE_MODEL = 'SAVE_MODEL';
+export type SAVE_MODEL = typeof SAVE_MODEL;

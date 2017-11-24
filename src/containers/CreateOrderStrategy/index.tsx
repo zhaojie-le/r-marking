@@ -33,6 +33,7 @@ export interface Props {
     onGetService: () => void;
     onGetRules: () => void;
     onSaveRule: () => void;
+    onSaveModel: (modelData: string) => void;
     onGetOrderState: () => void;
 }
 
@@ -241,7 +242,7 @@ class List extends React.Component<Props, object> {
                                         </FormItem>
                                     </Col>
                                 </Row>
-                                <MarketingModel form={this.props.form} />
+                                <MarketingModel form={this.props.form} onSaveModel={this.props.onSaveModel}/>
                                 <FormItem {...laout.formItemLayout} label="责任人" hasFeedback={false}>
                                     {getFieldDecorator('owner', {
                                         rules: [{
@@ -283,6 +284,7 @@ export const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) 
         onGetOrderState: actions.getOrderState,
         onGetRules: actions.getRules,
         onSaveRule: actions.saveRule,
+        onSaveModel: actions.saveModel,
         onGetService: actions.getService
     },
     dispatch
