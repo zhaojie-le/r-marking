@@ -1,13 +1,13 @@
 export interface ListState {
     listData: any;
     totalInfo: number;
-    editStopId: string;       // 列表暂停id
-    editStartId: string;     // 列表开启id
-    editStartInx: number;    // 列表编辑启动下标值
-    editStopInx: number;     // 列表编辑暂停下标值
-    params: { 
-        page: number,
-        pageSize: number,
+    editStopId: string;         // 列表暂停id
+    editStartId: string;        // 列表开启id
+    editStartInx: number;       // 列表编辑启动下标值
+    editStopInx: number;        // 列表编辑暂停下标值
+    params: {  
+        page: number,           // 分页码
+        pageSize: number,       // 分页条数
         pkId: string,           // 策略ID
         activityId: string,     // 活动ID
         strategyName: string,   // 策略名称

@@ -7,7 +7,8 @@ import { bindActionCreators } from 'redux';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { Button, 
+import { 
+        Button, 
         Layout, 
         Table, 
         DatePicker,
@@ -24,19 +25,8 @@ const { Header, Content } = Layout;
 const { RangePicker } = DatePicker;
 
 export interface Props {
-    name: string;
     listData: any;
-    totalInfo: number;
-    page: number;            // 发送请求页数
-    pageSize: number;        // 每页列表条数
-    pkId: string;            // 策略ID
-    activityId: string;      // 活动ID
-    strategyName: string;    // 策略名称
-    strategyState: string;   // 策略状态
-    effectiveTime: string;   // 起始时间
-    invalidTime: string;     // 结束时间
-    strategyType: number;    // 触发事件
-    marketingType: number;   // 营销类型  
+    totalInfo: number; 
     strategyList: (params: any) => void;
     editStart: (id: number, index: number) => void;
     editStop: (id: number, index: number) => void;
@@ -108,19 +98,17 @@ class List extends React.Component<Props, {}> {
     }
 
     componentDidMount() {
-
+        // 初始请求列表数据，首屏10条数据
         const { strategyList } = this.props;
-
         strategyList(this.props.params);
-
         this.props.form.validateFields();
     }
-    // 列表数据暂停
+    // 列表数据－按钮－暂停
     editStopClick = (id, index) => {
         const { editStop } = this.props;
         editStop!(id, index);
     }
-    // 列表数据启动
+    // 列表数据－按钮－启动
     editStartClick = (id, index) => {
         const { editStart } = this.props;
         editStart!(id, index);
@@ -129,7 +117,6 @@ class List extends React.Component<Props, {}> {
     pkIdChange = (e) => {
         e.target.value = this.limitNumberInput(e.target.value);   
         this.props.params.pkId = e.target.value;
-        console.log('this.props.params', this.props.params);
     }
     // 输入框赋值,活动id
     activityIdChange = (e) => {
@@ -143,7 +130,6 @@ class List extends React.Component<Props, {}> {
     }
     // 输入框赋值,策略状态
     strategyStatusChange = (value) => {
-        // console.log(`selected ${value}`);
         this.props.params.strategyState = `${value}`;
     }
     // 输入框赋值,营销类型
@@ -157,8 +143,7 @@ class List extends React.Component<Props, {}> {
 
     // 选择时间后，获取时间
     onTimeChange = (value, dateString) => {
-        console.log('Selected Time: ', value); // 未转换格式
-        console.log('Formatted Selected Time: ', dateString); // 转换后格式
+         // value 未转换格式；dateString 转换后格式
         let dataArray = dateString;
         if (dataArray.length > 0) {
             this.props.params.effectiveTime = dataArray[0];
@@ -175,23 +160,22 @@ class List extends React.Component<Props, {}> {
     // 表格搜索清空
     searchReset = () => {
         this.props.form.resetFields();
-        this.props.params.pageSize = 10,       // 每页列表数
-        this.props.params.pkId = '',           // 策略ID
-        this.props.params.activityId = '',     // 活动ID
-        this.props.params.strategyName = '',   // 策略名称
-        this.props.params.strategyState = '',  // 策略状态
-        this.props.params.effectiveTime = '',  // 起始时间
-        this.props.params.invalidTime = '',    // 结束时间
-        this.props.params.strategyType = '',   // 触发事件
+        this.props.params.pageSize = 10,        // 每页列表数
+        this.props.params.pkId = '',            // 策略ID
+        this.props.params.activityId = '',      // 活动ID
+        this.props.params.strategyName = '',    // 策略名称
+        this.props.params.strategyState = '',   // 策略状态
+        this.props.params.effectiveTime = '',   // 起始时间
+        this.props.params.invalidTime = '',     // 结束时间
+        this.props.params.strategyType = '',    // 触发事件
         this.props.params.marketingType = '';   // 营销类型
-        console.log('resetparmas', this.props.params);
     }
 
     // 分页器
     pageChange = (page) => {
         this.props.params.page = page;
-        console.log(this.props.params);
         const { strategyList } = this.props;
+        // 请求分页数据
         strategyList(this.props.params);
     }
     // 新增策略按钮
@@ -216,22 +200,24 @@ class List extends React.Component<Props, {}> {
         // 添加input自动校验
         const { getFieldDecorator } = this.props.form;
 
-        // 策略状态项
-        let strategyStatus = cfg.strategyStatus;
-        let strategyStatusChildren = strategyStatus.map((item) => {
-            return <Option value={item.id} key={item.id}>{item.name}</Option>;
-        });
         // 输入框固定宽
         const inputWidth = {
             width: '123px'
         };
-        // 新建项目，触发事件
+
+        // 策略状态项－下拉选框内部数组
+        let strategyStatus = cfg.strategyStatus;
+        let strategyStatusChildren = strategyStatus.map((item) => {
+            return <Option value={item.id} key={item.id}>{item.name}</Option>;
+        });
+
+        // 新建项目，触发事件－下拉选框内部数组
         let strategyType = cfg.strategyType;
         let strategyTypeChildren = strategyType.map((item) => {
             return <Option value={item.id} key={item.id}>{item.name}</Option>;
         });
           
-        // 营销类型
+        // 营销类型－下拉选框内部数组
         let marketingType = cfg.marketingType;
         let marketingTypeChildren = marketingType.map((item) => {
             return <Option value={item.id} key={item.id}>{item.name}</Option>;
@@ -248,6 +234,7 @@ class List extends React.Component<Props, {}> {
                 <Layout>
                     <Content className="content-wrap">
                         <div className="search-box">
+                            {/* 搜索表单 */}
                             <Form className="form-box">
                                 <Row>
                                     <Col span={8}>
@@ -342,8 +329,8 @@ const WrappedAdvancedSearchForm = Form.create()(List as any);
 
 export function mapStateToProps(state: StoreState) {
     return {
-        totalInfo: state.list.totalInfo,
-        listData: state.list.listData,             // 列表数组
+        totalInfo: state.list.totalInfo,     // 列表数据总数
+        listData: state.list.listData,       // 列表数组
         params: state.list.params
         // params: {
         //     page: 1,            // 翻页值

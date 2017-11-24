@@ -28,10 +28,10 @@ function enthusiasm(
         },
         listData: [], 
         totalInfo: 0,
-        editStartId: '',      // 列表开启id
-        editStopId: '',       // 列表暂停id
-        editStartInx: -1,     // 列表数据启动下标
-        editStopInx: -1       // 列表数据暂停下标
+        editStartId: '',        // 列表开启id
+        editStopId: '',         // 列表暂停id
+        editStartInx: -1,       // 列表数据启动下标
+        editStopInx: -1         // 列表数据暂停下标
     }, 
     action: actions.EnthusiasmAction
 ): ListState {

@@ -46,7 +46,7 @@ const editStopFail = (id) => {
         id: id
     };
 };
-
+// 列表项－启动请求事件
 const editStart: Epic<any, any>  = (action$, store) => {
     return action$.ofType(constants.EDIT_START).
         switchMap(
@@ -62,7 +62,7 @@ const editStart: Epic<any, any>  = (action$, store) => {
             }
         );
 };
-
+// 列表项－暂停请求事件
 const editStop: Epic<any, any>  = (action$, store) => {
     return action$.ofType(constants.EDIT_STOP).
         switchMap(
