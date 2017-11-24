@@ -1,5 +1,5 @@
-
 import * as React from 'react';
+import './style.scss';
 import { 
     Form,
     Input,
@@ -10,14 +10,23 @@ import {
     Dropdown,
     Icon,
 } from 'antd';
+
 const FormItem = Form.Item;
 
 export interface RuleProps {
     form?: any;
+    formState: any;
+    onSaveModel: (modelData: string) => void;
+}
+
+interface Model {
+    type: 'Sms' | 'DaojiaApp';
+    label: '短信' | '58到家-APP push' | '58速运-APP push' | '58到家公众号';
+    properties: string[];
 }
 
 namespace layout {
-    export const formItemLayout = { 
+    export const formItemLayout = {
         labelCol: { xs: { span: 24 }, sm: { span: 5 }, },
         wrapperCol: { xs: { span: 24 }, sm: { span: 19 }, },
     };
@@ -26,11 +35,19 @@ namespace layout {
     };
 }
 
+enum ChannelType {
+    Sms = 1,
+    DaojiaApp,
+    SuyunApp,
+    ChatNumber,
+}
+
 export default class MarketingModel extends React.Component<RuleProps, {}> {
     state: any = {
         editing: false,
         channels: [],
-        channelType: [[1, '短信'], [2, '58到家-APP push'], [3, '58到家公众号']],
+        showData: [],
+        channelType: [[1, '短信'], [2, '58到家-APP push'], [3, '58速运-APP push'], [4, '58到家公众号']],
     };
 
     constructor(props: any, context: any) {
@@ -44,11 +61,56 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
     }
 
     onSave = () => {
-        console.log(1);
+        const fields: Model[] = [];
+        this.state.channels.forEach((item, i) => {
+            switch (item) {
+                case ChannelType.Sms:
+                    fields.push({type: 'Sms', label: '短信', properties: ['copyWritingSms', 'jumpLinkSms']});
+                    break;
+                case ChannelType.DaojiaApp:
+                    fields.push({type: 'DaojiaApp', label: '58到家-APP push', properties: ['channelTileDjapp', 'copyWritingDjapp', 'jumpLinkDjapp']});
+                    break;    
+                default:
+                    break;
+            }
+        });
+        const validateFields = fields.map((item) => item.properties).reduce((lastItems, item) => lastItems.concat(item), []);
+        this.props.form.validateFields(validateFields, (err, values) => {
+            if (!err) {
+                this.computeShowData(fields, values);
+                this.props.onSaveModel(JSON.stringify(values));
+            }
+        });
+    }
+
+    computeShowData = (fileds: Model[], values: any) => {
+        const fieldData = fileds.map((item1) => {
+            return { 
+                ...item1, 
+                properties: item1.properties.map((item2) => {
+                    switch (item2) {
+                        case 'copyWritingSms':
+                            return `文案: ${values.copyWritingSms}`;
+                        case 'jumpLinkSms':
+                            return `跳转链接: ${values.jumpLinkSms}`;
+                        case 'channelTileDjapp':
+                            return `标题: ${values.channelTileDjapp}`;
+                        case 'copyWritingDjapp':
+                            return `文案: ${values.copyWritingDjapp}`;
+                        case 'jumpLinkDjapp':
+                            return `跳转链接: ${values.jumpLinkDjapp}`;
+                        default:
+                            return item2;
+                    }
+                })
+            };
+        });
+        this.setState({showData: fieldData});
+        this.onEdit(false);
     }
 
     handleMenuClick = (e) => {
-        const newChannel = [...this.state.channels, e.key];
+        const newChannel = [...this.state.channels, parseInt(e.key, 10)];
         const newChannelType = this.state.channelType.filter((item) => {
             return item[0] !== parseInt(e.key, 10);
         });
@@ -58,8 +120,12 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
         });
     }
  
-    shiftUp = () => {
-        console.log(1);
+    shiftUp = (index, label) => {
+        const idx = this.state.channels.indexOf(index);
+        const newChannel = this.state.channels.fill(this.state.channels[idx - 1], idx, idx + 1).fill(index, idx - 1, idx);
+        this.setState({
+            channels: newChannel
+        });
     }
 
     deleteChannel = (index, label) => {
@@ -75,88 +141,106 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
 
     geteratorChannel = () => {
         const { getFieldDecorator } = this.props.form;
+        const { 
+            copyWritingSms = {value: ''}, 
+            jumpLinkSms = {value: ''},
+            channelTileDjapp = {value: ''},
+            copyWritingDjapp = {value: ''},
+            jumpLinkDjapp = {value: ''},
+        } = this.props.formState;
+        const rowStyle = {
+            marginBottom: 20
+        };
 
         return this.state.channels.map((item, i) => {
+            const index = i + 1;
             switch (item) {
-                case '1':
+                case ChannelType.Sms:
                     return (
                         <div key={i}>
-                            <Row>
-                                <Col span={3}>渠道{i}</Col>
+                            <Row style={rowStyle}>
+                                <Col span={3} style={{fontSize: 14, fontWeight: 'bold'}}>渠道{index}</Col>
                                 <Col span={4}>短信</Col>
                                 <Col span={3}>
-                                    <Button onClick={this.shiftUp}>上移</Button>
+                                    <Button onClick={() => this.shiftUp(1, '短信')}>上移</Button>
                                 </Col>
                                 <Col>
                                     <Button onClick={() => this.deleteChannel(1, '短信')}>删除</Button>
                                 </Col>
                             </Row>
                             <FormItem {...layout.formItemLayout} label="文案" hasFeedback={false}>
-                                {getFieldDecorator('copyWriting', {
+                                {getFieldDecorator('copyWritingSms', {
                                     rules: [{
                                         required: true, message: '文案不能为空！',
                                     }],
+                                    initialValue: copyWritingSms.value
                                 })(
                                     <Input placeholder="请输入文案!"/>
                                 )}
                             </FormItem>
                             <FormItem {...layout.formItemLayout} label="跳转链接" hasFeedback={false}>
-                                {getFieldDecorator('jumpLink', {
+                                {getFieldDecorator('jumpLinkSms', {
                                     rules: [{
                                         required: true, message: '跳转链接不能为空',
                                     }],
+                                    initialValue: jumpLinkSms.value
                                 })(
                                     <Input placeholder="请输入跳转链接!"/>
                                 )}
                             </FormItem>
                         </div>
                     );
-                case '2':
+                case ChannelType.DaojiaApp:
                     return (
                         <div key={i}>
-                            <Row>
-                                <Col span={3}>渠道{i}</Col>
+                            <Row style={rowStyle}>
+                                <Col span={3} style={{fontSize: 14, fontWeight: 'bold'}}>渠道{index}</Col>
                                 <Col span={4}>58到家-APP push</Col>
                                 <Col span={3}>
-                                    <Button onClick={this.shiftUp}>上移</Button>
+                                    <Button onClick={() => this.shiftUp(2, '58到家-APP push')}>上移</Button>
                                 </Col>
                                 <Col>
                                     <Button onClick={() => this.deleteChannel(2, '58到家-APP push')}>删除</Button>
                                 </Col>
                             </Row>
                             <FormItem {...layout.formItemLayout} label="标题" hasFeedback={false}>
-                                {getFieldDecorator('channelTile', {
+                                {getFieldDecorator('channelTileDjapp', {
                                     rules: [{
                                         required: true, message: '标题不能为空！',
                                     }],
+                                    initialValue: channelTileDjapp.value
                                 })(
                                     <Input placeholder="请输入标题!"/>
                                 )}
                             </FormItem>
                             <FormItem {...layout.formItemLayout} label="文案" hasFeedback={false}>
-                                {getFieldDecorator('copyWriting', {
+                                {getFieldDecorator('copyWritingDjapp', {
                                     rules: [{
                                         required: true, message: '文案不能为空！',
                                     }],
+                                    initialValue: copyWritingDjapp.value
                                 })(
                                     <Input placeholder="请输入文案!"/>
                                 )}
                             </FormItem>
                             <FormItem {...layout.formItemLayout} label="跳转链接" hasFeedback={false}>
-                                {getFieldDecorator('jumpLink', {
+                                {getFieldDecorator('jumpLinkDjapp', {
                                     rules: [{
                                         required: true, message: '跳转链接不能为空',
                                     }],
+                                    initialValue: jumpLinkDjapp.value
                                 })(
                                     <Input placeholder="请输入跳转链接!"/>
                                 )}
                             </FormItem>
                         </div>
                     );
-                case '3':
+                case ChannelType.SuyunApp:
                     return (<div key={i}>3</div>);
-                default:
+                case ChannelType.ChatNumber:
                     return (<div key={i}>4</div>);
+                default:
+                    return (<div>not find this type</div>);
             }
         });
     }
@@ -196,6 +280,18 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
             return (
                 <div>
                     <p><span style={{color: 'red'}}>消息推送</span> 优先级：渠道1>渠道2>渠道3 优先渠道送达后，其他渠道将不再推送</p>
+                    {
+                        this.state.showData.map((item, i) => {
+                            const {label, properties} = item;
+                            return (
+                                <p key={i}>
+                                    <span>渠道{i + 1}</span>
+                                    <span>{label}</span>
+                                    <span>{properties.join()}</span>
+                                </p>
+                            );
+                        })
+                    }
                 </div>
             );
         }

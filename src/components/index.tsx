@@ -1,2 +1,2 @@
-export {default as StrategyRule} from './StrategyRule';
-export {default as MarketingModel} from './MarketingModel';
+export {default as StrategyRule} from './strategyRule';
+export {default as MarketingModel} from './marketingModel';

@@ -29,9 +29,12 @@ export interface Props {
     serviceOptions: any[];
     orderState: any[];
     rules: any[];
+    formState: any;
     form: any;
     onGetService: () => void;
     onGetRules: () => void;
+    onSaveRule: () => void;
+    onSaveModel: (modelData: string) => void;
     onGetOrderState: () => void;
 }
 
@@ -126,7 +129,8 @@ class List extends React.Component<Props, object> {
                                 </FormItem>
                                 <StrategyRule 
                                     form={this.props.form} 
-                                    onGetService={this.props.onGetService} 
+                                    onGetService={this.props.onGetService}
+                                    onSaveRule={this.props.onSaveRule}
                                     onGetOrderState={this.props.onGetOrderState} 
                                     serviceOptions={this.props.serviceOptions} 
                                     orderState={this.props.orderState}
@@ -239,7 +243,11 @@ class List extends React.Component<Props, object> {
                                         </FormItem>
                                     </Col>
                                 </Row>
-                                <MarketingModel form={this.props.form} />
+                                <MarketingModel 
+                                    form={this.props.form} 
+                                    onSaveModel={this.props.onSaveModel}
+                                    formState={this.props.formState}
+                                />
                                 <FormItem {...laout.formItemLayout} label="责任人" hasFeedback={false}>
                                     {getFieldDecorator('owner', {
                                         rules: [{
@@ -280,6 +288,8 @@ export const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) 
         onChangeField: actions.changeField,
         onGetOrderState: actions.getOrderState,
         onGetRules: actions.getRules,
+        onSaveRule: actions.saveRule,
+        onSaveModel: actions.saveModel,
         onGetService: actions.getService
     },
     dispatch
