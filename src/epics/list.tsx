@@ -96,7 +96,7 @@ const strategyList: Epic<any, any, any>  = (action$, store, params) => {
                                                         }).
                 map(response => {
                     if (response.response.code === 0) {
-                        return (strategyListSuccess(response.response));
+                        return (strategyListSuccess(response.response.data));
                     } else {
                         return (strategyListFail(response.response));
                     }
