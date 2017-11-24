@@ -1,4 +1,4 @@
 
-import StrategyRule from './StrategyRule';
+import StrategyRule from './strategyRule';
 
 export default StrategyRule;

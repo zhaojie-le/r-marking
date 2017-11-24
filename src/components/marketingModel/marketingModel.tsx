@@ -15,6 +15,7 @@ const FormItem = Form.Item;
 
 export interface RuleProps {
     form?: any;
+    formState: any;
     onSaveModel: (modelData: string) => void;
 }
 
@@ -48,7 +49,6 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
         showData: [],
         channelType: [[1, '短信'], [2, '58到家-APP push'], [3, '58速运-APP push'], [4, '58到家公众号']],
     };
-    private fields: Model[] = [];
 
     constructor(props: any, context: any) {
         super(props, context);
@@ -61,29 +61,30 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
     }
 
     onSave = () => {
+        const fields: Model[] = [];
         this.state.channels.forEach((item, i) => {
             switch (item) {
                 case ChannelType.Sms:
-                    this.fields.push({type: 'Sms', label: '短信', properties: ['copyWritingSms', 'jumpLinkSms']});
+                    fields.push({type: 'Sms', label: '短信', properties: ['copyWritingSms', 'jumpLinkSms']});
                     break;
                 case ChannelType.DaojiaApp:
-                    this.fields.push({type: 'DaojiaApp', label: '58到家-APP push', properties: ['channelTileDjapp', 'copyWritingDjapp', 'jumpLinkDjapp']});
+                    fields.push({type: 'DaojiaApp', label: '58到家-APP push', properties: ['channelTileDjapp', 'copyWritingDjapp', 'jumpLinkDjapp']});
                     break;    
                 default:
                     break;
             }
         });
-        const validateFields = this.fields.map((item) => item.properties).reduce((lastItems, item) => lastItems.concat(item), []);
+        const validateFields = fields.map((item) => item.properties).reduce((lastItems, item) => lastItems.concat(item), []);
         this.props.form.validateFields(validateFields, (err, values) => {
             if (!err) {
-                this.computeShowData(values);
+                this.computeShowData(fields, values);
                 this.props.onSaveModel(JSON.stringify(values));
             }
         });
     }
 
-    computeShowData = (values: any) => {
-        const fieldData = this.fields.map((item1) => {
+    computeShowData = (fileds: Model[], values: any) => {
+        const fieldData = fileds.map((item1) => {
             return { 
                 ...item1, 
                 properties: item1.properties.map((item2) => {
@@ -140,6 +141,13 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
 
     geteratorChannel = () => {
         const { getFieldDecorator } = this.props.form;
+        const { 
+            copyWritingSms = {value: ''}, 
+            jumpLinkSms = {value: ''},
+            channelTileDjapp = {value: ''},
+            copyWritingDjapp = {value: ''},
+            jumpLinkDjapp = {value: ''},
+        } = this.props.formState;
         const rowStyle = {
             marginBottom: 20
         };
@@ -165,6 +173,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                                     rules: [{
                                         required: true, message: '文案不能为空！',
                                     }],
+                                    initialValue: copyWritingSms.value
                                 })(
                                     <Input placeholder="请输入文案!"/>
                                 )}
@@ -174,6 +183,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                                     rules: [{
                                         required: true, message: '跳转链接不能为空',
                                     }],
+                                    initialValue: jumpLinkSms.value
                                 })(
                                     <Input placeholder="请输入跳转链接!"/>
                                 )}
@@ -198,6 +208,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                                     rules: [{
                                         required: true, message: '标题不能为空！',
                                     }],
+                                    initialValue: channelTileDjapp.value
                                 })(
                                     <Input placeholder="请输入标题!"/>
                                 )}
@@ -207,6 +218,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                                     rules: [{
                                         required: true, message: '文案不能为空！',
                                     }],
+                                    initialValue: copyWritingDjapp.value
                                 })(
                                     <Input placeholder="请输入文案!"/>
                                 )}
@@ -216,6 +228,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                                     rules: [{
                                         required: true, message: '跳转链接不能为空',
                                     }],
+                                    initialValue: jumpLinkDjapp.value
                                 })(
                                     <Input placeholder="请输入跳转链接!"/>
                                 )}

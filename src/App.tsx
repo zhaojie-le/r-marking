@@ -6,8 +6,8 @@ import {
   Switch
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import CreateOrderStrategy from './containers/CreateOrderStrategy';
-import List from './containers/List';
+import { CreateOrderStrategy, List } from './containers';
+
 import store from './store';
 
 const NotFound = () => (

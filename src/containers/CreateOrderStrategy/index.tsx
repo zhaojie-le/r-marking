@@ -29,6 +29,7 @@ export interface Props {
     serviceOptions: any[];
     orderState: any[];
     rules: any[];
+    formState: any;
     form: any;
     onGetService: () => void;
     onGetRules: () => void;
@@ -242,7 +243,11 @@ class List extends React.Component<Props, object> {
                                         </FormItem>
                                     </Col>
                                 </Row>
-                                <MarketingModel form={this.props.form} onSaveModel={this.props.onSaveModel}/>
+                                <MarketingModel 
+                                    form={this.props.form} 
+                                    onSaveModel={this.props.onSaveModel}
+                                    formState={this.props.formState}
+                                />
                                 <FormItem {...laout.formItemLayout} label="责任人" hasFeedback={false}>
                                     {getFieldDecorator('owner', {
                                         rules: [{
