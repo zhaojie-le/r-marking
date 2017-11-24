@@ -32,6 +32,7 @@ export interface Props {
     form: any;
     onGetService: () => void;
     onGetRules: () => void;
+    onSaveRule: () => void;
     onGetOrderState: () => void;
 }
 
@@ -126,7 +127,8 @@ class List extends React.Component<Props, object> {
                                 </FormItem>
                                 <StrategyRule 
                                     form={this.props.form} 
-                                    onGetService={this.props.onGetService} 
+                                    onGetService={this.props.onGetService}
+                                    onSaveRule={this.props.onSaveRule}
                                     onGetOrderState={this.props.onGetOrderState} 
                                     serviceOptions={this.props.serviceOptions} 
                                     orderState={this.props.orderState}
@@ -280,6 +282,7 @@ export const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) 
         onChangeField: actions.changeField,
         onGetOrderState: actions.getOrderState,
         onGetRules: actions.getRules,
+        onSaveRule: actions.saveRule,
         onGetService: actions.getService
     },
     dispatch

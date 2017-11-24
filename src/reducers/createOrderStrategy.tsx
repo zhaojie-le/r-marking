@@ -6,6 +6,7 @@ function form(
             owner: {
                 value: 'x@gmail.com',
             },
+            triggerRule: ''
         },
         serviceOptions: [],
         orderState: [],
@@ -38,6 +39,11 @@ function form(
             return {
                 ...state,
                 rules: [...action.result]
+            };
+        case constants.SAVE_RULE:
+            return {
+                ...state,
+                formState: { ...state.formState, triggerRule: action.ruleJsonString, }
             };
         default:
             return state;

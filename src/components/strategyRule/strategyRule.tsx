@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './style.scss';
 
 export interface RuleProps {
     form: any;
@@ -8,6 +9,7 @@ export interface RuleProps {
     orderState: any[];
     orderSource: { label: string; value: string; }[];
     onGetService: (cp: {lineId: number; cateId: number}) => void;
+    onSaveRule: (rjs: string) => void;
     onGetOrderState: (cp: {serverIds: string; cateId: number}) => void;
 }
 
@@ -40,6 +42,14 @@ namespace layout {
     };
 }
 
+function getKeysValues(obj: any, keys: any, key: string = 'value', label: string = 'name'): string {
+    return obj.filter((item) => {
+        return keys.includes(item[key]);
+    }).map((item) => {
+        return item[label];
+    }).join();
+}
+
 class StrategyRule extends React.Component<RuleProps, {}> {
     state: any = {
         editing: false,
@@ -64,11 +74,14 @@ class StrategyRule extends React.Component<RuleProps, {}> {
 
     handleClick = (e, label, option) => {
         e.stopPropagation();
-        console.log('clicked', label, option);
     }
 
     onChange = (value, selectedOptions) => {
-        this.setState({cateId: value[1]});
+        const labelValue = `${selectedOptions[0].label}, ${selectedOptions[1].label}`;
+        this.setState({
+            cateId: value[1],
+            selectedLabel: labelValue
+        });
         this.props.onGetService({lineId: value[0], cateId: value[1]});
     }
 
@@ -102,7 +115,6 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     serviceOption = () => {
         const { getFieldDecorator } = this.props.form;
         const { serviceOptions } = this.props;
-
         return serviceOptions.length ? (
             <FormItem label=" " {...layout.formItemLayout}>
                     {getFieldDecorator('serviceOptions')(
@@ -161,11 +173,44 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         this.setState({ targetKeys });
     }
 
+    onSave = () => {
+        this.props.form.validateFields(['serviceItem', 'serviceOptions', 'orderSource', 'orderState', 'city'], (err, values) => {
+            if (!err) {
+                this.computeShowData(values);
+                this.props.onSaveRule(JSON.stringify(values));
+            }
+        });
+    }
+
+    computeShowData = (values: any) => {
+        let labelSet: any = {};
+        for ( let item of Object.keys(values)) {
+            switch (item) {
+                case 'orderState':
+                    labelSet.orderStateLabel = getKeysValues(this.props.orderState, values.orderState, 'value', 'name');
+                    break;
+                case 'serviceOptions':
+                    labelSet.serviceOptionLabel = getKeysValues(this.props.serviceOptions, values.serviceOptions, 'key', 'title');
+                    break;
+                case 'orderSource':
+                    labelSet.orderSourceLabel = getKeysValues(this.props.orderSource, values.orderSource, 'value', 'label');
+                    break;
+                case 'city':
+                    labelSet.cityLabel = getKeysValues(this.props.city.list, values.city.map((one) => `${parseInt(one, 10) + 1}`), 'value', 'name');
+                    break;
+                default:
+                    break;
+            }
+        }
+        this.setState(labelSet);
+        this.onEdit(false);
+    }
+
     render() {
         let triggerRuleTpl: React.ReactNode = {};
         let btnStyle = {};
         let wrapperStyle: any = {};
-        let { checkedList } = this.state;
+        const { checkedList, orderStateLabel, serviceOptionLabel, orderSourceLabel, cityLabel, selectedLabel } = this.state;
         const { getFieldDecorator } = this.props.form;
         const cities = this.props.city.list.map((item, index) => {
             return {
@@ -175,7 +220,6 @@ class StrategyRule extends React.Component<RuleProps, {}> {
             };
         });
         const plainOptions = this.props.orderSource;
-
         const options = this.props.serviceSelect;
 
         if (this.state.editing) {
@@ -231,7 +275,8 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                         )}
                     </FormItem>
                     <FormItem {...layout.tailFormItemLayout}>
-                        <Button type="primary" onClick={() => this.onEdit(false)} >编辑完毕</Button>
+                        <Button type="primary" onClick={this.onSave}>保存</Button>
+                        <Button onClick={() => this.onEdit(false)} style={{marginLeft: '10px'}}>取消</Button>
                     </FormItem>
                 </section>
             );
@@ -244,10 +289,11 @@ class StrategyRule extends React.Component<RuleProps, {}> {
             triggerRuleTpl = (
                                <section className="showInfo">
                                     <p><label>规则名称:</label><span>订单事件</span></p>
-                                    <p><label>服务项:</label><span>三方合作</span><span>充值</span><span>充值</span></p>
-                                    <p><label>订单来源:</label><span>微信、到家App</span></p>
-                                    <p><label>订单状态:</label><span>已接单</span></p>
-                                    <p><label>订单状态:</label><span>北京、上海、日本、东京、纽约</span></p>
+                                    <p><label>服务项:</label><span>{selectedLabel}</span></p>
+                                    <p><label>服务项具体选项:</label><span>{serviceOptionLabel}</span></p>
+                                    <p><label>订单来源:</label><span>{orderSourceLabel}</span></p>
+                                    <p><label>订单状态:</label><span>{orderStateLabel}</span></p>
+                                    <p><label>城市:</label><span>{cityLabel}</span></p>
                                 </section>
                             );
         }

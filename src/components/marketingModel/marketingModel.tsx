@@ -1,5 +1,5 @@
-
 import * as React from 'react';
+import './style.scss';
 import { 
     Form,
     Input,
@@ -10,6 +10,7 @@ import {
     Dropdown,
     Icon,
 } from 'antd';
+
 const FormItem = Form.Item;
 
 export interface RuleProps {
@@ -17,7 +18,7 @@ export interface RuleProps {
 }
 
 namespace layout {
-    export const formItemLayout = { 
+    export const formItemLayout = {
         labelCol: { xs: { span: 24 }, sm: { span: 5 }, },
         wrapperCol: { xs: { span: 24 }, sm: { span: 19 }, },
     };
@@ -26,11 +27,18 @@ namespace layout {
     };
 }
 
+enum ChannelType {
+    Sms = 1,
+    DaojiaApp,
+    SuyunApp,
+    ChatNumber,
+}
+
 export default class MarketingModel extends React.Component<RuleProps, {}> {
     state: any = {
         editing: false,
         channels: [],
-        channelType: [[1, '短信'], [2, '58到家-APP push'], [3, '58到家公众号']],
+        channelType: [[1, '短信'], [2, '58到家-APP push'], [3, '58到家-APP push'], [4, '58到家公众号']],
     };
 
     constructor(props: any, context: any) {
@@ -48,7 +56,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
     }
 
     handleMenuClick = (e) => {
-        const newChannel = [...this.state.channels, e.key];
+        const newChannel = [...this.state.channels, parseInt(e.key, 10)];
         const newChannelType = this.state.channelType.filter((item) => {
             return item[0] !== parseInt(e.key, 10);
         });
@@ -58,8 +66,12 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
         });
     }
  
-    shiftUp = () => {
-        console.log(1);
+    shiftUp = (index, label) => {
+        const idx = this.state.channels.indexOf(index);
+        const newChannel = this.state.channels.fill(this.state.channels[idx - 1], idx, idx + 1).fill(index, idx - 1, idx);
+        this.setState({
+            channels: newChannel
+        });
     }
 
     deleteChannel = (index, label) => {
@@ -75,17 +87,21 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
 
     geteratorChannel = () => {
         const { getFieldDecorator } = this.props.form;
-
+        const rowStyle = {
+            marginBottom: 20
+        };
+        
         return this.state.channels.map((item, i) => {
+            const index = i + 1;
             switch (item) {
-                case '1':
+                case ChannelType.Sms:
                     return (
                         <div key={i}>
-                            <Row>
-                                <Col span={3}>渠道{i}</Col>
+                            <Row style={rowStyle}>
+                                <Col span={3} style={{fontSize: 14, fontWeight: 'bold'}}>渠道{index}</Col>
                                 <Col span={4}>短信</Col>
                                 <Col span={3}>
-                                    <Button onClick={this.shiftUp}>上移</Button>
+                                    <Button onClick={() => this.shiftUp(1, '短信')}>上移</Button>
                                 </Col>
                                 <Col>
                                     <Button onClick={() => this.deleteChannel(1, '短信')}>删除</Button>
@@ -111,14 +127,14 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                             </FormItem>
                         </div>
                     );
-                case '2':
+                case ChannelType.DaojiaApp:
                     return (
                         <div key={i}>
-                            <Row>
-                                <Col span={3}>渠道{i}</Col>
+                            <Row style={rowStyle}>
+                                <Col span={3} style={{fontSize: 14, fontWeight: 'bold'}}>渠道{index}</Col>
                                 <Col span={4}>58到家-APP push</Col>
                                 <Col span={3}>
-                                    <Button onClick={this.shiftUp}>上移</Button>
+                                    <Button onClick={() => this.shiftUp(2, '58到家-APP push')}>上移</Button>
                                 </Col>
                                 <Col>
                                     <Button onClick={() => this.deleteChannel(2, '58到家-APP push')}>删除</Button>
@@ -153,10 +169,12 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                             </FormItem>
                         </div>
                     );
-                case '3':
+                case ChannelType.SuyunApp:
                     return (<div key={i}>3</div>);
-                default:
+                case ChannelType.ChatNumber:
                     return (<div key={i}>4</div>);
+                default:
+                    return (<div>not find this type</div>);
             }
         });
     }
