@@ -1,47 +1,221 @@
 {
-  "code":0,
-  "totalInfo": 245,
-  "data": [{
-      "showEdit": true,
-      "strategyName": "lxn页面挂件测试",
-      "pkId": "243813584004464720",
-      "marketingType": "支付",
-      "pushAmount": 0,
-      "effectiveTime": "2017-11-03 19:04:11",
-      "dataReport": true,
-      "invalidTime": "2017-11-06 19:04:12",
-      "strategyTypeInt": 7,
-      "strategyType": "页面挂件",
-      "activityId": 0,
-      "createrEmail": "liuxiaonan@daojia.com",
-      "marketingTypeInt": 7,
-      "createTime": "2017-11-03 19:08:07",
-      "marketingLimit": 0,
-      "actionExpression": "7",
-      "updateContent": "无",
-      "strategyState": "进行中"
-    },
-    {
-      "showEdit": false,
-      "strategyName": "czx速运17",
-      "pkId": "228839595943414564",
-      "marketingType": "发券",
-      "pushAmount": 0,
-      "effectiveTime": "1970-01-01 08:00:00",
-      "dataReport": true,
-      "invalidTime": "1970-01-01 08:00:00",
-      "strategyTypeInt": 4,
-      "strategyType": "外推消息",
-      "activityId": 100131,
-      "createrEmail": "chenzixu@daojia.com",
-      "marketingTypeInt": 1,
-      "createTime": "2017-09-23 11:26:51",
-      "marketingLimit": 0,
-      "actionExpression": "6",
-      "updateContent": "无",
-      "strategyState": "暂停"
-    }
-  ],
-  "strategyTypeList": [1, 2, 3, 4, 5, 6],
-  "strategyType": 1
+  "code": 0,
+  "data":{
+    "totalInfo": 237,
+    "marketingType": [
+        {
+            "name": "发券",
+            "id": 1
+        },
+        {
+            "name": "用券",
+            "id": 2
+        },
+        {
+            "name": "拉新",
+            "id": 3
+        },
+        {
+            "name": "商品[不拼团]",
+            "id": 4
+        },
+        {
+            "name": "购买会员卡",
+            "id": 5
+        },
+        {
+            "name": "评价",
+            "id": 6
+        },
+        {
+            "name": "支付",
+            "id": 7
+        },
+        {
+            "name": "调查问卷",
+            "id": 8
+        },
+        {
+            "name": "活动",
+            "id": 9
+        },
+        {
+            "name": "商品[拼团]",
+            "id": 10
+        }
+    ],
+    "list": [
+        {
+            "showEdit": true,
+            "strategyName": "wcs333",
+            "pkId": "251359740699947122",
+            "marketingType": "拉新",
+            "pushAmount": 0,
+            "effectiveTime": "2017-11-24 14:51:24",
+            "dataReport": true,
+            "invalidTime": "2017-12-07 14:51:25",
+            "strategyTypeInt": 3,
+            "strategyType": "支付预约页面",
+            "activityId": 0,
+            "createrEmail": "wangchunshen@daojia.com",
+            "marketingTypeInt": 3,
+            "createTime": "2017-11-24 14:53:52",
+            "marketingLimit": 0,
+            "actionExpression": "4",
+            "updateContent": "无",
+            "strategyState": "未开始"
+        },
+        {
+            "showEdit": true,
+            "strategyName": "wcs策略名称-导入用户660",
+            "pkId": "251355817759027303",
+            "marketingType": "用券",
+            "pushAmount": 0,
+            "effectiveTime": "2017-04-05 12:05:04",
+            "dataReport": true,
+            "invalidTime": "2017-07-06 12:05:04",
+            "strategyTypeInt": 2,
+            "strategyType": "导入用户",
+            "activityId": 1881,
+            "createrEmail": "wangchunshen1@163.com",
+            "marketingTypeInt": 2,
+            "createTime": "2017-11-24 14:38:13",
+            "marketingLimit": 0,
+            "actionExpression": "2",
+            "updateContent": "无",
+            "strategyState": "未开始"
+        },
+        {
+            "showEdit": true,
+            "strategyName": "wcs策略名称-导入用户660",
+            "pkId": "251355817616420964",
+            "marketingType": "用券",
+            "pushAmount": 0,
+            "effectiveTime": "2017-04-05 12:05:04",
+            "dataReport": true,
+            "invalidTime": "2017-07-06 12:05:04",
+            "strategyTypeInt": 2,
+            "strategyType": "导入用户",
+            "activityId": 1881,
+            "createrEmail": "wangchunshen@163.com",
+            "marketingTypeInt": 2,
+            "createTime": "2017-11-24 14:38:06",
+            "marketingLimit": 0,
+            "actionExpression": "2",
+            "updateContent": "无",
+            "strategyState": "未开始"
+        },
+        {
+            "showEdit": true,
+            "strategyName": "lxn用户条件测试",
+            "pkId": "250719418114449424",
+            "marketingType": "用券",
+            "pushAmount": 0,
+            "effectiveTime": "2017-11-22 20:29:19",
+            "dataReport": true,
+            "invalidTime": "2017-11-26 20:29:20",
+            "strategyTypeInt": 0,
+            "activityId": 0,
+            "createrEmail": "liuxiaonan@daojia.com",
+            "marketingTypeInt": 2,
+            "createTime": "2017-11-22 20:29:27",
+            "marketingLimit": 0,
+            "actionExpression": "2",
+            "updateContent": "2017-11-22 20:30:34:修改策略名称,修改营销方式,;",
+            "strategyState": "未开始"
+        },
+        {
+            "showEdit": true,
+            "strategyName": "lxn页面标签测试",
+            "pkId": "250716156388777997",
+            "marketingType": "用券",
+            "pushAmount": 0,
+            "effectiveTime": "2017-11-22 20:15:31",
+            "dataReport": true,
+            "invalidTime": "2017-11-27 20:15:33", 
+            "strategyTypeInt": 7,
+            "strategyType": "页面挂件",       
+            "activityId": 0,
+            "createrEmail": "liuxiaonan@daojia.com",
+            "marketingTypeInt": 2,
+            "createTime": "2017-11-22 20:16:29",
+            "marketingLimit": 0,
+            "actionExpression": "7",
+            "updateContent": "无",
+            "strategyState": "未开始"
+        },
+        {
+            "showEdit": true,
+            "strategyName": "lxn标签测试",
+            "pkId": "250715730155216906",
+            "marketingType": "调查问卷",
+            "pushAmount": 0,
+            "effectiveTime": "2017-11-22 20:13:30",
+            "dataReport": true,
+            "invalidTime": "2017-11-27 20:13:32",
+            "strategyTypeInt": 3,
+            "strategyType": "支付预约页面",
+            "activityId": 0,
+            "createrEmail": "liuxiaonan@daojia.com",
+            "marketingTypeInt": 8,
+            "createTime": "2017-11-22 20:14:48",
+            "marketingLimit": 0,
+            "actionExpression": "4",
+            "updateContent": "无",
+            "strategyState": "未开始"
+        }
+    ],
+    "strategyStatus": [
+        {
+            "name": "未开始",
+            "id": 1
+        },
+        {
+            "name": "待开始",
+            "id": 2
+        },
+        {
+            "name": "进行中",
+            "id": 3
+        },
+        {
+            "name": "暂停",
+            "id": 4
+        },
+        {
+            "name": "已过期",
+            "id": 5
+        },
+        {
+            "name": "已完成",
+            "id": 6
+        }
+    ],
+    "strategyType": [
+        {
+            "name": "订单触发",
+            "id": 1
+        },
+        {
+            "name": "导入用户",
+            "id": 2
+        },
+        {
+            "name": "支付预约页面",
+            "id": 3
+        },
+        {
+            "name": "全部用户",
+            "id": 5
+        },
+        {
+            "name": "储值返券",
+            "id": 6
+        },
+        {
+            "name": "页面挂件",
+            "id": 7
+        }
+    ]
+  }
 }

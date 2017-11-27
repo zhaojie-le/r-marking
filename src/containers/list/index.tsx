@@ -75,7 +75,7 @@ class List extends React.Component<Props, {}> {
             {title: '有效时间', dataIndex: 'effectiveTime', key: '4'}, 
             {title: '失效时间', dataIndex: 'invalidTime', key: '5'}, 
             {title: '触发事件', dataIndex: 'marketingTypeInt', key: '6'}, 
-            {title: '营销方式', dataIndex: 'address', key: '7'}, 
+            {title: '营销方式', dataIndex: 'strategyType', key: '7'}, 
             {title: '营销类型', dataIndex: 'marketingType', key: '8'}, 
             {title: '推送人数', dataIndex: 'pushAmount', key: '9'}, 
             {title: '创建人邮箱', dataIndex: 'createrEmail', key: '10'}, 
@@ -330,7 +330,7 @@ const WrappedAdvancedSearchForm = Form.create()(List as any);
 export function mapStateToProps(state: StoreState) {
     return {
         totalInfo: state.list.totalInfo,     // 列表数据总数
-        listData: state.list.listData,       // 列表数组
+        listData: state.list.listData.map( (item, i) => Object.assign({}, item, { key: i }) ),       // 列表数组
         params: state.list.params
         // params: {
         //     page: 1,            // 翻页值

@@ -39,7 +39,7 @@ function enthusiasm(
             case STRATEGY_LIST:
                 return { ...state, params: action.params};
             case STRATEGY_LIST_SUC:               
-                return {...state, listData: action.response.data, totalInfo: action.response.totalInfo};
+                return {...state, listData: action.response.list, totalInfo: action.response.totalInfo};
             case EDIT_START:
                 return {...state, editStartInx: action.inx, editStartId: action.id};
             case EDIT_START_SUC:
