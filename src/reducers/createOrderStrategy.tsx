@@ -8,6 +8,20 @@ function form(
             },
             triggerRule: '',
             marketingModel: '',
+            orderSource: {
+                value: []
+            },
+            serviceItem: {
+                value: []
+            },
+            serviceOptions: {
+                value: []
+            },
+            city: {
+                value: []
+            },
+            orderState: {
+            }
         },
         serviceOptions: [],
         orderState: [],

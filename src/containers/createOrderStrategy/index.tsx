@@ -134,6 +134,7 @@ class List extends React.Component<Props, object> {
                                     onGetOrderState={this.props.onGetOrderState} 
                                     serviceOptions={this.props.serviceOptions} 
                                     orderState={this.props.orderState}
+                                    formState={this.props.formState}
                                     orderSource={this.props.rules[1]}
                                     city={this.props.rules[3]}
                                     serviceSelect={this.props.rules[0].list}
