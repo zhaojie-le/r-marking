@@ -217,7 +217,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         let triggerRuleTpl: React.ReactNode = {};
         let btnStyle = {};
         let wrapperStyle: any = {};
-        const { orderStateLabel, serviceOptionLabel, orderSourceLabel, cityLabel, selectedLabel } = this.state;
+        const { orderStateLabel = '无', serviceOptionLabel = '无', orderSourceLabel = '无', cityLabel = '无', selectedLabel = '无' } = this.state;
         const { getFieldDecorator } = this.props.form;
         const cities = this.props.city.list.map((item, index) => {
             return {
