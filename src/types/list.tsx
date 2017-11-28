@@ -1,4 +1,5 @@
 export interface ListState {
+    data: any;
     listData: any;
     totalInfo: number;
     editStopId: string;         // 列表暂停id

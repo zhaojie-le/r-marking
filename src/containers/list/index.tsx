@@ -25,6 +25,7 @@ const { Header, Content } = Layout;
 const { RangePicker } = DatePicker;
 
 export interface Props {
+    data: any;
     listData: any;
     totalInfo: number; 
     strategyList: (params: any) => void;
@@ -33,6 +34,13 @@ export interface Props {
     form?: any;
     params?: any;
 }
+
+export const arrayAddKey = (arr: any) => {
+    if (arr.length > 0) {
+        let array = arr.map( (item, i) => Object.assign({}, item, { key: i }) );
+        return array;
+    }
+};
 
 class List extends React.Component<Props, {}> {
     // 组件内部变量
@@ -60,21 +68,25 @@ class List extends React.Component<Props, {}> {
             {title: '创建人邮箱', dataIndex: 'createrEmail', key: '10'}, 
             {title: '操作', dataIndex: 'marketingTypeInt', key: '11',
                 render: (text, record, index) => {
-                    // 接口值有待优化
-                    if (record.strategyState === '未开始' || record.strategyState === '已完成' || record.strategyState === '已过期') {
-                        return '';
-                    }
-                    if (record.strategyState === '进行中' || record.strategyState === '待开始') {
-                        return <Button size="small" onClick={this.editStopClick.bind(this, record.pkId, index)}>暂停</Button>;
-                    } else if (record.strategyState === '暂停') {
-                        return <Button size="small" onClick={this.editStartClick.bind(this, record.pkId, index)}>开始</Button>;
+                    let changeBtn: any;
+                    let editBtn: any;
+                    if (record.showButton === 2) {
+                        changeBtn =  <Button size="small" onClick={this.editStopClick.bind(this, record.pkId, index)}>暂停</Button>;
+                    } else if (record.showButton === 1) {
+                        changeBtn =  <Button size="small" onClick={this.editStartClick.bind(this, record.pkId, index)}>开始</Button>;
                     }
                     if (record.showEdit) {
                         console.log('record.showEdit');
-                        return <Button>修改</Button>;
+                        editBtn =  <Button size="small" onClick={this.editClick.bind(this, record.pkId, index)}>修改</Button>;
                     } else {
-                        return '';
+                        editBtn =  '';
                     }
+                    return (
+                        <div>
+                            {changeBtn}
+                            {editBtn}
+                        </div>
+                    );
                 }
             }];
     }
@@ -94,6 +106,10 @@ class List extends React.Component<Props, {}> {
     editStartClick = (id, index) => {
         const { editStart } = this.props;
         editStart!(id, index);
+    }
+    // 列表数据－按钮－修改
+    editClick = (id, index) => {
+        console.log(id);
     }
     // 输入框赋值,策略id
     pkIdChange = (e) => {
@@ -167,7 +183,8 @@ class List extends React.Component<Props, {}> {
     }
 
     render() {
-        const { listData, totalInfo } = this.props;
+        const { data, listData, totalInfo } = this.props;
+        console.log('list', data);
         // 设置表单的排列间隙
         const formItemLayout = {
             labelCol: {
@@ -188,11 +205,15 @@ class List extends React.Component<Props, {}> {
         };
 
         // 策略状态项－下拉选框内部数组
-        let strategyStatus = cfg.strategyStatus;
-        let strategyStatusChildren = strategyStatus.map((item) => {
-            return <Option value={item.id} key={item.id}>{item.name}</Option>;
-        });
-
+        var strategyStatus = data.strategyStatus;
+        if (strategyStatus) {
+            let array = strategyStatus.map( (item, i) => Object.assign({}, item, { key: i }) );
+            var strategyStatusChildren = array.map((item) => {
+                return <Option value={item.id + ''} key={item.id}>{item.name}</Option>;
+            });
+            console.log('strategyStatusChildren', strategyStatusChildren);
+        }
+        
         // 新建项目，触发事件－下拉选框内部数组
         let strategyType = cfg.strategyType;
         let strategyTypeChildren = strategyType.map((item) => {
@@ -311,6 +332,7 @@ const WrappedAdvancedSearchForm = Form.create()(List as any);
 
 export function mapStateToProps(state: StoreState) {
     return {
+        data: state.list.data,                    // 项目数据
         params: state.list.params,
         totalInfo: state.list.totalInfo,     // 列表数据总数
         listData: state.list.listData.map( (item, i) => Object.assign({}, item, { key: i }) ),       // 列表数组     
