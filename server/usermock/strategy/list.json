@@ -1,5 +1,5 @@
 {
-  "code": 0,
+  "resultCode": 1,
   "data":{
     "totalInfo": 237,
     "marketingType": [
@@ -61,7 +61,7 @@
             "marketingTypeInt": 3,
             "createTime": "2017-11-24 14:53:52",
             "marketingLimit": 0,
-            "actionExpression": "4",
+            "actionExpression": "到家App推送",
             "updateContent": "无",
             "strategyState": "进行中"
         },
@@ -81,7 +81,7 @@
             "marketingTypeInt": 2,
             "createTime": "2017-11-24 14:38:13",
             "marketingLimit": 0,
-            "actionExpression": "2",
+            "actionExpression": "到家App推送",
             "updateContent": "无",
             "strategyState": "暂停"
         },
@@ -101,7 +101,7 @@
             "marketingTypeInt": 2,
             "createTime": "2017-11-24 14:38:06",
             "marketingLimit": 0,
-            "actionExpression": "2",
+            "actionExpression": "到家App推送",
             "updateContent": "无",
             "strategyState": "未开始"
         },

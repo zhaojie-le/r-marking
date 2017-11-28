@@ -78,6 +78,7 @@ module.exports = function(proxy, allowedHost) {
     },
     public: allowedHost,
     proxy,
+    disableHostCheck: true,
     setup(app) {
       // This lets us open files from the runtime error overlay.
       app.use(errorOverlayMiddleware());

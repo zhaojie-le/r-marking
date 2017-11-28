@@ -2,7 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000",
+  "proxy": "http://usermarket.daojia-inc.com",
   "dependencies": {
     "antd": "^2.13.9",
     "autoprefixer": "7.1.2",

@@ -60,7 +60,7 @@ class List extends React.Component<Props, {}> {
             {title: '创建人邮箱', dataIndex: 'createrEmail', key: '10'}, 
             {title: '操作', dataIndex: 'marketingTypeInt', key: '11',
                 render: (text, record, index) => {
-                    // // 接口值有待优化
+                    // 接口值有待优化
                     if (record.strategyState === '未开始' || record.strategyState === '已完成' || record.strategyState === '已过期') {
                         return '';
                     }
@@ -70,6 +70,7 @@ class List extends React.Component<Props, {}> {
                         return <Button size="small" onClick={this.editStartClick.bind(this, record.pkId, index)}>开始</Button>;
                     }
                     if (record.showEdit) {
+                        console.log('record.showEdit');
                         return <Button>修改</Button>;
                     } else {
                         return '';

@@ -1,5 +1,5 @@
 {
-  "code": 0,
+  "resultCode": 1,
   "data": {
     "showEdit": true,
     "strategyName": "lxn订单修改test",
