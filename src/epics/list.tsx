@@ -83,18 +83,18 @@ const strategyList: Epic<any, any, any>  = (action$, store, params) => {
     return action$.ofType(constants.STRATEGY_LIST).
         switchMap(
             (action): Observable<any>  => {
-                return ajax.post('/marketStrategy/list', { page: action.params.page,
-                                                           pageSize: action.params.pageSize,
-                                                           pkId: action.params.pkId,
-                                                           activityId: action.params.activityId,
-                                                           strategyName: action.params.strategyName,
-                                                           strategyState: action.params.strategyState,
-                                                           effectiveTime: action.params.effectiveTime,
-                                                           invalidTime: action.params.invalidTime,
-                                                           strategyType: action.params.strategyType,
-                                                           marketingType: action.params.marketingType
-                                                        }).
-                map(response => {
+                return ajax.post('/marketStrategy/list', { 
+                    page: action.params.page,
+                    pageSize: action.params.pageSize,
+                    pkId: action.params.pkId,
+                    activityId: action.params.activityId,
+                    strategyName: action.params.strategyName,
+                    strategyState: action.params.strategyState,
+                    effectiveTime: action.params.effectiveTime,
+                    invalidTime: action.params.invalidTime,
+                    strategyType: action.params.strategyType,
+                    marketingType: action.params.marketingType
+                }).map(response => {
                     if (response.response.code === 0) {
                         return (strategyListSuccess(response.response.data));
                     } else {
