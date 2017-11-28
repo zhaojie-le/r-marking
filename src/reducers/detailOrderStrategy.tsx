@@ -15,7 +15,7 @@ function enthusiasm(
             };
             default:
         return { ...state };
-        }
+        }  
     }
 export const detailOrderStrategyReducer = {
  detailOrderStrategy: enthusiasm

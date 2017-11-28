@@ -31,6 +31,7 @@ export interface Props {
 
 class List extends React.Component<Props, object> {
     state= {
+        pagetype: window.location.href.indexOf('changeDetail') > 0 ? false : true,
         startValue: '',
         endValue: '',
         endOpen: false,
@@ -85,7 +86,9 @@ componentDidMount() {
     strategyList();
 }
 render() {
-const { getFieldDecorator } = this.props.form;
+const { getFieldDecorator} = this.props.form;
+const { formState } = this.props;
+const { pagetype } = this.state;
 const formItemLayout = {
     labelCol: {
     xs: { span: 24 },
@@ -96,6 +99,7 @@ const formItemLayout = {
     sm: { span: 5 },
     },
 };
+console.log(formState);
 return (
 <div id="detailOrder">
     <Layout>
@@ -109,31 +113,31 @@ return (
             <Row>
                 <Col style={{ textAlign: 'left' }}>
                     <FormItem label="修改记录" {...formItemLayout} >
-                    {getFieldDecorator('stragyName', {
+                    {getFieldDecorator('pkId', {
                         rules: [{
-                            required: true, message: '策略名称不能为空！',
+                            required: true, message: '修改记录不能为空！',
                         }],
                     })(
-                      <span>无</span>
+                      <span>{formState.updateContent}</span>
                     )}
                     </FormItem>
                 </Col>
             </Row>
         <Row>
             <FormItem label="策略名称" {...formItemLayout} >
-                {getFieldDecorator('stragyName', {
+                {getFieldDecorator('strategyName', {
                         rules: [{
                             required: true, message: '策略名称不能为空！',
                         }],
                     })(
-                        <Input placeholder="text2" maxLength="30"/>
+                        <Input placeholder={formState.strategyName} maxLength="30" disabled={pagetype}/>
                 )}
             </FormItem>
         </Row>
         <Row>
             <Col style={{ textAlign: 'left' }}>
                 <FormItem label="生效时间" {...formItemLayout} >
-                {getFieldDecorator('starttime', {
+                {getFieldDecorator('effectiveTime', {
                         rules: [{
                             required: true, message: '策略名称不能为空！',
                         }],
@@ -142,8 +146,9 @@ return (
                             style={{ width: '100%' }}
                             disabledDate={this.disabledStartDate}
                             format="YYYY-MM-DD HH:mm:ss"
-                            placeholder="Start"
+                            placeholder={formState.effectiveTime}
                             onChange={this.onStartChange}
+                            disabled={pagetype}
                         />  
                 )}
                 </FormItem>
@@ -151,7 +156,7 @@ return (
         </Row>
         <Row>
         <FormItem label="生效时间" {...formItemLayout} >
-            {getFieldDecorator('endtime', {
+            {getFieldDecorator('invalidTime', {
                     rules: [{
                         required: true, message: '策略名称不能为空！',
                     }],
@@ -160,8 +165,9 @@ return (
                         style={{ width: '100%' }}
                         disabledDate={this.disabledEndDate}
                         format="YYYY-MM-DD HH:mm:ss"
-                        placeholder="End"
+                        placeholder={formState.invalidTime}
                         onChange={this.onEndChange}
+                        disabled={pagetype}
                     />
             )}
         </FormItem>
@@ -183,14 +189,15 @@ return (
                 <FormItem hasFeedback={false}>
                     {getFieldDecorator('delayDay', {
                         rules: [{
-                            required: true, message: '策略名称不能为空！',
+                            required: true, message: '延迟时间不能为空！',
                         }],
-                        initialValue: 0,
+                        initialValue: formState.actionParam.dayDelay,
                     })(
                         <InputNumber
                             min={0}
                             max={100}
                             style={{width: '90%'}}
+                            disabled={pagetype}
                         />
                     )}
                 </FormItem>
@@ -202,14 +209,15 @@ return (
                 <FormItem>
                     {getFieldDecorator('delayMinute', {
                         rules: [{
-                            required: true, message: '策略名称不能为空！',
+                            required: true, message: '延迟时间不能为空！',
                         }],
-                        initialValue: 0,
+                        initialValue: formState.actionParam.minuteDelay,
                     })(
                         <InputNumber
                             min={0}
                             max={100}
                             style={{width: '90%'}}
+                            disabled={pagetype}
                         />
                     )}
                 </FormItem>
@@ -227,11 +235,13 @@ return (
                         rules: [{
                             required: true, message: '推送限制不能为空！',
                         }],
+                        initialValue: formState.marketingLimit,
                     })(
                     <InputNumber
                         min={0}
                         max={100}
-                        style={{width: '90%'}}
+                        style={{width: '50%'}}
+                        disabled={pagetype}
                     />
                 )}
             </FormItem>
@@ -244,10 +254,10 @@ return (
                         }],
                     })(
                     <RadioGroup value={this.state.value}>
-                        <Radio value={1}>A</Radio>
-                        <Radio value={2}>B</Radio>
-                        <Radio value={3}>C</Radio>
-                        <Radio value={4}>D</Radio>
+                        <Radio value={1} disabled={pagetype}>A</Radio>
+                        <Radio value={2} disabled={pagetype} >B</Radio>
+                        <Radio value={3} disabled={pagetype}>C</Radio>
+                        <Radio value={4} disabled={pagetype}>D</Radio>
                       </RadioGroup>
                 )}
             </FormItem>
@@ -262,7 +272,8 @@ return (
                     <InputNumber
                         min={0}
                         max={100}
-                        style={{width: '90%'}}
+                        style={{width: '50%'}}
+                        disabled={pagetype}
                     />
                 )}
             </FormItem>
@@ -278,6 +289,7 @@ return (
                         min={0}
                         max={100}
                         style={{width: '90%'}}
+                        disabled={pagetype}
                     />
                 )}
             </FormItem>
@@ -289,7 +301,7 @@ return (
                             required: true, message: '责任人不能为空！',
                         }],
                     })(
-                        <Input placeholder="text2" maxLength="30"/>
+                        <Input placeholder="text2" maxLength="30" disabled={pagetype}/>
                 )}
             </FormItem>
         </Row>
@@ -300,7 +312,7 @@ return (
                             required: true, message: '修改状态不能为空！',
                         }],
                     })(
-                        <Input placeholder="text2" maxLength="30"/>
+                        <Input placeholder="text2" maxLength="30" disabled={pagetype}/>
                 )}
             </FormItem>
         </Row>
