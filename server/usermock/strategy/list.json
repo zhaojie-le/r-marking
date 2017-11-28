@@ -63,7 +63,7 @@
             "marketingLimit": 0,
             "actionExpression": "4",
             "updateContent": "无",
-            "strategyState": "未开始"
+            "strategyState": "进行中"
         },
         {
             "showEdit": true,
@@ -83,7 +83,7 @@
             "marketingLimit": 0,
             "actionExpression": "2",
             "updateContent": "无",
-            "strategyState": "未开始"
+            "strategyState": "暂停"
         },
         {
             "showEdit": true,

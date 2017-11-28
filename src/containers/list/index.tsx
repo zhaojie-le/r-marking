@@ -34,27 +34,6 @@ export interface Props {
     params?: any;
 }
 
-//   const data = [{
-//     'showEdit': true,                        //是否显示修改按钮
-//     'strategyName': 'lxn页面挂件测试',         // 策略名称
-//     'pkId': '243813584004464720',            // 策略id
-//     'marketingType': '支付',                  // 营销类型
-//     'pushAmount': 0,                         // 推送人数
-//     'effectiveTime': '2017-11-03 19:04:11',  // 生效时间
-//     'dataReport': true,
-//     'invalidTime': '2017-11-06 19:04:12',    // 失效时间
-//     'strategyTypeInt': 7,               
-//     'strategyType': '页面挂件',               // 触发事件  
-//     'activityId': 0,
-//     'createrEmail': 'liuxiaonan@daojia.com', // 创建者邮箱
-//     'marketingTypeInt': 7,
-//     'createTime': '2017-11-03 19:08:07',     // 创建时间
-//     'marketingLimit': 0,
-//     'actionExpression': '7',
-//     'updateContent': '无',
-//     'strategyState': '未开始'                 // 策略状态
-//   }];
-
 class List extends React.Component<Props, {}> {
     // 组件内部变量
     // state = {
@@ -66,8 +45,8 @@ class List extends React.Component<Props, {}> {
         // 表格头部设置参数
         this.columns = [
             {title: '策略ID', dataIndex: 'pkId', key: '0',
-            // 跳转连接方式
-                render: text => <a href="https://bj.daojia.com/">{text}</a>,
+                // 跳转连接方式-跳转至详情页
+                render: text => <a href="">{text}</a>,
             }, 
             {title: '策略名称', dataIndex: 'strategyName', key: '1'}, 
             {title: '策略状态', dataIndex: 'strategyState', key: '2'}, 
@@ -79,17 +58,19 @@ class List extends React.Component<Props, {}> {
             {title: '营销类型', dataIndex: 'marketingType', key: '8'}, 
             {title: '推送人数', dataIndex: 'pushAmount', key: '9'}, 
             {title: '创建人邮箱', dataIndex: 'createrEmail', key: '10'}, 
-            {title: '操作', dataIndex: 'dataReport', key: '11',
+            {title: '操作', dataIndex: 'marketingTypeInt', key: '11',
                 render: (text, record, index) => {
-                    // 接口值有待优化
-                    if (record.strategyState === '未开始') {
+                    // // 接口值有待优化
+                    if (record.strategyState === '未开始' || record.strategyState === '已完成' || record.strategyState === '已过期') {
                         return '';
-                    } else if (record.strategyState === '进行中' || record.strategyState === '待开始') {
+                    }
+                    if (record.strategyState === '进行中' || record.strategyState === '待开始') {
                         return <Button size="small" onClick={this.editStopClick.bind(this, record.pkId, index)}>暂停</Button>;
                     } else if (record.strategyState === '暂停') {
                         return <Button size="small" onClick={this.editStartClick.bind(this, record.pkId, index)}>开始</Button>;
-                    } else if (record.strategyState === '已完成' || record.strategyState === '已过期') {
-                        return '';
+                    }
+                    if (record.showEdit) {
+                        return <Button>修改</Button>;
                     } else {
                         return '';
                     }
@@ -329,21 +310,9 @@ const WrappedAdvancedSearchForm = Form.create()(List as any);
 
 export function mapStateToProps(state: StoreState) {
     return {
+        params: state.list.params,
         totalInfo: state.list.totalInfo,     // 列表数据总数
-        listData: state.list.listData.map( (item, i) => Object.assign({}, item, { key: i }) ),       // 列表数组
-        params: state.list.params
-        // params: {
-        //     page: 1,            // 翻页值
-        //     pageSize: 10,       // 每页列表数
-        //     pkId: '',           // 策略ID
-        //     activityId: '',     // 活动ID
-        //     strategyName: '',   // 策略名称
-        //     strategyState: '',  // 策略状态 
-        //     effectiveTime: '',  // 起始时间
-        //     invalidTime: '',    // 结束时间
-        //     strategyType: '',   // 触发事件
-        //     marketingType: ''   // 营销类型
-        // }
+        listData: state.list.listData.map( (item, i) => Object.assign({}, item, { key: i }) ),       // 列表数组     
     };
 }
 
