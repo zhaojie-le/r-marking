@@ -26,6 +26,24 @@
         width: 87.5%;
         > div:first-child {
             flex: 1;
+            .showInfo {
+                padding-top: 20px;
+                label {
+                    width: 10%;
+                    display: inline-block;
+                    text-align: left;
+                    font-weight: bold;
+                }
+                span {
+                    width: 40%;
+                    display: inline-block;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    vertical-align: middle;
+                    margin-left: 10px;
+                }
+            }
         }
         > div:last-child {
             width: 100px;

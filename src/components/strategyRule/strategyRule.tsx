@@ -7,6 +7,7 @@ export interface RuleProps {
     serviceSelect: any[];
     city: {name: string; value: string; type: string; list: any[]};
     orderState: any[];
+    formState: any;
     orderSource: { label: string; value: string; }[];
     onGetService: (cp: {lineId: number; cateId: number}) => void;
     onSaveRule: (rjs: string) => void;
@@ -117,7 +118,12 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         const { serviceOptions } = this.props;
         return serviceOptions.length ? (
             <FormItem label=" " {...layout.formItemLayout}>
-                    {getFieldDecorator('serviceOptions')(
+                    {getFieldDecorator('serviceOptions', {
+                        rules: [{
+                            required: true, message: '订单状态不能为空！',
+                        }],
+                        initialValue: this.props.formState.serviceOptions.value,
+                    })(
                         <Transfer
                             dataSource={serviceOptions}
                             showSearch={true}
@@ -144,6 +150,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                     rules: [{
                         required: true, message: '订单状态不能为空！',
                     }],
+                    initialValue: this.props.formState.orderState.value,
                 })(
                     <Select
                         showSearch={true}
@@ -210,7 +217,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         let triggerRuleTpl: React.ReactNode = {};
         let btnStyle = {};
         let wrapperStyle: any = {};
-        const { checkedList, orderStateLabel, serviceOptionLabel, orderSourceLabel, cityLabel, selectedLabel } = this.state;
+        const { orderStateLabel = '无', serviceOptionLabel = '无', orderSourceLabel = '无', cityLabel = '无', selectedLabel = '无' } = this.state;
         const { getFieldDecorator } = this.props.form;
         const cities = this.props.city.list.map((item, index) => {
             return {
@@ -221,7 +228,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         });
         const plainOptions = this.props.orderSource;
         const options = this.props.serviceSelect;
-
+        
         if (this.state.editing) {
             triggerRuleTpl = (
                 <section className="editInfo">
@@ -230,6 +237,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                             rules: [{
                                 required: true, message: '策略名称不能为空！',
                             }],
+                            initialValue: this.props.formState.serviceItem.value,
                         })(
                             <Cascader placeholder="请输入服务项！" options={options} onChange={this.onChange} />
                         )}
@@ -245,7 +253,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                                 全部
                             </Checkbox>
                             {getFieldDecorator('orderSource', {
-                                initialValue: checkedList,
+                                initialValue: this.props.formState.orderSource.value,
                                 rules: [{
                                     required: true, message: '策略名称不能为空！',
                                 }],
@@ -260,6 +268,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                             rules: [{
                                 required: true, message: '请选择城市！',
                             }],
+                            initialValue: this.props.formState.city.value,
                         })(
                             <Transfer
                                 dataSource={cities}
@@ -287,15 +296,15 @@ class StrategyRule extends React.Component<RuleProps, {}> {
             wrapperStyle.background = '#fff';
             wrapperStyle.border = 'none';
             triggerRuleTpl = (
-                               <section className="showInfo">
-                                    <p><label>规则名称:</label><span>订单事件</span></p>
-                                    <p><label>服务项:</label><span>{selectedLabel}</span></p>
-                                    <p><label>服务项具体选项:</label><span>{serviceOptionLabel}</span></p>
-                                    <p><label>订单来源:</label><span>{orderSourceLabel}</span></p>
-                                    <p><label>订单状态:</label><span>{orderStateLabel}</span></p>
-                                    <p><label>城市:</label><span>{cityLabel}</span></p>
-                                </section>
-                            );
+                <section className="showInfo">
+                    <p><label>规则名称:</label><span>订单事件</span></p>
+                    <p><label>服务项:</label><span>{selectedLabel}</span></p>
+                    <p><label>服务项具体选项:</label><span>{serviceOptionLabel}</span></p>
+                    <p><label>订单来源:</label><span>{orderSourceLabel}</span></p>
+                    <p><label>订单状态:</label><span>{orderStateLabel}</span></p>
+                    <p><label>城市:</label><span>{cityLabel}</span></p>
+                </section>
+            );
         }
         return (
             <div className="wrapperRules" style={wrapperStyle}>
