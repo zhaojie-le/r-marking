@@ -27,6 +27,7 @@ export interface Props {
     strategyList: () => void;
     formState?: any;
     form?: any;
+    value: 1;
 }
 
 class List extends React.Component<Props, object> {
@@ -62,7 +63,14 @@ class List extends React.Component<Props, object> {
       [field]: value,
     });
   }
-
+  
+  onRadioChange = (e) => {
+    console.log('radio checked', e.target.value);
+    this.setState({
+      value: e.target.value,
+    });
+  }
+  
   onStartChange = (value) => {
     this.onChange('startValue', value);
   }
@@ -99,7 +107,44 @@ const formItemLayout = {
     sm: { span: 5 },
     },
 };
-console.log(formState);
+
+let dayDelay, minuteDelay;
+if ( formState.actionParam !== undefined) {
+    dayDelay = formState.actionParam.dayDelay;
+    minuteDelay = formState.actionParam.minuteDelay;
+}
+
+let ruleList, refer , orderSource, orderStatus, city;
+ruleList = formState.ruleList;
+if ( ruleList !== undefined ) {
+    refer = ruleList[0].refer;
+    orderSource = ruleList[1].orderSource;
+    orderStatus = ruleList[2].orderStatus;
+    city =  ruleList[3].city;
+}
+
+// 修改页面失效时间、失效时间进行判断
+let effectiveTimeDis, invalidTimeDis;
+console.log(pagetype);
+if ( pagetype === false) {
+    // 开始有效时间可以选择时间的
+    if ( formState.strategyState === '未开始' || formState.strategyState === '待开始') {
+        effectiveTimeDis = false;
+    } else {
+        effectiveTimeDis = true;
+    }
+    // 结束有效时间可以选择时间的
+    if ( formState.strategyState === '已过期' || formState.strategyState === '已完成') {
+        invalidTimeDis = false;
+    } else {
+        invalidTimeDis = true;
+    }  
+} else {
+    // 开始、结束时间都不可以点击
+    effectiveTimeDis = true;
+    invalidTimeDis = true;
+}
+
 return (
 <div id="detailOrder">
     <Layout>
@@ -129,6 +174,7 @@ return (
                         rules: [{
                             required: true, message: '策略名称不能为空！',
                         }],
+                        initialValue: formState.strategyName,
                     })(
                         <Input placeholder={formState.strategyName} maxLength="30" disabled={pagetype}/>
                 )}
@@ -139,7 +185,7 @@ return (
                 <FormItem label="生效时间" {...formItemLayout} >
                 {getFieldDecorator('effectiveTime', {
                         rules: [{
-                            required: true, message: '策略名称不能为空！',
+                            required: true, message: '生效时间不能为空！',
                         }],
                     })(
                         <DatePicker
@@ -148,14 +194,14 @@ return (
                             format="YYYY-MM-DD HH:mm:ss"
                             placeholder={formState.effectiveTime}
                             onChange={this.onStartChange}
-                            disabled={pagetype}
+                            disabled={effectiveTimeDis}
                         />  
                 )}
                 </FormItem>
             </Col>
         </Row>
         <Row>
-        <FormItem label="生效时间" {...formItemLayout} >
+        <FormItem label="失效时间" {...formItemLayout} >
             {getFieldDecorator('invalidTime', {
                     rules: [{
                         required: true, message: '策略名称不能为空！',
@@ -167,7 +213,7 @@ return (
                         format="YYYY-MM-DD HH:mm:ss"
                         placeholder={formState.invalidTime}
                         onChange={this.onEndChange}
-                        disabled={pagetype}
+                        disabled={invalidTimeDis}
                     />
             )}
         </FormItem>
@@ -175,11 +221,20 @@ return (
         <Row>
         <Col style={{ textAlign: 'left' }}>
                 <FormItem label="触发规则" {...formItemLayout} >
-                        <div>
-                        触发事件：订单事件
-                        服务项：面包车搬家，箱式货车搬家，搬家
-                        订单来源：全部，到家app,微信，其他h5
+                {getFieldDecorator('delayDay', {
+                        rules: [{
+                            required: true, message: '延迟时间不能为空！',
+                        }],
+                    })(
+                       <div className="orderRules">
+                            <section className="showInfo">
+                                <p><label>服务项:</label><span>{refer}</span></p>
+                                <p><label>订单来源:</label><span>{orderSource}</span></p>
+                                <p><label>订单状态:</label><span>{orderStatus}</span></p>
+                                <p><label>城市:</label><span>{city}</span></p>
+                            </section>
                         </div>
+                    )} 
                 </FormItem>
         </Col>
         </Row>
@@ -191,13 +246,13 @@ return (
                         rules: [{
                             required: true, message: '延迟时间不能为空！',
                         }],
-                        initialValue: formState.actionParam.dayDelay,
+                        initialValue: dayDelay,
                     })(
                         <InputNumber
                             min={0}
                             max={100}
                             style={{width: '90%'}}
-                            disabled={pagetype}
+                            disabled={true}
                         />
                     )}
                 </FormItem>
@@ -211,13 +266,13 @@ return (
                         rules: [{
                             required: true, message: '延迟时间不能为空！',
                         }],
-                        initialValue: formState.actionParam.minuteDelay,
+                        initialValue: minuteDelay,
                     })(
                         <InputNumber
                             min={0}
                             max={100}
                             style={{width: '90%'}}
-                            disabled={pagetype}
+                            disabled={true}
                         />
                     )}
                 </FormItem>
@@ -231,7 +286,7 @@ return (
         </Row>
         <Row>
             <FormItem label="推送限制" {...formItemLayout} >
-                {getFieldDecorator('stragyName', {
+                {getFieldDecorator('marketingLimit', {
                         rules: [{
                             required: true, message: '推送限制不能为空！',
                         }],
@@ -240,15 +295,15 @@ return (
                     <InputNumber
                         min={0}
                         max={100}
-                        style={{width: '50%'}}
-                        disabled={pagetype}
+                        style={{width: 80}}
+                        disabled={true}
                     />
                 )}
             </FormItem>
         </Row>
         <Row>
             <FormItem label="营销类别" {...formItemLayout} >
-                {getFieldDecorator('ystragyName', {
+                {/* {getFieldDecorator('ystragyName', {
                         rules: [{
                             required: true, message: '营销类别不能为空！',
                         }],
@@ -259,21 +314,28 @@ return (
                         <Radio value={3} disabled={pagetype}>C</Radio>
                         <Radio value={4} disabled={pagetype}>D</Radio>
                       </RadioGroup>
-                )}
+                )} */}
+                <RadioGroup value={this.state.value} onChange={this.onRadioChange}>
+                    <Radio value={1} disabled={pagetype}>A</Radio>
+                    <Radio value={2} disabled={pagetype} >B</Radio>
+                    <Radio value={3} disabled={pagetype}>C</Radio>
+                    <Radio value={4} disabled={pagetype}>D</Radio>
+                </RadioGroup>
             </FormItem>
         </Row>
         <Row>
             <FormItem label="绑定活动id" {...formItemLayout} >
-                {getFieldDecorator('stragyName', {
+                {getFieldDecorator('activityId', {
                         rules: [{
-                            required: true, message: '绑定活动不能为空！',
+                            required: true, message: '绑定活动id不能为空！',
                         }],
+                        initialValue: formState.activityId,
                     })(
                     <InputNumber
                         min={0}
                         max={100}
-                        style={{width: '50%'}}
-                        disabled={pagetype}
+                        style={{width: 80}}
+                        disabled={true}
                     />
                 )}
             </FormItem>
@@ -296,23 +358,25 @@ return (
         </Row>
         <Row>
             <FormItem label="责任人" {...formItemLayout} >
-                {getFieldDecorator('stragyName', {
+                {getFieldDecorator('createrEmail', {
                         rules: [{
                             required: true, message: '责任人不能为空！',
                         }],
+                        initialValue: formState.createrEmail,
                     })(
-                        <Input placeholder="text2" maxLength="30" disabled={pagetype}/>
+                        <Input placeholder="text2" maxLength="30" disabled={true}/>
                 )}
             </FormItem>
         </Row>
         <Row>
             <FormItem label="修改状态" {...formItemLayout} >
-                {getFieldDecorator('stragyName', {
+                {getFieldDecorator('strategyState', {
                         rules: [{
                             required: true, message: '修改状态不能为空！',
                         }],
+                        initialValue: formState.strategyState,
                     })(
-                        <Input placeholder="text2" maxLength="30" disabled={pagetype}/>
+                        <Input placeholder="text2" maxLength="30" disabled={true}/>
                 )}
             </FormItem>
         </Row>
