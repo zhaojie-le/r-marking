@@ -24,6 +24,47 @@
         "marketingTypeInt": 3,
         "refer": 5665,
         "createTime": "2017-10-18 15:59:57",
+        "strategyMarketingType": [{
+                "name": "发券",
+                "id": 1
+            },
+            {
+                "name": "用券",
+                "id": 2
+            },
+            {
+                "name": "拉新",
+                "id": 3
+            },
+            {
+                "name": "商品[不拼团]",
+                "id": 4
+            },
+            {
+                "name": "购买会员卡",
+                "id": 5
+            },
+            {
+                "name": "评价",
+                "id": 6
+            },
+            {
+                "name": "支付",
+                "id": 7
+            },
+            {
+                "name": "调查问卷",
+                "id": 8
+            },
+            {
+                "name": "活动",
+                "id": 9
+            },
+            {
+                "name": "商品[拼团]",
+                "id": 10
+            }
+        ],
         "orderStatusValue": "0",
         "actionExpression": [
             "2"

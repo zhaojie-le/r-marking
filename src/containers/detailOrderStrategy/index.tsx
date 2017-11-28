@@ -4,6 +4,7 @@ import { StoreState } from '../../types/index';
 import { bindActionCreators } from 'redux';
 import { connect, Dispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import * as moment from 'moment';
 import { withRouter } from 'react-router-dom';
 import './index.scss';
 
@@ -16,9 +17,10 @@ import {
     Breadcrumb,
     DatePicker,
     InputNumber,
-    Radio
+    Radio,
+    Button
 } from 'antd';
-
+import { MarketingOrderModel } from '../../components';
 const FormItem = Form.Item;
 const {Content} = Layout;
 const RadioGroup = Radio.Group;
@@ -27,9 +29,18 @@ export interface Props {
     strategyList: () => void;
     formState?: any;
     form?: any;
-    value: 1;
+    onSaveModel: (modelData: string) => void;
 }
-
+const formItemLayout = {
+    labelCol: {
+    xs: { span: 24 },
+    sm: { span: 3 },
+    },
+    wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 5 },
+    },
+};
 class List extends React.Component<Props, object> {
     state= {
         pagetype: window.location.href.indexOf('changeDetail') > 0 ? false : true,
@@ -93,20 +104,32 @@ componentDidMount() {
     const { strategyList } = this.props;
     strategyList();
 }
+buttonMain () {
+  const { pagetype } = this.state;
+  if (pagetype === false) {
+    return (
+        <Row>
+        <FormItem style={{width: '100%'}}>
+            <Button type="primary" onClick={() => console.log(22)} style={{marginLeft: '138px'}}>创建策略</Button>
+            <Button onClick={() => console.log(12)} style={{marginLeft: '10px'}}>取消</Button>
+        </FormItem>
+      </Row>
+     );
+  } else {
+      return (
+        <Row>
+        <FormItem style={{width: '100%'}}>
+            <Button onClick={() => console.log(12)} style={{marginLeft: '138px'}}>返回</Button>
+        </FormItem>
+        </Row> 
+      );
+  }
+}
 render() {
 const { getFieldDecorator} = this.props.form;
-const { formState } = this.props;
+const { formState , form } = this.props;
 const { pagetype } = this.state;
-const formItemLayout = {
-    labelCol: {
-    xs: { span: 24 },
-    sm: { span: 3 },
-    },
-    wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 5 },
-    },
-};
+
 
 let dayDelay, minuteDelay;
 if ( formState.actionParam !== undefined) {
@@ -124,26 +147,17 @@ if ( ruleList !== undefined ) {
 }
 
 // 修改页面失效时间、失效时间进行判断
-let effectiveTimeDis, invalidTimeDis;
-console.log(pagetype);
+let effectiveTimeDis = true, invalidTimeDis  = true;
 if ( pagetype === false) {
     // 开始有效时间可以选择时间的
     if ( formState.strategyState === '未开始' || formState.strategyState === '待开始') {
         effectiveTimeDis = false;
-    } else {
-        effectiveTimeDis = true;
-    }
+    } 
     // 结束有效时间可以选择时间的
     if ( formState.strategyState === '已过期' || formState.strategyState === '已完成') {
         invalidTimeDis = false;
-    } else {
-        invalidTimeDis = true;
-    }  
-} else {
-    // 开始、结束时间都不可以点击
-    effectiveTimeDis = true;
-    invalidTimeDis = true;
-}
+    } 
+} 
 
 return (
 <div id="detailOrder">
@@ -184,6 +198,7 @@ return (
             <Col style={{ textAlign: 'left' }}>
                 <FormItem label="生效时间" {...formItemLayout} >
                 {getFieldDecorator('effectiveTime', {
+                        initialValue: moment(formState.effectiveTime), 
                         rules: [{
                             required: true, message: '生效时间不能为空！',
                         }],
@@ -203,6 +218,7 @@ return (
         <Row>
         <FormItem label="失效时间" {...formItemLayout} >
             {getFieldDecorator('invalidTime', {
+                    initialValue: moment(formState.invalidTime),
                     rules: [{
                         required: true, message: '策略名称不能为空！',
                     }],
@@ -341,7 +357,12 @@ return (
             </FormItem>
         </Row>
         <Row>
-            <FormItem label="营销方式" {...formItemLayout} >
+            <MarketingOrderModel 
+                form={form} 
+                onSaveModel={this.props.onSaveModel}
+                formState={formState}
+            />
+            {/* <FormItem label="营销方式" {...formItemLayout} >
                 {getFieldDecorator('stragyName', {
                         rules: [{
                             required: true, message: '绑定活动不能为空！',
@@ -354,7 +375,8 @@ return (
                         disabled={pagetype}
                     />
                 )}
-            </FormItem>
+            </FormItem> */}
+          
         </Row>
         <Row>
             <FormItem label="责任人" {...formItemLayout} >
@@ -376,10 +398,11 @@ return (
                         }],
                         initialValue: formState.strategyState,
                     })(
-                        <Input placeholder="text2" maxLength="30" disabled={true}/>
+                    <Input placeholder="text2" maxLength="30" disabled={true}/>
                 )}
             </FormItem>
         </Row>
+        {this.buttonMain()}
         </Form>
         </Content>
     </Layout>
