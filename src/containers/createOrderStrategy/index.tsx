@@ -38,7 +38,12 @@ export interface Props {
     onGetOrderState: () => void;
 }
 
-namespace laout {
+export interface DelayTimeProps {
+    value?: any;
+    onChange?: (value: any) => void;
+}
+
+namespace layout {
     export const formItemLayout = {
         labelCol: {
             xs: { span: 24 },
@@ -46,7 +51,7 @@ namespace laout {
         },
         wrapperCol: {
             xs: { span: 24 },
-            sm: { span: 5 },
+            sm: { span: 10 },
         },
     };
     
@@ -69,10 +74,74 @@ namespace laout {
     };
 }
 
-class List extends React.Component<Props, object> {
-    state = {
-        editing: false
+class DelayTime extends React.Component<DelayTimeProps, {}> {
+    constructor(props: any) {
+        super(props);
+
+        const value = this.props.value || {};
+        this.state = {
+            day: value.day || 0,
+            munite: value.minute || 0,
+        };
+    }
+
+    componentWillReceiveProps(nextProps: any) {
+        if ('value' in nextProps) {
+            const value = nextProps.value;
+            this.setState(value);
+        }
+    }
+
+    handleDayChange = (day) => {
+        if (!('value' in this.props)) {
+            this.setState({ day });
+        }
+        this.triggerChange({ day });
+    }
+
+    handleMinutChange = (minute) => {
+        if (!('value' in this.props)) {
+            this.setState({ minute });
+        }
+        this.triggerChange({ minute });
+    }
+
+    triggerChange = (changedValue) => {
+        const onChange = this.props.onChange;
+        if (onChange) {
+              onChange(Object.assign({}, this.state, changedValue));
+        }
+    }
+
+    render() {
+        return (
+            <div>
+                <InputNumber
+                    min={0}
+                    max={100}
+                    style={{width: '100px'}}
+                    onChange={this.handleDayChange}
+                />
+                <span>天</span>
+                <InputNumber
+                    min={0}
+                    max={100}
+                    style={{width: '100px', marginLeft : '15px'}}
+                    onChange={this.handleMinutChange}
+                />
+                <span>分钟</span>
+                <span style={{color : 'red', marginLeft : '15px'}}>注：订单状态变更后的X天Y分钟</span>
+            </div>
+        );
+    }
+}
+
+class List extends React.Component<Props, {}> {
+    state: any = {
+        editing: false,
+        sendCoupon: 1,
     };
+    private validateFieldsType: Array<string> = ['stragyName', 'time', 'delayTime', 'pushTimes', 'marketingCategory'];
     constructor(props: Props, context: any) {
         super(props, context);
     }
@@ -81,12 +150,45 @@ class List extends React.Component<Props, object> {
         this.props.onGetRules();
     }
 
-    handleSubmit = (e) => {
+    checkTime = (rule, value, callback) => {
+        if (value.day || value.minute) {
+            callback();
+            return;
+        }
+        callback('延迟时间不能为空!');
+    }
+
+    saveStrategy = (e) => {
         e.preventDefault();
-        this.props.form.validateFieldsAndScroll((err, values) => {
-          if (!err) {
-            console.log('Received values of form: ', values);
-          }
+        this.props.form.validateFieldsAndScroll(this.validateFieldsType, (err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+            }
+        });
+    }
+
+    addCoupon = () => {
+        const { getFieldDecorator } = this.props.form;
+        return this.state.sendCoupon === '0' ? (
+            this.validateFieldsType.push('coupon'),
+            (
+                <FormItem {...layout.formItemLayout2} label="优惠券" hasFeedback={false}>
+                    {getFieldDecorator('coupon', {
+                        rules: [{
+                            required: true, message: '策略名称不能为空！',
+                        }],
+                        initialValue: 0,
+                    })(
+                        <Input />
+                    )}
+                </FormItem>
+            )
+        ) : '';
+    }
+
+    marketingCategoryChange = (value) => {
+        this.setState({
+            sendCoupon: value
         });
     }
 
@@ -102,8 +204,8 @@ class List extends React.Component<Props, object> {
                             <Breadcrumb.Item>创建策略</Breadcrumb.Item>
                         </Breadcrumb>
                         <div className="wrapperContainer">
-                            <Form onSubmit={this.handleSubmit}>
-                                <FormItem {...laout.formItemLayout} label="策略名称" hasFeedback={false}>
+                            <Form onSubmit={this.saveStrategy}>
+                                <FormItem {...layout.formItemLayout} label="策略名称" validateStatus="error" hasFeedback={false}>
                                     {getFieldDecorator('stragyName', {
                                         rules: [{
                                             required: true, message: '策略名称不能为空！',
@@ -112,7 +214,7 @@ class List extends React.Component<Props, object> {
                                         <Input placeholder="请输入策略名称!"/>
                                     )}
                                 </FormItem>
-                                <FormItem {...laout.formItemLayout} label="生效时间" hasFeedback={false}>
+                                <FormItem {...layout.formItemLayout} label="生效时间" hasFeedback={false}>
                                     {getFieldDecorator('time', {
                                         rules: [{
                                             required: true, message: '策略名称不能为空！',
@@ -139,51 +241,18 @@ class List extends React.Component<Props, object> {
                                     city={this.props.rules[3]}
                                     serviceSelect={this.props.rules[0].list}
                                 />
-                                <Row className="setDelayTime">
-                                    <Col span={3} className="delayTimeLabel"><label>延迟时间：</label></Col>
-                                    <Col span={3}>
-                                        <FormItem hasFeedback={false}>
-                                            {getFieldDecorator('delayDay', {
-                                                rules: [{
-                                                    required: true, message: '策略名称不能为空！',
-                                                }],
-                                                initialValue: 0,
-                                            })(
-                                                <InputNumber
-                                                    min={0}
-                                                    max={100}
-                                                    style={{width: '90%'}}
-                                                />
-                                            )}
-                                        </FormItem>
-                                    </Col>
-                                    <Col span={1}>
-                                        <span className="lh30">天</span>
-                                    </Col>
-                                    <Col span={3}>
-                                        <FormItem>
-                                            {getFieldDecorator('delayMinute', {
-                                                rules: [{
-                                                    required: true, message: '策略名称不能为空！',
-                                                }],
-                                                initialValue: 0,
-                                            })(
-                                                <InputNumber
-                                                    min={0}
-                                                    max={100}
-                                                    style={{width: '90%'}}
-                                                />
-                                            )}
-                                        </FormItem>
-                                    </Col>
-                                    <Col span={1}>
-                                        <span className="lh30">分钟</span>
-                                    </Col>
-                                    <Col>
-                                        <p className="payAttention">注：订单状态变更后的X天Y分钟</p>
-                                    </Col>
-                                </Row>
-                                <FormItem {...laout.formItemLayout} label="推送次数" hasFeedback={false}>
+                                <FormItem {...layout.formItemLayout} label="延迟时间">
+                                    {getFieldDecorator('delayTime', {
+                                        initialValue: { day: 0, minute: 0 },
+                                        rules: [{
+                                            required: true, message: '延迟时间不能为空！',
+                                            validator: this.checkTime
+                                        }],
+                                    })(
+                                        <DelayTime />
+                                    )}
+                                </FormItem> 
+                                <FormItem {...layout.formItemLayout} label="推送次数" hasFeedback={false}>
                                     {getFieldDecorator('pushTimes', {
                                         rules: [{
                                             required: true, message: '推送次数不能为空！',
@@ -218,7 +287,7 @@ class List extends React.Component<Props, object> {
                                                     style={{ width: 200 }}
                                                     placeholder="请选择营销类别!"
                                                     optionFilterProp="children"
-                                                    onChange={() => { console.log(); }}
+                                                    onChange={this.marketingCategoryChange}
                                                     onFocus={() => { console.log(); }}
                                                     onBlur={() => { console.log(); }}
                                                 >
@@ -232,16 +301,7 @@ class List extends React.Component<Props, object> {
                                         </FormItem>
                                     </Col>
                                     <Col span={9}>
-                                        <FormItem {...laout.formItemLayout2} label="优惠券" hasFeedback={false}>
-                                            {getFieldDecorator('coupon', {
-                                                rules: [{
-                                                    required: true, message: '策略名称不能为空！',
-                                                }],
-                                                initialValue: 0,
-                                            })(
-                                                <Input />
-                                            )}
-                                        </FormItem>
+                                        {this.addCoupon()}
                                     </Col>
                                 </Row>
                                 <MarketingModel 
@@ -249,7 +309,7 @@ class List extends React.Component<Props, object> {
                                     onSaveModel={this.props.onSaveModel}
                                     formState={this.props.formState}
                                 />
-                                <FormItem {...laout.formItemLayout} label="责任人" hasFeedback={false}>
+                                <FormItem {...layout.formItemLayout} label="责任人" hasFeedback={false}>
                                     {getFieldDecorator('owner', {
                                         rules: [{
                                             required: true, message: '策略名称不能为空！',
@@ -259,8 +319,8 @@ class List extends React.Component<Props, object> {
                                         <Input disabled={true}/>
                                     )}
                                 </FormItem>
-                                <FormItem {...laout.tailFormItemLayout}>
-                                    <Button type="primary" onClick={() => console.log(22)}>创建策略</Button>
+                                <FormItem {...layout.tailFormItemLayout}>
+                                    <Button type="primary" onClick={this.saveStrategy}>创建策略</Button>
                                     <Button onClick={() => console.log(12)} style={{marginLeft: '10px'}}>取消</Button>
                                 </FormItem>
                             </Form>

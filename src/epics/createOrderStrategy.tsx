@@ -55,7 +55,7 @@ const getService: Epic<any, any> = (action$, store) => {
                         if (response.resultCode === 1) {
                             const serviceOptions = response.data.map((item) => {
                                 return {
-                                    title: item.name,
+                                    title: item.label,
                                     key: item.value.id,
                                     val: item.value.val
                                 };
@@ -94,7 +94,7 @@ const getRules: Epic<any, any> = (action$, store) => {
                         if (response.resultCode === 1) {
                             response.data[1] = response.data[1].list.map((item) => {
                                 const newItem:  { label: string; value: string; } = {
-                                    label: item.name,
+                                    label: item.label,
                                     value: item.value,
                                 };
                                 return newItem;
