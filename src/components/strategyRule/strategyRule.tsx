@@ -64,7 +64,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     }
 
     componentDidMount() {
-        console.log(1);
+        console.log('strateRule did mount');
     }
 
     onEdit = (isEditing) => {
@@ -143,7 +143,6 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     orderState = () => {
         const { getFieldDecorator } = this.props.form;
         const { orderState } = this.props;
-
         return orderState.length ? (
             <FormItem label="订单状态" {...layout.formItemLayout}>
                 {getFieldDecorator('orderState', {
@@ -160,7 +159,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                         onChange={this.handleChange}
                         filterOption={(input, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                     >
-                        {orderState.map((item, i) => (<Option value={item.value} key={i}>{item.name}</Option>))}
+                        {orderState.map((item, i) => (<Option value={item.value} key={i}>{item.label}</Option>))}
                     </Select>
                 )}
             </FormItem>
@@ -194,7 +193,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         for ( let item of Object.keys(values)) {
             switch (item) {
                 case 'orderState':
-                    labelSet.orderStateLabel = getKeysValues(this.props.orderState, values.orderState, 'value', 'name');
+                    labelSet.orderStateLabel = getKeysValues(this.props.orderState, values.orderState, 'value', 'label');
                     break;
                 case 'serviceOptions':
                     labelSet.serviceOptionLabel = getKeysValues(this.props.serviceOptions, values.serviceOptions, 'key', 'title');
@@ -203,7 +202,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                     labelSet.orderSourceLabel = getKeysValues(this.props.orderSource, values.orderSource, 'value', 'label');
                     break;
                 case 'city':
-                    labelSet.cityLabel = getKeysValues(this.props.city.list, values.city.map((one) => `${parseInt(one, 10) + 1}`), 'value', 'name');
+                    labelSet.cityLabel = getKeysValues(this.props.city.list, values.city.map((one) => `${parseInt(one, 10) + 1}`), 'value', 'label');
                     break;
                 default:
                     break;
@@ -221,7 +220,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         const { getFieldDecorator } = this.props.form;
         const cities = this.props.city.list.map((item, index) => {
             return {
-                title: item.name,
+                title: item.label,
                 value: item.value,
                 key: `${index}`
             };
