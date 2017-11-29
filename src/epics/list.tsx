@@ -67,7 +67,7 @@ const editStop: Epic<any, any>  = (action$, store) => {
     return action$.ofType(constants.EDIT_STOP).
         switchMap(
             (action): Observable<any>  => {
-                return ajax.getJSON(`/marketStrategy/stop?StrategyId=${action.id}`).
+                return ajax.getJSON(`/marketStrategy/stop/${action.id}`).
                     map((response: {resultCode: number, data: object}) => {
                         if (response.resultCode === 1) {
                             return (editStopSuc(response.data));

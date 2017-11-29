@@ -46,6 +46,7 @@ function enthusiasm(
             case EDIT_START_SUC:
                 let startArray = state.listData;
                 startArray.splice(state.editStartInx, 1, action.item);
+                console.log('changelist', startArray);
                 return {...state, listData: startArray};
             case EDIT_STOP:
                 return {...state, editStopInx: action.inx, editStopId: action.id};
