@@ -307,6 +307,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
             wrapperStyle = { background: '#fff', border: 'none'};
             btnStyle = {display: 'block'};
         }
+        
         return (
             <div className="marketingModel" style={wrapperStyle}>
                 <label>营销方式：</label>

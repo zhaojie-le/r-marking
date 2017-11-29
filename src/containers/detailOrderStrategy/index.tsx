@@ -41,13 +41,24 @@ const formItemLayout = {
     sm: { span: 5 },
     },
 };
+const formTypeLayout = {
+    labelCol: {
+    xs: { span: 24 },
+    sm: { span: 3 },
+    },
+    wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 20 },
+    },
+};
 class List extends React.Component<Props, object> {
     state= {
         pagetype: window.location.href.indexOf('changeDetail') > 0 ? false : true,
         startValue: '',
         endValue: '',
         endOpen: false,
-        value: 1,
+        // value: '',
+        editing: true
      };
     constructor(props: Props, context: any) {
      super(props, context);
@@ -76,10 +87,20 @@ class List extends React.Component<Props, object> {
   }
   
   onRadioChange = (e) => {
-    console.log('radio checked', e.target.value);
-    this.setState({
-      value: e.target.value,
-    });
+    // console.log('radio checked', e.target.value);
+    this.props.formState.marketingTypeInt = e.target.value;
+    // this.setState({
+    //   value: e.target.value,
+    // });
+    if ( e.target.value === 1) {
+        this.setState({
+            editing: false,
+          });
+    } else {
+        this.setState({
+            editing: true,
+          });
+    }
   }
   
   onStartChange = (value) => {
@@ -130,20 +151,37 @@ const { getFieldDecorator} = this.props.form;
 const { formState , form } = this.props;
 const { pagetype } = this.state;
 
-
 let dayDelay, minuteDelay;
 if ( formState.actionParam !== undefined) {
     dayDelay = formState.actionParam.dayDelay;
     minuteDelay = formState.actionParam.minuteDelay;
 }
 
-let ruleList, refer , orderSource, orderStatus, city;
+let ruleList, ruleListArray;
 ruleList = formState.ruleList;
 if ( ruleList !== undefined ) {
-    refer = ruleList[0].refer;
-    orderSource = ruleList[1].orderSource;
-    orderStatus = ruleList[2].orderStatus;
-    city =  ruleList[3].city;
+    ruleListArray = [
+        {
+            name: '服务项:',
+            value: formState.ruleList[0].refer
+        },
+        {
+            name: '订单来源:',
+            value: formState.ruleList[1].orderSource
+        },
+        {
+            name: '订单状态:',
+            value: formState.ruleList[2].orderStatus
+        },
+        {
+            name: '城市:',
+            value: formState.ruleList[3].city
+        },
+    ]; 
+    
+    ruleListArray = ruleListArray.map((item, i) => {
+        return <p key={i}><label>{item.name}</label><span >{item.value}</span></p>;
+       });
 }
 
 // 修改页面失效时间、失效时间进行判断
@@ -158,6 +196,21 @@ if ( pagetype === false) {
         invalidTimeDis = false;
     } 
 } 
+
+// 营销类别的展示
+let strategyMarketingType = formState.strategyMarketingType, strategyTypeChildren;
+if ( strategyMarketingType !== undefined) {
+       strategyTypeChildren = strategyMarketingType.map((item) => {
+        return <Radio value={item.id} key={item.id} disabled={pagetype}>{item.name}</Radio>
+       });
+}
+
+let editStyle;
+if (this.state.editing && formState.marketingTypeInt !== 1) {
+    editStyle = {display: 'none'};
+} else {
+    editStyle = {display: 'block'};
+}
 
 return (
 <div id="detailOrder">
@@ -243,12 +296,9 @@ return (
                         }],
                     })(
                        <div className="orderRules">
-                            <section className="showInfo">
-                                <p><label>服务项:</label><span>{refer}</span></p>
-                                <p><label>订单来源:</label><span>{orderSource}</span></p>
-                                <p><label>订单状态:</label><span>{orderStatus}</span></p>
-                                <p><label>城市:</label><span>{city}</span></p>
-                            </section>
+                           <section className="showInfo">
+                           {ruleListArray}
+                           </section>
                         </div>
                     )} 
                 </FormItem>
@@ -296,9 +346,6 @@ return (
             <Col span={1}>
                 <span className="lh30">分钟</span>
             </Col>
-            <Col>
-                <p className="payAttention">注：订单状态变更后的X天Y分钟</p>
-            </Col>
         </Row>
         <Row>
             <FormItem label="推送限制" {...formItemLayout} >
@@ -318,44 +365,29 @@ return (
             </FormItem>
         </Row>
         <Row>
-            <FormItem label="营销类别" {...formItemLayout} >
-                {/* {getFieldDecorator('ystragyName', {
-                        rules: [{
-                            required: true, message: '营销类别不能为空！',
-                        }],
-                    })(
-                    <RadioGroup value={this.state.value}>
-                        <Radio value={1} disabled={pagetype}>A</Radio>
-                        <Radio value={2} disabled={pagetype} >B</Radio>
-                        <Radio value={3} disabled={pagetype}>C</Radio>
-                        <Radio value={4} disabled={pagetype}>D</Radio>
-                      </RadioGroup>
-                )} */}
-                <RadioGroup value={this.state.value} onChange={this.onRadioChange}>
-                    <Radio value={1} disabled={pagetype}>A</Radio>
+            <FormItem label="营销类别" {...formTypeLayout} >
+                <RadioGroup value={formState.marketingTypeInt} onChange={this.onRadioChange}  style={{width: '100%'}}>
+                    {strategyTypeChildren}
+                    {/* <Radio value={1} disabled={pagetype}>A</Radio>
                     <Radio value={2} disabled={pagetype} >B</Radio>
                     <Radio value={3} disabled={pagetype}>C</Radio>
-                    <Radio value={4} disabled={pagetype}>D</Radio>
+                    <Radio value={4} disabled={pagetype}>D</Radio> */}
                 </RadioGroup>
             </FormItem>
         </Row>
-        <Row>
-            <FormItem label="绑定活动id" {...formItemLayout} >
+        <Row  style={editStyle}>
+            <FormItem label="优惠券" {...formItemLayout} >
                 {getFieldDecorator('activityId', {
                         rules: [{
-                            required: true, message: '绑定活动id不能为空！',
+                            required: true, message: '优惠券不能为空！',
                         }],
                         initialValue: formState.activityId,
                     })(
-                    <InputNumber
-                        min={0}
-                        max={100}
-                        style={{width: 80}}
-                        disabled={true}
-                    />
+                    <Input placeholder={formState.strategyName} maxLength="30" disabled={pagetype}/>                    
                 )}
             </FormItem>
         </Row>
+                
         <Row>
             <MarketingOrderModel 
                 form={form} 
