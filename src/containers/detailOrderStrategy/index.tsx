@@ -57,7 +57,6 @@ class List extends React.Component<Props, object> {
         startValue: '',
         endValue: '',
         endOpen: false,
-        // value: '',
         editing: true
      };
     constructor(props: Props, context: any) {
@@ -117,7 +116,7 @@ class List extends React.Component<Props, object> {
     this.setState({ endOpen: open });
   }
 componentDidMount() {
-// 初始请求列表数据，首屏10条数据
+    // 初始请求列表数据，首屏10条数据
     const { strategyList } = this.props;
     strategyList();
 }
@@ -147,12 +146,14 @@ const { getFieldDecorator} = this.props.form;
 const { formState , form } = this.props;
 const { pagetype } = this.state;
 
+// 生效、和失效时间的初始化
 let dayDelay, minuteDelay;
 if ( formState.actionParam !== undefined) {
     dayDelay = formState.actionParam.dayDelay;
     minuteDelay = formState.actionParam.minuteDelay;
 }
 
+// 触发规则拼写规则的拼写规则
 let ruleList, ruleListArray;
 ruleList = formState.ruleList;
 if ( ruleList !== undefined ) {
@@ -200,7 +201,7 @@ if ( strategyMarketingType !== undefined) {
         return <Radio value={item.id} key={item.id} disabled={pagetype}>{item.name}</Radio>
        });
 }
-
+// 营销类别优惠券规则
 let editStyle;
 if (this.state.editing && formState.marketingTypeInt !== 1) {
     editStyle = {display: 'none'};
