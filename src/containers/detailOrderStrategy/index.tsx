@@ -87,11 +87,7 @@ class List extends React.Component<Props, object> {
   }
   
   onRadioChange = (e) => {
-    // console.log('radio checked', e.target.value);
     this.props.formState.marketingTypeInt = e.target.value;
-    // this.setState({
-    //   value: e.target.value,
-    // });
     if ( e.target.value === 1) {
         this.setState({
             editing: false,
@@ -287,10 +283,10 @@ return (
             )}
         </FormItem>
         </Row>
-        <Row>
-        <Col style={{ textAlign: 'left' }}>
-                <FormItem label="触发规则" {...formItemLayout} >
-                {getFieldDecorator('delayDay', {
+        <Row>  
+        <Col style={{ textAlign: 'left', background: '#eee', padding: '10px 0px', border: '1px solid #ccc'}}>
+                <FormItem label="触发规则" {...formItemLayout}  style={{ margin: '0' }}>
+                {getFieldDecorator('orderRules', {
                         rules: [{
                             required: true, message: '延迟时间不能为空！',
                         }],
@@ -308,7 +304,7 @@ return (
             <Col span={3} className="delayTimeLabel"><label>延迟时间：</label></Col>
             <Col span={3}>
                 <FormItem hasFeedback={false}>
-                    {getFieldDecorator('delayDay', {
+                    {getFieldDecorator('dayDelay', {
                         rules: [{
                             required: true, message: '延迟时间不能为空！',
                         }],
@@ -328,7 +324,7 @@ return (
             </Col>
             <Col span={3}>
                 <FormItem>
-                    {getFieldDecorator('delayMinute', {
+                    {getFieldDecorator('minuteDelay', {
                         rules: [{
                             required: true, message: '延迟时间不能为空！',
                         }],
@@ -368,10 +364,6 @@ return (
             <FormItem label="营销类别" {...formTypeLayout} >
                 <RadioGroup value={formState.marketingTypeInt} onChange={this.onRadioChange}  style={{width: '100%'}}>
                     {strategyTypeChildren}
-                    {/* <Radio value={1} disabled={pagetype}>A</Radio>
-                    <Radio value={2} disabled={pagetype} >B</Radio>
-                    <Radio value={3} disabled={pagetype}>C</Radio>
-                    <Radio value={4} disabled={pagetype}>D</Radio> */}
                 </RadioGroup>
             </FormItem>
         </Row>
@@ -394,21 +386,6 @@ return (
                 onSaveModel={this.props.onSaveModel}
                 formState={formState}
             />
-            {/* <FormItem label="营销方式" {...formItemLayout} >
-                {getFieldDecorator('stragyName', {
-                        rules: [{
-                            required: true, message: '绑定活动不能为空！',
-                        }],
-                    })(
-                    <InputNumber
-                        min={0}
-                        max={100}
-                        style={{width: '90%'}}
-                        disabled={pagetype}
-                    />
-                )}
-            </FormItem> */}
-          
         </Row>
         <Row>
             <FormItem label="责任人" {...formItemLayout} >
