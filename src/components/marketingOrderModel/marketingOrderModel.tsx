@@ -44,8 +44,9 @@ enum ChannelType {
 
 export default class MarketingModel extends React.Component<RuleProps, {}> {
     state: any = {
-        editing: false,
-        channels: [],
+        editpage: window.location.href.indexOf('changeDetail') > 0 ? true : false,
+        editing: true,
+        channels: [1, 3],
         showData: [],
         channelType: [[1, '短信'], [2, '58到家-APP push'], [3, '58速运-APP push'], [4, '58到家公众号']],
     };
@@ -62,6 +63,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
 
     onSave = () => {
         const fields: Model[] = [];
+       
         this.state.channels.forEach((item, i) => {
             switch (item) {
                 case ChannelType.Sms:
@@ -114,10 +116,13 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
         const newChannelType = this.state.channelType.filter((item) => {
             return item[0] !== parseInt(e.key, 10);
         });
+        console.log('newChannel=' + newChannel);
+        console.log('newChannel=' + newChannelType);
         this.setState({
             channels: newChannel,
             channelType: newChannelType
         });
+        console.log(this.state.channelType);
     }
  
     shiftUp = (index, label) => {
@@ -141,6 +146,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
 
     geteratorChannel = () => {
         const { getFieldDecorator } = this.props.form;
+        const { formState } = this.props;
         const { 
             copyWritingSms = {value: ''}, 
             jumpLinkSms = {value: ''},
@@ -151,8 +157,19 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
         const rowStyle = {
             marginBottom: 20
         };
-
-        return this.state.channels.map((item, i) => {
+        if (formState.actionExpression === undefined) {
+            return false;
+        }
+        console.log(formState.actionExpression);
+        console.log(this.state.channelType);
+        const newChannelType = this.state.channelType.filter((item) => {
+                return item[0] !== 2;
+        });
+        console.log('newChannel=' + newChannelType);
+        // this.setState({
+        //     channelType: newChannelType
+        // });
+        return formState.actionExpression.map((item, i) => {
             const index = i + 1;
             switch (item) {
                 case ChannelType.Sms:
@@ -301,25 +318,41 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
         let wrapperStyle = {};
         let btnStyle = {};
 
-        if (this.state.editing) {
-            btnStyle = {display: 'none'};
-        } else {
-            wrapperStyle = { background: '#fff', border: 'none'};
-            btnStyle = {display: 'block'};
-        }
-        
-        return (
-            <div className="marketingModel" style={wrapperStyle}>
-                <label>营销方式：</label>
-                <div className="triggerRules">
-                    <div className="ruleContent">
-                        {this.getContentTpl()}
-                    </div>  
-                    <div>
-                        <Button onClick={() => this.onEdit(true)} style={btnStyle}>编辑</Button>
+        // if (this.state.editing) {
+        //     btnStyle = {display: 'none'};
+        // } else {
+        //     wrapperStyle = { background: '#fff', border: 'none'};
+        //     btnStyle = {display: 'block'};
+        // }
+        if (this.state.editpage) {
+            return (
+                <div className="marketingModel" style={wrapperStyle}>
+                    <label>营销方式：</label>
+                    <div className="triggerRules">
+                        <div className="ruleContent">
+                            {this.getContentTpl()}
+                        </div>  
+                        {/* <div>
+                            <Button onClick={() => this.onEdit(true)} style={btnStyle}>编辑</Button>
+                        </div> */}
                     </div>
                 </div>
-            </div>
-        );
+            );
+        } else {
+            return (
+                <div className="marketingModel" style={wrapperStyle}>
+                    <label>营销方式：</label>
+                    <div className="triggerRules">
+                        <div className="ruleContent">
+                            {this.getContentTpl()}
+                        </div>  
+                        <div>
+                            <Button onClick={() => this.onEdit(true)} style={btnStyle}>编辑</Button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+  
     }
 }

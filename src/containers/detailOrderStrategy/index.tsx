@@ -20,16 +20,19 @@ import {
     Radio,
     Button
 } from 'antd';
-import { MarketingOrderModel } from '../../components';
+// import { MarketingOrderModel } from '../../components';
 const FormItem = Form.Item;
 const {Content} = Layout;
 const RadioGroup = Radio.Group;
 
 export interface Props {
-    strategyList: () => void;
+    strategyList: (modelData: number) => void;
+    GetQueryString: (modelData: string) => void;
+    onSaveRule: (modelData: object) => void;
     formState?: any;
     form?: any;
     onSaveModel: (modelData: string) => void;
+    param: {};
 }
 const formItemLayout = {
     labelCol: {
@@ -87,6 +90,7 @@ class List extends React.Component<Props, object> {
   
   onRadioChange = (e) => {
     this.props.formState.marketingTypeInt = e.target.value;
+
     if ( e.target.value === 1) {
         this.setState({
             editing: false,
@@ -100,6 +104,9 @@ class List extends React.Component<Props, object> {
   
   onStartChange = (value) => {
     this.onChange('startValue', value);
+    console.log(value);
+    console.log(value.Moment);
+    console.log(value._i);
   }
 
   onEndChange = (value) => {
@@ -115,18 +122,50 @@ class List extends React.Component<Props, object> {
   handleEndOpenChange = (open) => {
     this.setState({ endOpen: open });
   }
+
+  onSave = (e) => {
+    console.log(11);
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      console.log(13);  
+      if (!err) {
+        // 得到的values数据重组
+        values.effectiveTime = values.effectiveTime._i;
+        values.invalidTime = values.invalidTime._i;
+        values.marketingTypeInt = this.props.formState.marketingTypeInt;
+        console.log('Received values of form: ', values);
+        const { onSaveRule } = this.props;
+        onSaveRule(values);
+      }
+    });
+  }
+
+GetQueryString= (id) => {
+    let reg = new RegExp('(^|&)' + id + '=([^&]*)(&|$)');
+    let r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+        return Number(r[2]);
+    } else {
+        return 0;
+    }
+}
+
 componentDidMount() {
     // 初始请求列表数据，首屏10条数据
     const { strategyList } = this.props;
-    strategyList();
+    //  获得
+    let id;
+    id = this.GetQueryString('id');
+    strategyList(id);
 }
+
 buttonMain () {
   const { pagetype } = this.state;
   if (pagetype === false) {
     return (
         <Row>
         <FormItem style={{width: '100%'}}>
-            <Button type="primary" onClick={() => console.log(22)} style={{marginLeft: '138px'}}>创建策略</Button>
+            <Button type="primary" onClick={this.onSave} style={{marginLeft: '138px'}}>创建策略</Button>
             <Button onClick={() => console.log(12)} style={{marginLeft: '10px'}}>取消</Button>
         </FormItem>
       </Row>
@@ -143,7 +182,7 @@ buttonMain () {
 }
 render() {
 const { getFieldDecorator} = this.props.form;
-const { formState , form } = this.props;
+const { formState} = this.props;
 const { pagetype } = this.state;
 
 // 生效、和失效时间的初始化
@@ -183,10 +222,14 @@ if ( ruleList !== undefined ) {
 
 // 修改页面失效时间、失效时间进行判断
 let effectiveTimeDis = true, invalidTimeDis  = true;
+let dayDelayDis = true, minuteDelayDis = true, marketingLimitDis = true;
 if ( pagetype === false) {
     // 开始有效时间可以选择时间的
     if ( formState.strategyState === '未开始' || formState.strategyState === '待开始') {
         effectiveTimeDis = false;
+        dayDelayDis = false;
+        minuteDelayDis = false;
+        marketingLimitDis = false;
     } 
     // 结束有效时间可以选择时间的
     if ( formState.strategyState === '已过期' || formState.strategyState === '已完成') {
@@ -226,6 +269,7 @@ return (
                         rules: [{
                             required: true, message: '修改记录不能为空！',
                         }],
+                        initialValue: formState.pkId,
                     })(
                       <span>{formState.updateContent}</span>
                     )}
@@ -291,6 +335,7 @@ return (
                         rules: [{
                             required: true, message: '延迟时间不能为空！',
                         }],
+                        initialValue: '11',
                     })(
                        <div className="orderRules">
                            <section className="showInfo">
@@ -315,7 +360,7 @@ return (
                             min={0}
                             max={100}
                             style={{width: '90%'}}
-                            disabled={true}
+                            disabled={dayDelayDis}
                         />
                     )}
                 </FormItem>
@@ -335,7 +380,7 @@ return (
                             min={0}
                             max={100}
                             style={{width: '90%'}}
-                            disabled={true}
+                            disabled={minuteDelayDis}
                         />
                     )}
                 </FormItem>
@@ -356,7 +401,7 @@ return (
                         min={0}
                         max={100}
                         style={{width: 80}}
-                        disabled={true}
+                        disabled={marketingLimitDis}
                     />
                 )}
             </FormItem>
@@ -376,18 +421,18 @@ return (
                         }],
                         initialValue: formState.activityId,
                     })(
-                    <Input placeholder={formState.strategyName} maxLength="30" disabled={pagetype}/>                    
+                    <Input style={{width: 80}} placeholder={formState.activityId} maxLength="30" disabled={pagetype}/>                    
                 )}
             </FormItem>
         </Row>
-                
-        <Row>
+         
+        {/* <Row>
             <MarketingOrderModel 
                 form={form} 
                 onSaveModel={this.props.onSaveModel}
                 formState={formState}
             />
-        </Row>
+        </Row> */}
         <Row>
             <FormItem label="责任人" {...formItemLayout} >
                 {getFieldDecorator('createrEmail', {
@@ -396,7 +441,7 @@ return (
                         }],
                         initialValue: formState.createrEmail,
                     })(
-                        <Input placeholder="text2" maxLength="30" disabled={true}/>
+                        <Input placeholder={formState.createrEmail} maxLength="30" disabled={true}/>
                 )}
             </FormItem>
         </Row>
@@ -408,7 +453,7 @@ return (
                         }],
                         initialValue: formState.strategyState,
                     })(
-                    <Input placeholder="text2" maxLength="30" disabled={true}/>
+                    <Input placeholder={formState.strategyState} maxLength="30" disabled={true}/>
                 )}
             </FormItem>
         </Row>
@@ -430,6 +475,7 @@ export function mapStateToProps(state: StoreState) {
 export const mapDispatchToProps = (dispatch: Dispatch<actions.DetailOrderStrategyType>) => bindActionCreators(
     {
       strategyList: actions.DetailOrderStrategy,
+      onSaveRule: actions.OnSaveRule
     },
     dispatch
 );
