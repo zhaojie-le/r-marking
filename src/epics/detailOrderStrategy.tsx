@@ -36,7 +36,8 @@ const strategyList: Epic<any, any> = (action$, store) => {
     return action$.ofType(constants.DETAILORDER_STRATEGY).
         switchMap(
         (action): Observable<any> => {
-            return ajax.getJSON(`/marketDetailStrategy/getRule?id=${action.id}`).
+            // 229633399113924614 ${action.id}
+            return ajax.getJSON(`/marketStrategy/edit/229633399113924614`).
                 map((response: {resultCode: number, data: object}) => {
                 console.log('responseresponseresponse=' + JSON.stringify(response));
                 if (response.resultCode === 1) {
