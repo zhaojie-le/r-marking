@@ -1,0 +1,113 @@
+{
+    "data": {
+        "CategoryId": 256,
+        "showEdit": true,
+        "strategyName": "lxn订单测试",
+        "pkId": "237968019437985792",
+        "marketingType": "拉新",
+        "effectiveTime": "2017-10-18 15:59:11",
+        "ruleList": [{ "refer": "dede" }, { "orderSource": "淘宝的订单" }, { "orderStatus": "dee" }, { "city": "dee" }],
+        "channel": "[2]",
+        "invalidTime": "2017-10-19 15:59:12",
+        "strategyTypeInt": 1,
+        "appContent": {
+            "appContent": "啥地方",
+            "disposeUrl": "http://s-arch.djtest.cn/Bg1M",
+            "gotoOrderPage": 0,
+            "openUrl": "www.baidu.com",
+            "title": "阿萨德"
+        },
+        "strategyType": "订单触发",
+        "activityId": 0,
+        "createrEmail": "liuxiaonan@daojia.com",
+        "bussniessId": 112,
+        "marketingTypeInt": 3,
+        "refer": 5665,
+        "createTime": "2017-10-18 15:59:57",
+        "strategyMarketingType": [{
+                "name": "发券",
+                "id": 1
+            },
+            {
+                "name": "用券",
+                "id": 2
+            },
+            {
+                "name": "拉新",
+                "id": 3
+            },
+            {
+                "name": "商品[不拼团]",
+                "id": 4
+            },
+            {
+                "name": "购买会员卡",
+                "id": 5
+            },
+            {
+                "name": "评价",
+                "id": 6
+            },
+            {
+                "name": "支付",
+                "id": 7
+            },
+            {
+                "name": "调查问卷",
+                "id": 8
+            },
+            {
+                "name": "活动",
+                "id": 9
+            },
+            {
+                "name": "商品[拼团]",
+                "id": 10
+            }
+        ],
+        "orderStatusValue": "0",
+        "actionExpression": [
+            2
+        ],
+        "marketingLimit": 1,
+        "updateContent": "无",
+        "actionParam": {
+            "appContent": {
+                "$ref": "$.appContent"
+            },
+            "dayDelay": 0,
+            "expressContent": {
+                "disposeUrl": "",
+                "expressContent": "",
+                "openUrl": "",
+                "title": ""
+            },
+            "minuteDelay": 1,
+            "payOrderContent": {
+                "content": "",
+                "disposeUrl_app": "",
+                "disposeUrl_h5": "",
+                "disposeUrl_wechat": "",
+                "imgUrl": "",
+                "openUrl": ""
+            },
+            "smsContent": {
+                "disposeUrl": "",
+                "openUrl": "",
+                "smsContent": ""
+            },
+            "wechatContent": {
+                "applicationRange": "",
+                "applicationRule": "",
+                "couponValue": "",
+                "disposeUrl": "",
+                "firstData": "",
+                "openUrl": "",
+                "remarkData": "",
+                "validatePeriod": ""
+            }
+        },
+        "strategyState": "未开始"
+    },
+    "resultCode": 1
+}
