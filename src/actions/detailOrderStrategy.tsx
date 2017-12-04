@@ -13,14 +13,14 @@ export type DetailOrderStrategyType = DetailOrderStrategy | OnSaveRule;
 
 export function DetailOrderStrategy(id: number): DetailOrderStrategy {
     return {
-      type: constants.DETAILORDER_STRATEGY,
-      id: id,
+        type: constants.DETAILORDER_STRATEGY,
+        id: id,
     };
 }
 
 export function OnSaveRule(params: any): OnSaveRule {
     return {
-      type: constants.ONSAVERULE,
-      params: params,
+        type: constants.ONSAVERULE,
+        params: params,
     };
 }
