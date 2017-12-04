@@ -1,5 +1,4 @@
 import './index.scss';
-import cfg from './cfg';
 import * as React from 'react';
 import * as actions from '../../actions';
 import { StoreState } from '../../types/index';
@@ -25,6 +24,7 @@ const { Header, Content } = Layout;
 const { RangePicker } = DatePicker;
 
 export interface Props {
+    data: any;
     listData: any;
     totalInfo: number; 
     strategyList: (params: any) => void;
@@ -33,12 +33,30 @@ export interface Props {
     form?: any;
     params?: any;
 }
+/**
+ * 数组每项增加一个key值，组件要求
+ * @param arr  传入需要处理的数组
+ */
+export const arrayAddKey = (arr: any) => {
+    if (arr && arr.length > 0) {
+        let array = arr.map( (item, i) => Object.assign({}, item, { key: i }) );
+        return array;
+    }
+};
+/**
+ * select框内部选项
+ * @param arr 传入数组
+ */
+export const selectcChildren = (arr: any) => {
+    if (arr && arr.length > 0) {
+        let Children = arrayAddKey(arr).map((item) => {
+            return <Option value={item.id + ''} key={item.id}>{item.name}</Option>;
+        });
+        return Children;
+    }
+};
 
 class List extends React.Component<Props, {}> {
-    // 组件内部变量
-    // state = {
-    //     page:0
-    // }
     private columns;
     constructor(props: Props, context: any) {
         super(props, context);
@@ -51,8 +69,18 @@ class List extends React.Component<Props, {}> {
             {title: '策略名称', dataIndex: 'strategyName', key: '1'}, 
             {title: '策略状态', dataIndex: 'strategyState', key: '2'}, 
             {title: '创建时间', dataIndex: 'createTime', key: '3'},
-            {title: '有效时间', dataIndex: 'effectiveTime', key: '4'}, 
-            {title: '失效时间', dataIndex: 'invalidTime', key: '5'}, 
+            // {title: '有效时间', dataIndex: 'effectiveTime', key: '4'}, 
+            // {title: '失效时间', dataIndex: 'invalidTime', key: '5'}, 
+            {title: '有效时间', dataIndex: 'time', key: '5',
+                render: text => {
+                    let arr = text && text.split('/');
+                    let effective = arr && arr[0];
+                    let invalid = arr && arr[1];
+                    return (
+                        <div><p>{effective}</p><p>{invalid}</p></div>
+                    );
+                }
+            },
             {title: '触发事件', dataIndex: 'strategyType', key: '6'}, 
             {title: '营销方式', dataIndex: 'actionExpression', key: '7'}, 
             {title: '营销类型', dataIndex: 'marketingType', key: '8'}, 
@@ -60,23 +88,24 @@ class List extends React.Component<Props, {}> {
             {title: '创建人邮箱', dataIndex: 'createrEmail', key: '10'}, 
             {title: '操作', dataIndex: 'marketingTypeInt', key: '11',
                 render: (text, record, index) => {
-                    // 接口值有待优化
-                    if (record.strategyState === '未开始' || record.strategyState === '已完成' || record.strategyState === '已过期') {
-                        return '';
-                    }
-                    if (record.strategyState === '进行中' || record.strategyState === '待开始') {
-                        return <Button size="small" onClick={this.editStopClick.bind(this, record.pkId, index)}>暂停</Button>;
-                    } else if (record.strategyState === '暂停') {
-                        return <Button size="small" onClick={this.editStartClick.bind(this, record.pkId, index)}>开始</Button>;
+                    let changeBtn: any;
+                    let editBtn: any;
+                    if (record.showButton === 2) {
+                        changeBtn =  <Button size="small" onClick={this.editStopClick.bind(this, record.pkId, index)}>暂停</Button>;
+                    } else if (record.showButton === 1) {
+                        changeBtn =  <Button size="small" onClick={this.editStartClick.bind(this, record.pkId, index)}>开始</Button>;
                     }
                     if (record.showEdit) {
-                        console.log('record.showEdit');
-                        return <Button>修改</Button>;
+                        editBtn =  <Button size="small" onClick={this.editClick.bind(this, record.pkId, index)}>修改</Button>;
                     } else {
-                        return '';
+                        editBtn =  '';
                     }
+                    return (
+                        <div><div>{changeBtn}</div><div>{editBtn}</div></div>
+                    );
                 }
-            }];
+            }
+        ];
     }
 
     componentDidMount() {
@@ -95,6 +124,10 @@ class List extends React.Component<Props, {}> {
         const { editStart } = this.props;
         editStart!(id, index);
     }
+    // 列表数据－按钮－修改
+    editClick = (id, index) => {
+        console.log(id);
+    }
     // 输入框赋值,策略id
     pkIdChange = (e) => {
         e.target.value = this.limitNumberInput(e.target.value);   
@@ -107,14 +140,17 @@ class List extends React.Component<Props, {}> {
     }
     // 输入框赋值,策略名称
     strategyNameChange = (e) => {
-        e.target.value = this.limitNumberInput(e.target.value);
         this.props.params.strategyName = e.target.value;
     }
-    // 输入框赋值,策略状态
-    strategyStatusChange = (value) => {
+    // select,策略状态
+    strategyStateChange = (value) => {
         this.props.params.strategyState = `${value}`;
     }
-    // 输入框赋值,营销类型
+    // select,触发事件
+    strategyTypeChange = (value) => {
+        this.props.params.strategyType = `${value}`;
+    }
+    // select,营销类型
     marketingTypeChange = (value) => {
         this.props.params.marketingType = `${value}`;
     }
@@ -142,8 +178,8 @@ class List extends React.Component<Props, {}> {
     // 表格搜索清空
     searchReset = () => {
         this.props.form.resetFields();
-        this.props.params.pageSize = 10,        // 每页列表数
         this.props.params.pkId = '',            // 策略ID
+        this.props.params.pageSize = 10,        // 每页列表数
         this.props.params.activityId = '',      // 活动ID
         this.props.params.strategyName = '',    // 策略名称
         this.props.params.strategyState = '',   // 策略状态
@@ -151,6 +187,9 @@ class List extends React.Component<Props, {}> {
         this.props.params.invalidTime = '',     // 结束时间
         this.props.params.strategyType = '',    // 触发事件
         this.props.params.marketingType = '';   // 营销类型
+
+        const { strategyList } = this.props;
+        strategyList(this.props.params);
     }
 
     // 分页器
@@ -167,7 +206,8 @@ class List extends React.Component<Props, {}> {
     }
 
     render() {
-        const { listData, totalInfo } = this.props;
+        const { data, listData, totalInfo } = this.props;
+        console.log('list', listData);
         // 设置表单的排列间隙
         const formItemLayout = {
             labelCol: {
@@ -186,31 +226,12 @@ class List extends React.Component<Props, {}> {
         const inputWidth = {
             width: '123px'
         };
-
-        // 策略状态项－下拉选框内部数组
-        let strategyStatus = cfg.strategyStatus;
-        let strategyStatusChildren = strategyStatus.map((item) => {
-            return <Option value={item.id} key={item.id}>{item.name}</Option>;
-        });
-
-        // 新建项目，触发事件－下拉选框内部数组
-        let strategyType = cfg.strategyType;
-        let strategyTypeChildren = strategyType.map((item) => {
-            return <Option value={item.id} key={item.id}>{item.name}</Option>;
-        });
-          
-        // 营销类型－下拉选框内部数组
-        let marketingType = cfg.marketingType;
-        let marketingTypeChildren = marketingType.map((item) => {
-            return <Option value={item.id} key={item.id}>{item.name}</Option>;
-        });
         return (
             <Layout>
                 <Header className="list-head">
                     营销管理平台
-                    {/* <Button style={{ marginLeft: '10px' }}>新增策略</Button> */}
                     <Select placeholder="新增策略" style={{ marginLeft: '10px', width: '130px' }} onChange={this.newStrategyClick}>
-                        {strategyTypeChildren}
+                        {selectcChildren(data.strategyType)}
                     </Select>
                 </Header>
                 <Layout>
@@ -242,9 +263,10 @@ class List extends React.Component<Props, {}> {
                                     </Col>
                                     <Col span={8} >
                                         <FormItem label="策略状态" {...formItemLayout} >
-                                            {getFieldDecorator('strategyStatus')(
-                                                <Select placeholder="请选择" style={inputWidth} onChange={this.strategyStatusChange}>
-                                                    {strategyStatusChildren}
+                                            {getFieldDecorator('strategyState')(
+                                                <Select placeholder="请选择" style={inputWidth} onChange={this.strategyStateChange}>
+                                                    {/* {strategyStatusChildren} */}
+                                                    {selectcChildren(data.strategyStatus)}
                                                 </Select>
                                             )}
                                         </FormItem>
@@ -252,9 +274,8 @@ class List extends React.Component<Props, {}> {
                                     <Col span={8} >
                                         <FormItem label="触发事件" {...formItemLayout} >
                                             {getFieldDecorator('marketing')(
-                                                <Select placeholder="请选择" style={inputWidth}>
-                                                    <Option value="china">China</Option>
-                                                    <Option value="use">U.S.A</Option>
+                                                <Select placeholder="请选择" style={inputWidth} onChange={this.strategyTypeChange}>
+                                                    {selectcChildren(data.strategyType)}
                                                 </Select>
                                             )}
                                         </FormItem>
@@ -263,7 +284,7 @@ class List extends React.Component<Props, {}> {
                                         <FormItem label="营销类型" {...formItemLayout} >
                                             {getFieldDecorator('marketingType')(
                                                 <Select placeholder="请选择" style={inputWidth} onChange={this.marketingTypeChange}>
-                                                    {marketingTypeChildren}
+                                                    {selectcChildren(data.marketingType)}
                                                 </Select>
                                             )}   
                                         </FormItem>
@@ -311,17 +332,18 @@ const WrappedAdvancedSearchForm = Form.create()(List as any);
 
 export function mapStateToProps(state: StoreState) {
     return {
-        params: state.list.params,
-        totalInfo: state.list.totalInfo,     // 列表数据总数
-        listData: state.list.listData.map( (item, i) => Object.assign({}, item, { key: i }) ),       // 列表数组     
+        data: state.list.data,                                                                       // 项目数据
+        params: state.list.params,                                                                   // 搜索传參
+        totalInfo: state.list.totalInfo,                                                             // 列表数据总数
+        listData: state.list.listData && state.list.listData.map( (item, i) => Object.assign({}, item, { key: i }, {time: item.effectiveTime + '/' + item.invalidTime}) ),       // 列表数组－处理后表格展示的数据     
     };
 }
 
 export const mapDispatchToProps = (dispatch: Dispatch<actions.EnthusiasmAction>) => bindActionCreators(
     {
-        strategyList: actions.StrategyList,
+        editStop: actions.EditStop,
         editStart: actions.EditStart,
-        editStop: actions.EditStop
+        strategyList: actions.StrategyList  
     },
     dispatch
 );

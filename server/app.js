@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 // list mock数据
 var combineMarketStrategy = require('./routes/combineMarketStrategy');
 var combineCreateRules = require('./routes/combineCreateRules');
+var combineDetailRules = require('./routes/combineDetailRules');
+
 
 var app = express();
 var preview = process.env.preview;
@@ -26,6 +28,7 @@ app.use(function(req, res, next) {
 
 app.use('/marketStrategy', combineMarketStrategy);
 app.use('/marketStrategy', combineCreateRules);
+app.use('/marketDetailStrategy', combineDetailRules);
 
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

@@ -26,8 +26,9 @@ function enthusiasm(
             strategyType: 0,    // 触发事件
             marketingType: 0    // 营销类型
         },
+        data: {}, 
         listData: [], 
-        totalInfo: 0,
+        totalInfo: 0,           // 列表总条数
         editStartId: '',        // 列表开启id
         editStopId: '',         // 列表暂停id
         editStartInx: -1,       // 列表数据启动下标
@@ -39,12 +40,13 @@ function enthusiasm(
             case STRATEGY_LIST:
                 return { ...state, params: action.params};
             case STRATEGY_LIST_SUC:               
-                return {...state, listData: action.response.list, totalInfo: action.response.totalInfo};
+                return {...state, data: action.response, listData: action.response.list, totalInfo: action.response.totalInfo};
             case EDIT_START:
                 return {...state, editStartInx: action.inx, editStartId: action.id};
             case EDIT_START_SUC:
                 let startArray = state.listData;
                 startArray.splice(state.editStartInx, 1, action.item);
+                console.log('changelist', startArray);
                 return {...state, listData: startArray};
             case EDIT_STOP:
                 return {...state, editStopInx: action.inx, editStopId: action.id};

@@ -51,9 +51,9 @@ const editStart: Epic<any, any>  = (action$, store) => {
     return action$.ofType(constants.EDIT_START).
         switchMap(
             (action): Observable<any>  => {
-                return ajax.getJSON(`/marketStrategy/start?StrategyId=${action.id}`).
-                    map((response: {code: number, data: object}) => {
-                        if (response.code === 0) {
+                return ajax.getJSON(`/marketStrategy/start/${action.id}`).
+                    map((response: {resultCode: number, data: object}) => {
+                        if (response.resultCode === 1) {
                             return (editStartSuc(response.data));
                         } else {
                             return (editStartFail(response));
@@ -67,9 +67,9 @@ const editStop: Epic<any, any>  = (action$, store) => {
     return action$.ofType(constants.EDIT_STOP).
         switchMap(
             (action): Observable<any>  => {
-                return ajax.getJSON(`/marketStrategy/stop?StrategyId=${action.id}`).
-                    map((response: {code: number, data: object}) => {
-                        if (response.code === 0) {
+                return ajax.getJSON(`/marketStrategy/stop/${action.id}`).
+                    map((response: {resultCode: number, data: object}) => {
+                        if (response.resultCode === 1) {
                             return (editStopSuc(response.data));
                         } else {
                             return (editStopFail(response));
@@ -95,7 +95,7 @@ const strategyList: Epic<any, any, any>  = (action$, store, params) => {
                     strategyType: action.params.strategyType,
                     marketingType: action.params.marketingType
                 }).map(response => {
-                    if (response.response.code === 0) {
+                    if (response.response.resultCode === 1) {
                         return (strategyListSuccess(response.response.data));
                     } else {
                         return (strategyListFail(response.response));

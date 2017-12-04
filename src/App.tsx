@@ -6,7 +6,7 @@ import {
   Switch
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { CreateOrderStrategy, List } from './containers';
+import { CreateOrderStrategy, List, DetailOrderStrategy } from './containers';
 
 import store from './store';
 
@@ -22,6 +22,8 @@ const Routes = () => (
             <div> 
                 <Switch>
                     <Route path="/createOrderStrategy" component={CreateOrderStrategy} />
+                    <Route path="/detailOrderStrategy" component={DetailOrderStrategy} />
+                    <Route path="/detailOrderStrategy?alter=changeDetail" component={DetailOrderStrategy} />
                     <Route path="/" component={List} />
                     <Route component={NotFound} />
                 </Switch>
