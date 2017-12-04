@@ -32,7 +32,7 @@ export default (param: {title: string}) => <T extends ChatNumberProp>(WrappedCom
 
         generateShiftUpBtn = () => {
             const { first } = this.props;
-            return first ?  '' :
+            return first ?  <Col span={3}/> :
                 (
                 <Col span={3}>
                     <Button onClick={(e) => this.props.onShiftUp()}>上移</Button>
@@ -42,9 +42,9 @@ export default (param: {title: string}) => <T extends ChatNumberProp>(WrappedCom
 
         generateShiftDownBtn = () => {
             const { last } = this.props;
-            return last ? '' :
+            return last ? <Col span={3} offset={1}/> :
                 (
-                    <Col span={3}>
+                    <Col span={3} offset={1}>
                         <Button onClick={(e) => this.props.onShiftDown()}>下移</Button>
                     </Col>
                 );
@@ -54,10 +54,10 @@ export default (param: {title: string}) => <T extends ChatNumberProp>(WrappedCom
             const { showDelete = true } = this.props;
             return showDelete ? 
                 (
-                    <Col>
+                    <Col span={3} offset={1}>
                         <Button onClick={(e) => this.props.onDelete()}>删除</Button>
                     </Col>
-                ) : '';
+                ) : <Col span={3} offset={1}/>;
         }
 
         generateByCurrentStage = () => {
@@ -65,7 +65,7 @@ export default (param: {title: string}) => <T extends ChatNumberProp>(WrappedCom
             return stage !== 1 ? 
                 (
                     <Row style={layout.rowStyle}>
-                        <Col span={4}>{param.title}</Col>
+                        <Col span={5}>{param.title}</Col>
                         { 
                             this.generateShiftUpBtn() 
                         }

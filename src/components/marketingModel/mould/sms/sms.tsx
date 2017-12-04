@@ -19,8 +19,8 @@ class Sms extends React.Component<SmsNumberProp, {}> {
 
         const value = this.props.value || {};
         this.state = {
-            docs: value.docs || 0,
-            link: value.link || 0,
+            docs: value.docs || '',
+            link: value.link || '',
             type: value.type,
         };
     }
@@ -61,8 +61,14 @@ class Sms extends React.Component<SmsNumberProp, {}> {
 
         return (
             <div className="sms">
-                <Row><Col span={4}>* 文案:</Col><Col span={20}><Input placeholder="请输入文案!" onChange={this.wnChange} defaultValue={docs}/></Col></Row>
-                <Row><Col span={4}>* 跳转链接:</Col><Col span={20}><Input placeholder="请输入跳转链接!" onChange={this.linkChange} defaultValue={link} disabled={!!stage}/></Col></Row>
+                <Row>
+                    <Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 文案:</Col>
+                    <Col span={19}><Input placeholder="请输入文案!" onChange={this.wnChange} defaultValue={docs}/></Col>
+                </Row>
+                <Row>
+                    <Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 跳转链接:</Col>
+                    <Col span={19}><Input placeholder="请输入跳转链接!" onChange={this.linkChange} defaultValue={link} disabled={!!stage}/></Col>
+                </Row>
             </div>
         );
     }

@@ -10,7 +10,7 @@
 .marketingModel {
     display: flex;
     background: #eee;
-    padding: 10px 15px;
+    padding: 25px 15px;
     border: 1px solid #ccc;
     > label {
         display: block;
@@ -40,5 +40,7 @@
     }
     .ant-form-item {
         margin-bottom: 24px !important;
+        padding-bottom: 30px;
+        border-bottom: 1px solid #ccc;
     }
 }

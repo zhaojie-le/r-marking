@@ -95,9 +95,9 @@ class DaojiaAppModel extends React.Component<DaojiaProp, {}> {
 
         return (
             <div className="daojiaAppModel">
-                <Row><Col span={4}>* 标题:</Col><Col span={20}><Input placeholder="请输入标题!" onChange={this.ttChange} defaultValue={title}/></Col></Row>
-                <Row><Col span={4}>* 文案:</Col><Col span={20}><Input placeholder="请输入文案!" onChange={this.wnChange} defaultValue={docs}/></Col></Row>
-                <Row><Col span={4}>* 跳转链接:</Col><Col span={20}>{this.isHourEmploee()}</Col></Row>
+                <Row><Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 标题:</Col><Col span={19}><Input placeholder="请输入标题!" onChange={this.ttChange} defaultValue={title}/></Col></Row>
+                <Row><Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 文案:</Col><Col span={19}><Input placeholder="请输入文案!" onChange={this.wnChange} defaultValue={docs}/></Col></Row>
+                <Row><Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 跳转链接:</Col><Col span={19}>{this.isHourEmploee()}</Col></Row>
             </div>
         );
     }

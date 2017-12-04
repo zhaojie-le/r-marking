@@ -80,16 +80,16 @@ class SuyunAppModel extends React.Component<SuyunProp, SunyunState> {
         return (
             <div className="suyunAppModel">
                 <Row>
-                    <Col span={4}>* 标题:</Col>
-                    <Col span={20}><Input placeholder="请输入标题!" onChange={this.ttChange} defaultValue={title}/></Col>
+                    <Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 标题:</Col>
+                    <Col span={19}><Input placeholder="请输入标题!" onChange={this.ttChange} defaultValue={title}/></Col>
                 </Row>
                 <Row>
-                    <Col span={4}>* 文案:</Col>
-                    <Col span={20}><Input placeholder="请输入文案!" onChange={this.wnChange} defaultValue={docs}/></Col>
+                    <Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 文案:</Col>
+                    <Col span={19}><Input placeholder="请输入文案!" onChange={this.wnChange} defaultValue={docs}/></Col>
                 </Row>
                 <Row>
-                    <Col span={4}>* 跳转链接:</Col>
-                    <Col span={20}>
+                    <Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 跳转链接:</Col>
+                    <Col span={19}>
                         <RadioGroup onChange={this.linkChange} value={this.state.link} defaultValue={link} disabled={!!stage}>
                             <Radio value={1}>58速运App首页</Radio>
                             <Radio value={2}>58速运App券列表页</Radio>
