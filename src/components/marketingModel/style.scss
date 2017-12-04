@@ -10,9 +10,8 @@
 .marketingModel {
     display: flex;
     background: #eee;
-    padding: 10px 0px;
+    padding: 10px 15px;
     border: 1px solid #ccc;
-    margin-bottom: 20px;
     > label {
         display: block;
         width: 12.5%;
@@ -33,7 +32,13 @@
             width: 100px;
         }
         .ruleContent {
+            .wrapperModel {
+                height: 100%;
+            }
             line-height: 28px;
         }
+    }
+    .ant-form-item {
+        margin-bottom: 24px !important;
     }
 }

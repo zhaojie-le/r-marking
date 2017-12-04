@@ -55,6 +55,17 @@ namespace layout {
         },
     };
     
+    export const formItemLayoutMarketingModel = {
+        labelCol: {
+            xs: { span: 24 },
+            sm: { span: 3 },
+        },
+        wrapperCol: {
+            xs: { span: 24 },
+            sm: { span: 21 },
+        },
+    };
+
     export const tailFormItemLayout = {
         wrapperCol: { 
             xs: { span: 24, offset: 0, },
@@ -81,7 +92,7 @@ class DelayTime extends React.Component<DelayTimeProps, {}> {
         const value = this.props.value || {};
         this.state = {
             day: value.day || 0,
-            munite: value.minute || 0,
+            minute: value.minute || 0,
         };
     }
 
@@ -192,9 +203,12 @@ class List extends React.Component<Props, {}> {
         });
     }
 
+    onMarketingModelChange = (value) => {
+        console.log(value);
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
-
         return (
             <div id="orderStrategy">
                 <Layout className="layout">
@@ -224,8 +238,6 @@ class List extends React.Component<Props, {}> {
                                             showTime={{ format: 'HH:mm:ss' }}
                                             format="YYYY-MM-DD HH:mm"
                                             placeholder={['开始时间', '结束时间']}
-                                            onChange={() => console.log(1)}
-                                            onOk={() => console.log(1)}
                                         />
                                     )}
                                 </FormItem>
@@ -262,9 +274,6 @@ class List extends React.Component<Props, {}> {
                                             style={{ width: 200 }}
                                             placeholder="请选择推送次数!"
                                             optionFilterProp="children"
-                                            onChange={() => { console.log(); }}
-                                            onFocus={() => { console.log(); }}
-                                            onBlur={() => { console.log(); }}
                                         >
                                             {
                                                 new Array(21).fill('a').map((item, i) => {
@@ -288,8 +297,6 @@ class List extends React.Component<Props, {}> {
                                                     placeholder="请选择营销类别!"
                                                     optionFilterProp="children"
                                                     onChange={this.marketingCategoryChange}
-                                                    onFocus={() => { console.log(); }}
-                                                    onBlur={() => { console.log(); }}
                                                 >
                                                     {
                                                         ['发券', '用券', '拉新', '商品(不拼团)', '商品(拼团)', '购买会员卡', '评价', '支付', '调查问卷', '活动'].map((item, i) => {
@@ -304,11 +311,23 @@ class List extends React.Component<Props, {}> {
                                         {this.addCoupon()}
                                     </Col>
                                 </Row>
-                                <MarketingModel 
-                                    form={this.props.form} 
-                                    onSaveModel={this.props.onSaveModel}
-                                    formState={this.props.formState}
-                                />
+                                
+                                <FormItem {...layout.formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
+                                    {getFieldDecorator('marketingModel', {
+                                        rules: [{
+                                            required: true, message: '策略名称不能为空！',
+                                        }],
+                                        initialValue: [
+                                            {type: '1', value: {type: '1', docs: '111', link: '222'}}
+                                        ]
+                                    })(
+                                        <MarketingModel 
+                                            form={this.props.form}
+                                            stage={0}
+                                            onChange={this.onMarketingModelChange}
+                                        />
+                                    )}
+                                </FormItem>
                                 <FormItem {...layout.formItemLayout} label="责任人" hasFeedback={false}>
                                     {getFieldDecorator('owner', {
                                         rules: [{
