@@ -6,8 +6,7 @@ function enthusiasm(
             formState: {},
         },
         action: any 
-    ):
-    DetailOrderStrategy {
+    ) {
         switch (action.type) {
         case DETAILORDER_STRATEGY_SUCCESS:
             return {
