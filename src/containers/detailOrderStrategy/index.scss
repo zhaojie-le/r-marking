@@ -48,7 +48,7 @@ body {
                 }
             }
         }
-        .strategyMarketingType {
+        .strategyMarketingType .ant-form-item-label label {
             &:before {
                 @include labelStyle;
             }

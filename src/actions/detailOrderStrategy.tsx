@@ -1,13 +1,13 @@
 import * as constants from '../constants';
 
 export interface DetailOrderStrategy {
- type: constants.DETAILORDER_STRATEGY;
- id: number;
+    type: constants.DETAILORDER_STRATEGY;
+    id: number;
 }
 
 export interface OnSaveRule {
-  type: constants.ONSAVERULE;
-  params: any;
+    type: constants.ONSAVERULE;
+    params: any;
 }
 export type DetailOrderStrategyType = DetailOrderStrategy | OnSaveRule;
 
@@ -19,9 +19,8 @@ export function DetailOrderStrategy(id: number): DetailOrderStrategy {
 }
 
 export function OnSaveRule(params: any): OnSaveRule {
-  console.log(11);
-  return {
-    type: constants.ONSAVERULE,
-    params: params,
-  };
+    return {
+      type: constants.ONSAVERULE,
+      params: params,
+    };
 }
