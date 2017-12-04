@@ -10,18 +10,12 @@
 .wrapperRules {
     display: flex;
     background: #eee;
-    padding: 10px 0px;
+    padding: 10px 0px 0px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
-    > label {
-        display: block;
-        width: 12.5%;
-        color: rgba(0, 0, 0, 0.85);
-        text-align: right;
-        &:before {
-            @include labelStyle;
-        }
-    }
+    .ant-form-item {
+        margin-bottom: 24px !important;
+    } 
     .triggerRules {
         display: flex;
         width: 87.5%;
@@ -30,7 +24,7 @@
             .showInfo {
                 padding-top: 20px;
                 label {
-                    width: 10%;
+                    width: 100px;
                     display: inline-block;
                     text-align: left;
                     font-weight: bold;
@@ -44,6 +38,9 @@
                     vertical-align: middle;
                     margin-left: 10px;
                 }
+            }
+            .editInfo {
+                padding-top: 20px;
             }
         }
         > div:last-child {

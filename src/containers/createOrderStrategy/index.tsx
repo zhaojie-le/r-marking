@@ -207,6 +207,10 @@ class List extends React.Component<Props, {}> {
         console.log(value);
     }
 
+    onStrategyRuleChange = (value) => {
+        console.log(value);
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
@@ -241,18 +245,31 @@ class List extends React.Component<Props, {}> {
                                         />
                                     )}
                                 </FormItem>
-                                <StrategyRule 
-                                    form={this.props.form} 
-                                    onGetService={this.props.onGetService}
-                                    onSaveRule={this.props.onSaveRule}
-                                    onGetOrderState={this.props.onGetOrderState} 
-                                    serviceOptions={this.props.serviceOptions} 
-                                    orderState={this.props.orderState}
-                                    formState={this.props.formState}
-                                    orderSource={this.props.rules[1]}
-                                    city={this.props.rules[3]}
-                                    serviceSelect={this.props.rules[0].list}
-                                />
+                                
+                                <FormItem {...layout.formItemLayoutMarketingModel} label="触发规则" hasFeedback={false}>
+                                    {getFieldDecorator('strategyRule', {
+                                        rules: [{
+                                            required: true, message: '规则不能为空！',
+                                        }],
+                                        initialValue: [
+                                            {type: '1', value: {type: '1', docs: '111', link: '222'}}
+                                        ]
+                                    })(
+                                        <StrategyRule 
+                                            form={this.props.form} 
+                                            onGetService={this.props.onGetService}
+                                            onSaveRule={this.props.onSaveRule}
+                                            onGetOrderState={this.props.onGetOrderState} 
+                                            serviceOptions={this.props.serviceOptions} 
+                                            orderState={this.props.orderState}
+                                            formState={this.props.formState}
+                                            orderSource={this.props.rules[1]}
+                                            city={this.props.rules[3]}
+                                            onChange={this.onStrategyRuleChange}
+                                            serviceSelect={this.props.rules[0].list}
+                                        />
+                                    )}
+                                </FormItem>
                                 <FormItem {...layout.formItemLayout} label="延迟时间">
                                     {getFieldDecorator('delayTime', {
                                         initialValue: { day: 0, minute: 0 },

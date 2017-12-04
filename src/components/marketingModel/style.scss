@@ -43,4 +43,8 @@
         padding-bottom: 30px;
         border-bottom: 1px solid #ccc;
     }
+    .ant-form-item:last-of-type {
+        margin-bottom: 0px !important;
+        padding-bottom: 0px !important;
+    }
 }

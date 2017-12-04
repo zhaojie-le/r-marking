@@ -11,6 +11,7 @@ export interface RuleProps {
     orderSource: { label: string; value: string; }[];
     onGetService: (cp: {lineId: number; cateId: number}) => void;
     onSaveRule: (rjs: string) => void;
+    onChange: (value: any) => void;
     onGetOrderState: (cp: {serverIds: string; cateId: number}) => void;
 }
 
@@ -35,7 +36,7 @@ namespace layout {
 
     export const formItemServiceItemLayout = { 
         labelCol: { xs: { span: 24 }, sm: { span: 5 }, },
-        wrapperCol: { xs: { span: 24 }, sm: { span: 8 }, },
+        wrapperCol: { xs: { span: 24 }, sm: { span: 10 }, },
     };
 
     export const tailFormItemLayout = {
@@ -179,6 +180,8 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         this.props.form.validateFields(['serviceItem', 'serviceOptions', 'orderSource', 'orderState', 'city'], (err, values) => {
             if (!err) {
                 this.computeShowData(values);
+                console.log(values);
+                this.props.onChange(values);
                 this.props.onSaveRule(JSON.stringify(values));
             }
         });
@@ -303,7 +306,6 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         }
         return (
             <div className="wrapperRules" style={wrapperStyle}>
-                <label>触发规则：</label>
                 <div className="triggerRules">
                     <div className="ruleContent">
                         {triggerRuleTpl}
