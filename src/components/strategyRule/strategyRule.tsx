@@ -108,10 +108,6 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     handleChange = (value) => {
         console.log(`selected ${value}`);
     }
-      
-    save = () => {
-        console.log(1);
-    }
 
     serviceOption = () => {
         const { getFieldDecorator } = this.props.form;

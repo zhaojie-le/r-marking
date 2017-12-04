@@ -152,7 +152,7 @@ class List extends React.Component<Props, {}> {
         editing: false,
         sendCoupon: 1,
     };
-    private validateFieldsType: Array<string> = ['stragyName', 'time', 'delayTime', 'pushTimes', 'marketingCategory'];
+    private validateFieldsType: Array<string> = ['stragyName', 'time', 'delayTime', 'pushTimes', 'marketingCategory', 'marketingModel'];
     constructor(props: Props, context: any) {
         super(props, context);
     }

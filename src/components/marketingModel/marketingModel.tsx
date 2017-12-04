@@ -83,6 +83,26 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
             };
         });
         this.state.channelType = channelType;
+        value.forEach((item) => {
+            let trItem: any;
+            switch (item.type) {
+                case '1':
+                    this.state.showData.sms = item.value;
+                    break;
+                case '2':
+                    this.state.showData.daojiaApp = item.value;
+                    break;
+                case '3':
+                    this.state.showData.suyunApp = item.value;
+                    break;
+                case '4':
+                    this.state.showData.chatNumber = item.value;
+                    break;
+                default:
+                    break;
+            }
+            return trItem;
+        });
     }
 
     onEdit = (isEditing) => {
