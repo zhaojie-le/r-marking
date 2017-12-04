@@ -33,6 +33,7 @@ export interface Props {
     form?: any;
     onSaveModel: (modelData: string) => void;
     param: {};
+    match?: any;
 }
 const formItemLayout = {
     labelCol: {
@@ -56,14 +57,15 @@ const formTypeLayout = {
 };
 class List extends React.Component<Props, object> {
     state= {
-        pagetype: window.location.href.indexOf('changeDetail') > 0 ? false : true,
+        pagetype: window.location.href.indexOf('#edit') > 0 ? false : true,
         startValue: '',
         endValue: '',
         endOpen: false,
-        editing: true
+        editing: true,
      };
     constructor(props: Props, context: any) {
         super(props, context);
+        console.log('this.props=' + JSON.stringify(this.props));
     }
   
     disabledStartDate = (startValue) => {
@@ -109,7 +111,7 @@ class List extends React.Component<Props, object> {
 
     handleStartOpenChange = (open) => {
         if (!open) {
-        this.setState({ endOpen: true });
+            this.setState({ endOpen: true });
         }
     }
 
@@ -121,33 +123,23 @@ class List extends React.Component<Props, object> {
         console.log(11);
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
-        console.log(13);  
-        if (!err) {
-            // 得到的values数据重组
-            values.effectiveTime = values.effectiveTime._i;
-            values.invalidTime = values.invalidTime._i;
-            values.marketingTypeInt = this.props.formState.marketingTypeInt;
-            console.log('Received values of form: ', values);
-            const { onSaveRule } = this.props;
-            onSaveRule(values);
-        }
+            console.log(13);  
+            if (!err) {
+                // 得到的values数据重组
+                values.effectiveTime = values.effectiveTime._i;
+                values.invalidTime = values.invalidTime._i;
+                values.marketingTypeInt = this.props.formState.marketingTypeInt;
+                console.log('Received values of form: ', values);
+                const { onSaveRule } = this.props;
+                onSaveRule(values);
+            }
         });
-    }
-
-    GetQueryString= (id) => {
-        let reg = new RegExp('(^|&)' + id + '=([^&]*)(&|$)');
-        let r = window.location.search.substr(1).match(reg);
-        if (r != null) {
-            return Number(r[2]);
-        } else {
-            return 0;
-        }
     }
 
     componentDidMount() {
         // 初始请求列表数据，首屏10条数据
-        const { strategyList } = this.props;
-        const id = this.GetQueryString('id');
+        const { strategyList, match} = this.props;
+        const id = match.params.id;
         strategyList(id);
     }
 
