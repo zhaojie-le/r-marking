@@ -17,12 +17,13 @@ import {
     InputNumber,
     DatePicker
 } from 'antd';
+import moment from 'moment'; 
 import { StrategyRule, MarketingModel } from '../../components';
 import './index.scss';
 
 const { Content, Footer } = Layout;
 const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
+const RangePicker: any = DatePicker.RangePicker;
 const Option = Select.Option;
 
 export interface Props {
@@ -211,6 +212,15 @@ class List extends React.Component<Props, {}> {
         console.log(value);
     }
 
+    disabledDate = (current) => {
+        if ( !current ) {
+            return current;
+        }
+        const currentTime = current.valueOf();
+        const endTime = moment().add(6, 'M');
+        return currentTime && (currentTime < Date.now()) || current && (currentTime > endTime.valueOf());
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
@@ -241,6 +251,7 @@ class List extends React.Component<Props, {}> {
                                         <RangePicker
                                             showTime={{ format: 'HH:mm:ss' }}
                                             format="YYYY-MM-DD HH:mm"
+                                            disabledDate={this.disabledDate}
                                             placeholder={['开始时间', '结束时间']}
                                         />
                                     )}
@@ -363,7 +374,7 @@ class List extends React.Component<Props, {}> {
                         </div>
                     </Content>
                     <Footer style={{ textAlign: 'center' }}>
-                        Ant Design ©2016 Created by Ant UED
+                        北京58到家信息技术有限公司 ©2017 营销系统
                     </Footer>
                 </Layout>
             </div>

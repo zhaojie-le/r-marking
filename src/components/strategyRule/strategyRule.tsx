@@ -180,7 +180,6 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         this.props.form.validateFields(['serviceItem', 'serviceOptions', 'orderSource', 'orderState', 'city'], (err, values) => {
             if (!err) {
                 this.computeShowData(values);
-                console.log(values);
                 this.props.onChange(values);
                 this.props.onSaveRule(JSON.stringify(values));
             }

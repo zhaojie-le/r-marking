@@ -423,6 +423,13 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
 
     generateShowData = () => {
         const { showData } = this.state;
+        const styleSpan = {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            verticalAlign: 'middle',
+            marginLeft: '10px',
+        };
 
         return Object.keys(showData).map((item: string, i: number) => {
             let label: any, properties: any[];
@@ -468,14 +475,14 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                     
                     return index === arr.length - 1 ? msg.substring(0, msg.length - 1) : msg;
                 }, 
-                ':'
+                ''
             );
 
             return (
-                <p key={i}>
-                    <span>渠道{i + 1}</span>
-                    <span>{label}</span>
-                    <span>{properties}</span>
+                <p key={i} style={styleSpan as any} title={properties as any}>
+                    <span style={{ fontWeight: 'bold', marginRight: '10px', color: '#2b2b2b'}}>渠道{i + 1}</span>
+                    <span style={{ color: '#462bc3'}}>{label}</span>
+                    <span style={{ color: '#383838'}}>{properties}</span>
                 </p>
             );
         });
