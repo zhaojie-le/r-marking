@@ -166,7 +166,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
              return (
                 <Row>  
                      <Col style={{ textAlign: 'left', background: '#eee', padding: '10px 0px', border: '1px solid #ccc'}}>
-                         <FormItem label="触发规则" {...formItemLayout}  style={{ margin: '0' }}>
+                         <FormItem className="strategyOrderRules"  label="触发规则" {...formItemLayout}  style={{ margin: '0' }}>
                                  <div className="orderRules">
                                      <section className="showInfo">
                                      {ruleListArray}
