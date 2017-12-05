@@ -11,6 +11,7 @@ import withOperator from '../mouldOperate';
 interface DaojiaProp {
     value?: any;
     stage?: number;
+    showOrderDetailCheck?: boolean;
     onChange: (value: any) => any;
 }
 
@@ -20,24 +21,21 @@ class DaojiaAppModel extends React.Component<DaojiaProp, {}> {
         docs: '',
         link: '',
         title: '',
-        type: 2
+        type: 2,
+        showOrderDetailCheck: false,
     };
     private detailLink: string = 'xxx';
  
     constructor(props: any, context: any) {
         super(props, context);
         const value = this.props.value || {};
-        this.state.docs = value.docs;
-        this.state.link = value.link;
-        this.state.title = value.title;
-        this.state.type = value.type || 2;
-        this.state.linkInput = value.linkInput;
+        this.state = { ...value, type: 2, showOrderDetailCheck: this.props.showOrderDetailCheck };
     }
     
     componentWillReceiveProps(nextProps: any) {
         if ('value' in nextProps) {
             const value = nextProps.value;
-            this.setState(value);
+            this.setState({ ...value, showOrderDetailCheck: nextProps.showOrderDetailCheck });
         }
     }
 
@@ -84,7 +82,7 @@ class DaojiaAppModel extends React.Component<DaojiaProp, {}> {
 
         return (
             <div>
-                <Checkbox onChange={this.linkChange} disabled={!!stage} checked={hasChecked}>该订单详情页</Checkbox>
+                {this.state.showOrderDetailCheck ? <Checkbox onChange={this.linkChange} disabled={!!stage} checked={hasChecked}>该订单详情页</Checkbox> : null}
                 <Input placeholder="请输入跳转链接!" onChange={this.linkChange} disabled={linkInput} defaultValue={hasChecked ? '' : link}/>
             </div>
         );

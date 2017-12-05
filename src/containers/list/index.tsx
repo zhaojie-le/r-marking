@@ -4,7 +4,7 @@ import * as actions from '../../actions';
 import { StoreState } from '../../types/index';
 import { bindActionCreators } from 'redux';
 import { connect, Dispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 import { 
         Button, 
@@ -60,11 +60,15 @@ class List extends React.Component<Props, {}> {
     private columns;
     constructor(props: Props, context: any) {
         super(props, context);
+        console.log(this.props);
         // 表格头部设置参数
         this.columns = [
             {title: '策略ID', dataIndex: 'pkId', key: '0',
                 // 跳转连接方式-跳转至详情页
-                render: text => <a href="">{text}</a>,
+                render: (text, record) => {
+                    let url = '/detailOrderStrategy/' + text;
+                    return (<Link to={url}>{text}</Link>); 
+                }    
             }, 
             {title: '策略名称', dataIndex: 'strategyName', key: '1'}, 
             {title: '策略状态', dataIndex: 'strategyState', key: '2'}, 
@@ -96,7 +100,8 @@ class List extends React.Component<Props, {}> {
                         changeBtn =  <Button size="small" onClick={this.editStartClick.bind(this, record.pkId, index)}>开始</Button>;
                     }
                     if (record.showEdit) {
-                        editBtn =  <Button size="small" onClick={this.editClick.bind(this, record.pkId, index)}>修改</Button>;
+                        let url = '/detailOrderStrategy/' + record.pkId + '#edit';
+                        editBtn =  <Button size="small" onClick={this.editClick.bind(this, record.pkId, index)} className="btn-edit"><Link to={url}>修改</Link></Button>;
                     } else {
                         editBtn =  '';
                     }
@@ -202,6 +207,9 @@ class List extends React.Component<Props, {}> {
     // 新增策略按钮
     newStrategyClick = (value) => {
         console.log(`selected ${value}`);
+        const { history }: any = this.props;
+        const path = '/createOrderStrategy/' + `${value}`;
+        history.push(path);
         // TODU  跳转至新增策略页面，将触发事件id带入
     }
 
@@ -317,7 +325,7 @@ class List extends React.Component<Props, {}> {
                         <div style={{background: '#fff'}}>
                             <Table style={{background: '#fff'}} columns={this.columns} dataSource={listData} bordered={true} pagination={false}/>
                             <div style={{position: 'relative', height: '70px'}}>
-                                <Pagination style={{position: 'absolute', right: '0', top: '18px'}} onChange={this.pageChange} defaultCurrent={1} total={totalInfo} />
+                                <Pagination style={{position: 'absolute', right: '20px', top: '18px'}} onChange={this.pageChange} defaultCurrent={1} total={totalInfo} />
                             </div>
                         </div>
                     </Content>
