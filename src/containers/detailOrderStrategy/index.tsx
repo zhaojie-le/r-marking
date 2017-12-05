@@ -27,6 +27,7 @@ const RadioGroup = Radio.Group;
 export interface Props {
     param: {};
     actionParam?: any;
+    strategyMarketingType?: any;
     match?: any;
     formState?: any;
     form?: any;
@@ -202,11 +203,11 @@ class DetailOrderStrategy extends React.Component<Props, object> {
     }
     render() {
         const { getFieldDecorator} = this.props.form;
-        const { formState, actionParam} = this.props;
-        const { pagetype } = this.state;
-
-        // 修改页面失效时间、失效时间进行判断
+        const { formState, actionParam, strategyMarketingType} = this.props;
+        const { pagetype, editing } = this.state;
         let editDis = true, invalidTimeDis  = true;
+       
+        // 修改页面失效时间、失效时间进行判断
         if ( pagetype === false) {
             // 开始有效时间可以选择时间的
             if ( formState.strategyState === '未开始' || formState.strategyState === '待开始') {
@@ -218,26 +219,13 @@ class DetailOrderStrategy extends React.Component<Props, object> {
             } 
         } 
 
-        // 营销类别的展示
-        let strategyMarketingType = formState.strategyMarketingType, strategyTypeChildren;
-        if ( strategyMarketingType !== undefined) {
-            strategyTypeChildren = strategyMarketingType.map((item) => {
-                return <Radio value={item.id} key={item.id} disabled={pagetype}>{item.name}</Radio>;
-            });
-        }
-        // 营销类别优惠券规则
-        let editStyle = {display: 'block'};
-        if (this.state.editing && formState.marketingTypeInt !== 1) {
-            editStyle = {display: 'none'};
-        }
-
         return (
             <div id="detailOrder">
                 <Layout>
                     <Content style={{ padding: '0 50px' }}>
                         <Breadcrumb style={{ margin: '16px 0' }}>
                             <Breadcrumb.Item><Link to="/">营销管理平台</Link></Breadcrumb.Item>
-                            <Breadcrumb.Item>策略详情</Breadcrumb.Item>
+                            <Breadcrumb.Item>{pagetype ? '策略详情' : '修改策略'}</Breadcrumb.Item>
                         </Breadcrumb>
                         <Form className="form-box">
                             <Row>
@@ -370,11 +358,15 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                             <Row>
                                 <FormItem className="strategyMarketingType" label="营销类别" {...formTypeLayout} >
                                     <RadioGroup  value={formState.marketingTypeInt} onChange={this.onRadioChange}  style={{width: '100%'}}>
-                                        {strategyTypeChildren}
+                                        {
+                                           strategyMarketingType.map((item) => {
+                                                return <Radio value={item.id} key={item.id} disabled={pagetype}>{item.name}</Radio>;
+                                           })
+                                         }
                                     </RadioGroup>
                                 </FormItem>
                             </Row>
-                            <Row  style={editStyle}>
+                            <Row  style={(editing && formState.marketingTypeInt !== 1 ) ? {display: 'none'} : {display: 'block'}}>
                                 <FormItem label="优惠券" {...formItemLayout} >
                                     {getFieldDecorator('activityId', {
                                         rules: [{
@@ -430,7 +422,8 @@ const WrappedAdvancedSearchForm = Form.create()(DetailOrderStrategy as any);
 export function mapStateToProps(state: StoreState) {
     return {
         formState: state.detailOrderStrategy.formState,
-        actionParam: state.detailOrderStrategy.actionParam
+        actionParam: state.detailOrderStrategy.actionParam,
+        strategyMarketingType: state.detailOrderStrategy.strategyMarketingType
     };
 }
 
