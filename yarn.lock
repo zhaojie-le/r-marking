@@ -186,9 +186,9 @@ ansi-styles@^3.0.0, ansi-styles@^3.1.0:
   dependencies:
     color-convert "^1.9.0"
 
-antd@^2.13.9:
-  version "2.13.9"
-  resolved "https://registry.yarnpkg.com/antd/-/antd-2.13.9.tgz#f8bcd17f0ecf9c5ef659bb6bc0124b450e6de080"
+antd@^2.13.11:
+  version "2.13.11"
+  resolved "https://registry.yarnpkg.com/antd/-/antd-2.13.11.tgz#59c0c1e79db07092fa6ee8d00f77668e88c72fb0"
   dependencies:
     array-tree-filter "~1.0.0"
     babel-runtime "6.x"
@@ -197,7 +197,7 @@ antd@^2.13.9:
     css-animation "^1.2.5"
     dom-closest "^0.2.0"
     lodash.debounce "^4.0.8"
-    moment "^2.18.1"
+    moment "^2.19.3"
     omit.js "^1.0.0"
     prop-types "^15.5.7"
     rc-animate "^2.4.1"
@@ -3690,9 +3690,13 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkd
   dependencies:
     minimist "0.0.8"
 
-moment@2.x, moment@^2.18.1:
+moment@2.x:
   version "2.19.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.1.tgz#56da1a2d1cbf01d38b7e1afc31c10bcfa1929167"
+
+moment@^2.19.2, moment@^2.19.3:
+  version "2.19.3"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.3.tgz#bdb99d270d6d7fda78cc0fbace855e27fe7da69f"
 
 ms@2.0.0:
   version "2.0.0"
