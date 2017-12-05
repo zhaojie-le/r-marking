@@ -3,19 +3,18 @@ import { DETAILORDER_STRATEGY_SUCCESS } from '../constants';
 
 function enthusiasm(
         state: DetailOrderStrategy = {
-            formState: {
-                actionParam: {}
-            },
+            formState: {},
+            actionParam: {},
+            strategyMarketingType: [],
         },
         action: any 
     ) {
         switch (action.type) {
-        case DETAILORDER_STRATEGY_SUCCESS:
-            return {
-                formState: { ...action.result, actionParam: action.result.actionParam},
-            };
-        default:
-            return { ...state };
+            case DETAILORDER_STRATEGY_SUCCESS:
+                console.log({...state});
+                return { ...state, formState: action.result, actionParam: action.result.actionParam, strategyMarketingType: action.result.strategyMarketingType};
+            default:
+                return { ...state };
         }  
  }
 export const detailOrderStrategyReducer = {

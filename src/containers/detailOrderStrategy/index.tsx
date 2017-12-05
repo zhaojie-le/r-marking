@@ -26,7 +26,8 @@ const RadioGroup = Radio.Group;
 
 export interface Props {
     param: {};
-    actionParam: {};
+    actionParam?: any;
+    strategyMarketingType?: any;
     match?: any;
     formState?: any;
     form?: any;
@@ -134,7 +135,51 @@ class DetailOrderStrategy extends React.Component<Props, object> {
         const id = match.params.id;
         strategyList(id);
     }
-
+    
+    orderRules () {
+         // 触发规则拼写规则的拼写规则
+         const { formState} = this.props;
+         let ruleList, ruleListArray;
+         ruleList = formState.ruleList;
+         if ( ruleList !== undefined ) {
+             ruleListArray = [
+                 {
+                     name: '服务项:',
+                     value: formState.ruleList[0].refer
+                 },
+                 {
+                     name: '订单来源:',
+                     value: formState.ruleList[1].orderSource
+                 },
+                 {
+                     name: '订单状态:',
+                     value: formState.ruleList[2].orderStatus
+                 },
+                 {
+                     name: '城市:',
+                     value: formState.ruleList[3].city
+                 },
+             ]; 
+             ruleListArray = ruleListArray.map((item, i) => {
+                 return <p key={i}><label>{item.name}</label><span >{item.value}</span></p>;
+             });
+             return (
+                <Row>  
+                     <Col style={{ textAlign: 'left', background: '#eee', padding: '10px 0px', border: '1px solid #ccc'}}>
+                         <FormItem className="strategyOrderRules"  label="触发规则" {...formItemLayout}  style={{ margin: '0' }}>
+                                 <div className="orderRules">
+                                     <section className="showInfo">
+                                     {ruleListArray}
+                                     </section>
+                                 </div>
+                         </FormItem>
+                     </Col>
+                 </Row>
+             );
+         } else {
+            return ('');
+         }
+    }
     buttonMain () {
         const { pagetype } = this.state;
         if (pagetype === false) {
@@ -158,54 +203,15 @@ class DetailOrderStrategy extends React.Component<Props, object> {
     }
     render() {
         const { getFieldDecorator} = this.props.form;
-        const { formState} = this.props;
-        const { pagetype } = this.state;
-
-         // 生效、和失效时间的初始化
-        let dayDelay, minuteDelay;
-        if ( formState.actionParam !== undefined) {
-            dayDelay = formState.actionParam.dayDelay;
-            minuteDelay = formState.actionParam.minuteDelay;
-        }
-
-        // 触发规则拼写规则的拼写规则
-        let ruleList, ruleListArray;
-        ruleList = formState.ruleList;
-        if ( ruleList !== undefined ) {
-            ruleListArray = [
-                {
-                    name: '服务项:',
-                    value: formState.ruleList[0].refer
-                },
-                {
-                    name: '订单来源:',
-                    value: formState.ruleList[1].orderSource
-                },
-                {
-                    name: '订单状态:',
-                    value: formState.ruleList[2].orderStatus
-                },
-                {
-                    name: '城市:',
-                    value: formState.ruleList[3].city
-                },
-            ]; 
-            
-            ruleListArray = ruleListArray.map((item, i) => {
-                return <p key={i}><label>{item.name}</label><span >{item.value}</span></p>;
-            });
-        }
-
+        const { formState, actionParam, strategyMarketingType} = this.props;
+        const { pagetype, editing } = this.state;
+        let editDis = true, invalidTimeDis  = true;
+       
         // 修改页面失效时间、失效时间进行判断
-        let effectiveTimeDis = true, invalidTimeDis  = true;
-        let dayDelayDis = true, minuteDelayDis = true, marketingLimitDis = true;
         if ( pagetype === false) {
             // 开始有效时间可以选择时间的
             if ( formState.strategyState === '未开始' || formState.strategyState === '待开始') {
-                effectiveTimeDis = false;
-                dayDelayDis = false;
-                minuteDelayDis = false;
-                marketingLimitDis = false;
+                editDis = false;
             } 
             // 结束有效时间可以选择时间的
             if ( formState.strategyState === '已过期' || formState.strategyState === '已完成') {
@@ -213,28 +219,13 @@ class DetailOrderStrategy extends React.Component<Props, object> {
             } 
         } 
 
-        // 营销类别的展示
-        let strategyMarketingType = formState.strategyMarketingType, strategyTypeChildren;
-        if ( strategyMarketingType !== undefined) {
-            strategyTypeChildren = strategyMarketingType.map((item) => {
-                return <Radio value={item.id} key={item.id} disabled={pagetype}>{item.name}</Radio>;
-            });
-        }
-        // 营销类别优惠券规则
-        let editStyle;
-        if (this.state.editing && formState.marketingTypeInt !== 1) {
-            editStyle = {display: 'none'};
-        } else {
-            editStyle = {display: 'block'};
-        }
-
         return (
             <div id="detailOrder">
                 <Layout>
                     <Content style={{ padding: '0 50px' }}>
                         <Breadcrumb style={{ margin: '16px 0' }}>
                             <Breadcrumb.Item><Link to="/">营销管理平台</Link></Breadcrumb.Item>
-                            <Breadcrumb.Item>策略详情</Breadcrumb.Item>
+                            <Breadcrumb.Item>{pagetype ? '策略详情' : '修改策略'}</Breadcrumb.Item>
                         </Breadcrumb>
                         <Form className="form-box">
                             <Row>
@@ -278,7 +269,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                                 format="YYYY-MM-DD HH:mm:ss"
                                                 placeholder={formState.effectiveTime}
                                                 onChange={this.onStartChange}
-                                                disabled={effectiveTimeDis}
+                                                disabled={editDis}
                                             />  
                                         )}
                                     </FormItem>
@@ -303,24 +294,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                     )}
                                 </FormItem>
                             </Row>
-                            <Row>  
-                                <Col style={{ textAlign: 'left', background: '#eee', padding: '10px 0px', border: '1px solid #ccc'}}>
-                                    <FormItem label="触发规则" {...formItemLayout}  style={{ margin: '0' }}>
-                                        {getFieldDecorator('orderRules', {
-                                            rules: [{
-                                                required: true, message: '延迟时间不能为空！',
-                                            }],
-                                            initialValue: '11',
-                                        })(
-                                            <div className="orderRules">
-                                                <section className="showInfo">
-                                                {ruleListArray}
-                                                </section>
-                                            </div>
-                                        )} 
-                                    </FormItem>
-                                </Col>
-                            </Row>
+                            {this.orderRules()}
                             <Row className="setDelayTime">
                                 <Col span={3} className="delayTimeLabel"><label>延迟时间：</label></Col>
                                 <Col span={3}>
@@ -329,13 +303,13 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                             rules: [{
                                                 required: true, message: '延迟时间不能为空！',
                                             }],
-                                            initialValue: dayDelay,
+                                            initialValue: actionParam.dayDelay,
                                         })(
                                             <InputNumber
                                                 min={0}
                                                 max={100}
                                                 style={{width: '90%'}}
-                                                disabled={dayDelayDis}
+                                                disabled={editDis}
                                             />
                                         )}
                                     </FormItem>
@@ -349,13 +323,13 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                             rules: [{
                                                 required: true, message: '延迟时间不能为空！',
                                             }],
-                                            initialValue: minuteDelay,
+                                            initialValue: actionParam.minuteDelay,
                                         })(
                                             <InputNumber
                                                 min={0}
                                                 max={100}
                                                 style={{width: '90%'}}
-                                                disabled={minuteDelayDis}
+                                                disabled={editDis}
                                             />
                                         )}
                                     </FormItem>
@@ -376,7 +350,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                             min={0}
                                             max={100}
                                             style={{width: 80}}
-                                            disabled={marketingLimitDis}
+                                            disabled={editDis}
                                         />
                                     )}
                                 </FormItem>
@@ -384,11 +358,15 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                             <Row>
                                 <FormItem className="strategyMarketingType" label="营销类别" {...formTypeLayout} >
                                     <RadioGroup  value={formState.marketingTypeInt} onChange={this.onRadioChange}  style={{width: '100%'}}>
-                                        {strategyTypeChildren}
+                                        {
+                                           strategyMarketingType.map((item) => {
+                                                return <Radio value={item.id} key={item.id} disabled={pagetype}>{item.name}</Radio>;
+                                           })
+                                         }
                                     </RadioGroup>
                                 </FormItem>
                             </Row>
-                            <Row  style={editStyle}>
+                            <Row  style={(editing && formState.marketingTypeInt !== 1 ) ? {display: 'none'} : {display: 'block'}}>
                                 <FormItem label="优惠券" {...formItemLayout} >
                                     {getFieldDecorator('activityId', {
                                         rules: [{
@@ -444,6 +422,8 @@ const WrappedAdvancedSearchForm = Form.create()(DetailOrderStrategy as any);
 export function mapStateToProps(state: StoreState) {
     return {
         formState: state.detailOrderStrategy.formState,
+        actionParam: state.detailOrderStrategy.actionParam,
+        strategyMarketingType: state.detailOrderStrategy.strategyMarketingType
     };
 }
 

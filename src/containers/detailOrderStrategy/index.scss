@@ -48,7 +48,8 @@ body {
                 }
             }
         }
-        .strategyMarketingType .ant-form-item-label label {
+        .strategyMarketingType .ant-form-item-label label,
+        .strategyOrderRules .ant-form-item-label label {
             &:before {
                 @include labelStyle;
             }
