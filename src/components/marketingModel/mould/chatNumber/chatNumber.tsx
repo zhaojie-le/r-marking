@@ -9,10 +9,11 @@ import {
 import withOperator from '../mouldOperate';
 
 interface ChatNumberProp {
-    onChange: (value: any) => any;
     key: number;
+    showOrderDetailCheck?: boolean;
     value: any;
     stage?: number;
+    onChange: (value: any) => any;
 }
 
 class ChatNumber extends React.Component<ChatNumberProp, {}> {
@@ -20,17 +21,15 @@ class ChatNumber extends React.Component<ChatNumberProp, {}> {
         linkInput: false,
         docs: '',
         link: '',
-        type: 4
+        type: 4,
+        showOrderDetailCheck: false,
     };
     private detailLink: string = 'xxx';
  
     constructor(props: any, context: any) {
         super(props, context);
         const value = this.props.value || {};
-        this.state.docs = value.docs;
-        this.state.link = value.link;
-        this.state.type = value.type || 2;
-        this.state.linkInput = value.linkInput;
+        this.state = { ...value, type: 4, showOrderDetailCheck: this.props.showOrderDetailCheck};
     }
     
     componentWillReceiveProps(nextProps: any) {
@@ -75,7 +74,7 @@ class ChatNumber extends React.Component<ChatNumberProp, {}> {
 
         return (
             <div>
-                <Checkbox onChange={this.linkChange} disabled={!!stage} checked={hasChecked}>该订单详情页</Checkbox>
+                {this.state.showOrderDetailCheck ? <Checkbox onChange={this.linkChange} disabled={!!stage} checked={hasChecked}>该订单详情页</Checkbox> : null}
                 <Input placeholder="请输入跳转链接!" onChange={this.linkChange} disabled={linkInput} defaultValue={hasChecked ? '' : link}/>
             </div>
         );
@@ -103,6 +102,7 @@ class ChatNumber extends React.Component<ChatNumberProp, {}> {
                     </Col>
                 </Row>
                 <Row><Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 跳转链接:</Col><Col span={19}>{this.isHourEmploee()}</Col></Row>
+                <Row><Col span={19} offset={5} style={{lineHeight: '16px', color: 'red'}}>系统自动加入hmsr参数，无需手动填写 .hmsr=wxgzh_clyx_策略id_策略类别_活动id（活动id只有发券类型才有）</Col></Row>
             </div>
         );
     }

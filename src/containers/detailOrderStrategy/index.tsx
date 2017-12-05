@@ -26,6 +26,7 @@ const RadioGroup = Radio.Group;
 
 export interface Props {
     param: {};
+    actionParam: {};
     match?: any;
     formState?: any;
     form?: any;
@@ -141,7 +142,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                 <Row>
                     <FormItem style={{width: '100%'}}>
                         <Button type="primary" onClick={this.onSave} style={{marginLeft: '138px'}}>创建策略</Button>
-                        <Button onClick={() => console.log(12)} style={{marginLeft: '10px'}}>取消</Button>
+                        <Button style={{marginLeft: '10px'}}>取消</Button>
                     </FormItem>
                 </Row>
             );
@@ -149,7 +150,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
             return (
                 <Row>
                     <FormItem style={{width: '100%'}}>
-                        <Button onClick={() => console.log(12)} style={{marginLeft: '138px'}}>返回</Button>
+                        <Button style={{marginLeft: '138px'}}>返回</Button>
                     </FormItem>
                 </Row> 
             );

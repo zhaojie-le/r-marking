@@ -17,12 +17,13 @@ import {
     InputNumber,
     DatePicker
 } from 'antd';
+import moment from 'moment'; 
 import { StrategyRule, MarketingModel } from '../../components';
 import './index.scss';
 
 const { Content, Footer } = Layout;
 const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
+const RangePicker: any = DatePicker.RangePicker;
 const Option = Select.Option;
 
 export interface Props {
@@ -147,10 +148,11 @@ class DelayTime extends React.Component<DelayTimeProps, {}> {
     }
 }
 
-class List extends React.Component<Props, {}> {
+class CreateOrderStrategy extends React.Component<Props, {}> {
     state: any = {
         editing: false,
         sendCoupon: 1,
+        showOrderDetailCheck: false
     };
     private validateFieldsType: Array<string> = ['stragyName', 'time', 'delayTime', 'pushTimes', 'marketingCategory', 'marketingModel'];
     constructor(props: Props, context: any) {
@@ -208,11 +210,25 @@ class List extends React.Component<Props, {}> {
     }
 
     onStrategyRuleChange = (value) => {
-        console.log(value);
+        this.setState({
+            showOrderDetailCheck: value.serviceItem[1] === '201' ? true : false
+        });
+    }
+
+    disabledDate = (current) => {
+        if ( !current ) {
+            return current;
+        }
+        const currentTime = current.valueOf();
+        const endTime = moment().add(6, 'M');
+        return currentTime && (currentTime < Date.now()) || current && (currentTime > endTime.valueOf());
     }
 
     render() {
         const { getFieldDecorator } = this.props.form;
+        const { showOrderDetailCheck } = this.state;
+        const { history }: any = this.props;
+
         return (
             <div id="orderStrategy">
                 <Layout className="layout">
@@ -241,6 +257,7 @@ class List extends React.Component<Props, {}> {
                                         <RangePicker
                                             showTime={{ format: 'HH:mm:ss' }}
                                             format="YYYY-MM-DD HH:mm"
+                                            disabledDate={this.disabledDate}
                                             placeholder={['开始时间', '结束时间']}
                                         />
                                     )}
@@ -341,6 +358,7 @@ class List extends React.Component<Props, {}> {
                                         <MarketingModel 
                                             form={this.props.form}
                                             stage={0}
+                                            showOrderDetailCheck={showOrderDetailCheck}
                                             onChange={this.onMarketingModelChange}
                                         />
                                     )}
@@ -357,13 +375,13 @@ class List extends React.Component<Props, {}> {
                                 </FormItem>
                                 <FormItem {...layout.tailFormItemLayout}>
                                     <Button type="primary" onClick={this.saveStrategy}>创建策略</Button>
-                                    <Button onClick={() => console.log(12)} style={{marginLeft: '10px'}}>取消</Button>
+                                    <Button onClick={() => history.push('/')} style={{marginLeft: '10px'}}>取消</Button>
                                 </FormItem>
                             </Form>
                         </div>
                     </Content>
                     <Footer style={{ textAlign: 'center' }}>
-                        Ant Design ©2016 Created by Ant UED
+                        北京58到家信息技术有限公司 ©2017 营销系统
                     </Footer>
                 </Layout>
             </div>
@@ -403,6 +421,6 @@ const WrappedRegistrationForm = Form.create({
     onFieldsChange(props: any, fields: any) {
         props.onChangeField(fields);
     }
-})(List as any);
+})(CreateOrderStrategy as any);
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WrappedRegistrationForm as any));

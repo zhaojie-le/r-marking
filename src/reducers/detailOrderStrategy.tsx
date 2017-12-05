@@ -3,16 +3,16 @@ import { DETAILORDER_STRATEGY_SUCCESS } from '../constants';
 
 function enthusiasm(
         state: DetailOrderStrategy = {
-            formState: {},
+            formState: {
+                actionParam: {}
+            },
         },
         action: any 
-    ):
-    DetailOrderStrategy {
+    ) {
         switch (action.type) {
         case DETAILORDER_STRATEGY_SUCCESS:
             return {
-                ...state,
-                formState: action.result,
+                formState: { ...action.result, actionParam: action.result.actionParam},
             };
         default:
             return { ...state };

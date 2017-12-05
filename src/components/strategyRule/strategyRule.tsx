@@ -44,7 +44,7 @@ namespace layout {
     };
 }
 
-function getKeysValues(obj: any, keys: any, key: string = 'value', label: string = 'name'): string {
+function getKeysValues(obj: any, keys: any, key: string = 'value', label: string = 'label'): string {
     return obj.filter((item) => {
         return keys.includes(item[key]);
     }).map((item) => {
@@ -180,7 +180,6 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         this.props.form.validateFields(['serviceItem', 'serviceOptions', 'orderSource', 'orderState', 'city'], (err, values) => {
             if (!err) {
                 this.computeShowData(values);
-                console.log(values);
                 this.props.onChange(values);
                 this.props.onSaveRule(JSON.stringify(values));
             }
@@ -201,7 +200,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                     labelSet.orderSourceLabel = getKeysValues(this.props.orderSource, values.orderSource, 'value', 'label');
                     break;
                 case 'city':
-                    labelSet.cityLabel = getKeysValues(this.props.city.list, values.city.map((one) => `${parseInt(one, 10) + 1}`), 'value', 'label');
+                    labelSet.cityLabel = getKeysValues(this.props.city.list, values.city.map((one) => `${parseInt(one, 10)}`), 'value', 'label');
                     break;
                 default:
                     break;
@@ -221,7 +220,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
             return {
                 title: item.label,
                 value: item.value,
-                key: `${index}`
+                key: `${item.value}`
             };
         });
         const plainOptions = this.props.orderSource;
