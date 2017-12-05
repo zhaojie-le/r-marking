@@ -33,17 +33,16 @@ const onSaveRuleFail = (error) => {
 };
 
 const strategyList: Epic<any, any> = (action$, store) => {
-    return action$.ofType(constants.DETAILORDER_STRATEGY).
-        switchMap(
+    return action$.ofType(constants.DETAILORDER_STRATEGY)
+        .switchMap(
         (action): Observable<any> => {
             // 229633399113924614 ${action.id}
-            return ajax.getJSON(`/marketStrategy/edit/229633399113924614`).
-                map((response: {resultCode: number, data: object}) => {
-                console.log('responseresponseresponse=' + JSON.stringify(response));
+            return ajax.getJSON(`/marketStrategy/edit/229633399113924614`)
+                .map((response: {resultCode: number, data: object}) => {
                 if (response.resultCode === 1) {
-                return (detailOrderSuccess(response.data));
+                    return (detailOrderSuccess(response.data));
                 } else {
-                return (detailOrderFail(response));
+                    return (detailOrderFail(response));
                 }
             });
         }
@@ -51,17 +50,14 @@ const strategyList: Epic<any, any> = (action$, store) => {
 };
 
 const onSaveRule: Epic<any, any, any>  = (action$, store) => {
-    return action$.ofType(constants.ONSAVERULE).
-        switchMap(
+    return action$.ofType(constants.ONSAVERULE)
+         .switchMap(
             (action): Observable<any>  => {
-                console.log(action.params);
-                return ajax.post('/marketStrategy/update', action.params).
-                map(response => {
+                return ajax.post('/marketStrategy/update', action.params)
+                .map(response => {
                     if (response.response.resultCode === 1) {
-                        console.log('修改策略成功');
                         return (onSaveRuleSuccess(response.response.data));
                     } else {
-                        console.log('修改策略失败');
                         return (onSaveRuleFail(response.response));
                     }
                 });
