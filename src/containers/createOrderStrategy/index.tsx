@@ -148,10 +148,11 @@ class DelayTime extends React.Component<DelayTimeProps, {}> {
     }
 }
 
-class List extends React.Component<Props, {}> {
+class CreateOrderStrategy extends React.Component<Props, {}> {
     state: any = {
         editing: false,
         sendCoupon: 1,
+        showOrderDetailCheck: false
     };
     private validateFieldsType: Array<string> = ['stragyName', 'time', 'delayTime', 'pushTimes', 'marketingCategory', 'marketingModel'];
     constructor(props: Props, context: any) {
@@ -209,7 +210,9 @@ class List extends React.Component<Props, {}> {
     }
 
     onStrategyRuleChange = (value) => {
-        console.log(value);
+        this.setState({
+            showOrderDetailCheck: value.serviceItem[1] === '201' ? true : false
+        });
     }
 
     disabledDate = (current) => {
@@ -223,6 +226,9 @@ class List extends React.Component<Props, {}> {
 
     render() {
         const { getFieldDecorator } = this.props.form;
+        const { showOrderDetailCheck } = this.state;
+        const { history }: any = this.props;
+
         return (
             <div id="orderStrategy">
                 <Layout className="layout">
@@ -352,6 +358,7 @@ class List extends React.Component<Props, {}> {
                                         <MarketingModel 
                                             form={this.props.form}
                                             stage={0}
+                                            showOrderDetailCheck={showOrderDetailCheck}
                                             onChange={this.onMarketingModelChange}
                                         />
                                     )}
@@ -368,7 +375,7 @@ class List extends React.Component<Props, {}> {
                                 </FormItem>
                                 <FormItem {...layout.tailFormItemLayout}>
                                     <Button type="primary" onClick={this.saveStrategy}>创建策略</Button>
-                                    <Button onClick={() => console.log(12)} style={{marginLeft: '10px'}}>取消</Button>
+                                    <Button onClick={() => history.push('/')} style={{marginLeft: '10px'}}>取消</Button>
                                 </FormItem>
                             </Form>
                         </div>
@@ -414,6 +421,6 @@ const WrappedRegistrationForm = Form.create({
     onFieldsChange(props: any, fields: any) {
         props.onChangeField(fields);
     }
-})(List as any);
+})(CreateOrderStrategy as any);
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WrappedRegistrationForm as any));

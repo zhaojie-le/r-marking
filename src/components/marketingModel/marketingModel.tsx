@@ -17,6 +17,7 @@ const SubMenu = Menu.SubMenu;
 export interface RuleProps {
     form?: any;
     value?: any;
+    showOrderDetailCheck?: boolean;
     stage: number;
     onChange: (value: any) => void;
 }
@@ -291,7 +292,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
 
     geteratorChannel = () => {
         const { getFieldDecorator, getFieldValue } = this.props.form;
-        const { stage } = this.props;
+        const { stage, showOrderDetailCheck } = this.props;
         const models = this.state.models.map((item) => {
             return {
                 ...item,
@@ -301,12 +302,13 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
         getFieldDecorator('keys', { initialValue: models });
         const keys = getFieldValue('keys');
         const clength = keys.length;
-        
+
         return keys.map((key, i) => {
             const props = {
                 first:  i === 0 ? true : false,
                 last: i === clength - 1 ? true : false,
                 stage: stage,
+                showOrderDetailCheck: showOrderDetailCheck,
                 onShiftUp: () => this.shiftUp(key),
                 orderState: key.orderState,
                 onShiftDown: () => this.shiftDown(key)
