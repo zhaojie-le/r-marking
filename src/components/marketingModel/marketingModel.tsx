@@ -62,6 +62,27 @@ function changePosition<T extends { k: number }>(arr: any[], type: boolean, key:
     return newKeys;
 }
 
+function getBt(str: string): number {
+    var char = str.replace(/[^\x00-\xff]/g, '**');
+    return char.length;
+}
+
+function validate(fields: any[]): string {
+    return fields.reduce(
+        (last, item) => { 
+            switch (item.type) {
+                case 'require':
+                    return !item.value ? `${last}, ${item.errMsg}` : `${last}`;
+                case 'limit':
+                    return getBt(item.value) > item.limitNumber ? `${last}, ${item.errMsg}` : `${last}`;
+                default:
+                    return `${last}`;
+            }
+        },
+        ''
+    ).substring(1);
+}
+
 export default class MarketingModel extends React.Component<RuleProps, {}> {
     state: any = {
         editing: false,
@@ -217,27 +238,43 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
     }
     
     checkSms = (rule, value, callback) => {
-        if (value.docs && value.link) {
+        const wordNumber: number = getBt(value.docs);
+
+        if (value.docs && value.link && wordNumber < 80) {
             callback();
             return;
         }
-        callback('请正确填写短信营销方式所有字段!');
+        callback(validate([
+            {type: 'require', value: value.docs, errMsg: '文案不能为空'},
+            {type: 'require', value: value.link, errMsg: '链接不能为空'},
+            {type: 'limit', value: value.docs, limitNumber: 80,  errMsg: '文案字数过多'}
+        ]));
     }
 
     checkApp = (rule, value, callback) => {
-        if (value.docs && value.link && value.title) {
+        if (value.docs && value.link && value.title && getBt(value.docs) < 60 && getBt(value.title) < 20) {
             callback();
             return;
         }
-        callback('请填全到家App营销方式字段!');
+        callback(validate([
+            {type: 'require', value: value.docs, errMsg: '文案不能为空'},
+            {type: 'require', value: value.link, errMsg: '链接不能为空'},
+            {type: 'require', value: value.title, errMsg: '标题不能为空'},
+            {type: 'limit', value: value.docs, limitNumber: 60,  errMsg: '文案字数过多'},
+            {type: 'limit', value: value.title, limitNumber: 20,  errMsg: '标题字数过多'}
+        ]));
     }
 
     checkChatNumber = (rule, value, callback) => {
-        if (value.docs && value.link) {
+        if (value.first && value.remark && value.link) {
             callback();
             return;
         }
-        callback('请填全58公众号营销方式字段!');
+        callback(validate([
+            {type: 'require', value: value.first, errMsg: '首段不能为空'},
+            {type: 'require', value: value.remark, errMsg: '尾段不能为空'},
+            {type: 'require', value: value.link, errMsg: '链接不能为空'},
+        ]));
     }
     
     generateChat = (key) => {
@@ -323,7 +360,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                             {getFieldDecorator(`sms-${k}`, {
                                 initialValue: key.value,
                                 rules: [{
-                                    required: true, message: '短信渠道信息字段不能为空！',
+                                    required: true,
                                     validator: this.checkSms
                                 }],
                             })(
@@ -341,7 +378,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                             {getFieldDecorator(`daojiaApp-${k}`, {
                                 initialValue: key.value,
                                 rules: [{
-                                    required: true, message: '到家App渠道字段不能为空！',
+                                    required: true,
                                     validator: this.checkApp
                                 }],
                             })(
@@ -359,7 +396,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                             {getFieldDecorator(`suyunApp-${k}`, {
                                 initialValue: key.value,
                                 rules: [{
-                                    required: true, message: '速运APP渠道字段不能为空！',
+                                    required: true,
                                     validator: this.checkApp
                                 }],
                             })(
@@ -377,7 +414,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                             {getFieldDecorator(`chatNumber-${k}`, {
                                 initialValue: key.value,
                                 rules: [{
-                                    required: true, message: '58到家公众号渠道字段不能为空！',
+                                    required: true,
                                     validator: this.checkChatNumber
                                 }],
                             })(
@@ -430,7 +467,8 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
             verticalAlign: 'middle',
-            marginLeft: '10px',
+            color: '#383838',
+            maxWidth: 375
         };
 
         return Object.keys(showData).map((item: string, i: number) => {
@@ -481,11 +519,11 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
             );
 
             return (
-                <p key={i} style={styleSpan as any} title={properties as any}>
-                    <span style={{ fontWeight: 'bold', marginRight: '10px', color: '#2b2b2b'}}>渠道{i + 1}</span>
-                    <span style={{ color: '#462bc3'}}>{label}</span>
-                    <span style={{ color: '#383838'}}>{properties}</span>
-                </p>
+                <Row key={i}>
+                    <Col span={2} style={{ fontWeight: 'bold', color: '#2b2b2b'}}>渠道{i + 1}</Col>
+                    <Col span={5} style={{ color: '#462bc3'}}>{label}</Col>
+                    <Col span={16} style={styleSpan as any}><p title={properties as any}>{properties}</p></Col>
+                </Row>
             );
         });
     }

@@ -295,11 +295,11 @@ class StrategyRule extends React.Component<RuleProps, {}> {
             triggerRuleTpl = (
                 <section className="showInfo">
                     <p><label>规则名称:</label><span>订单事件</span></p>
-                    <p><label>服务项:</label><span>{selectedLabel}</span></p>
-                    <p><label>服务项具体选项:</label><span>{serviceOptionLabel}</span></p>
+                    <p><label>品类:</label><span>{selectedLabel}</span></p>
+                    <p><label>服务项:</label><span>{serviceOptionLabel}</span></p>
                     <p><label>订单来源:</label><span>{orderSourceLabel}</span></p>
                     <p><label>订单状态:</label><span>{orderStateLabel}</span></p>
-                    <p><label>城市:</label><span>{cityLabel}</span></p>
+                    <p><label>城市:</label><span title={cityLabel}>{cityLabel}</span></p>
                 </section>
             );
         }

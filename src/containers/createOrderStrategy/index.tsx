@@ -133,6 +133,7 @@ class DelayTime extends React.Component<DelayTimeProps, {}> {
                     max={100}
                     style={{width: '100px'}}
                     onChange={this.handleDayChange}
+                    defaultValue={0}
                 />
                 <span>天</span>
                 <InputNumber
@@ -140,6 +141,7 @@ class DelayTime extends React.Component<DelayTimeProps, {}> {
                     max={100}
                     style={{width: '100px', marginLeft : '15px'}}
                     onChange={this.handleMinutChange}
+                    defaultValue={0}
                 />
                 <span>分钟</span>
                 <span style={{color : 'red', marginLeft : '15px'}}>注：订单状态变更后的X天Y分钟</span>
@@ -352,7 +354,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                             required: true, message: '策略名称不能为空！',
                                         }],
                                         initialValue: [
-                                            {type: '1', value: {type: '1', docs: '111', link: '222'}}
+                                            {type: '1', value: {type: '1', docs: '111', link: '222'}},
+                                            {type: '2', value: {type: '2', docs: '111', link: '222', title: '22222'}}
                                         ]
                                     })(
                                         <MarketingModel 

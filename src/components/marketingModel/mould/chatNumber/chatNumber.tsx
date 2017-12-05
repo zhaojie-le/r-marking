@@ -19,7 +19,8 @@ interface ChatNumberProp {
 class ChatNumber extends React.Component<ChatNumberProp, {}> {
     state = {
         linkInput: false,
-        docs: '',
+        first: '',
+        remark: '',
         link: '',
         type: 4,
         showOrderDetailCheck: false,
@@ -35,17 +36,26 @@ class ChatNumber extends React.Component<ChatNumberProp, {}> {
     componentWillReceiveProps(nextProps: any) {
         if ('value' in nextProps) {
             const value = nextProps.value;
-            this.setState(value);
+            this.setState({ ...value, showOrderDetailCheck: nextProps.showOrderDetailCheck });
         }
     }
 
-    wnChange = (event) => {
-        const docs = event.target.value;
+    firstChange = (event) => {
+        const first = event.target.value;
         if (!('value' in this.props)) {
-            this.setState({ docs });
+            this.setState({ first });
         }
-        this.triggerChange({ docs });
+        this.triggerChange({ first });
     }
+
+    remarkChange = (event) => {
+        const remark = event.target.value;
+        if (!('value' in this.props)) {
+            this.setState({ remark });
+        }
+        this.triggerChange({ remark });
+    }
+
 
     linkChange = (event) => {
         const isLinkInputDs = event.target.checked;
@@ -90,19 +100,19 @@ class ChatNumber extends React.Component<ChatNumberProp, {}> {
                         <h2>下单成功通知</h2>
                         <Row>
                             <Col span={3}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 首段</Col>
-                            <Col span={20} offset={1}><Input placeholder="请输入标题!" onChange={this.wnChange} defaultValue={docs}/></Col>
+                            <Col span={20} offset={1}><Input placeholder="请输入标题!" onChange={this.firstChange} defaultValue={docs}/></Col>
                         </Row>
                         {
                             this.props.children
                         }
                         <Row>
                             <Col span={3}><i style={{color: 'red'}}>*</i> 尾段</Col>
-                            <Col span={20} offset={1}><Input placeholder="请输入标题!" onChange={this.wnChange} defaultValue={docs}/></Col>
+                            <Col span={20} offset={1}><Input placeholder="请输入标题!" onChange={this.remarkChange} defaultValue={docs}/></Col>
                         </Row>
                     </Col>
                 </Row>
                 <Row><Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 跳转链接:</Col><Col span={19}>{this.isHourEmploee()}</Col></Row>
-                <Row><Col span={19} offset={5} style={{lineHeight: '16px', color: 'red'}}>系统自动加入hmsr参数，无需手动填写 .hmsr=wxgzh_clyx_策略id_策略类别_活动id（活动id只有发券类型才有）</Col></Row>
+                <Row><Col span={19} offset={5} style={{lineHeight: '16px', color: '#2a52be'}}>系统自动加入hmsr参数，无需手动填写 .hmsr=wxgzh_clyx_策略id_策略类别_活动id（活动id只有发券类型才有）</Col></Row>
             </div>
         );
     }

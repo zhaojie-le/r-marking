@@ -69,6 +69,7 @@ class Sms extends React.Component<SmsNumberProp, {}> {
                     <Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 跳转链接:</Col>
                     <Col span={19}><Input placeholder="请输入跳转链接!" onChange={this.linkChange} defaultValue={link} disabled={!!stage}/></Col>
                 </Row>
+                <Row><Col span={19} offset={5} style={{lineHeight: '16px', color: '#2a52be'}}>系统自动加入hmsr参数，无需手动填写hmsr=duanxin_clyx_策略id_策略类别_活动id(活动id只有发券类型才有）</Col></Row>
             </div>
         );
     }

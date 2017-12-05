@@ -31,7 +31,6 @@
                     color: #2b2b2b;
                 }
                 span {
-                    width: 40%;
                     display: inline-block;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -39,6 +38,7 @@
                     vertical-align: middle;
                     color: #383838;
                     margin-left: 10px;
+                    max-width: 470px;
                 }
             }
             .editInfo {
