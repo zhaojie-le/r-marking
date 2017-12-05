@@ -28,7 +28,7 @@ app.use(function(req, res, next) {
 
 app.use('/marketStrategy', combineMarketStrategy);
 app.use('/marketStrategy', combineCreateRules);
-app.use('/marketDetailStrategy', combineDetailRules);
+app.use('/marketStrategy', combineDetailRules);
 
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
