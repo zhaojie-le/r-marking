@@ -56,7 +56,6 @@ class ChatNumber extends React.Component<ChatNumberProp, {}> {
         this.triggerChange({ remark });
     }
 
-
     linkChange = (event) => {
         const isLinkInputDs = event.target.checked;
         const link = event.target.checked ? this.detailLink : event.target.value;

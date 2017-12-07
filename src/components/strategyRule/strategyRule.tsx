@@ -1,5 +1,13 @@
 import * as React from 'react';
 import './style.scss';
+import {
+    Button,
+    Cascader,
+    Checkbox,
+    Select,
+    Form,
+    Transfer,
+} from 'antd';
 
 export interface RuleProps {
     form: any;
@@ -14,15 +22,6 @@ export interface RuleProps {
     onChange: (value: any) => void;
     onGetOrderState: (cp: {serverIds: string; cateId: number}) => void;
 }
-
-import {
-    Button,
-    Cascader,
-    Checkbox,
-    Select,
-    Form,
-    Transfer,
-} from 'antd';
 
 const Option = Select.Option;
 const CheckboxGroup = Checkbox.Group;
@@ -80,6 +79,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
 
     onChange = (value, selectedOptions) => {
         const labelValue = `${selectedOptions[0].label}, ${selectedOptions[1].label}`;
+        
         this.setState({
             cateId: value[1],
             selectedLabel: labelValue
@@ -89,6 +89,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
 
     onCheckChange = (checkedList) => {
         const plainOptions = this.props.orderSource;
+
         this.setState({
             checkedList,
             indeterminate: !!checkedList.length && (checkedList.length < plainOptions.length),
@@ -113,6 +114,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     serviceOption = () => {
         const { getFieldDecorator } = this.props.form;
         const { serviceOptions } = this.props;
+
         return serviceOptions.length ? (
             <FormItem label=" " {...layout.formItemLayout}>
                     {getFieldDecorator('serviceOptions', {
@@ -140,6 +142,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     orderState = () => {
         const { getFieldDecorator } = this.props.form;
         const { orderState } = this.props;
+
         return orderState.length ? (
             <FormItem label="订单状态" {...layout.formItemLayout}>
                 {getFieldDecorator('orderState', {
