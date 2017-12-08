@@ -54,9 +54,7 @@ function changePosition<T extends { k: number }>(arr: any[], type: boolean, key:
     const newKeys: T[] = [ ...arr ];
     const current = arr.indexOf(key);
     const preIndex = type ? current - 1 : current + 1;
-    const help = newKeys[preIndex];
-    newKeys[preIndex] = key;
-    newKeys[current] = help;
+    [newKeys[preIndex], newKeys[current]] = [newKeys[current], newKeys[preIndex]];
     newKeys[preIndex].k = uuid++;
     newKeys[current].k = uuid++;
     return newKeys;
