@@ -6,7 +6,13 @@
         "pkId": "237968019437985792",
         "marketingType": "拉新",
         "effectiveTime": "2017-10-18 15:59:11",
-        "ruleList": [{ "refer": "dede" }, { "orderSource": "淘宝的订单" }, { "orderStatus": "dee" }, { "city": "dee" }],
+        "ruleList": [
+            {
+                "orderSource": "全部, 到家APP, 微信, 其他h5",
+                "city": "全国",
+                "pageId": "326  页面名称：速运开店"
+            }
+        ],
         "channel": "[2]",
         "invalidTime": "2017-10-19 15:59:12",
         "strategyTypeInt": 1,
@@ -24,7 +30,8 @@
         "marketingTypeInt": 3,
         "refer": 5665,
         "createTime": "2017-10-18 15:59:57",
-        "strategyMarketingType": [{
+        "strategyMarketingType": [
+            {
                 "name": "发券",
                 "id": 1
             },
