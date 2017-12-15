@@ -24,13 +24,13 @@ const RadioGroup = Radio.Group;
 const RangePicker: any = DatePicker.RangePicker;
 
 export interface Props {
-    serviceOptions: any[];
-    orderState: any[];
-    rules: any[];
-    formState: any;
+    strategyRule: any;
+    resPersonRule: any;
     form: any;
+    match: any;
+    onChangeStrategyRule: (modelData: number) => void;
+    OnresPersonRule: (modelData: number) => void;
     onGetService: () => void;
-    onGetRules: () => void;
     onSaveRule: () => void;
     onSaveModel: (modelData: string) => void;
     onGetOrderState: () => void;
@@ -85,10 +85,7 @@ namespace layout {
 
 class CreateImportUserStrategy extends React.Component<Props, {}> {
     state: any = {
-        editing: false,
-        sendCoupon: 1,
         marketingTypeInt: '',
-        showOrderDetailCheck: false
     };
     private validateFieldsType: Array<string> = ['stragyName', 'time', 'delayTime', 'pushTimes', 'marketingCategory', 'marketingModel'];
     constructor(props: Props, context: any) {
@@ -96,7 +93,9 @@ class CreateImportUserStrategy extends React.Component<Props, {}> {
     }
 
     componentDidMount() {
-        this.props.onGetRules();
+        const { OnresPersonRule, match } = this.props;
+        const id = match.params.id;
+        OnresPersonRule(id);
     }
 
     saveStrategy = (e) => {
@@ -116,6 +115,11 @@ class CreateImportUserStrategy extends React.Component<Props, {}> {
         this.setState({
             marketingTypeInt: e.target.value,
         });
+    }
+
+    strategyRule = (e) => {
+        const { onChangeStrategyRule } = this.props;
+        onChangeStrategyRule(e.target.value);
     }
 
     marketingTypeInt() {
@@ -205,7 +209,8 @@ class CreateImportUserStrategy extends React.Component<Props, {}> {
     render() {
         const { getFieldDecorator } = this.props.form;
         const { showOrderDetailCheck } = this.state;
-        const { history }: any = this.props;
+        const { history, strategyRule, resPersonRule }: any = this.props;
+        console.log('strategyUserRulestrategyUserRule' + strategyRule);
 
         return (
             <div id="orderStrategy">
@@ -246,11 +251,12 @@ class CreateImportUserStrategy extends React.Component<Props, {}> {
                                         rules: [{
                                             required: true, message: '触发规则不能为空！',
                                         }],
+                                        // validateTrigger: 'onBlur',
                                     })(
                                         <div className="strategyRule">
                                             <p>导入用户</p>
-                                            <Input style={{ width: 150 }} />
-                                            <span>&nbsp;&nbsp;&nbsp;请输入用户批次</span>
+                                            <Input style={{ width: 150 }} onChange={this.strategyRule} />
+                                            <span>&nbsp;&nbsp;&nbsp;{strategyRule}</span>
                                         </div>
 
                                         )}
@@ -277,9 +283,9 @@ class CreateImportUserStrategy extends React.Component<Props, {}> {
                                 <FormItem {...layout.formItemLayout} label="责任人" hasFeedback={false}>
                                     {getFieldDecorator('owner', {
                                         rules: [{
-                                            required: true, message: '策略名称不能为空！',
+                                            required: true, message: '责任人不能为空！',
                                         }],
-                                        initialValue: 'fanxuehui@58daojia.com',
+                                        initialValue: resPersonRule,
                                     })(
                                         <Input disabled={true} />
                                         )}
@@ -302,36 +308,30 @@ class CreateImportUserStrategy extends React.Component<Props, {}> {
 
 export function mapStateToProps(state: StoreState) {
     return {
-        serviceOptions: state.createOrderStrategy.serviceOptions,
-        orderState: state.createOrderStrategy.orderState,
-        formState: state.createOrderStrategy.formState,
-        rules: state.createOrderStrategy.rules,
+        strategyRule: state.createImportUserStrategy.strategyRule,
+        resPersonRule: state.createImportUserStrategy.resPersonRule,
     };
 }
 
 export const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) => bindActionCreators(
     {
-        onChangeField: actions.changeField,
-        onGetOrderState: actions.getOrderState,
-        onGetRules: actions.getRules,
-        onSaveRule: actions.saveRule,
-        onSaveModel: actions.saveModel,
-        onGetService: actions.getService
+        onChangeStrategyRule: actions.strategyRule,
+        OnresPersonRule: actions.resPersonRule,
     },
     dispatch
 );
-
-const WrappedRegistrationForm = Form.create({
-    mapPropsToFields(props: any) {
-        return {
-            owner: {
-                value: props.formState.owner.value,
-            },
-        };
-    },
-    onFieldsChange(props: any, fields: any) {
-        props.onChangeField(fields);
-    }
-})(CreateImportUserStrategy as any);
+const WrappedRegistrationForm = Form.create()(CreateImportUserStrategy as any);
+// const WrappedRegistrationForm = Form.create({
+//     mapPropsToFields(props: any) {
+//         return {
+//             owner: {
+//                 value: props.formState.owner.value,
+//             },
+//         };
+//     },
+//     onFieldsChange(props: any, fields: any) {
+//         props.onChangeField(fields);
+//     }
+// })(CreateImportUserStrategy as any);
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WrappedRegistrationForm as any));

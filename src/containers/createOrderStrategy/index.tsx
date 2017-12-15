@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { 
+import {
     Form,
     Input,
     Row,
@@ -17,7 +17,7 @@ import {
     InputNumber,
     DatePicker
 } from 'antd';
-import moment from 'moment'; 
+import moment from 'moment';
 import { StrategyRule, MarketingModel } from '../../components';
 import './index.scss';
 
@@ -35,6 +35,7 @@ export interface Props {
     onGetService: () => void;
     onGetRules: () => void;
     onSaveRule: () => void;
+    onGetWechatPush: (obj: any) => void;
     onSaveModel: (modelData: string) => void;
     onGetOrderState: () => void;
 }
@@ -55,7 +56,7 @@ namespace layout {
             sm: { span: 10 },
         },
     };
-    
+
     export const formItemLayoutMarketingModel = {
         labelCol: {
             xs: { span: 24 },
@@ -68,7 +69,7 @@ namespace layout {
     };
 
     export const tailFormItemLayout = {
-        wrapperCol: { 
+        wrapperCol: {
             xs: { span: 24, offset: 0, },
             sm: { span: 19, offset: 3, },
         },
@@ -212,6 +213,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     onStrategyRuleChange = (value) => {
+        this.props.onGetWechatPush({
+            lineid: value.serviceItem[0],
+            refer: value.serviceOptions,
+            orderStatus: value.orderState,
+        });
         this.setState({
             showOrderDetailCheck: value.serviceItem[1] === '201' ? true : false
         });
@@ -229,7 +235,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     render() {
         const { getFieldDecorator } = this.props.form;
         const { showOrderDetailCheck } = this.state;
-        const { history }: any = this.props;
+        const { history, weChatPush }: any = this.props;
 
         return (
             <div id="orderStrategy">
@@ -264,7 +270,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                         />
                                     )}
                                 </FormItem>
-                                
+
                                 <FormItem {...layout.formItemLayoutMarketingModel} label="触发规则" hasFeedback={false}>
                                     {getFieldDecorator('strategyRule', {
                                         rules: [{
@@ -274,12 +280,12 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                             {type: '1', value: {type: '1', docs: '111', link: '222'}}
                                         ]
                                     })(
-                                        <StrategyRule 
-                                            form={this.props.form} 
+                                        <StrategyRule
+                                            form={this.props.form}
                                             onGetService={this.props.onGetService}
                                             onSaveRule={this.props.onSaveRule}
-                                            onGetOrderState={this.props.onGetOrderState} 
-                                            serviceOptions={this.props.serviceOptions} 
+                                            onGetOrderState={this.props.onGetOrderState}
+                                            serviceOptions={this.props.serviceOptions}
                                             orderState={this.props.orderState}
                                             formState={this.props.formState}
                                             orderSource={this.props.rules[1]}
@@ -299,7 +305,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                     })(
                                         <DelayTime />
                                     )}
-                                </FormItem> 
+                                </FormItem>
                                 <FormItem {...layout.formItemLayout} label="推送次数" hasFeedback={false}>
                                     {getFieldDecorator('pushTimes', {
                                         rules: [{
@@ -347,7 +353,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                         {this.addCoupon()}
                                     </Col>
                                 </Row>
-                                
+
                                 <FormItem {...layout.formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
                                     {getFieldDecorator('marketingModel', {
                                         rules: [{
@@ -358,9 +364,10 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                             {type: '2', value: {type: '2', docs: '111', link: '222', title: '22222'}}
                                         ]
                                     })(
-                                        <MarketingModel 
+                                        <MarketingModel
                                             form={this.props.form}
                                             stage={0}
+                                            option={weChatPush}
                                             showOrderDetailCheck={showOrderDetailCheck}
                                             onChange={this.onMarketingModelChange}
                                         />
@@ -398,6 +405,7 @@ export function mapStateToProps(state: StoreState) {
         orderState: state.createOrderStrategy.orderState,
         formState: state.createOrderStrategy.formState,
         rules: state.createOrderStrategy.rules,
+        weChatPush: state.createOrderStrategy.weChatPush,
     };
 }
 
@@ -406,6 +414,7 @@ export const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) 
         onChangeField: actions.changeField,
         onGetOrderState: actions.getOrderState,
         onGetRules: actions.getRules,
+        onGetWechatPush: actions.getWechatPush,
         onSaveRule: actions.saveRule,
         onSaveModel: actions.saveModel,
         onGetService: actions.getService

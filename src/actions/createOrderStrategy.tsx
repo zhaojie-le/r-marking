@@ -48,6 +48,16 @@ export interface ServiceParam {
     lineId: number;
 }
 
+export interface WeChatPushParam {
+    lineid: number;
+    refer: any;
+    orderStatus: any;
+}
+
+export interface WeChatPushReturn extends WeChatPushParam {
+    type: constants.GET_WHCHATPUSH;
+}
+
 export type ChangeFieldType = ChangeField;
 
 export function changeField(fields: Filed): ChangeField {
@@ -70,6 +80,15 @@ export function getOrderState(sp: OrderStateParam): GetOrderState {
         type: constants.GET_ORDERSTATE ,
         serverIds: sp.serverIds,
         cateId: sp.cateId,
+    };
+}
+
+export function getWechatPush(sp: WeChatPushParam): WeChatPushReturn {
+    return {
+        type: constants.GET_WHCHATPUSH ,
+        lineid: sp.lineid,
+        refer: sp.refer,
+        orderStatus: sp.orderStatus,
     };
 }
 

@@ -3,4 +3,5 @@ export interface CreateOrderStrategy {
     serviceOptions: any[];
     orderState: any[];
     rules: any[];
+    weChatPush: any;
 }
