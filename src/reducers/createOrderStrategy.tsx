@@ -1,6 +1,6 @@
 import * as constants from '../constants';
 
-function form( 
+function form(
     state: any = {
         formState: {
             owner: {
@@ -26,11 +26,12 @@ function form(
         serviceOptions: [],
         orderState: [],
         rules: [
-            {list: [], name: '', title: '', type: ''}, 
+            {list: [], name: '', title: '', type: ''},
             {list: [], name: '', title: '', type: ''},
             {list: [], name: '', title: '', type: ''},
             {list: [], name: '', title: '', type: ''},
         ],
+        weChatPush: null,
     },
     action: any
 ) {
@@ -54,6 +55,11 @@ function form(
             return {
                 ...state,
                 rules: [...action.result]
+            };
+        case constants.GET_WHCHATPUSH_SUCCESS:
+            return {
+                ...state,
+                weChatPush: {...action.result}
             };
         case constants.SAVE_RULE:
             return {

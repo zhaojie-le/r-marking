@@ -38,4 +38,10 @@ router.get('/toAddChannel', function(req, res, next) {
     });
 });
 
+router.get('/getWechatPush', function(req, res, next) {
+    fs.readFile(__dirname + '/../usermock/createRules/getWechatPush.json', 'utf8', (err, data) => {
+        res.json(JSON.parse(data));
+    });
+});
+
 module.exports = router;

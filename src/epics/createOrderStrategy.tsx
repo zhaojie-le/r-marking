@@ -46,6 +46,20 @@ const getRulesStateFail = (error) => {
     };
 };
 
+const getWechatPushSuccess = (result) => {
+    return {
+        type: constants.GET_WHCHATPUSH_SUCCESS,
+        result: result
+    };
+};
+
+const getWechatPushFail = (error) => {
+    return {
+        type: constants.GET_WHCHATPUSH_FAIL,
+        error: error
+    };
+};
+
 const getService: Epic<any, any> = (action$, store) => {
     return action$.ofType(constants.GET_SERVICE).
         switchMap(
@@ -65,7 +79,7 @@ const getService: Epic<any, any> = (action$, store) => {
                             return (getServiceFail(response));
                         }
                     });
-            } 
+            }
         );
 };
 
@@ -81,7 +95,23 @@ const getOrderState: Epic<any, any> = (action$, store) => {
                             return (getOrderStateFail(response));
                         }
                     });
-            } 
+            }
+        );
+};
+
+const getWechatPush: Epic<any, any> = (action$, store) => {
+    return action$.ofType(constants.GET_WHCHATPUSH).
+        switchMap(
+            (action): Observable<any> => {
+                return ajax.getJSON(`marketStrategy/getWechatPush`).
+                    map((response: {resultCode: number, data?: { name: string; value: string }, message?: string }) => {
+                        if (response.resultCode === 1) {
+                            return (getWechatPushSuccess(response.data));
+                        } else {
+                            return (getWechatPushFail(response));
+                        }
+                    });
+            }
         );
 };
 
@@ -104,10 +134,10 @@ const getRules: Epic<any, any> = (action$, store) => {
                             return (getRulesStateFail(response));
                         }
                     });
-            } 
+            }
         );
 };
 
-const epics = [getService, getOrderState, getRules];
+const epics = [getService, getOrderState, getRules, getWechatPush];
 
 export default epics;

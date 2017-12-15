@@ -28,12 +28,12 @@ const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
 
 namespace layout {
-    export const formItemLayout = { 
+    export const formItemLayout = {
         labelCol: { xs: { span: 24 }, sm: { span: 5 }, },
         wrapperCol: { xs: { span: 24 }, sm: { span: 19 }, },
     };
 
-    export const formItemServiceItemLayout = { 
+    export const formItemServiceItemLayout = {
         labelCol: { xs: { span: 24 }, sm: { span: 5 }, },
         wrapperCol: { xs: { span: 24 }, sm: { span: 10 }, },
     };
@@ -79,7 +79,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
 
     onChange = (value, selectedOptions) => {
         const labelValue = `${selectedOptions[0].label}, ${selectedOptions[1].label}`;
-        
+
         this.setState({
             cateId: value[1],
             selectedLabel: labelValue
@@ -106,7 +106,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
             orderSource: e.target.checked ? this.props.orderSource.map((item) => item.value) : [],
         });
     }
-    
+
     handleChange = (value) => {
         console.log(`selected ${value}`);
     }
@@ -228,7 +228,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         });
         const plainOptions = this.props.orderSource;
         const options = this.props.serviceSelect;
-        
+
         if (this.state.editing) {
             triggerRuleTpl = (
                 <section className="editInfo">
@@ -311,7 +311,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                 <div className="triggerRules">
                     <div className="ruleContent">
                         {triggerRuleTpl}
-                    </div>  
+                    </div>
                     <div>
                         <Button onClick={() => this.onEdit(true)} style={btnStyle}>编辑</Button>
                     </div>

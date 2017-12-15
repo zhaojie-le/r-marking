@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './style.scss';
-import { 
+import {
     Form,
     Button,
     Menu,
@@ -8,6 +8,7 @@ import {
     Icon,
     Row,
     Col,
+    message,
 } from 'antd';
 import { ChatNumber, DaojiaAppModel, Sms, SuyunAppModel } from './mould';
 
@@ -19,6 +20,7 @@ export interface RuleProps {
     value?: any;
     showOrderDetailCheck?: boolean;
     stage: number;
+    option: any;
     onChange: (value: any) => void;
 }
 
@@ -67,7 +69,7 @@ function getBt(str: string): number {
 
 function validate(fields: any[]): string {
     return fields.reduce(
-        (last, item) => { 
+        (last, item) => {
             switch (item.type) {
                 case 'require':
                     return !item.value ? `${last}, ${item.errMsg}` : `${last}`;
@@ -92,7 +94,6 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
         super(props, context);
         const value = this.props.value || [];
         let channelType = this.state.channelType;
-
         this.state.models = value.map((item) => {
             channelType = channelType.filter((channel) => {
                 return channel[0] !== parseInt(item.type, 10);
@@ -149,7 +150,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                     break;
                 case ChannelType.ChatNumber:
                     fields.push(`chatNumber-${item.k}`);
-                    break;      
+                    break;
                 default:
                     break;
             }
@@ -175,7 +176,11 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
 
     handleMenuClick = (event) => {
         const keyType = event.key.split('-');
-        const { form } = this.props;
+        const { form, option } = this.props;
+        if (keyType[0] === '4' && option === null) {
+            message.error('咱不能使用58到家公众号方式');
+            return;
+        }
         const keys = form.getFieldValue('keys');
         const nextKeys = keys.concat({k: uuid++, type: keyType[0], orderState: keyType[1], value: {type: keyType[0]}});
 
@@ -205,18 +210,22 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
         });
     }
 
+    resetFiledKey = (thekey) => {
+        const { form } = this.props;
+        const keys = form.getFieldValue('keys');
+
+        if (!keys || keys.length === 0) {
+            return;
+        }
+        form.setFieldsValue({
+            keys: keys.filter(key => key.k !== thekey).map((key) => { key.k = uuid++; return key; }),
+        });
+    }
+
     deleteChannel = (dlkey, label) => {
         const { type } = dlkey;
         const newChannelType = [...this.state.channelType, [parseInt(type, 10), label]];
-        const { form } = this.props;
-        const keys = form.getFieldValue('keys');
-        if (keys.length === 0) {
-            return;
-        }
-        
-        form.setFieldsValue({
-            keys: keys.filter(key => key.k !== dlkey.k).map((key) => { key.k = uuid++; return key; }),
-        });
+        this.resetFiledKey(dlkey.k);
         this.setState({
             channelType: newChannelType
         });
@@ -229,12 +238,12 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
             const newValue = value.type === item.type ? value : item.value;
             return { ...item, value: newValue };
         });
-        
+
         form.setFieldsValue({
             keys: newKeys,
         });
     }
-    
+
     checkSms = (rule, value, callback) => {
         const wordNumber: number = getBt(value.docs);
 
@@ -274,7 +283,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
             {type: 'require', value: value.link, errMsg: '链接不能为空'},
         ]));
     }
-    
+
     generateChat = (key) => {
         let tpl: any;
         switch (key.orderState) {
@@ -335,7 +344,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
             };
         });
         getFieldDecorator('keys', { initialValue: models });
-        const keys = getFieldValue('keys');
+        let keys = getFieldValue('keys');
         const clength = keys.length;
 
         return keys.map((key, i) => {
@@ -362,8 +371,8 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                                     validator: this.checkSms
                                 }],
                             })(
-                                <Sms 
-                                    onChange={this.onModelFieldChange} 
+                                <Sms
+                                    onChange={this.onModelFieldChange}
                                     {...props}
                                     onDelete={() => this.deleteChannel(key, '短信')}
                                 />
@@ -380,8 +389,8 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                                     validator: this.checkApp
                                 }],
                             })(
-                                <DaojiaAppModel 
-                                    onChange={this.onModelFieldChange} 
+                                <DaojiaAppModel
+                                    onChange={this.onModelFieldChange}
                                     {...props}
                                     onDelete={() => this.deleteChannel(key, '58到家-APP push')}
                                 />
@@ -398,8 +407,8 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                                     validator: this.checkApp
                                 }],
                             })(
-                                <SuyunAppModel 
-                                    onChange={this.onModelFieldChange} 
+                                <SuyunAppModel
+                                    onChange={this.onModelFieldChange}
                                     {...props}
                                     onDelete={() => this.deleteChannel(key, '58速运-APP push')}
                                 />
@@ -429,22 +438,21 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
     }
 
     generateChatSubMenu = (item: any) => {
+        const { option } = this.props;
         return (
             <SubMenu title={item[1]} key={item[0]}>
-                <Menu.Item key={'4-1'}>下单成功</Menu.Item>
-                <Menu.Item key={'4-2'}>待支付</Menu.Item>
-                <Menu.Item key={'4-3'}>订单完成</Menu.Item>
-                <Menu.Item key={'4-4'}>获得代金券</Menu.Item>
+                <Menu.Item key={option.value}>{option.name}</Menu.Item>
             </SubMenu>
         );
     }
 
     generatorCreateMenu = () => {
+        const { option } = this.props;
         const menu = (
             <Menu onClick={this.handleMenuClick}>
                 {
                     this.state.channelType.map((item, i) => {
-                        return item[0] === 4 ? this.generateChatSubMenu(item) : <Menu.Item key={item[0]} type={item[0]}>{item[1]}</Menu.Item>;
+                        return item[0] === 4 && !!option ? this.generateChatSubMenu(item) : <Menu.Item key={item[0]} type={item[0]}>{item[1]}</Menu.Item>;
                     })
                 }
             </Menu>
@@ -485,7 +493,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                     break;
                 case ChannelType[4].toUpperCase():
                     label = '58到家公众号';
-                    break;      
+                    break;
                 default:
                     break;
             }
@@ -504,15 +512,15 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                             msg =  `${last} 链接: ${itemObj[lb]},`;
                             break;
                         case 'chat':
-                            msg = `${last} 微信公众号: ${itemObj[lb]},`; 
-                            break; 
+                            msg = `${last} 微信公众号: ${itemObj[lb]},`;
+                            break;
                         default:
                             msg = last;
                             break;
                     }
-                    
+
                     return index === arr.length - 1 ? msg.substring(0, msg.length - 1) : msg;
-                }, 
+                },
                 ''
             );
 
@@ -527,7 +535,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
     }
 
     getContentTpl = () => {
-        const tpl = this.state.editing 
+        const tpl = this.state.editing
         ? (
             <div className="wrapperModel">
                 {this.geteratorChannel()}
@@ -537,7 +545,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                     <Button onClick={() => this.onEdit(false)} style={{marginLeft: '10px'}}>取消</Button>
                 </FormItem>
             </div>
-        ) 
+        )
         : (
             <div className="wrapperModel">
                 <p><span style={{color: 'red'}}>消息推送</span> 优先级：渠道1>渠道2>渠道3 优先渠道送达后，其他渠道将不再推送</p>
@@ -564,7 +572,7 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
                 <div className="triggerRules">
                     <div className="ruleContent">
                         {this.getContentTpl()}
-                    </div>  
+                    </div>
                     <div>
                         <Button onClick={() => this.onEdit(true)} style={btnStyle}>编辑</Button>
                     </div>
