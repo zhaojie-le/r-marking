@@ -18,7 +18,6 @@ export interface ResPersonRule {
 export type CreateImportUserStrategy = StrategyRule | ResPersonRule;
 
 export function strategyRule(id: number): StrategyRule {
-    console.log(33333333);
     return {
         type: constants.STRATEGYRULE,
         id: id,
@@ -26,7 +25,6 @@ export function strategyRule(id: number): StrategyRule {
 }
 
 export function resPersonRule(id: number): ResPersonRule {
-    console.log(33333333);
     return {
         type: constants.RESPERSONRULE,
         id: id,
