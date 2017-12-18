@@ -24,8 +24,6 @@ const Routes = () => (
                     <Route path="/createOrderStrategy" component={CreateOrderStrategy} />
                     <Route path="/detailOrderStrategy/:id" component={DetailOrderStrategy} />
                     <Route path="/detailOrderStrategy/:id/#edit" component={DetailOrderStrategy} />
-                    <Route path="/createImportUserStrategy/:id" component={CreateImportUserStrategy} />
-                    <Route path="/createAllUserStrategy/:id" component={CreateAllUserStrategy} />
                     <Route path="/" component={List} />
                     <Route component={NotFound} />
                 </Switch>
