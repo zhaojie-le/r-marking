@@ -505,6 +505,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                         <MarketingModel
                                             form={this.props.form}
                                             stage={0}
+                                            option={formState.weChatPush}
                                             showOrderDetailCheck={showOrderDetailCheck}
                                             onChange={this.onMarketingModelChange}
                                         />
