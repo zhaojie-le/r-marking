@@ -6,7 +6,7 @@ import {
     Switch
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { CreateOrderStrategy, List, DetailOrderStrategy, CreateImportUserStrategy, CreateAllUserStrategy } from './containers';
+import { CreateOrderStrategy, List, DetailOrderStrategy } from './containers';
 
 import store from './store';
 
