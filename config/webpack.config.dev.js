@@ -203,7 +203,7 @@ module.exports = {
             // that would otherwise processed through "file" loader. Also exclude `html` and
             // `json` extensions so they get processed by webpacks internal loaders.
             exclude: [
-              /\.js$/, /\.html$/, /\.json$/
+              /\.js$/, /\.html$/, /\.json$/,
             ],
             loader: require.resolve('file-loader'),
             options: {
