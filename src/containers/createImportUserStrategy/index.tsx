@@ -278,7 +278,7 @@ class CreateImportUserStrategy extends React.Component<Props, {}> {
                                             showOrderDetailCheck={showOrderDetailCheck}
                                             onChange={this.onMarketingModelChange}
                                         />
-                                        )}
+                                    )}
                                 </FormItem>
                                 <FormItem {...layout.formItemLayout} label="责任人" hasFeedback={false}>
                                     {getFieldDecorator('owner', {
