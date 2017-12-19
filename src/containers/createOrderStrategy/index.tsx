@@ -160,7 +160,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         sendCoupon: 1,
         showOrderDetailCheck: false
     };
-    private validateFieldsType: Array<string> = ['stragyName', 'time', 'delayTime', 'pushTimes', 'marketingCategory', 'marketingModel'];
+    private validateFieldsType: Array<string> = ['stragyName', 'time', 'delayTime', 'pushTimes', 'strategyRule', 'marketingCategory', 'marketingModel'];
     constructor(props: Props, context: any) {
         super(props, context);
     }
@@ -216,6 +216,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     onStrategyRuleChange = (value) => {
+        console.log(value);
         this.props.onGetWechatPush({
             lineid: value.serviceItem[0],
             refer: value.serviceOptions,

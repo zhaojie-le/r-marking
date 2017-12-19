@@ -1,3 +1,1 @@
-import StrategyRule from './strategyRule';
-
-export default StrategyRule;
+export {default as StrategyRule} from './order';
