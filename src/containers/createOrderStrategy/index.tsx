@@ -14,7 +14,6 @@ import {
     Breadcrumb,
     Button,
     Select,
-    InputNumber,
     DatePicker
 } from 'antd';
 import moment from 'moment';
@@ -41,11 +40,6 @@ export interface Props {
     onGetWechatPush: (obj: any) => void;
     onSaveModel: (modelData: string) => void;
     onGetOrderState: () => void;
-}
-
-export interface DelayTimeProps {
-    value?: any;
-    onChange?: (value: any) => void;
 }
 
 namespace layout {
@@ -90,91 +84,19 @@ namespace layout {
     };
 }
 
-class DelayTime extends React.Component<DelayTimeProps, {}> {
-    constructor(props: any) {
-        super(props);
-
-        const value = this.props.value || {};
-        this.state = {
-            day: value.day || 0,
-            minute: value.minute || 0,
-        };
-    }
-
-    componentWillReceiveProps(nextProps: any) {
-        if ('value' in nextProps) {
-            const value = nextProps.value;
-            this.setState(value);
-        }
-    }
-
-    handleDayChange = (day) => {
-        if (!('value' in this.props)) {
-            this.setState({ day });
-        }
-        this.triggerChange({ day });
-    }
-
-    handleMinutChange = (minute) => {
-        if (!('value' in this.props)) {
-            this.setState({ minute });
-        }
-        this.triggerChange({ minute });
-    }
-
-    triggerChange = (changedValue) => {
-        const onChange = this.props.onChange;
-        if (onChange) {
-              onChange(Object.assign({}, this.state, changedValue));
-        }
-    }
-
-    render() {
-        return (
-            <div>
-                <InputNumber
-                    min={0}
-                    max={100}
-                    style={{width: '100px'}}
-                    onChange={this.handleDayChange}
-                    defaultValue={0}
-                />
-                <span>天</span>
-                <InputNumber
-                    min={0}
-                    max={100}
-                    style={{width: '100px', marginLeft : '15px'}}
-                    onChange={this.handleMinutChange}
-                    defaultValue={0}
-                />
-                <span>分钟</span>
-                <span style={{color : 'red', marginLeft : '15px'}}>注：订单状态变更后的X天Y分钟</span>
-            </div>
-        );
-    }
-}
-
 class CreateOrderStrategy extends React.Component<Props, {}> {
     state: any = {
         editing: false,
         sendCoupon: 1,
         showOrderDetailCheck: false
     };
-    private validateFieldsType: Array<string> = ['stragyName', 'time', 'delayTime', 'pushTimes', 'strategyRule', 'marketingCategory', 'marketingModel'];
+    private validateFieldsType: Array<string> = ['stragyName', 'time', 'pushTimes', 'strategyRule', 'marketingCategory', 'marketingModel'];
     constructor(props: Props, context: any) {
         super(props, context);
     }
 
     componentDidMount() {
         this.props.onGetRules();
-    }
-
-    checkTime = (rule, value, callback) => {
-        if (value.day || value.minute) {
-            callback();
-            return;
-        }
-        callback('延迟时间不能为空!');
     }
 
     saveStrategy = (e) => {
@@ -292,38 +214,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                             <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={1}/>
                                         )
                                     }
-                                </FormItem>
-                                <FormItem {...layout.formItemLayout} label="延迟时间">
-                                    {
-                                        getFieldDecorator('delayTime', {
-                                            initialValue: { day: 0, minute: 0 },
-                                            rules: [{
-                                                required: true, message: '延迟时间不能为空！',
-                                                validator: this.checkTime
-                                            }],
-                                        })(
-                                            <DelayTime />
-                                        )
-                                    }
-                                </FormItem>
-                                <FormItem {...layout.formItemLayout} label="推送次数" hasFeedback={false}>
-                                    {getFieldDecorator('pushTimes', {
-                                        rules: [{
-                                            required: true, message: '推送次数不能为空！',
-                                        }],
-                                    })(
-                                        <Select
-                                            style={{ width: 200 }}
-                                            placeholder="请选择推送次数!"
-                                            optionFilterProp="children"
-                                        >
-                                            {
-                                                new Array(21).fill('a').map((item, i) => {
-                                                    return (<Option value={(i).toString()} key={i} >{i === 0 ? '不限制' : i}</Option>);
-                                                })
-                                            }
-                                        </Select>
-                                    )}
                                 </FormItem>
                                 <Row className="marketingCategoryRow">
                                     <Col span={3} className="marketingCategoryLabel"><label>营销类别：</label></Col>

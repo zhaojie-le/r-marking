@@ -3,6 +3,7 @@ import { connect, Dispatch } from 'react-redux';
 import * as actions from '../../../actions';
 import { StoreState } from '../../../types/index';
 import { bindActionCreators } from 'redux';
+import { default as DelayTime } from '../../delayTime';
 
 import './style.scss';
 import {
@@ -76,6 +77,14 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         this.setState({
             editing: isEditing
         });
+    }
+
+    checkTime = (rule, value, callback) => {
+        if (value.day || value.minute) {
+            callback();
+            return;
+        }
+        callback('延迟时间不能为空!');
     }
 
     handleClick = (e, label, option) => {
@@ -185,7 +194,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     }
 
     onSave = () => {
-        this.props.form.validateFields(['serviceItem', 'serviceOptions', 'orderSource', 'orderState', 'city'], (err, values) => {
+        this.props.form.validateFields(['serviceItem', 'serviceOptions', 'delayTime', 'orderSource', 'orderState', 'city', 'pushTimes'], (err, values) => {
             if (!err) {
                 this.computeShowData(values);
                 this.props.onChange(values);
@@ -195,6 +204,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     }
 
     computeShowData = (values: any) => {
+        console.log(values);
         let labelSet: any = {};
         for ( let item of Object.keys(values)) {
             switch (item) {
@@ -210,6 +220,12 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                 case 'city':
                     labelSet.cityLabel = getKeysValues(this.props.city.list, values.city.map((one) => `${parseInt(one, 10)}`), 'value', 'label');
                     break;
+                case 'delayTime':
+                    labelSet.delayTimeLabel = `${values.delayTime.day}天${values.delayTime.minute}分`;
+                    break;
+                case 'pushTimes':
+                    labelSet.pushTimesLabel = values.pushTimes === '0' ? '不限制' : `${values.pushTimes}次`;
+                    break;
                 default:
                     break;
             }
@@ -222,7 +238,15 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         let triggerRuleTpl: React.ReactNode = {};
         let btnStyle = {};
         let wrapperStyle: any = {};
-        const { orderStateLabel = '无', serviceOptionLabel = '无', orderSourceLabel = '无', cityLabel = '无', selectedLabel = '无' } = this.state;
+        const {
+            orderStateLabel = '无',
+            serviceOptionLabel = '无',
+            orderSourceLabel = '无',
+            cityLabel = '无',
+            selectedLabel = '无',
+            delayTimeLabel = '无',
+            pushTimesLabel = '无',
+        } = this.state;
         const { getFieldDecorator } = this.props.form;
         const cities = this.props.city.list.map((item, index) => {
             return {
@@ -288,6 +312,40 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                             />
                         )}
                     </FormItem>
+                    <FormItem {...layout.formItemLayout} label="延迟时间">
+                        {
+                            getFieldDecorator('delayTime', {
+                                initialValue: this.props.formState.delayTime.value,
+                                rules: [{
+                                    required: true, message: '延迟时间不能为空！',
+                                    validator: this.checkTime
+                                }],
+                            })(
+                                <DelayTime />
+                            )
+                        }
+                    </FormItem>
+                    <FormItem {...layout.formItemLayout} label="推送次数" hasFeedback={false}>
+                        {getFieldDecorator('pushTimes', {
+                            initialValue: this.props.formState.pushTimes.value,
+                            rules: [{
+                                required: true, message: '推送次数不能为空！',
+
+                            }],
+                        })(
+                            <Select
+                                style={{ width: 200 }}
+                                placeholder="请选择推送次数!"
+                                optionFilterProp="children"
+                            >
+                                {
+                                    new Array(21).fill('a').map((item, i) => {
+                                        return (<Option value={(i).toString()} key={i} >{i === 0 ? '不限制' : i}</Option>);
+                                    })
+                                }
+                            </Select>
+                        )}
+                    </FormItem>
                     <FormItem {...layout.tailFormItemLayout}>
                         <Button type="primary" onClick={this.onSave}>保存</Button>
                         <Button onClick={() => this.onEdit(false)} style={{marginLeft: '10px'}}>取消</Button>
@@ -308,6 +366,8 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                     <p><label>订单来源:</label><span>{orderSourceLabel}</span></p>
                     <p><label>订单状态:</label><span>{orderStateLabel}</span></p>
                     <p><label>城市:</label><span title={cityLabel}>{cityLabel}</span></p>
+                    <p><label>延迟时间:</label><span>{delayTimeLabel}</span></p>
+                    <p><label>推送次数:</label><span title={pushTimesLabel}>{pushTimesLabel}</span></p>
                 </section>
             );
         }

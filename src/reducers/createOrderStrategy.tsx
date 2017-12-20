@@ -8,6 +8,12 @@ function form(
             },
             triggerRule: '',
             marketingModel: '',
+            delayTime: {
+                value: {day: 0, minute: 0}
+            },
+            pushTimes: {
+                value: '0'
+            },
             orderSource: {
                 value: []
             },
