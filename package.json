@@ -32,6 +32,7 @@
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
     "redux-observable": "^0.16.0",
+    "request": "^2.83.0",
     "rxjs": "^5.5.2",
     "sass-loader": "^6.0.6",
     "source-map-loader": "^0.2.1",
@@ -51,6 +52,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
+    "push": "node scripts/push.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"
   },

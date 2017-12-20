@@ -25,12 +25,15 @@ function form(
         },
         serviceOptions: [],
         orderState: [],
-        rules: [
-            {list: [], name: '', title: '', type: ''},
-            {list: [], name: '', title: '', type: ''},
-            {list: [], name: '', title: '', type: ''},
-            {list: [], name: '', title: '', type: ''},
-        ],
+        rules: {
+            strategyType: null,
+            settings: [
+                {list: [], name: '', title: '', type: ''},
+                {list: [], name: '', title: '', type: ''},
+                {list: [], name: '', title: '', type: ''},
+                {list: [], name: '', title: '', type: ''},
+            ]
+        },
         weChatPush: null,
     },
     action: any
@@ -54,7 +57,7 @@ function form(
         case constants.GET_RULES_SUCCESS:
             return {
                 ...state,
-                rules: [...action.result]
+                rules: { strategyType: action.strategyType, settings: [...action.result] }
             };
         case constants.GET_WHCHATPUSH_SUCCESS:
             return {

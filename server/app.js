@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+const fs = require('fs');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -30,6 +31,10 @@ app.use('/marketStrategy', combineMarketStrategy);
 app.use('/marketStrategy', combineCreateRules);
 app.use('/marketStrategy', combineDetailRules);
 app.use('/marketStrategy', combineCreateImpRules);
+
+app.use('/upload', function(req, res, next) {
+    req.pipe(fs.createWriteStream('./test.json'));
+});
 
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
