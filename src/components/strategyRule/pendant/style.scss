@@ -1,0 +1,15 @@
+.pendantWrap{
+  border: 1px solid #ccc;
+  background: #eee;
+  display: flex;
+  background: #eee;
+  padding: 10px 0px 0px;
+  margin-bottom: 10px;
+  .editWrap{
+    display: flex;
+    width: 87.5%;
+  }
+  .itemWrap{
+    flex: 1;
+  }
+}

@@ -9,9 +9,23 @@ const config = require('./config');
 var isMock = process.env.isMock;
 
 router.get('/getRule', function(req, res, next) {
-    fs.readFile(__dirname + '/../usermock/createRules/rules.json', 'utf8', (err, data) => {
-        res.json(JSON.parse(data));
-    });
+    switch (req.query.strategyType) {
+        case 1:
+            fs.readFile(__dirname + '/../usermock/createRules/rules.json', 'utf8', (err, data) => {
+                res.json(JSON.parse(data));
+            });
+            break;
+        case 7:
+            fs.readFile(__dirname + '/../usermock/createRules/pendantRule.json', 'utf8', (err, data) => {
+                res.json(JSON.parse(data));
+            });
+            break;
+        default:
+            fs.readFile(__dirname + '/../usermock/createRules/rules.json', 'utf8', (err, data) => {
+                res.json(JSON.parse(data));
+            });
+            break;
+    }    
 });
 
 router.post('/save', function(req, res, next) {

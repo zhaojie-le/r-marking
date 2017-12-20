@@ -44,7 +44,7 @@ export const arrayAddKey = (arr: any) => {
     }
 };
 /**
- * select框内部选项
+ * 提取select框内部选项通用部分
  * @param arr 传入数组
  */
 export const selectcChildren = (arr: any) => {
@@ -204,14 +204,14 @@ class List extends React.Component<Props, {}> {
         // 请求分页数据
         strategyList(this.props.params);
     }
-    // 新增策略按钮
-    newStrategyClick = (value) => {
-        console.log(`selected ${value}`);
-        const { history }: any = this.props;
-        const path = '/createOrderStrategy/' + `${value}`;
-        history.push(path);
-        // TODU  跳转至新增策略页面，将触发事件id带入
-    }
+    // // 新增策略按钮
+    // newStrategyClick = (value) => {
+    //     console.log(`selected ${value}`);
+    //     const { history }: any = this.props;
+    //     const path = '/createOrderStrategy/' + `${value}`;
+    //     history.push(path);
+    //     // TODU  跳转至新增策略页面，将触发事件id带入
+    // }
 
     render() {
         const { data, listData, totalInfo } = this.props;
@@ -238,9 +238,10 @@ class List extends React.Component<Props, {}> {
             <Layout>
                 <Header className="list-head">
                     营销管理平台
-                    <Select placeholder="新增策略" style={{ marginLeft: '10px', width: '130px' }} onChange={this.newStrategyClick}>
+                    {/* <Select placeholder="新增策略" style={{ marginLeft: '10px', width: '130px' }} onChange={this.newStrategyClick}>
                         {selectcChildren(data.strategyType)}
-                    </Select>
+                    </Select> */}
+                    <Button style={{ marginLeft: '10px'}}><Link to="/createOrderStrategy">新增策略</Link></Button>
                 </Header>
                 <Layout>
                     <Content className="content-wrap">
