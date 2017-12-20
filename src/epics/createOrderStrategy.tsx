@@ -32,9 +32,10 @@ const getOrderStateFail = (error) => {
     };
 };
 
-const getRulesStateSuccess = (result) => {
+const getRulesStateSuccess = (result, strategyType) => {
     return {
         type: constants.GET_RULES_SUCCESS,
+        strategyType: strategyType,
         result: result
     };
 };
@@ -129,7 +130,7 @@ const getRules: Epic<any, any> = (action$, store) => {
                                 };
                                 return newItem;
                             });
-                            return (getRulesStateSuccess(response.data));
+                            return (getRulesStateSuccess(response.data, action.strategyType));
                         } else {
                             return (getRulesStateFail(response));
                         }

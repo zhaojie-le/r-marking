@@ -1,3 +1,1 @@
-import pendantRule from './pendantRule';
-
-export default pendantRule;
+export { default as PendantRule } from './pendantRule';

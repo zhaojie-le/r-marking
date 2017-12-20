@@ -1,4 +1,9 @@
 import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
+import * as actions from '../../../actions';
+import { StoreState } from '../../../types/index';
+import { bindActionCreators } from 'redux';
+
 import './style.scss';
 import {
     Button,
@@ -321,4 +326,24 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     }
 }
 
-export default StrategyRule;
+function mapStateToProps(state: StoreState) {
+    return {
+        serviceOptions: state.createOrderStrategy.serviceOptions,
+        orderState: state.createOrderStrategy.orderState,
+        orderSource: state.createOrderStrategy.rules.settings[1],
+        city: state.createOrderStrategy.rules.settings[3],
+        serviceSelect: state.createOrderStrategy.rules.settings[0].list,
+        formState: state.createOrderStrategy.formState
+    };
+}
+
+const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) => bindActionCreators(
+    {
+        onGetOrderState: actions.getOrderState,
+        onSaveRule: actions.saveRule,
+        onGetService: actions.getService
+    },
+    dispatch
+);
+
+export default connect<any, any, { form: any, onChange:  (value: any) => void}>(mapStateToProps, mapDispatchToProps)(StrategyRule as any);

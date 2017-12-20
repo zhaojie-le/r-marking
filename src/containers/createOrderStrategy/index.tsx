@@ -19,7 +19,7 @@ import {
 } from 'antd';
 import moment from 'moment';
 import {
-    StrategyRule,
+    RuleCreater,
     MarketingModel
 } from '../../components';
 import './index.scss';
@@ -32,7 +32,7 @@ const Option = Select.Option;
 export interface Props {
     serviceOptions: any[];
     orderState: any[];
-    rules: any[];
+    rules: {strategyType: number; setting: any; };
     formState: any;
     form: any;
     onGetService: () => void;
@@ -289,19 +289,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 {type: '1', value: {type: '1', docs: '111', link: '222'}}
                                             ]
                                         })(
-                                            <StrategyRule
-                                                form={this.props.form}
-                                                onGetService={this.props.onGetService}
-                                                onSaveRule={this.props.onSaveRule}
-                                                onGetOrderState={this.props.onGetOrderState}
-                                                serviceOptions={this.props.serviceOptions}
-                                                orderState={this.props.orderState}
-                                                formState={this.props.formState}
-                                                orderSource={this.props.rules[1]}
-                                                city={this.props.rules[3]}
-                                                onChange={this.onStrategyRuleChange}
-                                                serviceSelect={this.props.rules[0].list}
-                                            />
+                                            <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={7}/>
                                         )
                                     }
                                 </FormItem>
