@@ -1,86 +1,43 @@
 import * as React from 'react';
 import './style.scss';
-import { Form, Input, Transfer, Checkbox, Button } from 'antd';
+import { connect, Dispatch } from 'react-redux';
+import * as actions from '../../../actions';
+import { StoreState } from '../../../types/index';
+import { bindActionCreators } from 'redux';
+import { Form, Input, Transfer, Checkbox, Button, Row, Col } from 'antd';
+import { default as ShowRule } from '../showRuleInfo';
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
 export interface RuleProps {
     form: any;
+    pageName: string;
     onChange: (value: any) => void;
-    // ruleData: any;
+    getPageName: (id: number) => void;
+    rulesD: {strategyType: number; setting: any; };
+    cityList: any;
+    plainOptions: any;
 }
-// 写死的假数据
-let ruleData = [
-    {
-        label: 'city',
-        list: [
-            {
-                label: '北京',
-                value: '1'
-            }
-        ],
-        title: '城市',
-        type: 'cityType'
-    },
-    {
-        label: 'pageId',
-        title: '页面Id',
-        type: 'textInput'
-    },
-    {
-        label: 'orderSource',
-        list: [
-            {
-                label: '全部',
-                value: '-999'
-            },
-            {
-                label: '到家APP',
-                value: '16|17|20'
-            },
-            {
-                label: '微信',
-                value: '2|35|104'
-            },
-            {
-                label: '其他h5',
-                value: '-8'
-            }
-        ],
-        title: '页面渠道',
-        type: 'radioBox'
-    }
-];
 namespace layout {
     export const formItemLayout = {
         labelCol: { xs: { span: 24 }, sm: { span: 4 }, },
-        wrapperCol: { xs: { span: 24 }, sm: { span: 12 }, },
+        wrapperCol: { xs: { span: 24 }, sm: { span: 20 }, },
     };
     export const formItemLayout1 = {
-        labelCol: { xs: { span: 24 }, sm: { span: 4 }, },
-        wrapperCol: { xs: { span: 24 }, sm: { span: 5 }, },
+        labelCol: { xs: { span: 24 }, sm: { span: 9 }, },
+        wrapperCol: { xs: { span: 24 }, sm: { span: 13 }, },
     };
     export const tailFormItemLayout = {
         wrapperCol: { xs: { span: 24, offset: 0, }, sm: { span: 19, offset: 5, }, },
     };
 }
-const plainOptions = [
-    {
-        label: '全部',
-        value: '-999'
-    },
-    {
-        label: '到家APP',
-        value: '16|17|20'
-    },
-    {
-        label: '微信',
-        value: '2|35|104'
-    },
-    {
-        label: '其他h5',
-        value: '-8'
-    }
-];
+
+function getKeysValues(obj: any, keys: any, key: string = 'value', label: string = 'label'): string {
+    return obj.filter((item) => {
+        return keys.includes(item[key]);
+    }).map((item) => {
+        return item[label];
+    }).join();
+}
 class PendantRule extends React.Component<RuleProps, {}> {
     constructor(props: any) {
         super(props);
@@ -90,6 +47,7 @@ class PendantRule extends React.Component<RuleProps, {}> {
         checkedList: [],
         indeterminate: true,
         checkAll: false,
+        rules: []
     };
     filterOption = (inputValue, option) => {
         return option.title.indexOf(inputValue) > -1;
@@ -99,27 +57,24 @@ class PendantRule extends React.Component<RuleProps, {}> {
     }
     onCheckAllChange = (e) => {
         this.setState({
-            checkedList: e.target.checked ? plainOptions : [],
+            checkedList: e.target.checked ? this.props.plainOptions : [],
             indeterminate: false,
             checkAll: e.target.checked,
         });
     }
     onCheckChange = (checkedList) => {
-        // const plainOptions = this.props.orderSource;
-
         this.setState({
             checkedList,
-            indeterminate: !!checkedList.length && (checkedList.length < plainOptions.length),
-            checkAll: checkedList.length === plainOptions.length,
+            indeterminate: !!checkedList.length && (checkedList.length < this.props.plainOptions.length),
+            checkAll: checkedList.length === this.props.plainOptions.length,
         });
     }
     onSave = () => {
-        this.props.form.validateFields(['pageId', 'pageName', 'orderSource', 'city'], (err, values) => {
+        this.props.form.validateFields(['pageId', 'orderSource', 'city'], (err, values) => {
             if (!err) {
                 console.log('value', values);
-                // this.computeShowData(values);
-                this.props.onChange(values);
-                // this.props.onSaveRule(JSON.stringify(values));
+                this.computeShowData(values);
+                // this.props.onChange(values);
             }
         });
     }
@@ -128,48 +83,97 @@ class PendantRule extends React.Component<RuleProps, {}> {
             editing: isEditing
         });
     }
+    getPageName = () => {
+        console.log(0);
+    }
+    computeShowData = (values: any) => {
+        let rules: { label: string; value: string }[] = [];
+        for ( let item of Object.keys(values)) {
+            let label: string = '';
+            let value: string = '';
+            console.log('item', item);
+            switch (item) {
+                case 'pageId':
+                    label = '页面ID';
+                    value = `${values.pageId}`;
+                    break;
+                case 'city':
+                    label = '城市列表';
+                    value = getKeysValues(this.props.cityList, values.city.map((one) => `${parseInt(one, 10)}`), 'value', 'label');
+                    break;
+                case 'orderSource':
+                    label = '页面渠道';
+                    value = getKeysValues(this.props.plainOptions, values.orderSource, 'value', 'label');
+                    break;
+                default:
+                    break;
+            }
+            if (label !== '') {
+                rules.push({
+                    label: label,
+                    value: value
+                });
+            }
+        }
+        this.setState({
+            rules: rules
+        });
+        this.onEdit(false);
+    }  
     render() {
         let triggerRuleTpl: React.ReactNode = {};
+        let triggerPageName: any = {};
         let wrapperStyle: any = {};
         let btnStyle: any = {};
-        const { pageIdLabel = '无', pageNameLabel = '无', cityLabel = '无', orderSourceLabel = '无' } = this.state;
+        const rules = [ ...this.state.rules ];
+        const { cityList, plainOptions, pageName } = this.props;
         const { getFieldDecorator } = this.props.form;
-        // const rule = this.props.ruleData;
-        const rule = ruleData;
-        console.log(rule[0]);
-        const city = [{ label: '北京', value: '1' }, { label: '上海', value: '2' }];
         // 遍历增加一个key
-        const cities = city.map((item, index) => {
+        const cities = cityList.map((item, index) => {
             return {
                 title: item.label,
                 value: item.value,
                 key: `${item.value}`
             };
         });
-
+        if (!!pageName) {
+            triggerPageName = (
+                <FormItem label="页面名称" {...layout.formItemLayout1}>
+                    <p>{pageName}</p>
+                </FormItem>
+            );
+        } else {
+            triggerPageName = ('');
+        }
         if (this.state.editing) {
             triggerRuleTpl = (
                 <section className="editInfo">
-                    <FormItem label="页面ID" {...layout.formItemLayout1}>
-                        {getFieldDecorator('pageId', {
-                            rules: [{
-                                required: true, message: 'ID不能为空！',
-                            }]
-                        })(
-                            <Input />
-                            )}
-                    </FormItem>
-                    <FormItem label="页面名称" {...layout.formItemLayout1}>
-                        {getFieldDecorator('pageName')(
-                            <Input />
-                        )}
-                    </FormItem>
+                    <Row>
+                        <Col span={10}>
+                            <FormItem label="页面ID" {...layout.formItemLayout1}>
+                                {getFieldDecorator('pageId', {
+                                    rules: [{
+                                        required: true, message: 'ID不能为空！',
+                                    }]
+                                })(
+                                    <Input />
+                                    )}
+                            </FormItem>
+                        </Col>
+                        <Col span={4}>
+                            <FormItem {...layout.formItemLayout1}>
+                                <Button style={{'marginLeft': 20}} onClick={this.getPageName}>查询</Button>
+                            </FormItem> 
+                        </Col>
+                        <Col span={10}>
+                            {triggerPageName}
+                        </Col>
+                    </Row>
                     <FormItem label="城市列表" {...layout.formItemLayout}>
                         {getFieldDecorator('city', {
                             rules: [{
                                 required: true, message: '请选择城市！',
-                            }],
-                            // initialValue: this.props.formState.city.value,
+                            }]
                         })(
                             <Transfer
                                 dataSource={cities}
@@ -222,13 +226,7 @@ class PendantRule extends React.Component<RuleProps, {}> {
             wrapperStyle.background = '#fff';
             wrapperStyle.border = 'none';
             triggerRuleTpl = (
-                <section className="showInfo">
-                    <p><label>规则名称:</label><span>页面挂件</span></p>
-                    <p><label>页面ID:</label><span>{pageIdLabel}</span></p>
-                    <p><label>页面名称:</label><span>{pageNameLabel}</span></p>
-                    <p><label>选择城市:</label><span title={cityLabel}>{cityLabel}</span></p>
-                    <p><label>页面渠道:</label><span>{orderSourceLabel}</span></p>
-                </section>
+                <ShowRule rules={rules} />
             );
         }
 
@@ -246,4 +244,19 @@ class PendantRule extends React.Component<RuleProps, {}> {
         );
     }
 }
-export default PendantRule;
+
+function mapStateToProps (state: StoreState) {
+    return {
+        pageName: state.strategyRules.pageName,
+        rulesD: state.createOrderStrategy.rules,
+        cityList: state.createOrderStrategy.rules.settings[0].list,
+        plainOptions: state.createOrderStrategy.rules.settings[2].list
+    };
+}
+const mapDispatchToProps = (dispatch: Dispatch<actions.RulesAction>) => bindActionCreators(
+    {
+        getPageName: actions.pageName
+    },
+    dispatch
+);
+export default connect<any, any, { form: any, onChange:  (value: any) => void}>(mapStateToProps, mapDispatchToProps)(PendantRule as any);

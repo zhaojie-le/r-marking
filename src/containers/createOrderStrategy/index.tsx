@@ -35,7 +35,7 @@ export interface Props {
     formState: any;
     form: any;
     onGetService: () => void;
-    onGetRules: () => void;
+    onGetRules: (type: number) => void;
     onSaveRule: () => void;
     onGetWechatPush: (obj: any) => void;
     onSaveModel: (modelData: string) => void;
@@ -96,7 +96,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     componentDidMount() {
-        this.props.onGetRules();
+        this.props.onGetRules(7);
     }
 
     saveStrategy = (e) => {

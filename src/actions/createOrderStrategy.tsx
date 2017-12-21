@@ -25,7 +25,7 @@ export interface GetOrderState {
 
 export interface GetRules {
     type: constants.GET_RULES;
-    strategyType: 1;
+    strategyType: number;
 }
 
 export interface OrderStateParam {
@@ -92,10 +92,10 @@ export function getWechatPush(sp: WeChatPushParam): WeChatPushReturn {
     };
 }
 
-export function getRules(): GetRules {
+export function getRules(type: number): GetRules {
     return {
         type: constants.GET_RULES,
-        strategyType: 1,
+        strategyType: type,
     };
 }
 

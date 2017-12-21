@@ -11,3 +11,5 @@ export function pageName(id: string): PageName {
       id: id,
   };
 }
+
+export type RulesAction =  PageName;

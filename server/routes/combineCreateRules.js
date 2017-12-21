@@ -9,7 +9,7 @@ const config = require('./config');
 var isMock = process.env.isMock;
 
 router.get('/getRule', function(req, res, next) {
-    switch (req.query.strategyType) {
+    switch (parseInt(req.query.strategyType)){
         case 1:
             fs.readFile(__dirname + '/../usermock/createRules/rules.json', 'utf8', (err, data) => {
                 res.json(JSON.parse(data));
