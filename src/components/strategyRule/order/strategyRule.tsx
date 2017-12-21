@@ -4,6 +4,7 @@ import * as actions from '../../../actions';
 import { StoreState } from '../../../types/index';
 import { bindActionCreators } from 'redux';
 import { default as DelayTime } from '../../delayTime';
+import { default as ShowRule } from '../showRuleInfo';
 
 import './style.scss';
 import {
@@ -63,6 +64,8 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         checkedList: [],
         indeterminate: true,
         checkAll: false,
+        selectedLabel: '',
+        rules: []
     };
 
     constructor(props: any, context: any) {
@@ -204,33 +207,50 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     }
 
     computeShowData = (values: any) => {
+        let rules: { label: string; value: string }[] = [];
         console.log(values);
-        let labelSet: any = {};
         for ( let item of Object.keys(values)) {
+            let label: string = '';
+            let value: string = '';
+
             switch (item) {
                 case 'orderState':
-                    labelSet.orderStateLabel = getKeysValues(this.props.orderState, values.orderState, 'value', 'label');
+                    label = '订单状态';
+                    value = getKeysValues(this.props.orderState, values.orderState, 'value', 'label');
                     break;
                 case 'serviceOptions':
-                    labelSet.serviceOptionLabel = getKeysValues(this.props.serviceOptions, values.serviceOptions, 'key', 'title');
+                    label = '服务项';
+                    value = getKeysValues(this.props.serviceOptions, values.serviceOptions, 'key', 'title');
                     break;
                 case 'orderSource':
-                    labelSet.orderSourceLabel = getKeysValues(this.props.orderSource, values.orderSource, 'value', 'label');
+                    label = '订单来源';
+                    value = getKeysValues(this.props.orderSource, values.orderSource, 'value', 'label');
                     break;
                 case 'city':
-                    labelSet.cityLabel = getKeysValues(this.props.city.list, values.city.map((one) => `${parseInt(one, 10)}`), 'value', 'label');
+                    label = '城市';
+                    value = getKeysValues(this.props.city.list, values.city.map((one) => `${parseInt(one, 10)}`), 'value', 'label');
                     break;
                 case 'delayTime':
-                    labelSet.delayTimeLabel = `${values.delayTime.day}天${values.delayTime.minute}分`;
+                    label = '延迟时间';
+                    value = `${values.delayTime.day}天${values.delayTime.minute}分`;
                     break;
                 case 'pushTimes':
-                    labelSet.pushTimesLabel = values.pushTimes === '0' ? '不限制' : `${values.pushTimes}次`;
+                    label = '推送次数';
+                    value = values.pushTimes === '0' ? '不限制' : `${values.pushTimes}次`;
                     break;
                 default:
                     break;
             }
+            if (label !== '') {
+                rules.push({
+                    label: label,
+                    value: value
+                });
+            }
         }
-        this.setState(labelSet);
+        this.setState({
+            rules: rules
+        });
         this.onEdit(false);
     }
 
@@ -238,15 +258,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         let triggerRuleTpl: React.ReactNode = {};
         let btnStyle = {};
         let wrapperStyle: any = {};
-        const {
-            orderStateLabel = '无',
-            serviceOptionLabel = '无',
-            orderSourceLabel = '无',
-            cityLabel = '无',
-            selectedLabel = '无',
-            delayTimeLabel = '无',
-            pushTimesLabel = '无',
-        } = this.state;
+        const rules = [ ...this.state.rules ];
         const { getFieldDecorator } = this.props.form;
         const cities = this.props.city.list.map((item, index) => {
             return {
@@ -257,6 +269,13 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         });
         const plainOptions = this.props.orderSource;
         const options = this.props.serviceSelect;
+
+        if ( this.state.selectedLabel ) {
+            rules.push({
+                label: '品类',
+                value: this.state.selectedLabel
+            });
+        }
 
         if (this.state.editing) {
             triggerRuleTpl = (
@@ -359,16 +378,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
             wrapperStyle.background = '#fff';
             wrapperStyle.border = 'none';
             triggerRuleTpl = (
-                <section className="showInfo">
-                    <p><label>规则名称:</label><span>订单事件</span></p>
-                    <p><label>品类:</label><span>{selectedLabel}</span></p>
-                    <p><label>服务项:</label><span>{serviceOptionLabel}</span></p>
-                    <p><label>订单来源:</label><span>{orderSourceLabel}</span></p>
-                    <p><label>订单状态:</label><span>{orderStateLabel}</span></p>
-                    <p><label>城市:</label><span title={cityLabel}>{cityLabel}</span></p>
-                    <p><label>延迟时间:</label><span>{delayTimeLabel}</span></p>
-                    <p><label>推送次数:</label><span title={pushTimesLabel}>{pushTimesLabel}</span></p>
-                </section>
+                <ShowRule rules={rules} />
             );
         }
         return (

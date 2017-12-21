@@ -13,7 +13,6 @@ export default class DelayTime extends React.Component<DelayTimeProps, {day?: an
         super(props);
 
         const value = this.props.value || {};
-        console.log(value);
         this.state = {
             day: value.day || 0,
             minute: value.minute || 0,
@@ -23,7 +22,6 @@ export default class DelayTime extends React.Component<DelayTimeProps, {day?: an
     componentWillReceiveProps(nextProps: any) {
         if ('value' in nextProps) {
             const value = nextProps.value;
-            console.log(nextProps);
             this.setState(value);
         }
     }
