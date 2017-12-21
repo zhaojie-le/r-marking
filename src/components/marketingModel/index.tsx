@@ -1,3 +1,1 @@
-import MarketingModel from './marketingModel';
-
-export default MarketingModel;
+export { MarketingModel, default as MarketingModelAdd  } from './marketingModel';

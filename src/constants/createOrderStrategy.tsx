@@ -31,3 +31,6 @@ export type SAVE_RULE = typeof SAVE_RULE;
 
 export const SAVE_MODEL = 'SAVE_MODEL';
 export type SAVE_MODEL = typeof SAVE_MODEL;
+
+export const CHANGE_SRDC = 'CHANGE_SRDC';
+export type CHANGE_SRDC = typeof CHANGE_SRDC;

@@ -4,4 +4,5 @@ export interface CreateOrderStrategy {
     orderState: any[];
     rules: { strategyType: number; settings: any };
     weChatPush: any;
+    showOrderDetailCheck: boolean;
 }

@@ -19,7 +19,7 @@ import {
 import moment from 'moment';
 import {
     RuleCreater,
-    MarketingModel
+    MarketingModelAdd
 } from '../../components';
 import './index.scss';
 
@@ -37,7 +37,6 @@ export interface Props {
     onGetService: () => void;
     onGetRules: () => void;
     onSaveRule: () => void;
-    onGetWechatPush: (obj: any) => void;
     onSaveModel: (modelData: string) => void;
     onGetOrderState: () => void;
 }
@@ -87,8 +86,7 @@ namespace layout {
 class CreateOrderStrategy extends React.Component<Props, {}> {
     state: any = {
         editing: false,
-        sendCoupon: 1,
-        showOrderDetailCheck: false
+        sendCoupon: 1
     };
     private validateFieldsType: Array<string> = ['stragyName', 'time', 'pushTimes', 'strategyRule', 'marketingCategory', 'marketingModel'];
     constructor(props: Props, context: any) {
@@ -139,14 +137,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
 
     onStrategyRuleChange = (value) => {
         console.log(value);
-        this.props.onGetWechatPush({
-            lineid: value.serviceItem[0],
-            refer: value.serviceOptions,
-            orderStatus: value.orderState,
-        });
-        this.setState({
-            showOrderDetailCheck: value.serviceItem[1] === '201' ? true : false
-        });
     }
 
     disabledDate = (current) => {
@@ -160,8 +150,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { showOrderDetailCheck } = this.state;
-        const { history, weChatPush }: any = this.props;
+        const { history }: any = this.props;
 
         return (
             <div id="orderStrategy">
@@ -257,11 +246,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 {type: '2', value: {type: '2', docs: '111', link: '222', title: '22222'}}
                                             ]
                                         })(
-                                            <MarketingModel
+                                            <MarketingModelAdd
                                                 form={this.props.form}
                                                 stage={0}
-                                                option={weChatPush}
-                                                showOrderDetailCheck={showOrderDetailCheck}
                                                 onChange={this.onMarketingModelChange}
                                             />
                                         )
@@ -301,7 +288,6 @@ export function mapStateToProps(state: StoreState) {
         orderState: state.createOrderStrategy.orderState,
         formState: state.createOrderStrategy.formState,
         rules: state.createOrderStrategy.rules,
-        weChatPush: state.createOrderStrategy.weChatPush,
     };
 }
 
@@ -310,7 +296,6 @@ export const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) 
         onChangeField: actions.changeField,
         onGetOrderState: actions.getOrderState,
         onGetRules: actions.getRules,
-        onGetWechatPush: actions.getWechatPush,
         onSaveRule: actions.saveRule,
         onSaveModel: actions.saveModel,
         onGetService: actions.getService
