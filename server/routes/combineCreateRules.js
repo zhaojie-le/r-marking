@@ -58,4 +58,10 @@ router.get('/getWechatPush', function(req, res, next) {
     });
 });
 
+router.get('/getPageInfo', function(req, res, next) {
+    fs.readFile(__dirname + '/../usermock/createRules/pageName.json', 'utf8', (err, data) => {
+        res.json(JSON.parse(data));
+    });
+});
+
 module.exports = router;
