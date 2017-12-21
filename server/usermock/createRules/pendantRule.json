@@ -1,0 +1,49 @@
+{
+    "data": [{
+            "label": "city",
+            "title": "城市",
+            "type": "cityType",
+            "list": [{
+                    "label": "北京",
+                    "value": "1"
+                },
+                {
+                    "label": "上海",
+                    "value": "2"
+                },
+                {
+                    "label": "广州",
+                    "value": "3"
+                }
+            ]
+        },
+        {
+            "label": "pageId",
+            "title": "页面Id",
+            "type": "textInput"
+        },
+        {
+            "label": "orderSource",
+            "list": [{
+                    "label": "全部",
+                    "value": "-999"
+                },
+                {
+                    "label": "到家APP",
+                    "value": "16|17|20"
+                },
+                {
+                    "label": "微信",
+                    "value": "2|35|104"
+                },
+                {
+                    "label": "其他h5",
+                    "value": "-8"
+                }
+            ],
+            "title": "页面渠道",
+            "type": "radioBox"
+        }
+    ],
+    "resultCode": 1
+}

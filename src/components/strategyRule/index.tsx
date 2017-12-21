@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { StrategyRule } from './order';
+import { PendantRule } from './pendant';
 
 interface Props {
     form: any;
@@ -17,6 +18,9 @@ class RuleCreater extends React.Component<Props, any> {
         switch ( strategyType ) {
             case 1:
                 ruleType = <StrategyRule form={this.props.form} onChange={this.props.onChange} />;
+                break;
+            case 7:
+                ruleType = <PendantRule form={this.props.form} onChange={this.props.onChange} />;
                 break;
             default:
                 break;
