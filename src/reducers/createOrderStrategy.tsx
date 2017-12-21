@@ -41,6 +41,7 @@ function form(
             ]
         },
         weChatPush: null,
+        showOrderDetailCheck: false
     },
     action: any
 ) {
@@ -79,6 +80,11 @@ function form(
             return {
                 ...state,
                 formState: { ...state.formState, marketingModel: action.modelJsonString, }
+            };
+        case constants.CHANGE_SRDC:
+            return {
+                ...state,
+                showOrderDetailCheck: action.flag
             };
         default:
             return state;

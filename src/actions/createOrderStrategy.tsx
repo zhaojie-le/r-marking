@@ -43,6 +43,11 @@ export interface SaveModel {
     type: constants.SAVE_MODEL;
 }
 
+export interface ChangeShowOrderDetailCheck {
+    flag: boolean;
+    type: constants.CHANGE_SRDC;
+}
+
 export interface ServiceParam {
     cateId: number;
     lineId: number;
@@ -110,5 +115,12 @@ export function saveModel(mjs: string): SaveModel {
     return {
         type: constants.SAVE_MODEL,
         modelJsonString: mjs,
+    };
+}
+
+export function setShowOrderDetailCheck(flag: boolean): ChangeShowOrderDetailCheck {
+    return {
+        type: constants.CHANGE_SRDC,
+        flag: flag,
     };
 }

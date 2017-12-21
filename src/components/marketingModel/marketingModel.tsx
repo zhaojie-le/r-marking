@@ -11,16 +11,26 @@ import {
     message,
 } from 'antd';
 import { ChatNumber, DaojiaAppModel, Sms, SuyunAppModel } from './mould';
+import { connect, Dispatch } from 'react-redux';
+import * as actions from '../../actions';
+import { StoreState } from '../../types/index';
+import { bindActionCreators } from 'redux';
 
 const FormItem = Form.Item;
 const SubMenu = Menu.SubMenu;
 
-export interface RuleProps {
+interface RuleProps {
     form?: any;
     value?: any;
     showOrderDetailCheck?: boolean;
     stage: number;
     option: any;
+    onChange: (value: any) => void;
+}
+
+interface WrapperProps {
+    form?: any;
+    stage?: any;
     onChange: (value: any) => void;
 }
 
@@ -74,7 +84,7 @@ function validate(fields: any[]): string {
                 case 'require':
                     return !item.value ? `${last}, ${item.errMsg}` : `${last}`;
                 case 'limit':
-                    return getBt(item.value) > item.limitNumber ? `${last}, ${item.errMsg}` : `${last}`;
+                    return !!item.value && getBt(item.value) > item.limitNumber ? `${last}, ${item.errMsg}` : `${last}`;
                 default:
                     return `${last}`;
             }
@@ -82,8 +92,7 @@ function validate(fields: any[]): string {
         ''
     ).substring(1);
 }
-
-export default class MarketingModel extends React.Component<RuleProps, {}> {
+export class MarketingModel extends React.Component<RuleProps, {}> {
     state: any = {
         editing: false,
         showData: {},
@@ -581,3 +590,20 @@ export default class MarketingModel extends React.Component<RuleProps, {}> {
         );
     }
 }
+
+function mapStateToProps(state: StoreState) {
+    return {
+        option: state.createOrderStrategy.weChatPush,
+        formState: state.createOrderStrategy.formState,
+        showOrderDetailCheck: state.createOrderStrategy.showOrderDetailCheck,
+    };
+}
+
+const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) => bindActionCreators(
+    {
+        onGetWechatPush: actions.getWechatPush,
+    },
+    dispatch
+);
+
+export default connect<any, any, WrapperProps>(mapStateToProps, mapDispatchToProps)(MarketingModel as any);

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StrategyRule } from './order';
 import { PendantRule } from './pendant';
+import { ErrorBoundary } from '../errorBoundary';
 
 interface Props {
     form: any;
@@ -26,11 +27,11 @@ class RuleCreater extends React.Component<Props, any> {
                 break;
         }
         return (
-            <div>
+            <ErrorBoundary>
                 {
                     ruleType
                 }
-            </div>
+            </ErrorBoundary>
         );
     }
 }
