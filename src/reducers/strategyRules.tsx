@@ -2,7 +2,7 @@ import * as constants from '../constants';
 
 function form(
     state: any = {
-
+        pageName: ''
     },
     action: any
 ) {
