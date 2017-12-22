@@ -4,10 +4,10 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs';
 import { Epic } from 'redux-observable';
 
-const pageNameSuccess = (result) => {
+const pageNameSuccess = (name) => {
     return {
         type: constants.PAGE_NAME_SUC,
-        result: result
+        name: name
    };
 };
 

@@ -2,7 +2,7 @@ import * as constants from '../constants';
 
 function form(
     state: any = {
-        pageName: ''
+        pageName: 0
     },
     action: any
 ) {
@@ -10,6 +10,10 @@ function form(
         case constants.PAGE_NAME:
             return {
                 ...state
+            };
+        case constants.PAGE_NAME_SUC:
+            return {
+                ...state, pageName: action.name
             };
         default:
             return state;

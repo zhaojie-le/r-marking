@@ -44,6 +44,7 @@ class PendantRule extends React.Component<RuleProps, {}> {
     }
     state: any = {
         editing: false,
+        pageId: 0,
         checkedList: [],
         indeterminate: true,
         checkAll: false,
@@ -57,9 +58,11 @@ class PendantRule extends React.Component<RuleProps, {}> {
     }
     onCheckAllChange = (e) => {
         this.setState({
-            checkedList: e.target.checked ? this.props.plainOptions : [],
             indeterminate: false,
             checkAll: e.target.checked,
+        });
+        this.props.form.setFieldsValue({
+            orderSource: e.target.checked ? this.props.plainOptions.map((item) => item.value) : [],
         });
     }
     onCheckChange = (checkedList) => {
@@ -74,7 +77,7 @@ class PendantRule extends React.Component<RuleProps, {}> {
             if (!err) {
                 console.log('value', values);
                 this.computeShowData(values);
-                // this.props.onChange(values);
+                this.props.onChange(values);
             }
         });
     }
@@ -85,6 +88,10 @@ class PendantRule extends React.Component<RuleProps, {}> {
     }
     getPageName = () => {
         console.log(0);
+        if (this.state.pageId !== 0) {
+            const { getPageName } = this.props;
+            getPageName(this.state.pageId);
+        }
     }
     computeShowData = (values: any) => {
         let rules: { label: string; value: string }[] = [];
@@ -119,7 +126,12 @@ class PendantRule extends React.Component<RuleProps, {}> {
             rules: rules
         });
         this.onEdit(false);
-    }  
+    }
+    pageIdChange = (e) => {
+        this.setState({
+            pageId: e.target.value
+        });
+    } 
     render() {
         let triggerRuleTpl: React.ReactNode = {};
         let triggerPageName: any = {};
@@ -156,7 +168,7 @@ class PendantRule extends React.Component<RuleProps, {}> {
                                         required: true, message: 'ID不能为空！',
                                     }]
                                 })(
-                                    <Input />
+                                    <Input onChange={this.pageIdChange}/>
                                     )}
                             </FormItem>
                         </Col>

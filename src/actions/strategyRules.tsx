@@ -2,13 +2,13 @@ import * as constants from '../constants';
 
 export interface PageName {
   type: constants.PAGE_NAME;
-  id: any;
+  pageId: any;
 }
 
 export function pageName(id: string): PageName {
   return {
       type: constants.PAGE_NAME,
-      id: id,
+      pageId: id,
   };
 }
 
