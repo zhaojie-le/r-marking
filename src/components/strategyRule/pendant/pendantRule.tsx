@@ -261,8 +261,8 @@ function mapStateToProps (state: StoreState) {
     return {
         pageName: state.strategyRules.pageName,
         rulesD: state.createOrderStrategy.rules,
-        cityList: state.createOrderStrategy.rules.settings[0].list,
-        plainOptions: state.createOrderStrategy.rules.settings[2].list
+        cityList: state.createOrderStrategy.rules.settings ? state.createOrderStrategy.rules.settings.city.list : [],
+        plainOptions: state.createOrderStrategy.rules.settings ? state.createOrderStrategy.rules.settings.orderSource.list : []
     };
 }
 const mapDispatchToProps = (dispatch: Dispatch<actions.RulesAction>) => bindActionCreators(

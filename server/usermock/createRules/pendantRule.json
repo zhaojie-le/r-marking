@@ -1,5 +1,7 @@
-{
-    "data": [{
+{   
+    "resultCode": 1,
+    "data": {
+        "city": {
             "label": "city",
             "title": "城市",
             "type": "cityType",
@@ -17,12 +19,7 @@
                 }
             ]
         },
-        {
-            "label": "pageId",
-            "title": "页面Id",
-            "type": "textInput"
-        },
-        {
+        "orderSource": {
             "label": "orderSource",
             "list": [{
                     "label": "全部",
@@ -44,6 +41,5 @@
             "title": "页面渠道",
             "type": "radioBox"
         }
-    ],
-    "resultCode": 1
+    }
 }
