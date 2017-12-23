@@ -33,12 +33,13 @@ function form(
         orderState: [],
         rules: {
             strategyType: null,
-            settings: [
-                {list: [], name: '', title: '', type: ''},
-                {list: [], name: '', title: '', type: ''},
-                {list: [], name: '', title: '', type: ''},
-                {list: [], name: '', title: '', type: ''},
-            ]
+            setting: {}
+            // settings: [
+            //     {list: [], name: '', title: '', type: ''},
+            //     {list: [], name: '', title: '', type: ''},
+            //     {list: [], name: '', title: '', type: ''},
+            //     {list: [], name: '', title: '', type: ''},
+            // ]
         },
         weChatPush: null,
         showOrderDetailCheck: false
@@ -64,7 +65,7 @@ function form(
         case constants.GET_RULES_SUCCESS:
             return {
                 ...state,
-                rules: { strategyType: action.strategyType, settings: [...action.result] }
+                rules: { strategyType: action.strategyType, settings: action.result }
             };
         case constants.GET_WHCHATPUSH_SUCCESS:
             return {

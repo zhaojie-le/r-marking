@@ -1,0 +1,53 @@
+{
+    "resultCode": 1,
+    "data": {
+        "orderSource": {
+            "title": "订单来源",
+            "list": [{
+                    "label": "全部",
+                    "value": "-999"
+                },
+                {
+                    "label": "到家APP",
+                    "value": "16|17|20"
+                },
+                {
+                    "label": "微信",
+                    "value": "2|35|104"
+                },
+                {
+                    "label": "其他h5",
+                    "value": "-8"
+                }
+            ]
+        },
+        "serviceType": {
+            "title": "服务项",
+            "list": [{
+                "label": "小时工",
+                "value": "201",
+                "children": [{
+                        "label": "保姆育儿嫂",
+                        "value": "212"
+                    },
+                    {
+                        "label": "小时工",
+                        "value": "201"
+                    }
+                ]
+            }, {
+                "label": "司机",
+                "value": "103",
+                "children": [{
+                        "label": "速运",
+                        "value": "204"
+                    },
+                    {
+                        "label": "搬家",
+                        "value": "203"
+                    }
+                ]
+            }]
+        }
+    }
+}

@@ -15,6 +15,11 @@ router.get('/getRule', function(req, res, next) {
                 res.json(JSON.parse(data));
             });
             break;
+        case 3:
+            fs.readFile(__dirname + '/../usermock/createRules/orderPay.json', 'utf8', (err, data) => {
+                res.json(JSON.parse(data));
+            });
+            break;
         case 7:
             fs.readFile(__dirname + '/../usermock/createRules/pendantRule.json', 'utf8', (err, data) => {
                 res.json(JSON.parse(data));

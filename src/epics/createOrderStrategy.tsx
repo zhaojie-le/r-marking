@@ -121,7 +121,7 @@ const getRules: Epic<any, any> = (action$, store) => {
         switchMap(
             (action): Observable<any> => {
                 return ajax.getJSON(`marketStrategy/getRule?strategyType=${action.strategyType}`).
-                    map((response: {resultCode: number, data: any[]}) => {
+                    map((response: {resultCode: number, data: {}}) => {
                         if (response.resultCode === 1) {
                             // response.data[1] = response.data[1].list.map((item) => {
                             //     const newItem:  { label: string; value: string; } = {
