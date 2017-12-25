@@ -18,6 +18,20 @@ const pageNameFail = (error) => {
     };
 };
 
+const userCountSuccess = (num) => {
+    return {
+        type: constants.USER_COUNT_SUC,
+        num: num
+   };
+};
+
+const userCountFail = (error) => {
+    return {
+        type: constants.USER_COUNT_FAIL,
+        error: error
+    };
+};
+
 const pageName: Epic<any, any> = (action$, store) => {
     return action$.ofType(constants.PAGE_NAME).
         switchMap(
@@ -34,6 +48,21 @@ const pageName: Epic<any, any> = (action$, store) => {
     );
 };
 
-const epics = [pageName];
+const userCount: Epic<any, any> = (action$, store) => {
+    return action$.ofType(constants.USER_COUNT).
+        switchMap(
+            (action): Observable<any> => {
+                return ajax.getJSON(`/marketStrategy/getUserCount?userBatchId=${action.patchId}`).
+                    map((response: {resultCode: number, data?: number}) => {
+                        if (response.resultCode === 1) {
+                            return (userCountSuccess(response.data));
+                        } else {
+                            return (userCountFail(response));
+                        }
+                    });
+            }
+    );
+};
+const epics = [pageName, userCount];
 
 export default epics;

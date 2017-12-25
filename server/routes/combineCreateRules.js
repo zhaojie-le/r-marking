@@ -69,4 +69,10 @@ router.get('/getPageInfo', function(req, res, next) {
     });
 });
 
+router.get('/getUserCount', function(req, res, next) {
+    fs.readFile(__dirname + '/../usermock/createRules/userCount.json', 'utf8', (err, data) => {
+        res.json(JSON.parse(data));
+    });
+});
+
 module.exports = router;

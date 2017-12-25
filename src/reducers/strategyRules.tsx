@@ -15,6 +15,10 @@ function form(
             return {
                 ...state, pageName: action.name
             };
+        case constants.USER_COUNT_SUC:
+            return {
+                ...state, userCount: action.num
+            };
         default:
             return state;
     }

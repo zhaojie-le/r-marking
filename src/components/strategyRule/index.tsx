@@ -5,6 +5,7 @@ import { ErrorBoundary } from '../errorBoundary';
 import { OrderPayRule } from './orderPay';
 import { ValueRule } from './storedValue';
 import { PushMessageRule } from './pushMessage';
+import { ImportUserRule } from './importUser';
 
 interface Props {
     form: any;
@@ -22,6 +23,9 @@ class RuleCreater extends React.Component<Props, any> {
         switch ( strategyType ) {
             case 1:
                 ruleType = <StrategyRule form={this.props.form} onChange={this.props.onChange} />;
+                break;
+            case 2:
+                ruleType = <ImportUserRule form={this.props.form} onChange={this.props.onChange} />;
                 break;
             case 3:
                 ruleType = <OrderPayRule form={this.props.form} onChange={this.props.onChange} />;
