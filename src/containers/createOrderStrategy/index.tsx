@@ -34,6 +34,8 @@ export interface Props {
     rules: {strategyType: number; setting: any; };
     formState: any;
     form: any;
+    strategyType: any;
+    ruleHadBack: boolean;
     onGetService: () => void;
     onGetRules: (type: number) => void;
     onSaveRule: () => void;
@@ -82,11 +84,13 @@ namespace layout {
         },
     };
 }
-
+const userConditions: any = ['2', '4', '5', '6'];
 class CreateOrderStrategy extends React.Component<Props, {}> {
     state: any = {
         editing: false,
-        sendCoupon: 1
+        sendCoupon: 1,
+        eventType: 1,
+        disabledTrggerCondition: false
     };
     private validateFieldsType: Array<string> = ['stragyName', 'time', 'pushTimes', 'strategyRule', 'marketingCategory', 'marketingModel'];
     constructor(props: Props, context: any) {
@@ -94,7 +98,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     componentDidMount() {
-        this.props.onGetRules(7);
+       // this.props.onGetRules(1);
     }
 
     saveStrategy = (e) => {
@@ -139,6 +143,41 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         console.log(value);
     }
 
+    onSelectEvent = (value) => {
+        const disabledTrggerCondition = userConditions.includes(value) ? true : false;
+        this.props.onGetRules(parseInt(value, 10));
+        this.setState({
+            disabledTrggerCondition: disabledTrggerCondition,
+            eventType: parseInt(value, 10)
+        });
+    }
+
+    generateTriggerEvent = () => {
+        const { getFieldDecorator } = this.props.form;
+        const { eventType } = this.state;
+
+        if (this.state.eventType === this.props.strategyType) {
+            return (
+                <FormItem {...layout.formItemLayoutMarketingModel} label="触发规则" hasFeedback={false}>
+                    {
+                        getFieldDecorator('strategyRule', {
+                            rules: [{
+                                required: true, message: '规则不能为空！',
+                            }],
+                            initialValue: [
+                                {type: '1', value: {type: '1', docs: '111', link: '222'}}
+                            ]
+                        })(
+                            <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={eventType}/>
+                        )
+                    }
+                </FormItem>
+            );
+        } else {
+            return null;
+        }
+    }
+
     disabledDate = (current) => {
         if ( !current ) {
             return current;
@@ -151,6 +190,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     render() {
         const { getFieldDecorator } = this.props.form;
         const { history }: any = this.props;
+        const { disabledTrggerCondition } = this.state;
+
+        console.log(this.props.rules);
 
         return (
             <div id="orderStrategy">
@@ -190,20 +232,49 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                     }
                                 </FormItem>
 
-                                <FormItem {...layout.formItemLayoutMarketingModel} label="触发规则" hasFeedback={false}>
+                                <FormItem {...layout.formItemLayout} label="触发事件" hasFeedback={false}>
                                     {
-                                        getFieldDecorator('strategyRule', {
+                                        getFieldDecorator('triggerEvent', {
                                             rules: [{
-                                                required: true, message: '规则不能为空！',
+                                                required: true, message: '请输入触发事件！',
                                             }],
-                                            initialValue: [
-                                                {type: '1', value: {type: '1', docs: '111', link: '222'}}
-                                            ]
                                         })(
+<<<<<<< HEAD
                                             <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={2}/>
+=======
+                                            <Select onChange={this.onSelectEvent}>
+                                                <Option value="0">请选择</Option>
+                                                <Option value="1">订单策略</Option>
+                                                <Option value="2">导入用户</Option>
+                                                <Option value="3">支付预约页面营销</Option>
+                                                <Option value="4">外推消息</Option>
+                                                <Option value="5">全部用户</Option>
+                                                <Option value="6">储值返券</Option>
+                                                <Option value="7">页面挂件</Option>
+                                            </Select>
+>>>>>>> a641a618787074e6d132bc86689d80f1196272db
                                         )
                                     }
                                 </FormItem>
+                                <FormItem {...layout.formItemLayout} label="触发条件" hasFeedback={false}>
+                                    {
+                                        getFieldDecorator('triggerCondition', {
+                                            rules: [{
+                                                required: true, message: '触发条件不能为空！',
+                                            }],
+                                        })(
+                                            <Select disabled={disabledTrggerCondition}>
+                                                <Option value="0">请选择</Option>
+                                                <Option value="1">页面挂件</Option>
+                                            </Select>
+                                        )
+                                    }
+                                </FormItem>
+
+                                {
+                                    this.generateTriggerEvent()
+                                }
+
                                 <Row className="marketingCategoryRow">
                                     <Col span={3} className="marketingCategoryLabel"><label>营销类别：</label></Col>
                                     <Col span={6}>
@@ -288,6 +359,7 @@ export function mapStateToProps(state: StoreState) {
         orderState: state.createOrderStrategy.orderState,
         formState: state.createOrderStrategy.formState,
         rules: state.createOrderStrategy.rules,
+        strategyType: state.createOrderStrategy.rules.strategyType,
     };
 }
 

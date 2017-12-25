@@ -216,7 +216,6 @@ class StrategyRule extends React.Component<RuleProps, {}> {
 
     computeShowData = (values: any) => {
         let rules: { label: string; value: string }[] = [];
-        console.log(values);
         for ( let item of Object.keys(values)) {
             let label: string = '';
             let value: string = '';
@@ -408,9 +407,9 @@ function mapStateToProps(state: StoreState) {
     return {
         serviceOptions: state.createOrderStrategy.serviceOptions,
         orderState: state.createOrderStrategy.orderState,
-        orderSource: state.createOrderStrategy.rules.settings[1],
-        city: state.createOrderStrategy.rules.settings[3],
-        serviceSelect: state.createOrderStrategy.rules.settings[0].list,
+        orderSource: state.createOrderStrategy.rules.settings.orderSource.list,
+        city: state.createOrderStrategy.rules.settings.city,
+        serviceSelect: state.createOrderStrategy.rules.settings.refer.list,
         formState: state.createOrderStrategy.formState
     };
 }
