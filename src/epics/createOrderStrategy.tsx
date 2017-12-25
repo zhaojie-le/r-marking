@@ -123,14 +123,6 @@ const getRules: Epic<any, any> = (action$, store) => {
                 return ajax.getJSON(`marketStrategy/getRule?strategyType=${action.strategyType}`).
                     map((response: {resultCode: number, data: {}}) => {
                         if (response.resultCode === 1) {
-                            // response.data[1] = response.data[1].list.map((item) => {
-                            //     const newItem:  { label: string; value: string; } = {
-                            //         label: item.label,
-                            //         value: item.value,
-                            //     };
-                            //     return newItem;
-                            // });
-                            console.log('data', response.data);
                             return (getRulesStateSuccess(response.data, action.strategyType));
                         } else {
                             return (getRulesStateFail(response));
