@@ -239,9 +239,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 required: true, message: '请输入触发事件！',
                                             }],
                                         })(
-<<<<<<< HEAD
-                                            <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={2}/>
-=======
                                             <Select onChange={this.onSelectEvent}>
                                                 <Option value="0">请选择</Option>
                                                 <Option value="1">订单策略</Option>
@@ -252,7 +249,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 <Option value="6">储值返券</Option>
                                                 <Option value="7">页面挂件</Option>
                                             </Select>
->>>>>>> a641a618787074e6d132bc86689d80f1196272db
                                         )
                                     }
                                 </FormItem>

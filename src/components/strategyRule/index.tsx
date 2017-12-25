@@ -6,6 +6,7 @@ import { OrderPayRule } from './orderPay';
 import { ValueRule } from './storedValue';
 import { PushMessageRule } from './pushMessage';
 import { ImportUserRule } from './importUser';
+import { AllUserRule } from './allUser';
 
 interface Props {
     form: any;
@@ -33,6 +34,9 @@ class RuleCreater extends React.Component<Props, any> {
             case 4:
                 ruleType = <PushMessageRule form={this.props.form} onChange={this.props.onChange} />;
                 break;
+            case 5:
+                ruleType = <AllUserRule form={this.props.form} />;
+                break;    
             case 6:
                 ruleType = <ValueRule {...props} />;
                 break;
