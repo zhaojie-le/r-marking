@@ -39,7 +39,9 @@ class PushMessageRule extends React.Component<RuleProps, {}> {
             if (!err) {
                 console.log('value', values);
                 this.computeShowData(values);
-                this.props.onChange(values);
+                // 增加防打扰开关字段
+                let sendValue = Object.assign({}, values, {refuseDisturb: this.state.value });
+                this.props.onChange(sendValue);
             }
         });
     }
@@ -53,7 +55,6 @@ class PushMessageRule extends React.Component<RuleProps, {}> {
         for ( let item of Object.keys(values)) {
             let label: string = '';
             let value: string = '';
-            console.log('item', item);
             switch (item) {
                 case 'message':
                     label = '外推消息';
