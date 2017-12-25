@@ -200,7 +200,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 {type: '1', value: {type: '1', docs: '111', link: '222'}}
                                             ]
                                         })(
-                                            <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={6}/>
+                                            <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={4}/>
                                         )
                                     }
                                 </FormItem>

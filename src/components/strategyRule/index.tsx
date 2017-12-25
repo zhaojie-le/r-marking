@@ -4,6 +4,7 @@ import { PendantRule } from './pendant';
 import { ErrorBoundary } from '../errorBoundary';
 import { OrderPayRule } from './orderPay';
 import { ValueRule } from './storedValue';
+import { PushMessageRule } from './pushMessage';
 
 interface Props {
     form: any;
@@ -24,6 +25,9 @@ class RuleCreater extends React.Component<Props, any> {
                 break;
             case 3:
                 ruleType = <OrderPayRule form={this.props.form} onChange={this.props.onChange} />;
+                break;
+            case 4:
+                ruleType = <PushMessageRule form={this.props.form} onChange={this.props.onChange} />;
                 break;
             case 6:
                 ruleType = <ValueRule form={this.props.form} onChange={this.props.onChange} />;
