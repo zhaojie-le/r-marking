@@ -12,8 +12,8 @@ import {
 } from 'antd';
 import { ChatNumber, DaojiaAppModel, Sms, SuyunAppModel } from './mould';
 import { connect, Dispatch } from 'react-redux';
-import * as actions from '../../actions';
-import { StoreState } from '../../types/index';
+import * as actions from '../../../actions';
+import { StoreState } from '../../../types/index';
 import { bindActionCreators } from 'redux';
 
 const FormItem = Form.Item;
@@ -92,6 +92,7 @@ function validate(fields: any[]): string {
         ''
     ).substring(1);
 }
+
 export class MarketingModel extends React.Component<RuleProps, {}> {
     state: any = {
         editing: false,
@@ -187,7 +188,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
         const keyType = event.key.split('-');
         const { form, option } = this.props;
         if (keyType[0] === '4' && option === null) {
-            message.error('咱不能使用58到家公众号方式');
+            message.error('暂不能使用58到家公众号方式');
             return;
         }
         const keys = form.getFieldValue('keys');

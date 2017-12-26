@@ -20,7 +20,10 @@ import moment from 'moment';
 import {
     RuleCreater,
     StrategyCreater,
-    MarketingModelAdd
+    MarketingModelAdd,
+    PageHanger
+    // LoadElement,
+    // MarketingModelAdd
 } from '../../components';
 import './index.scss';
 
@@ -102,8 +105,28 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
        // this.props.onGetRules(1);
     }
 
+    validateTrgger = (): boolean | undefined => {
+        const { getFieldValue } = this.props.form;
+        const triggerConditionValue = getFieldValue('triggerCondition');
+        const triggerEventValue = getFieldValue('triggerEvent');
+        if ( !triggerConditionValue && !triggerEventValue) {
+            this.setState({
+                validateStatus: 'error'
+            });
+            return true;
+        }
+        this.setState({
+            validateStatus: 'success'
+        });
+        return;
+    }
+
     saveStrategy = (e) => {
         e.preventDefault();
+        if (this.validateTrgger()) {
+            return;
+        }
+
         this.props.form.validateFieldsAndScroll(this.validateFieldsType, (err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
@@ -165,9 +188,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                             rules: [{
                                 required: true, message: '规则不能为空！',
                             }],
-                            initialValue: [
-                                {type: '1', value: {type: '1', docs: '111', link: '222'}}
-                            ]
                         })(
                             <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={eventType}/>
                         )
@@ -207,9 +227,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     render() {
         const { getFieldDecorator } = this.props.form;
         const { history }: any = this.props;
-        const { disabledTrggerCondition } = this.state;
-
-        console.log(this.props.rules);
+        const { disabledTrggerCondition, validateStatus } = this.state;
 
         return (
             <div id="orderStrategy">
@@ -249,7 +267,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                     }
                                 </FormItem>
 
-                                <FormItem {...layout.formItemLayout} label="触发事件" hasFeedback={false}>
+                                <FormItem {...layout.formItemLayout} label="触发事件" validateStatus={validateStatus} hasFeedback={true} help="触发事件和触发条件必选一项!">
                                     {
                                         getFieldDecorator('triggerEvent', {
                                             rules: [{
@@ -269,7 +287,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                         )
                                     }
                                 </FormItem>
-                                <FormItem {...layout.formItemLayout} label="触发条件" hasFeedback={false}>
+                                <FormItem {...layout.formItemLayout} label="触发条件" validateStatus={validateStatus} hasFeedback={true} help="触发事件和触发条件必选一项!">
                                     {
                                         getFieldDecorator('triggerCondition', {
                                             rules: [{
@@ -295,16 +313,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                     {
                                         getFieldDecorator('marketingModel', {
                                             rules: [{
-                                                required: true, message: '策略名称不能为空！',
+                                                required: true, message: '营销方式不能为空！',
                                             }],
-                                            initialValue: [
-                                                {type: '1', value: {type: '1', docs: '111', link: '222'}},
-                                                {type: '2', value: {type: '2', docs: '111', link: '222', title: '22222'}}
-                                            ]
                                         })(
-                                            <MarketingModelAdd
+                                            <PageHanger
                                                 form={this.props.form}
-                                                stage={0}
                                                 onChange={this.onMarketingModelChange}
                                             />
                                         )
