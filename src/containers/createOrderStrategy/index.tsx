@@ -8,8 +8,8 @@ import { withRouter } from 'react-router-dom';
 import {
     Form,
     Input,
-    Row,
-    Col,
+    // Row,
+    // Col,
     Layout,
     Breadcrumb,
     Button,
@@ -19,6 +19,7 @@ import {
 import moment from 'moment';
 import {
     RuleCreater,
+    StrategyCreater,
     PageHanger
     // LoadElement,
     // MarketingModelAdd
@@ -197,6 +198,22 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         }
     }
 
+    strategyTriggerEvent = () => {
+        const { eventType } = this.state;
+        let type = 0;
+        if (this.state.eventType === this.props.strategyType) {
+            type = this.state.eventType;
+        }
+        if (type) {
+            return (
+                <StrategyCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={eventType}/>
+            );
+        } else {
+            return null;
+        }
+        
+    }
+
     disabledDate = (current) => {
         if ( !current ) {
             return current;
@@ -287,37 +304,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                 {
                                     this.generateTriggerEvent()
                                 }
-
-                                <Row className="marketingCategoryRow">
-                                    <Col span={3} className="marketingCategoryLabel"><label>营销类别：</label></Col>
-                                    <Col span={6}>
-                                        <FormItem hasFeedback={false}>
-                                            {
-                                                getFieldDecorator('marketingCategory', {
-                                                    rules: [{
-                                                        required: true, message: '营销类别不能为空',
-                                                    }],
-                                                })(
-                                                    <Select
-                                                        style={{ width: 200 }}
-                                                        placeholder="请选择营销类别!"
-                                                        optionFilterProp="children"
-                                                        onChange={this.marketingCategoryChange}
-                                                    >
-                                                        {
-                                                            ['发券', '用券', '拉新', '商品(不拼团)', '商品(拼团)', '购买会员卡', '评价', '支付', '调查问卷', '活动'].map((item, i) => {
-                                                                return (<Option value={(i).toString()} key={i} >{item}</Option>);
-                                                            })
-                                                        }
-                                                    </Select>
-                                                )
-                                            }
-                                        </FormItem>
-                                    </Col>
-                                    <Col span={9}>
-                                        {this.addCoupon()}
-                                    </Col>
-                                </Row>
+                                {
+                                    this.strategyTriggerEvent()
+                                }
 
                                 <FormItem {...layout.formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
                                     {
