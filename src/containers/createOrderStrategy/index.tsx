@@ -20,7 +20,6 @@ import moment from 'moment';
 import {
     RuleCreater,
     StrategyCreater,
-    MarketingModelAdd,
     PageHanger
     // LoadElement,
     // MarketingModelAdd
