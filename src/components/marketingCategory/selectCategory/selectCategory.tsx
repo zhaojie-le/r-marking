@@ -55,19 +55,35 @@ class SelectCategory extends React.Component<RuleProps, {}> {
             sendCoupon: value
         });
         console.log(`selected ${value}`);
+        if (!('value' in this.props)) {
+            this.setState({ type: value });
+        }
+        this.triggerChange({ type: value });
+    }
+    couponIdChange = (value) => {
+        if (!('value' in this.props)) {
+            this.setState({ couponId: value });
+        }
+        this.triggerChange({ couponId: value });
+    }
+    triggerChange = (changedValue) => {
+        const onChange = this.props.onChange;
+        if (onChange) {
+            onChange(Object.assign({}, this.state, changedValue));
+        }
     }
     addCoupon = () => {
         const { getFieldDecorator } = this.props.form;
         return this.state.sendCoupon === '1' ? (
-                <FormItem {...layout.formItemLayout2} label="优惠券" hasFeedback={false}>
-                    {getFieldDecorator('coupon', {
-                        rules: [{
-                            required: true, message: '优惠券id不能为空！',
-                        }]
-                    })(
-                        <Input placeholder="请输入优惠券ID"/>
-                    )}
-                </FormItem>
+            <FormItem {...layout.formItemLayout2} label="优惠券" hasFeedback={false}>
+                {getFieldDecorator('coupon', {
+                    rules: [{
+                        required: true, message: '优惠券id不能为空！',
+                    }]
+                })(
+                    <Input placeholder="请输入优惠券ID" onChange={this.couponIdChange}/>
+                )}
+            </FormItem>
         ) : '';
     }
     render() {
@@ -83,7 +99,6 @@ class SelectCategory extends React.Component<RuleProps, {}> {
         }
         return (
             <Row className="marketingCategoryRow">
-                <Col span={3} className="marketingCategoryLabel"><label>营销类别：</label></Col>
                 <Col span={6}>
                     <FormItem hasFeedback={false}>
                         {

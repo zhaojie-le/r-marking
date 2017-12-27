@@ -64,7 +64,6 @@ export default (check: (rule: any, value: any, callback: any) => void, ShowData:
 
         getContentTpl = () => {
             const { getFieldDecorator } = this.props.form;
-
             const tpl = this.state.editing
             ? (
                 <div className="wrapperModel">
@@ -76,7 +75,7 @@ export default (check: (rule: any, value: any, callback: any) => void, ShowData:
                                 validator: check
                             }],
                         })(
-                            <WrappedComponent onchange={this.onYxfsChange} />
+                            <WrappedComponent onchange={this.onYxfsChange} form={this.props.form} />
                         )}
                     </FormItem>
                     <FormItem {...layout.tailFormItemLayout} style={{borderBottom: 'none'}}>

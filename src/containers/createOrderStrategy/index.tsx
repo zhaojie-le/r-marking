@@ -200,13 +200,24 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
 
     strategyTriggerEvent = () => {
         const { eventType } = this.state;
+        const { getFieldDecorator } = this.props.form;
         let type = 0;
         if (this.state.eventType === this.props.strategyType) {
             type = this.state.eventType;
         }
         if (type) {
             return (
-                <StrategyCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={eventType}/>
+                <FormItem {...layout.formItemLayoutMarketingModel} label="营销类别" hasFeedback={false}>
+                    {
+                        getFieldDecorator('strategytype', {
+                            rules: [{
+                                required: true, message: '营销方式不能为空！',
+                            }],
+                        })(
+                            <StrategyCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={eventType}/>
+                        )
+                    }
+                </FormItem>
             );
         } else {
             return null;

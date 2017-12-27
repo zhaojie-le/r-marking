@@ -1,110 +1,128 @@
 import * as React from 'react';
-import { Form, Input, Row, Col, Radio, Icon } from 'antd';
+import { Form, Icon, Button, Radio } from 'antd';
+import { default as switchEditState } from '../../marketingModel/switchEditState';
+import { InputItemCategory } from './inputItem';
 const FormItem = Form.Item;
+const Micon: any = Icon;
 export interface RuleProps {
     form: any;
     onChange: (values: any) => void;
 }
-namespace layout {
-    export const formItemLayout = {
-        labelCol: { xs: { span: 24 }, sm: { span: 12 }, },
-        wrapperCol: { xs: { span: 24 }, sm: { span: 12 }, },
-    };
+
+function getBt(str: string): number {
+    var char = str.replace(/[^\x00-\xff]/g, '**');
+    return char.length;
 }
-let couponList = [
-    {
-        moneySum: '',
-        id: ''
+
+function validate(fields: any[]): string {
+    return fields.reduce(
+        (last, item) => {
+            switch (item.type) {
+                case 'require':
+                    return !item.value ? `${last}, ${item.errMsg}` : `${last}`;
+                case 'limit':
+                    return !!item.value && getBt(item.value) > item.limitNumber ? `${last}, ${item.errMsg}` : `${last}`;
+                default:
+                    return `${last}`;
+            }
+        },
+        ''
+    ).substring(1);
+}
+
+let uuid = 0;
+class DynamicFieldSet extends React.Component<RuleProps, {}> {
+    remove = (k) => {
+        const { form } = this.props;
+        // can use data-binding to get
+        const keys = form.getFieldValue('keys');
+        // We need at least one passenger
+        if (keys.length === 1) {
+            return;
     }
-];
-export const iconShow = (index) => {
-    if (index === 0) {
-        return (<Icon type="plus-circle-o" />);
-    } else {
-        return (<Icon type="minus-circle-o"/>);
-    }
-};
-/**
- * 数组每项增加一个key值，组件要求
- * @param arr  传入需要处理的数组
- */
-export const arrayAddKey = (arr: any) => {
-    if (arr && arr.length > 0) {
-        let array = arr.map( (item, i) => Object.assign({}, item, { key: i }) );
-        return array;
-    }
-};
-/**
- * 提取select框内部选项通用部分
- * @param arr 传入数组
- */
-export const selectcChildren = (arr: any, getFieldDecorator: any) => {
-    if (arr && arr.length > 0) {
-        let Children = arrayAddKey(arr).map((item, index) => {
-            return (
-                <Row key={index}>
-                    <Col span={10}>
-                        <FormItem hasFeedback={false} label="充值金额" {...layout.formItemLayout}>
-                            {
-                                getFieldDecorator(`cashValue-${index}`, {
-                                    rules: [{
-                                        required: true, message: '金额不能为空',
-                                    }]
-                                })(
-                                    <Input />
-                                )}
-                        </FormItem>
-                    </Col>
-                    <Col span={10}>
-                        <FormItem hasFeedback={false} label="优惠券" {...layout.formItemLayout}>
-                            {
-                                getFieldDecorator(`coupon-${index}`, {
-                                    rules: [{
-                                        required: true, message: '优惠券ID不能为空',
-                                    }]
-                                })( 
-                                    <Input />
-                            )}
-                        </FormItem>
-                    </Col>
-                    <Col span={2}>
-                        <FormItem style={{'marginLeft': 30}}>
-                            {iconShow(index)}
-                        </FormItem>
-                    </Col>
-                </Row>
-            );
+
+        // can use data-binding to set
+        form.setFieldsValue({
+            keys: keys.filter(key => key !== k),
         });
-        return Children;
     }
-};
-class InputCategory extends React.Component<RuleProps, {}> {
-    constructor(props: any) {
-        super(props);
+
+    add = () => {
+        uuid++;
+        const { form } = this.props;
+        // can use data-binding to get
+        const keys = form.getFieldValue('keys');
+        const nextKeys = keys.concat(uuid);
+        // can use data-binding to set
+        // important! notify form to detect changes
+        form.setFieldsValue({
+            keys: nextKeys,
+        });
     }
-    state: any = {
-        couponList: []
-    };
-    add = (index: number) => {
-        console.log(0);
-    }
-    minus = (index: number) => {
-        console.log(1);
+
+    onInputItemChange = (value) => {
+        console.log(value);
     }
     render() {
-        const { getFieldDecorator } = this.props.form;
+        const { getFieldDecorator, getFieldValue } = this.props.form;
+        getFieldDecorator('keys', { initialValue: [] });
+        const keys: any = getFieldValue('keys');
+        const formItems = keys.map((k, index) => {
+            return (
+                <FormItem
+                    // {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+                    // label={index === 0 ? 'Passengers' : ''}
+                    required={false}
+                    key={k}
+                >
+                <InputItemCategory onChange={this.onInputItemChange} form={this.props.form} />
+                {keys.length > 1 ? (
+                    <Micon
+                        className="dynamic-delete-button"
+                        type="minus-circle-o"
+                        disabled={keys.length === 1}
+                        onClick={() => this.remove(k)}
+                    />
+                ) : null}
+                </FormItem>
+            );
+        });
         return (
-          <Row className="marketingCategoryRow">
-                <Col span={3} className="marketingCategoryLabel"><label>营销类别：</label></Col>
-                <Col span={10}>
-                    <FormItem>
-                        <Radio defaultChecked={true}>发券</Radio>
-                    </FormItem>
-                    {selectcChildren(couponList, getFieldDecorator)}
-                </Col>
-            </Row>
+            <div>
+                <FormItem>
+                    <Radio defaultChecked={true}>发券</Radio>
+                </FormItem>
+                {formItems}
+                <FormItem>
+                    <Button type="dashed" onClick={this.add} style={{ width: '57%', marginLeft: 114 }}>
+                        <Icon type="plus" /> Add field
+                    </Button>
+                </FormItem>
+            </div>
         );
     }
 }
 
-export default InputCategory;
+export default switchEditState(
+    (rule, value, callback) => {
+        if (value.valueSum && value.couponId) {
+            callback();
+            return;
+        }
+        callback(
+            validate([
+                {type: 'require', value: value.valueSum, errMsg: '充值金额不能为空'},
+                {type: 'require', value: value.couponId, errMsg: '优惠券ID不能为空'}
+            ])
+        );
+    },
+    (props) => {
+        return (
+            <div>
+                xxx
+            </div>
+        );
+    },
+    '储值返券',
+    {yxfs: { imgUrl: '', link: '', animation: '1', position: '1' }}
+)(DynamicFieldSet);
