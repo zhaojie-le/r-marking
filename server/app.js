@@ -32,10 +32,6 @@ app.use('/marketStrategy', combineCreateRules);
 app.use('/marketStrategy', combineDetailRules);
 app.use('/marketStrategy', combineCreateImpRules);
 
-app.use('/upload', function(req, res, next) {
-    req.pipe(fs.createWriteStream('./test.json'));
-});
-
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
