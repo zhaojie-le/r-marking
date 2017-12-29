@@ -161,8 +161,12 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     onMarketingModelChange = (value) => {
         console.log(value);
     }
-
+    // 触发规则
     onStrategyRuleChange = (value) => {
+        console.log(value);
+    }
+    // 营销类别
+    onMarketingTypeChange = (value) => {
         console.log(value);
     }
 
@@ -211,10 +215,10 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                     {
                         getFieldDecorator('strategytype', {
                             rules: [{
-                                required: true, message: '营销方式不能为空！',
+                                required: true, message: '营销类别不能为空！',
                             }],
                         })(
-                            <StrategyCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={eventType}/>
+                            <StrategyCreater onChange={this.onMarketingTypeChange} form={this.props.form} strategyType={eventType}/>
                         )
                     }
                 </FormItem>

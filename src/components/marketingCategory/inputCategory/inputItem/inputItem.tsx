@@ -17,13 +17,6 @@ namespace layout {
         wrapperCol: { xs: { span: 24 }, sm: { span: 12 }, },
     };
 }
-// export const iconShow = (index, plusClick, minusClick) => {
-//     if (index === 0) {
-//         return (<Icon type="plus-circle-o" onClick={plusClick(index)} />);
-//     } else {
-//         return (<Icon type="minus-circle-o" onClick={minusClick(index)} />);
-//     }
-// };
 /**
  * 数组每项增加一个key值，组件要求
  * @param arr  传入需要处理的数组
@@ -68,21 +61,13 @@ class InputItemCategory extends React.Component<RuleProps, {}> {
         valueSum: '',
         couponId: ''
     };
-    plusClick = (index: number) => {
-        console.log('plus');
-    }
-    minusClick = (index: number) => {
-        console.log('minus');
-    }
     getValueChange = (e) => {
-        console.log(e.target.value);
         this.setState({
             valueSum : e.target.value
         });
         this.triggerChange({valueSum : e.target.value, couponId : this.state.couponId});
     }
     getCouponChange = (e) => {
-        console.log(e.target.value);
         this.setState({
             couponId : e.target.value
         });
@@ -92,7 +77,6 @@ class InputItemCategory extends React.Component<RuleProps, {}> {
         const onChange = this.props.onChange;
         if (onChange) {
             let valueObj = Object.assign({}, this.state.changeItem, changedValue);
-            console.log('change', valueObj);
             onChange(valueObj);
         }
     }

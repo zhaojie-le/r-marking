@@ -1,4 +1,5 @@
 import * as React from 'react';
+// import _obj from 'lodash/fp/object';
 import { Form, Icon, Button, Radio } from 'antd';
 import { default as switchEditState } from '../../marketingModel/switchEditState';
 import { InputItemCategory } from './inputItem';
@@ -32,6 +33,7 @@ function validate(fields: any[]): string {
 
 let uuid = 0;
 class DynamicFieldSet extends React.Component<RuleProps, {}> {
+    private allValues: any = {};
     remove = (k) => {
         const { form } = this.props;
         // can use data-binding to get
@@ -39,12 +41,13 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
         // We need at least one passenger
         if (keys.length === 1) {
             return;
-    }
-
+        }
+        delete this.allValues[k];
         // can use data-binding to set
         form.setFieldsValue({
             keys: keys.filter(key => key !== k),
         });
+        console.log('delete', this.allValues);
     }
 
     add = () => {
@@ -58,10 +61,19 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
         form.setFieldsValue({
             keys: nextKeys,
         });
+        this.allValues[uuid] = null;
     }
 
-    onInputItemChange = (value) => {
-        console.log(value);
+    onInputItemChange = (value, key) => {
+        const { getFieldValue } = this.props.form;
+        const keys: any = getFieldValue('keys');
+        this.allValues = Object.assign({}, this.allValues);
+        keys.map((k, index) => {
+            if (k === key) {
+                this.allValues[k] = value;
+            }
+        });
+        this.props.onChange(this.allValues);
     }
     render() {
         const { getFieldDecorator, getFieldValue } = this.props.form;
@@ -75,7 +87,7 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
                     required={false}
                     key={k}
                 >
-                <InputItemCategory onChange={this.onInputItemChange} form={this.props.form} />
+                <InputItemCategory onChange={(value) => this.onInputItemChange(value, k)} form={this.props.form} />
                 {keys.length > 1 ? (
                     <Micon
                         className="dynamic-delete-button"
@@ -102,17 +114,27 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
         );
     }
 }
-
 export default switchEditState(
     (rule, value, callback) => {
-        if (value.valueSum && value.couponId) {
-            callback();
-            return;
+        console.log('values', value);
+        let objItem: any = {};
+        // if (value[1].valueSum && value[1].couponId) {
+        //     callback();
+        //     return;
+        // }
+        var arr = Object.keys(value);
+        for (let i = 1; i <= arr.length; i++) {
+            let item = value[i];
+            objItem = item;
+            console.log('objItem', objItem);
+            if (objItem.valueSum && objItem.couponId) {
+                callback();
+            }
         }
-        callback(
+        callback(         
             validate([
-                {type: 'require', value: value.valueSum, errMsg: '充值金额不能为空'},
-                {type: 'require', value: value.couponId, errMsg: '优惠券ID不能为空'}
+                {type: 'require', value: objItem.valueSum, errMsg: '充值金额不能为空'},
+                {type: 'require', value: objItem.couponId, errMsg: '优惠券ID不能为空'}
             ])
         );
     },
@@ -124,5 +146,5 @@ export default switchEditState(
         );
     },
     '储值返券',
-    {yxfs: { imgUrl: '', link: '', animation: '1', position: '1' }}
+    {yxfs: { valueSum: '', couponId: '' }}
 )(DynamicFieldSet);
