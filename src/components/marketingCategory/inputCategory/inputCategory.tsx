@@ -30,6 +30,17 @@ function validate(fields: any[]): string {
         ''
     ).substring(1);
 }
+// function objToArray (obj: any): any {
+//     let arr = Object.keys(obj);
+//     let valueArray: any = [];
+//     if (obj) {
+//         for (let i = 1; i <= arr.length; i++) {
+//             let item = obj[i];
+//             valueArray.push(item);
+//         }
+//         return valueArray;
+//     }       
+// }
 
 let uuid = 0;
 class DynamicFieldSet extends React.Component<RuleProps, {}> {
@@ -123,14 +134,17 @@ export default switchEditState(
         //     return;
         // }
         var arr = Object.keys(value);
+        var valueArray: any = [];
         for (let i = 1; i <= arr.length; i++) {
             let item = value[i];
             objItem = item;
+            valueArray.push(item);
             console.log('objItem', objItem);
             if (objItem.valueSum && objItem.couponId) {
                 callback();
             }
         }
+        console.log('array', valueArray);
         callback(         
             validate([
                 {type: 'require', value: objItem.valueSum, errMsg: '充值金额不能为空'},
