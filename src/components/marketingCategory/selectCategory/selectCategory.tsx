@@ -48,23 +48,25 @@ class SelectCategory extends React.Component<RuleProps, {}> {
         super(props);
     }
     state: any = {
-        sendCoupon: 0,
+        marketingType: 0,
+        activityId: ''
     };
     selectType = (value) => {
         this.setState({
-            sendCoupon: value
+            marketingType: value
         });
-        console.log(`selected ${value}`);
-        if (!('value' in this.props)) {
-            this.setState({ type: value });
+        if (value !== '1') {
+            this.setState({
+                activityId: ''
+            });
         }
-        this.triggerChange({ type: value });
+        this.triggerChange({ marketingType: value  });
     }
-    couponIdChange = (value) => {
+    couponIdChange = (e) => {
         if (!('value' in this.props)) {
-            this.setState({ couponId: value });
+            this.setState({ activityId: e.target.value });
         }
-        this.triggerChange({ couponId: value });
+        this.triggerChange({ activityId: e.target.value });
     }
     triggerChange = (changedValue) => {
         const onChange = this.props.onChange;
@@ -74,7 +76,7 @@ class SelectCategory extends React.Component<RuleProps, {}> {
     }
     addCoupon = () => {
         const { getFieldDecorator } = this.props.form;
-        return this.state.sendCoupon === '1' ? (
+        return this.state.marketingType === '1' ? (
             <FormItem {...layout.formItemLayout2} label="优惠券" hasFeedback={false}>
                 {getFieldDecorator('coupon', {
                     rules: [{

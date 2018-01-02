@@ -31,18 +31,23 @@ export const arrayAddKey = (arr: any) => {
  * 提取select框内部选项通用部分
  * @param arr 传入数组
  */
-export const selectcChildren = (arr: any, getFieldDecorator: any, getValueChange: any, getCouponChange: any ) => {
+export const selectcChildren = (arr: any, getFieldDecorator: any, getAmountLowChange: any, getAmountUpChange: any, getCouponChange: any ) => {
     if (arr && arr.length > 0) {
         let Children = arrayAddKey(arr).map((item, index) => {
             return (
                 <Row key={index}>
-                    <Col span={10}>
-                        <FormItem hasFeedback={false} label="充值金额" {...layout.formItemLayout}>
-                           <Input onChange={getValueChange}/>
+                    <Col span={8}>
+                        <FormItem hasFeedback={false} label="充值下限" {...layout.formItemLayout}>
+                           <Input onChange={getAmountLowChange}/>
                         </FormItem>
                     </Col>
-                    <Col span={10}>
-                        <FormItem hasFeedback={false} label="优惠券" {...layout.formItemLayout}>
+                    <Col span={8}>
+                        <FormItem hasFeedback={false} label="充值上限" {...layout.formItemLayout}>
+                           <Input onChange={getAmountUpChange}/>
+                        </FormItem>
+                    </Col>
+                    <Col span={8}>
+                        <FormItem hasFeedback={false} label="优惠券ID" {...layout.formItemLayout}>
                             <Input onChange={getCouponChange}/>
                         </FormItem>
                     </Col>
@@ -58,25 +63,35 @@ class InputItemCategory extends React.Component<RuleProps, {}> {
     }
     state: any = {
         couponList: [],
-        valueSum: '',
-        couponId: ''
+        rechargeAmountLow: '',
+        rechargeAmountUp: '',
+        result: ''
     };
-    getValueChange = (e) => {
+    getAmountLowChange = (e) => {
         this.setState({
-            valueSum : e.target.value
+            rechargeAmountLow : e.target.value
         });
-        this.triggerChange({valueSum : e.target.value, couponId : this.state.couponId});
+        console.log('low', e.target.value);
+        this.triggerChange({rechargeAmountLow : e.target.value, rechargeAmountUp: this.state.rechargeAmountUp, result : this.state.result});
+    }
+
+    getAmountUpChange = (e) => {
+        this.setState({
+            rechargeAmountUp : e.target.value
+        });
+        this.triggerChange({rechargeAmountLow : this.state.rechargeAmountLow, rechargeAmountUp: e.target.value, result : this.state.result});
     }
     getCouponChange = (e) => {
         this.setState({
-            couponId : e.target.value
+            result : e.target.value
         });
-        this.triggerChange({valueSum : this.state.valueSum, couponId : e.target.value});
+        this.triggerChange({rechargeAmountLow : this.state.rechargeAmountLow, rechargeAmountUp: this.state.rechargeAmountUp, result : e.target.value});
     }
     triggerChange = (changedValue) => {
         const onChange = this.props.onChange;
         if (onChange) {
-            let valueObj = Object.assign({}, this.state.changeItem, changedValue);
+            let valueObj = Object.assign({}, this.state.changeItem, changedValue, {ownerSubject: '71'});
+            console.log('valueObj', valueObj);
             onChange(valueObj);
         }
     }
@@ -84,7 +99,7 @@ class InputItemCategory extends React.Component<RuleProps, {}> {
         const { getFieldDecorator } = this.props.form;
         return (
             <Row className="marketingCategoryRow" style={{ width: '90%', display: 'inline-block'}}>
-                {selectcChildren(couponList, getFieldDecorator, this.getValueChange, this.getCouponChange)}
+                {selectcChildren(couponList, getFieldDecorator, this.getAmountLowChange, this.getAmountUpChange, this.getCouponChange)}
             </Row>
         );
     }

@@ -32,7 +32,6 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
         batchId: 0
     };
     getUserCount = () => {
-        console.log(1);
         const { userCount } = this.props;
         if (!!this.state.batchId) {
             userCount(this.state.batchId);
@@ -44,11 +43,10 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
         });
     }
     onSave = () => {
-        this.props.form.validateFields(['batchId'], (err, values) => {
+        this.props.form.validateFields(['userBatchId'], (err, values) => {
             if (!err) {
-                console.log('batchId', values);
-                // 增加防打扰开关字段
-                let sendValue = Object.assign({}, values, {refuseDisturb: this.props.count });
+                console.log('userBatchId', values);
+                let sendValue = Object.assign({}, values, {usertCount: this.props.count });
                 this.computeShowData(sendValue);
                 this.props.onChange(sendValue);
             }
@@ -65,13 +63,13 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
             let label: string = '';
             let value: string = '';
             switch (item) {
-                case 'batchId':
+                case 'userBatchId':
                     label = '用户批次id';
-                    value = `${values.batchId}`;
+                    value = `${values.userBatchId}`;
                     break;
-                case 'refuseDisturb':
+                case 'usertCount':
                     label = '该批次用户数';
-                    value = `${values.refuseDisturb}`;
+                    value = `${values.usertCount}`;
                     break;
                 default:
                     break;
@@ -101,7 +99,7 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
                     <Row>
                         <Col span={10}>
                             <FormItem label="用户批次id" {...layout.formItemLayout}>
-                                {getFieldDecorator('batchId', {
+                                {getFieldDecorator('userBatchId', {
                                     rules: [{
                                         required: true, message: '请输入批次Id',
                                         }]

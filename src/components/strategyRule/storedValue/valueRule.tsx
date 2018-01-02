@@ -27,8 +27,8 @@ function getKeysValues(obj: any, keys: any, key: string = 'value', label: string
 }
 let subject = [
     {
-        label: '速运',
-        value: '1'
+        label: '家政',
+        value: '71'
     }
 ];
 /**
@@ -67,7 +67,7 @@ class ValueRule extends React.Component<RuleProps, {}> {
     }
    
     onSave = () => {
-        this.props.form.validateFields(['subject'], (err, values) => {
+        this.props.form.validateFields(['ownerSubject'], (err, values) => {
             if (!err) {
                 console.log('value', values);
                 this.computeShowData(values);
@@ -87,9 +87,9 @@ class ValueRule extends React.Component<RuleProps, {}> {
             let value: string = '';
             console.log('item', item);
             switch (item) {
-                case 'subject':
+                case 'ownerSubject':
                     label = '归属主体';
-                    value = getKeysValues(subject, values.subject, 'value', 'label');
+                    value = getKeysValues(subject, values.ownerSubject, 'value', 'label');
                     break;
                 default:
                     break;
@@ -118,7 +118,7 @@ class ValueRule extends React.Component<RuleProps, {}> {
                 <section className="editInfo">
                     
                     <FormItem label="归属主体" {...layout.formItemLayout}>
-                        {getFieldDecorator('subject', {
+                        {getFieldDecorator('ownerSubject', {
                           rules: [{
                               required: true, message: '请选择归属主体！',
                             }]

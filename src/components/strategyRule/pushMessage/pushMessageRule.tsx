@@ -40,7 +40,7 @@ class PushMessageRule extends React.Component<RuleProps, {}> {
                 console.log('value', values);
                 this.computeShowData(values);
                 // 增加防打扰开关字段
-                let sendValue = Object.assign({}, values, {refuseDisturb: this.state.value });
+                let sendValue = Object.assign({}, values, {antiDisturb: this.state.value });
                 this.props.onChange(sendValue);
             }
         });

@@ -69,7 +69,7 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
         });
     }
     onSave = () => {
-      this.props.form.validateFields(['serviceItem', 'orderSource'], (err, values) => {
+      this.props.form.validateFields(['refer', 'orderSource'], (err, values) => {
           if (!err) {
               console.log('value', values);
               this.computeShowData(values);
@@ -87,9 +87,9 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
             let value: string = '';
             console.log('item', item);
             switch (item) {
-                case 'serviceItem':
+                case 'refer':
                     label = '服务项';
-                    value = getKeysValues(this.props.serviceList, values.serviceItem, 'value', 'label');
+                    value = getKeysValues(this.props.serviceList, values.refer, 'value', 'label');
                     break;
                 case 'orderSource':
                     label = '页面渠道';
@@ -123,7 +123,7 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
             triggerRuleTpl = (
                 <section className="editInfo">
                     <FormItem label="服务项" {...layout.formItemLayout}>
-                        {getFieldDecorator('serviceItem', {
+                        {getFieldDecorator('refer', {
                             rules: [{
                                 required: true, message: '服务项不能为空！',
                             }]

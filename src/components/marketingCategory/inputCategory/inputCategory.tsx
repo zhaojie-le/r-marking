@@ -30,17 +30,29 @@ function validate(fields: any[]): string {
         ''
     ).substring(1);
 }
-// function objToArray (obj: any): any {
-//     let arr = Object.keys(obj);
-//     let valueArray: any = [];
-//     if (obj) {
-//         for (let i = 1; i <= arr.length; i++) {
-//             let item = obj[i];
-//             valueArray.push(item);
-//         }
-//         return valueArray;
-//     }       
-// }
+function objToArray (obj: any): any {
+    let arr = Object.keys(obj);
+    let valueArray: any = [];
+    if (obj) {
+        for (let i = 1; i <= arr.length; i++) {
+            let item = obj[i];
+            valueArray.push(item);
+        }
+        return valueArray;
+    }       
+}
+export const selectcChildren = (arr: any) => {
+    if (arr && arr.length > 0) {
+        let Children = arr.map((item, index) => {
+            return (
+                <div key={index}>
+                    <span>{item.valueSum}</span><span>{item.couponId}</span>
+                </div>
+                );
+        });
+        return Children;
+    }
+};
 
 let uuid = 0;
 class DynamicFieldSet extends React.Component<RuleProps, {}> {
@@ -84,7 +96,7 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
                 this.allValues[k] = value;
             }
         });
-        this.props.onChange(this.allValues);
+        this.props.onChange(objToArray(this.allValues));
     }
     render() {
         const { getFieldDecorator, getFieldValue } = this.props.form;
@@ -118,7 +130,7 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
                 {formItems}
                 <FormItem>
                     <Button type="dashed" onClick={this.add} style={{ width: '57%', marginLeft: 114 }}>
-                        <Icon type="plus" /> Add field
+                        <Icon type="plus" /> Add (每条数据范围不能一样)
                     </Button>
                 </FormItem>
             </div>
@@ -128,34 +140,29 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
 export default switchEditState(
     (rule, value, callback) => {
         console.log('values', value);
+        let valLen = value.length;
         let objItem: any = {};
-        // if (value[1].valueSum && value[1].couponId) {
-        //     callback();
-        //     return;
-        // }
-        var arr = Object.keys(value);
-        var valueArray: any = [];
-        for (let i = 1; i <= arr.length; i++) {
-            let item = value[i];
-            objItem = item;
-            valueArray.push(item);
-            console.log('objItem', objItem);
-            if (objItem.valueSum && objItem.couponId) {
-                callback();
+        if (valLen > 0) {
+            for (let i = 0; i < valLen; i++) {
+                objItem = value[i];
+                if (objItem.rechargeAmountLow && objItem.rechargeAmountUp && objItem.result) {
+                    callback();
+                }
             }
         }
-        console.log('array', valueArray);
         callback(         
             validate([
-                {type: 'require', value: objItem.valueSum, errMsg: '充值金额不能为空'},
-                {type: 'require', value: objItem.couponId, errMsg: '优惠券ID不能为空'}
+                {type: 'require', value: objItem.rechargeAmountLow, errMsg: '输入不能为空'},
+                {type: 'require', value: objItem.rechargeAmountUp, errMsg: '输入不能为空'},
+                {type: 'require', value: objItem.result, errMsg: '输入不能为空'}
             ])
         );
     },
     (props) => {
+        // const { value } = props;
         return (
             <div>
-                xxx
+                ###
             </div>
         );
     },
