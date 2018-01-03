@@ -41,18 +41,22 @@ function objToArray (obj: any): any {
         return valueArray;
     }       
 }
-export const selectcChildren = (arr: any) => {
+function selectChildren (arr: any): any {
     if (arr && arr.length > 0) {
         let Children = arr.map((item, index) => {
             return (
                 <div key={index}>
-                    <span>{item.valueSum}</span><span>{item.couponId}</span>
+                    <span>输入下限：{item.rechargeAmountLow}</span><span>输入上限：{item.rechargeAmountUp}</span><span>优惠券id：{item.result}</span>
                 </div>
-                );
+            );
         });
         return Children;
+    } else {
+        return (
+            <div>请选择营销类别</div>
+        );
     }
-};
+}
 
 let uuid = 0;
 class DynamicFieldSet extends React.Component<RuleProps, {}> {
@@ -107,6 +111,7 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
                 <FormItem
                     // {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
                     // label={index === 0 ? 'Passengers' : ''}
+                    style={{paddingBottom: 0, borderBottom: 'none'}}
                     required={false}
                     key={k}
                 >
@@ -117,6 +122,7 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
                         type="minus-circle-o"
                         disabled={keys.length === 1}
                         onClick={() => this.remove(k)}
+                        style={{position: 'absolute', top: 12, right: 0}}
                     />
                 ) : null}
                 </FormItem>
@@ -129,7 +135,7 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
                 </FormItem>
                 {formItems}
                 <FormItem>
-                    <Button type="dashed" onClick={this.add} style={{ width: '57%', marginLeft: 114 }}>
+                    <Button type="dashed" onClick={this.add} style={{ width: '76%', marginLeft: 75 }}>
                         <Icon type="plus" /> Add (每条数据范围不能一样)
                     </Button>
                 </FormItem>
@@ -159,13 +165,14 @@ export default switchEditState(
         );
     },
     (props) => {
-        // const { value } = props;
-        return (
-            <div>
-                ###
-            </div>
-        );
+        const { value } = props;
+        return selectChildren(value as any);  
+        // return (
+        //     <div>
+        //         <span>充值下限：</span>
+        //     </div>
+        // );
     },
     '储值返券',
-    {yxfs: { valueSum: '', couponId: '' }}
+    {yxfs: { rechargeAmountLow: '', rechargeAmountUp: '', result: '' }}
 )(DynamicFieldSet);
