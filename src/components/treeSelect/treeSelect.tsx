@@ -162,6 +162,7 @@ class TreeSelect extends React.Component {
                     expandedKeys: data.zkkeys,
                     searchValue: value,
                 });
+                worker.terminate();
             };
             var messageData = {
                 value: value,
