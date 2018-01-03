@@ -101,7 +101,7 @@ const treeData: any = [{
 
 let newTree = treeData;
 let cs = 0;
-for ( let u = 0; u < 3000; u++) {
+for ( let u = 0; u < 2500; u++) {
     newTree[0].children.push({
         title: '22' + cs ,
         key: '' + u
@@ -128,8 +128,6 @@ class TreeSelect extends React.Component {
     state = {
         expandedKeys: ['0-0-0', '0-0-1'],
         autoExpandParent: true,
-        checkedKeys: ['0-0-0'],
-        selectedKeys: [],
         searchValue: ''
     };
 
@@ -137,16 +135,6 @@ class TreeSelect extends React.Component {
         this.setState({
             expandedKeys,
             autoExpandParent: false,
-        });
-    }
-    onCheck = (checkedKeys) => {
-        this.setState({
-            checkedKeys
-        });
-    }
-    onSelect = (selectedKeys, info) => {
-        this.setState({
-            selectedKeys
         });
     }
 
@@ -158,9 +146,11 @@ class TreeSelect extends React.Component {
             var worker = new Worker();
             worker.onmessage = (e1) => {
                 var data = e1.data;
+                console.log(Date.now() - time);
                 this.setState({
                     expandedKeys: data.zkkeys,
                     searchValue: value,
+                    autoExpandParent: true,
                 });
                 worker.terminate();
             };
@@ -169,6 +159,7 @@ class TreeSelect extends React.Component {
                 dataList: dataList,
                 treeData: treeData
             };
+            let time = Date.now();
             worker.postMessage(messageData);
         },
         1000
@@ -199,18 +190,16 @@ class TreeSelect extends React.Component {
         });
     }
     render() {
+        console.log(222);
+        const { autoExpandParent, expandedKeys } = this.state;
         return (
             <div>
                 <Search style={{ marginBottom: 8, width: '300px' }} placeholder="请输入要搜索的节点" onChange={(e) => { e.persist(); this.onChange(e); }} />
                 <Tree
                     checkable={true}
                     onExpand={this.onExpand}
-                    expandedKeys={this.state.expandedKeys}
-                    onCheck={this.onCheck}
-                    checkedKeys={this.state.checkedKeys}
-                    onSelect={this.onSelect}
-                    autoExpandParent={true}
-                    selectedKeys={this.state.selectedKeys}
+                    expandedKeys={expandedKeys}
+                    autoExpandParent={autoExpandParent}
                 >
                     {this.renderTreeNodes(treeData)}
                 </Tree>
