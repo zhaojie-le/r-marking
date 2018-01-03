@@ -8,8 +8,8 @@ import { withRouter } from 'react-router-dom';
 import {
     Form,
     Input,
-    // Row,
-    // Col,
+    Row,
+    Col,
     Layout,
     Breadcrumb,
     Button,
@@ -20,6 +20,7 @@ import moment from 'moment';
 import {
     RuleCreater,
     StrategyCreater,
+    TreeSelect,
     PageHanger
     // LoadElement,
     // MarketingModelAdd
@@ -173,6 +174,14 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     onSelectEvent = (value) => {
         const disabledTrggerCondition = userConditions.includes(value) ? true : false;
         this.props.onGetRules(parseInt(value, 10));
+        if ( disabledTrggerCondition ) {
+            this.props.form.setFieldsValue({
+                triggerCondition: '0',
+            });
+            this.setState({
+                userSelected: '0'
+            });
+        }
         this.setState({
             disabledTrggerCondition: disabledTrggerCondition,
             eventType: parseInt(value, 10)
@@ -226,7 +235,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         } else {
             return null;
         }
-        
+
     }
 
     disabledDate = (current) => {
@@ -236,6 +245,24 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         const currentTime = current.valueOf();
         const endTime = moment().add(6, 'M');
         return currentTime && (currentTime < Date.now()) || current && (currentTime > endTime.valueOf());
+    }
+
+    onUserBeSelect = (value) => {
+        let treeSelect = '0';
+        if (value === '1') {
+            treeSelect = '1';
+        }
+        this.setState({
+            userSelected: treeSelect
+        });
+    }
+
+    generatorTreeSelect = () => {
+        const { userSelected } = this.state;
+        if (userSelected === '1') {
+            return <Row><Col offset={3}><TreeSelect /></Col></Row>;
+        }
+        return null;
     }
 
     render() {
@@ -308,21 +335,16 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 required: true, message: '触发条件不能为空！',
                                             }],
                                         })(
-                                            <Select disabled={disabledTrggerCondition}>
+                                            <Select onChange={this.onUserBeSelect} disabled={disabledTrggerCondition}>
                                                 <Option value="0">请选择</Option>
                                                 <Option value="1">用户条件</Option>
                                             </Select>
                                         )
                                     }
                                 </FormItem>
-
-                                {
-                                    this.generateTriggerEvent()
-                                }
-                                {
-                                    this.strategyTriggerEvent()
-                                }
-
+                                {this.generatorTreeSelect()}
+                                {this.generateTriggerEvent()}
+                                {this.strategyTriggerEvent()}
                                 <FormItem {...layout.formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
                                     {
                                         getFieldDecorator('marketingModel', {
