@@ -310,7 +310,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                         })(
                                             <Select disabled={disabledTrggerCondition}>
                                                 <Option value="0">请选择</Option>
-                                                <Option value="1">页面挂件</Option>
+                                                <Option value="1">用户条件</Option>
                                             </Select>
                                         )
                                     }

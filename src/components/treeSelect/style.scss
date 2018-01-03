@@ -1,0 +1,53 @@
+
+@mixin labelStyle {
+  display: inline-block;
+  margin-right: 4px;
+  content: "*";
+  font-family: SimSun;
+  line-height: 1;
+  font-size: 12px;
+  color: #f04134;
+}
+.wrapperRules {
+  display: flex;
+  background: #eee;
+  padding: 10px 0px 0px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  .ant-form-item {
+      margin-bottom: 24px !important;
+  } 
+  .triggerRules {
+      display: flex;
+      width: 86.5%;
+      > div:first-child {
+          flex: 1;
+          .showInfo {
+              padding-top: 20px;
+              label {
+                  width: 100px;
+                  display: inline-block;
+                  text-align: left;
+                  font-weight: bold;
+                  color: #2b2b2b;
+              }
+              span {
+                  display: inline-block;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  vertical-align: middle;
+                  color: #383838;
+                  margin-left: 10px;
+                  max-width: 470px;
+              }
+          }
+          .editInfo {
+              padding-top: 20px;
+          }
+      }
+      > div:last-child {
+          width: 100px;
+      }
+  }
+}

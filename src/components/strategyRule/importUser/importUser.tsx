@@ -74,7 +74,7 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
                 default:
                     break;
             }
-            if (label !== '') {
+            if  (label !== '') {
                 rules.push({
                     label: label,
                     value: value

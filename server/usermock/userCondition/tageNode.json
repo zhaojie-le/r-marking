@@ -1,0 +1,27 @@
+{
+    "resultCode": 1,
+    "list": [
+        {
+            "isParent": true,
+            "zid": 1,
+            "selectable": false,
+            "name": "新老客",
+            "checked": true,
+            "pid": "0_0",
+            "halfCheck": true,
+            "id": "0_1",
+            "nodeType": 0
+        },
+        {
+            "isParent": true,
+            "zid": 2,
+            "selectable": false,
+            "name": "保洁用户标签",
+            "checked": true,
+            "pid": "0_0",
+            "halfCheck": true,
+            "id": "0_2",
+            "nodeType": 0
+        }
+    ]
+}
