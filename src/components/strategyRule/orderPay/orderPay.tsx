@@ -191,8 +191,8 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
 function mapStateToProps (state: StoreState) {
     return {
         rulesD: state.createOrderStrategy.rules,
-        serviceList: state.createOrderStrategy.rules.settings ? state.createOrderStrategy.rules.settings.serviceType.list : [],
-        plainOptions: state.createOrderStrategy.rules.settings ? state.createOrderStrategy.rules.settings.orderSource.list : []
+        serviceList: state.createOrderStrategy.rules.settings.serviceType ? state.createOrderStrategy.rules.settings.serviceType.list : [],
+        plainOptions: state.createOrderStrategy.rules.settings.orderSource ? state.createOrderStrategy.rules.settings.orderSource.list : []
     };
 }
 const mapDispatchToProps = (dispatch: Dispatch<actions.RulesAction>) => bindActionCreators(
