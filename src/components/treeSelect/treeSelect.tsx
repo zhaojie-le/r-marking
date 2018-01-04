@@ -193,7 +193,7 @@ class TreeSelect extends React.Component {
         console.log(222);
         const { autoExpandParent, expandedKeys } = this.state;
         return (
-            <div>
+            <div id="treeSelectWrapper">
                 <Search style={{ marginBottom: 8, width: '300px' }} placeholder="请输入要搜索的节点" onChange={(e) => { e.persist(); this.onChange(e); }} />
                 <Tree
                     checkable={true}

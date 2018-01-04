@@ -148,7 +148,7 @@ export default switchEditState(
 
         return (
             <div>
-                <p style={{color: 'red'}}>页面挂件</p>
+                <p><span style={{color: 'red'}}>消息推送</span> 优先级：渠道1>渠道2>渠道3 优先渠道送达后，其他渠道将不再推送</p>
                 <Row>
                     <Col span={3} style={{ color: '#462bc3'}}>图片地址:</Col>
                     <Col span={16}><p title={values.imgUrl}>{values.imgUrl}</p></Col>
