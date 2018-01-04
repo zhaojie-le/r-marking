@@ -407,9 +407,9 @@ function mapStateToProps(state: StoreState) {
     return {
         serviceOptions: state.createOrderStrategy.serviceOptions,
         orderState: state.createOrderStrategy.orderState,
-        orderSource: state.createOrderStrategy.rules.settings ? state.createOrderStrategy.rules.settings.orderSource.list : [],
+        orderSource: state.createOrderStrategy.rules.settings.orderSource ? state.createOrderStrategy.rules.settings.orderSource.list : [],
         city: state.createOrderStrategy.rules.settings ? state.createOrderStrategy.rules.settings.city : [],
-        serviceSelect: state.createOrderStrategy.rules.settings ? state.createOrderStrategy.rules.settings.refer.list : [],
+        serviceSelect: state.createOrderStrategy.rules.settings.refer ? state.createOrderStrategy.rules.settings.refer.list : [],
         formState: state.createOrderStrategy.formState
     };
 }
