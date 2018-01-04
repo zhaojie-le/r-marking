@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './style.scss';
 // import _obj from 'lodash/fp/object';
 import { Form, Icon, Button, Radio } from 'antd';
 import { default as switchEditState } from '../../marketingModel/switchEditState';
@@ -45,7 +46,7 @@ function selectChildren (arr: any): any {
     if (arr && arr.length > 0) {
         let Children = arr.map((item, index) => {
             return (
-                <div key={index}>
+                <div key={index} className="showDate">
                     <span>输入下限：{item.rechargeAmountLow}</span><span>输入上限：{item.rechargeAmountUp}</span><span>优惠券id：{item.result}</span>
                 </div>
             );
@@ -145,7 +146,6 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
 }
 export default switchEditState(
     (rule, value, callback) => {
-        console.log('values', value);
         let valLen = value.length;
         let objItem: any = {};
         if (valLen > 0) {
@@ -158,20 +158,15 @@ export default switchEditState(
         }
         callback(         
             validate([
-                {type: 'require', value: objItem.rechargeAmountLow, errMsg: '输入不能为空'},
-                {type: 'require', value: objItem.rechargeAmountUp, errMsg: '输入不能为空'},
-                {type: 'require', value: objItem.result, errMsg: '输入不能为空'}
+                {type: 'require', value: objItem.rechargeAmountLow, errMsg: '券金额下限输入不能为空'},
+                {type: 'require', value: objItem.rechargeAmountUp, errMsg: '券金额上限输入不能为空'},
+                {type: 'require', value: objItem.result, errMsg: '券ID输入不能为空'}
             ])
         );
     },
     (props) => {
-        const { value } = props;
-        return selectChildren(value as any);  
-        // return (
-        //     <div>
-        //         <span>充值下限：</span>
-        //     </div>
-        // );
+        const { values } = props;
+        return selectChildren(values as any);
     },
     '储值返券',
     {yxfs: { rechargeAmountLow: '', rechargeAmountUp: '', result: '' }}

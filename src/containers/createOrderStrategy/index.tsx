@@ -93,7 +93,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     state: any = {
         editing: false,
         sendCoupon: 1,
-        eventType: 1,
+        eventType: 0,
         disabledTrggerCondition: false
     };
     private validateFieldsType: Array<string> = ['stragyName', 'time', 'pushTimes', 'strategyRule', 'marketingCategory', 'marketingModel'];
@@ -173,7 +173,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
 
     onSelectEvent = (value) => {
         const disabledTrggerCondition = userConditions.includes(value) ? true : false;
-        this.props.onGetRules(parseInt(value, 10));
+        let NumValue = parseInt(value, 10);
+        if (NumValue === 1 || NumValue === 3 || NumValue === 7) {
+            this.props.onGetRules(NumValue);
+        }
+        // this.props.onGetRules(parseInt(value, 10));
         if ( disabledTrggerCondition ) {
             this.props.form.setFieldsValue({
                 triggerCondition: '0',
@@ -192,7 +196,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         const { getFieldDecorator } = this.props.form;
         const { eventType } = this.state;
 
-        if (this.state.eventType === this.props.strategyType) {
+        if (this.state.eventType !== 0) {
             return (
                 <FormItem {...layout.formItemLayoutMarketingModel} label="触发规则" hasFeedback={false}>
                     {
@@ -214,11 +218,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     strategyTriggerEvent = () => {
         const { eventType } = this.state;
         const { getFieldDecorator } = this.props.form;
-        let type = 0;
-        if (this.state.eventType === this.props.strategyType) {
-            type = this.state.eventType;
-        }
-        if (type) {
+        // let type = 0;
+        // if (this.state.eventType === this.props.strategyType) {
+        //     type = this.state.eventType;
+        // }
+        if (this.state.eventType !== 0) {
             return (
                 <FormItem {...layout.formItemLayoutMarketingModel} label="营销类别" hasFeedback={false}>
                     {
