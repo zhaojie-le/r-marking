@@ -86,7 +86,6 @@ export default (check: (rule: any, value: any, callback: any) => void, ShowData:
             )
             : (
                 <div className="wrapperModel">
-                    <p><span style={{color: 'red'}}>消息推送</span> 优先级：渠道1>渠道2>渠道3 优先渠道送达后，其他渠道将不再推送</p>
                     <ShowData values={this.state.showData.yxfs} />
                 </div>
             );
