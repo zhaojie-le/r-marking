@@ -3,7 +3,9 @@ import _ from 'lodash';
 import './style.scss';
 import {
     Tree,
-    Input
+    Input,
+    Row,
+    Col
 } from 'antd';
 import Worker from 'worker-loader!./worker';
 
@@ -194,15 +196,25 @@ class TreeSelect extends React.Component {
         const { autoExpandParent, expandedKeys } = this.state;
         return (
             <div id="treeSelectWrapper">
-                <Search style={{ marginBottom: 8, width: '300px' }} placeholder="请输入要搜索的节点" onChange={(e) => { e.persist(); this.onChange(e); }} />
-                <Tree
-                    checkable={true}
-                    onExpand={this.onExpand}
-                    expandedKeys={expandedKeys}
-                    autoExpandParent={autoExpandParent}
-                >
-                    {this.renderTreeNodes(treeData)}
-                </Tree>
+                <Row>
+                    <Col span={12}>
+                        <Search style={{ marginBottom: 8, width: '300px' }} placeholder="请输入要搜索的节点" onChange={(e) => { e.persist(); this.onChange(e); }} />
+                        <Tree
+                            checkable={true}
+                            onExpand={this.onExpand}
+                            expandedKeys={expandedKeys}
+                            autoExpandParent={autoExpandParent}
+                        >
+                            {this.renderTreeNodes(treeData)}
+                        </Tree>
+                    </Col>
+                    <Col span={12}>
+                        <div>
+                            1
+                        </div>
+                    </Col>
+                </Row>
+
             </div>
 
         );
