@@ -35,7 +35,7 @@ export const selectcChildren = (arr: any, getFieldDecorator: any, getAmountLowCh
     if (arr && arr.length > 0) {
         let Children = arrayAddKey(arr).map((item, index) => {
             return (
-                <Row key={index}>
+                <Row key={index} style={{border: 0}}>
                     <Col span={8}>
                         <FormItem hasFeedback={false} label="充值下限" {...layout.formItemLayout}>
                            <Input onChange={getAmountLowChange}/>
@@ -98,7 +98,7 @@ class InputItemCategory extends React.Component<RuleProps, {}> {
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
-            <Row className="marketingCategoryRow" style={{ width: '90%', display: 'inline-block'}}>
+            <Row className="marketingCategoryRow" style={{ width: '90%', display: 'inline-block', border: 0}}>
                 {selectcChildren(couponList, getFieldDecorator, this.getAmountLowChange, this.getAmountUpChange, this.getCouponChange)}
             </Row>
         );

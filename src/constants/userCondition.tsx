@@ -11,9 +11,9 @@ export type TAG_NODE_TREE_FAIL = typeof TAG_NODE_TREE_FAIL;
 // 获取用户数目
 export const USER_AMOUNT = 'USER_AMOUNT';
 export type USER_AMOUNT = typeof USER_AMOUNT;
-// 获取节点－成功
+// 获取用户数目－成功
 export const USER_AMOUNT_SUC = 'USER_AMOUNT_SUC';
 export type USER_AMOUNT_SUC = typeof USER_AMOUNT_SUC;
-// 获取节点－失败
+// 获取用户数目－失败
 export const USER_AMOUNT_FAIL = 'USER_AMOUNT_FAIL';
 export type USER_AMOUNT_FAIL = typeof USER_AMOUNT_FAIL;
