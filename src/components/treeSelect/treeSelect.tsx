@@ -126,18 +126,67 @@ const generateList = (data) => {
 };
 generateList(treeData);
 
-class TreeSelect extends React.Component {
-    state = {
-        expandedKeys: ['0-0-0', '0-0-1'],
-        autoExpandParent: true,
-        searchValue: ''
-    };
+var cache: any = [];
+function has(tree: any, keys: any) {
+    return tree.some(function(item: any, i: number) {
+        if (keys.includes(item.key)) {
+            return true;
+        }
+        if (cache.includes(item.key)) {
+            cache.splice(cache.indexOf(item.key), 1);
+            return true;
+        }
+        if (item.children) {
+            var rs = has(item.children, keys);
+            if (rs) {
+               cache.push(item.key);
+            }
+            return has(item.children, keys);
+        }
+        return false;
+    });
+}
+
+function filter(tree: any, keys: any) {
+    let newTree1: any = tree.filter(function(item: any, i: number) {
+        if (keys.includes(item.key)) {
+            return true;
+        }
+        if (item.children) {
+            return has(item.children, keys);
+        }
+        return false;
+    });
+    newTree1.forEach(function(item: any, i: number) {
+        if (item.children) {
+            newTree1[i].children = filter(item.children, keys);
+        }
+    });
+    return newTree1;
+}
+class TreeSelect extends React.Component<any, any> {
+
+    constructor(props: any, context: any) {
+        super(props, context);
+        this.state = {
+            expandedKeys: [],
+            autoExpandParent: true,
+            searchValue: '',
+            newTreeData: []
+        };
+    }
 
     onExpand = (expandedKeys) => {
         this.setState({
             expandedKeys,
             autoExpandParent: false,
         });
+    }
+
+    onCheck = (checkedKeys, e) => {
+        let newTreeData = filter(_.cloneDeep(treeData), checkedKeys);
+        console.log(newTreeData);
+        this.setState({ checkedKeys, newTreeData });
     }
 
     onChange = _.debounce(
@@ -191,26 +240,45 @@ class TreeSelect extends React.Component {
             return <TreeNode {...item} key={item.key} title={title}/>;
         });
     }
+
+    renderSelectTreeNodes = () => {
+        const { newTreeData } = this.state;
+        return newTreeData.map((item) => {
+            if (item.children) {
+                return (
+                    <TreeNode title={item.title} key={item.key} dataRef={item}>
+                        {this.renderTreeNodes(item.children)}
+                    </TreeNode>
+                );
+            }
+            return <TreeNode {...item} key={item.key} title={item.title}/>;
+        });
+    }
+
     render() {
-        console.log(222);
         const { autoExpandParent, expandedKeys } = this.state;
         return (
             <div id="treeSelectWrapper">
                 <Row>
-                    <Col span={12}>
-                        <Search style={{ marginBottom: 8, width: '300px' }} placeholder="请输入要搜索的节点" onChange={(e) => { e.persist(); this.onChange(e); }} />
-                        <Tree
-                            checkable={true}
-                            onExpand={this.onExpand}
-                            expandedKeys={expandedKeys}
-                            autoExpandParent={autoExpandParent}
-                        >
-                            {this.renderTreeNodes(treeData)}
-                        </Tree>
+                    <Col span={12} style={{position: 'relative'}}>
+                        <Search style={{ marginBottom: 8, width: '300px', position: 'absolute', top: 0, left: 0 }} placeholder="请输入要搜索的节点" onChange={(e) => { e.persist(); this.onChange(e); }} />
+                        <div className="treeSelectBox">
+                            <Tree
+                                checkable={true}
+                                onCheck={this.onCheck}
+                                onExpand={this.onExpand}
+                                expandedKeys={expandedKeys}
+                                autoExpandParent={autoExpandParent}
+                            >
+                                {this.renderTreeNodes(treeData)}
+                            </Tree>
+                        </div>
                     </Col>
                     <Col span={12}>
                         <div>
-                            1
+                            <Tree>
+                                {this.renderSelectTreeNodes()}
+                            </Tree>
                         </div>
                     </Col>
                 </Row>

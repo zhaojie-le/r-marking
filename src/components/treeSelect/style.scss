@@ -1,7 +1,11 @@
 #treeSelectWrapper {
     height: 500px;
     border: 1px solid #ccc;
-    overflow: auto;
     padding: 20px;
     margin-bottom: 10px;
+    .treeSelectBox {
+        height: 460px;
+        overflow: auto;
+        padding-top:30px;
+    }
 }
