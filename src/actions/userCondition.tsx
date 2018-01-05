@@ -15,6 +15,7 @@ export function tagNodeTree(id: string): TagNodeTree {
         id: id,
     };
 }
+
 export function getUserAmount(tag: any): UserAmount {
   return {
       type: constants.USER_AMOUNT,

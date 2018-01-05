@@ -2,6 +2,7 @@ import * as constants from '../constants';
 
 function form(
     state: any = {
+        totalUser: 0
     },
     action: any
 ) {

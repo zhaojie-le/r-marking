@@ -1,9 +1,14 @@
 import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
+import * as actions from '../../actions';
+import { StoreState } from '../../types/index';
+import { bindActionCreators } from 'redux';
 import _ from 'lodash';
 import './style.scss';
 import {
     Tree,
     Input,
+    InputNumber,
     Row,
     Col
 } from 'antd';
@@ -159,10 +164,11 @@ function filter(tree: any, keys: any) {
 }
 
 interface Props {
-    onChange: (value: any, keys: any) => void;
+    onChange: (value: any) => void;
+    totalUser: number;
 }
 class TreeSelect extends React.Component<Props, any> {
-
+    private value: any = {cyc: 0, newTreeData: []};
     constructor(props: any, context: any) {
         super(props, context);
         this.state = {
@@ -182,8 +188,22 @@ class TreeSelect extends React.Component<Props, any> {
 
     onCheck = (checkedKeys, e) => {
         let newTreeData = filter(_.cloneDeep(treeData), checkedKeys);
-        this.props.onChange(newTreeData, checkedKeys);
+        this.value.newTreeData = newTreeData;
+        this.triggerChange({ newTreeData });
         this.setState({ checkedKeys, newTreeData });
+    }
+
+    onZqChange = (value) => {
+        const cyc = value;
+        this.value.cyc = cyc;
+        this.triggerChange({ cyc });
+    }
+
+    triggerChange = (changedValue) => {
+        const onChange = this.props.onChange;
+        if (onChange) {
+              onChange(Object.assign({}, this.value, changedValue));
+        }
     }
 
     onChange = _.debounce(
@@ -255,6 +275,11 @@ class TreeSelect extends React.Component<Props, any> {
         return (
             <div id="treeSelectWrapper">
                 <Row>
+                    <Col>
+                        根据组合条件共筛选<span style={{color: 'red'}}>{this.props.totalUser}</span>用户
+                    </Col>
+                </Row>
+                <Row>
                     <Col span={12} style={{position: 'relative'}}>
                         <Search style={{ marginBottom: 8, width: '300px', position: 'absolute', top: 0, left: 0 }} placeholder="请输入要搜索的节点" onChange={(e) => { e.persist(); this.onChange(e); }} />
                         <div className="treeSelectBox">
@@ -277,10 +302,28 @@ class TreeSelect extends React.Component<Props, any> {
                         </div>
                     </Col>
                 </Row>
+                <Row>
+                    <Col>
+                        <label style={{verticalAlign: 'middle'}}>推送周期</label>
+                        <InputNumber style={{width: '100px', verticalAlign: 'middle', marginLeft: '20px'}} onChange={this.onZqChange} defaultValue={1} min={1}/>
+                    </Col>
+                </Row>
             </div>
-
         );
     }
 }
 
-export default TreeSelect;
+function mapStateToProps(state: StoreState) {
+    return {
+        totalUser: state.userCondition.totalUser,
+    };
+}
+
+const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) => bindActionCreators(
+    {
+        onGetOrderState: actions.getOrderState,
+    },
+    dispatch
+);
+
+export default connect<any, any, {onChange:  (value: any) => void}>(mapStateToProps, mapDispatchToProps)(TreeSelect as any);
