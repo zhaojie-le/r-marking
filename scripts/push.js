@@ -17,7 +17,7 @@ const files = [
 ];
 
 var r = request.post(
-    'http://10.253.10.179/upload/file', 
+    'http://10.37.31.45:8101/upload/file', 
     function optionalCallback(err, httpResponse, body) {
         console.log('---------------------------');    
         console.log(httpResponse);

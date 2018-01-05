@@ -153,7 +153,12 @@ function filter(tree: any, keys: any) {
             return true;
         }
         if (item.children) {
-            return has(item.children, keys);
+            let flag = false;
+            flag = has(item.children, keys);
+            if (cache.includes(item.key)) {
+                cache.splice(cache.indexOf(item.key), 1);
+            }
+            return flag;
         }
         return false;
     });
@@ -184,6 +189,7 @@ class TreeSelect extends React.Component<any, any> {
     }
 
     onCheck = (checkedKeys, e) => {
+        console.log(checkedKeys);
         let newTreeData = filter(_.cloneDeep(treeData), checkedKeys);
         console.log(newTreeData);
         this.setState({ checkedKeys, newTreeData });
