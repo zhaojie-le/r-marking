@@ -21,93 +21,8 @@ export interface RuleProps {
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 
-const treeData: any = [{
-    title: '这是测试',
-    key: '0-0',
-    children: [
-        {
-            title: '22',
-            key: '444444',
-            children: [{
-                title: '22',
-                key: '44445',
-                children: [{
-                    title: '22',
-                    key: '44446',
-                    children: [{
-                        title: '22',
-                        key: '44447',
-                        children: [{
-                            title: '22',
-                            key: '44448',
-                            children: [{
-                                title: '22',
-                                key: 444449,
-                            }]
-                        }]
-                    }]
-                }]
-            }]
-        },
-        {
-        title: '我也是测试',
-        key: '0-0-0',
-        children: [{
-                title: '还是个测试',
-                key: '0-0-0-0'
-            },
-            {
-                title: '为什么还是测试',
-                key: '0-0-0-1'
-            },
-            {
-                title: '反正还是测试2',
-                key: '0-0-0-2'
-            },
-        ],
-    }, {
-        title: '有问题啊',
-        key: '0-0-1',
-        children: [{
-                title: '不是很准确',
-                key: '0-0-1-0'
-            },
-            {
-                title: '按照title测试',
-                key: '0-0-1-1'
-            },
-            {
-                title: '按照key测试',
-                key: '0-0-1-2'
-            },
-        ],
-    }, {
-        title: '红色',
-        key: '0-0-2',
-    }],
-}, {
-    title: '黄色',
-    key: '0-1',
-    children: [{
-            title: '蓝色',
-            key: '0-1-0-0'
-        },
-        {
-            title: '黑色',
-            key: '0-1-0-1'
-        },
-        {
-            title: '绿色',
-            key: '0-1-0-2'
-        },
-    ],
-}, {
-    title: '酒色',
-    key: '0-2',
-}];
-
-const dataList: Array<any> = [];
 const generateList = (data) => {
+    let dataList: Array<any> = [];
     for (let i = 0; i < data.length; i++) {
         const node = data[i];
         const key = node.key;
@@ -116,8 +31,8 @@ const generateList = (data) => {
             generateList(node.children);
         }
     }
+    return dataList;
 };
-generateList(treeData);
 
 var cache: any = [];
 function has(tree: any, keys: any) {
@@ -166,9 +81,11 @@ function filter(tree: any, keys: any) {
 interface Props {
     onChange: (value: any) => void;
     totalUser: number;
+    tagNodeTree: Array<any>;
 }
 class TreeSelect extends React.Component<Props, any> {
     private value: any = {cyc: 0, newTreeData: []};
+    private dataList: Array<any> = [];
     constructor(props: any, context: any) {
         super(props, context);
         this.state = {
@@ -177,6 +94,7 @@ class TreeSelect extends React.Component<Props, any> {
             searchValue: '',
             newTreeData: []
         };
+        this.dataList = generateList(this.props.tagNodeTree);
     }
 
     onExpand = (expandedKeys) => {
@@ -187,7 +105,8 @@ class TreeSelect extends React.Component<Props, any> {
     }
 
     onCheck = (checkedKeys, e) => {
-        let newTreeData = filter(_.cloneDeep(treeData), checkedKeys);
+        console.log(checkedKeys);
+        let newTreeData = filter(_.cloneDeep(this.props.tagNodeTree), checkedKeys);
         this.value.newTreeData = newTreeData;
         this.triggerChange({ newTreeData });
         this.setState({ checkedKeys, newTreeData });
@@ -223,8 +142,8 @@ class TreeSelect extends React.Component<Props, any> {
             };
             var messageData = {
                 value: value,
-                dataList: dataList,
-                treeData: treeData
+                dataList: this.dataList,
+                treeData: this.props.tagNodeTree
             };
             worker.postMessage(messageData);
         },
@@ -290,12 +209,12 @@ class TreeSelect extends React.Component<Props, any> {
                                 expandedKeys={expandedKeys}
                                 autoExpandParent={autoExpandParent}
                             >
-                                {this.renderTreeNodes(treeData)}
+                                {this.renderTreeNodes(this.props.tagNodeTree)}
                             </Tree>
                         </div>
                     </Col>
                     <Col span={12}>
-                        <div>
+                        <div className="hadSelect">
                             <Tree>
                                 {this.renderSelectTreeNodes()}
                             </Tree>
@@ -316,6 +235,7 @@ class TreeSelect extends React.Component<Props, any> {
 function mapStateToProps(state: StoreState) {
     return {
         totalUser: state.userCondition.totalUser,
+        tagNodeTree: state.userCondition.tagNodeTree,
     };
 }
 
