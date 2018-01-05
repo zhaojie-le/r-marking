@@ -8,8 +8,6 @@ import { withRouter } from 'react-router-dom';
 import {
     Form,
     Input,
-    Row,
-    Col,
     Layout,
     Breadcrumb,
     Button,
@@ -59,6 +57,17 @@ namespace layout {
         },
     };
 
+    export const formItemLayout1 = {
+        labelCol: {
+            xs: { span: 24 },
+            sm: { span: 3 },
+        },
+        wrapperCol: {
+            xs: { span: 24 },
+            sm: { span: 21 },
+        },
+    };
+
     export const formItemLayoutMarketingModel = {
         labelCol: {
             xs: { span: 24 },
@@ -96,7 +105,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         eventType: 0,
         disabledTrggerCondition: false
     };
-    private validateFieldsType: Array<string> = ['stragyName', 'time', 'pushTimes', 'strategyRule', 'marketingCategory', 'marketingModel'];
+    private validateFieldsType: Array<string> = ['stragyName', 'time', 'pushTimes', 'strategyRule', 'marketingCategory', 'treeSelect', 'marketingModel'];
     constructor(props: Props, context: any) {
         super(props, context);
     }
@@ -261,10 +270,28 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         });
     }
 
+    onTreeSelectChange = (value) => {
+        console.log(value);
+    }
+
     generatorTreeSelect = () => {
         const { userSelected } = this.state;
+        const { getFieldDecorator } = this.props.form;
+
         if (userSelected === '1') {
-            return <Row><Col offset={3}><TreeSelect /></Col></Row>;
+            return (
+                <FormItem {...layout.formItemLayout1} label="用户条件" hasFeedback={false}>
+                {
+                    getFieldDecorator('treeSelect', {
+                        rules: [{
+                            required: true, message: '用户条件不能为空！',
+                        }],
+                    })(
+                        <TreeSelect onChange={this.onTreeSelectChange}/>
+                    )
+                }
+                </FormItem>
+            );
         }
         return null;
     }

@@ -7,8 +7,7 @@ const filepath = path.join(root, 'build');
 var jsFiles = fs.readdirSync(filepath + '/static/js');
 var cssFiles = fs.readdirSync(filepath + '/static/css');
 const files = [
-    'asset-manifest.json', 
-    'index.html', 
+    'asset-manifest.json',
     'manifest.json', 
     'static/js/' + jsFiles[0], 
     'static/js/' + jsFiles[1], 

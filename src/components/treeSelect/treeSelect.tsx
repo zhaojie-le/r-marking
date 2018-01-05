@@ -101,18 +101,6 @@ const treeData: any = [{
     key: '0-2',
 }];
 
-let newTree = treeData;
-let cs = 0;
-for ( let u = 0; u < 2500; u++) {
-    newTree[0].children.push({
-        title: '22' + cs ,
-        key: '' + u
-    });
-    if ((cs = u % 600) === 0) {
-        newTree = newTree[0].children;
-    }
-}
-
 const dataList: Array<any> = [];
 const generateList = (data) => {
     for (let i = 0; i < data.length; i++) {
@@ -169,7 +157,11 @@ function filter(tree: any, keys: any) {
     });
     return newTree1;
 }
-class TreeSelect extends React.Component<any, any> {
+
+interface Props {
+    onChange: (value: any, keys: any) => void;
+}
+class TreeSelect extends React.Component<Props, any> {
 
     constructor(props: any, context: any) {
         super(props, context);
@@ -189,9 +181,8 @@ class TreeSelect extends React.Component<any, any> {
     }
 
     onCheck = (checkedKeys, e) => {
-        console.log(checkedKeys);
         let newTreeData = filter(_.cloneDeep(treeData), checkedKeys);
-        console.log(newTreeData);
+        this.props.onChange(newTreeData, checkedKeys);
         this.setState({ checkedKeys, newTreeData });
     }
 
@@ -203,7 +194,6 @@ class TreeSelect extends React.Component<any, any> {
             var worker = new Worker();
             worker.onmessage = (e1) => {
                 var data = e1.data;
-                console.log(Date.now() - time);
                 this.setState({
                     expandedKeys: data.zkkeys,
                     searchValue: value,
@@ -216,7 +206,6 @@ class TreeSelect extends React.Component<any, any> {
                 dataList: dataList,
                 treeData: treeData
             };
-            let time = Date.now();
             worker.postMessage(messageData);
         },
         1000
@@ -288,7 +277,6 @@ class TreeSelect extends React.Component<any, any> {
                         </div>
                     </Col>
                 </Row>
-
             </div>
 
         );
