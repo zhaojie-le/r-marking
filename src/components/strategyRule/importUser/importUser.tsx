@@ -45,7 +45,6 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
     onSave = () => {
         this.props.form.validateFields(['userBatchId'], (err, values) => {
             if (!err) {
-                console.log('userBatchId', values);
                 let sendValue = Object.assign({}, values, {usertCount: this.props.count });
                 this.computeShowData(sendValue);
                 this.props.onChange(sendValue);

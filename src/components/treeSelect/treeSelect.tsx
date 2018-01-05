@@ -82,9 +82,10 @@ interface Props {
     onChange: (value: any) => void;
     totalUser: number;
     tagNodeTree: Array<any>;
+    onGetUserAmount: (tag: any[]) => void;
 }
 class TreeSelect extends React.Component<Props, any> {
-    private value: any = {cyc: 0, newTreeData: []};
+    private value: any = {triggerChange: 1, newTreeData: []};
     private dataList: Array<any> = [];
     constructor(props: any, context: any) {
         super(props, context);
@@ -105,7 +106,9 @@ class TreeSelect extends React.Component<Props, any> {
     }
 
     onCheck = (checkedKeys, e) => {
-        console.log(checkedKeys);
+        console.log('checkedKeys', checkedKeys);
+        let tag = checkedKeys;
+        this.props.onGetUserAmount(tag);
         let newTreeData = filter(_.cloneDeep(this.props.tagNodeTree), checkedKeys);
         this.value.newTreeData = newTreeData;
         this.triggerChange({ newTreeData });
@@ -113,9 +116,9 @@ class TreeSelect extends React.Component<Props, any> {
     }
 
     onZqChange = (value) => {
-        const cyc = value;
-        this.value.cyc = cyc;
-        this.triggerChange({ cyc });
+        const triggerChange = value;
+        this.value.triggerChange = triggerChange;
+        this.triggerChange({ triggerChange });
     }
 
     triggerChange = (changedValue) => {
@@ -239,9 +242,10 @@ function mapStateToProps(state: StoreState) {
     };
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) => bindActionCreators(
+const mapDispatchToProps = (dispatch: Dispatch<actions.UserAction>) => bindActionCreators(
     {
         onGetOrderState: actions.getOrderState,
+        onGetUserAmount: actions.getUserAmount
     },
     dispatch
 );

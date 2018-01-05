@@ -69,7 +69,6 @@ class ValueRule extends React.Component<RuleProps, {}> {
     onSave = () => {
         this.props.form.validateFields(['ownerSubject'], (err, values) => {
             if (!err) {
-                console.log('value', values);
                 this.computeShowData(values);
                 this.props.onChange(values);
             }
@@ -85,7 +84,6 @@ class ValueRule extends React.Component<RuleProps, {}> {
         for ( let item of Object.keys(values)) {
             let label: string = '';
             let value: string = '';
-            console.log('item', item);
             switch (item) {
                 case 'ownerSubject':
                     label = '归属主体';

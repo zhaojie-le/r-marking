@@ -10,7 +10,7 @@ const config = require('./config');
 var isMock = process.env.isMock;
 
 router.get('/getTagNodeTree', function(req, res, next) {
-    fs.readFile(__dirname + '/../usermock/userCondition/tagNode.json', 'utf8', (err, data) => {
+    fs.readFile(__dirname + '/../usermock/userCondition/tageNode.json', 'utf8', (err, data) => {
         res.json(JSON.parse(data));
     });
 });
@@ -20,6 +20,5 @@ router.get('/getUserAmount', function(req, res, next) {
         res.json(JSON.parse(data));
     });
 });
-
 
 module.exports = router;

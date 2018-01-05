@@ -71,7 +71,6 @@ class InputItemCategory extends React.Component<RuleProps, {}> {
         this.setState({
             rechargeAmountLow : e.target.value
         });
-        console.log('low', e.target.value);
         this.triggerChange({rechargeAmountLow : e.target.value, rechargeAmountUp: this.state.rechargeAmountUp, result : this.state.result});
     }
 
@@ -91,7 +90,6 @@ class InputItemCategory extends React.Component<RuleProps, {}> {
         const onChange = this.props.onChange;
         if (onChange) {
             let valueObj = Object.assign({}, this.state.changeItem, changedValue, {ownerSubject: '71'});
-            console.log('valueObj', valueObj);
             onChange(valueObj);
         }
     }

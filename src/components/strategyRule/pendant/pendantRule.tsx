@@ -75,7 +75,6 @@ class PendantRule extends React.Component<RuleProps, {}> {
     onSave = () => {
         this.props.form.validateFields(['pageId', 'orderSource', 'city'], (err, values) => {
             if (!err) {
-                console.log('value', values);
                 this.computeShowData(values);
                 this.props.onChange(values);
             }
@@ -87,7 +86,6 @@ class PendantRule extends React.Component<RuleProps, {}> {
         });
     }
     getPageName = () => {
-        console.log(0);
         if (this.state.pageId !== 0) {
             const { getPageName } = this.props;
             getPageName(this.state.pageId);
@@ -98,7 +96,6 @@ class PendantRule extends React.Component<RuleProps, {}> {
         for ( let item of Object.keys(values)) {
             let label: string = '';
             let value: string = '';
-            console.log('item', item);
             switch (item) {
                 case 'pageId':
                     label = '页面ID';

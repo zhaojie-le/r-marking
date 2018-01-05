@@ -43,6 +43,7 @@ export interface Props {
     onSaveRule: () => void;
     onSaveModel: (modelData: string) => void;
     onGetOrderState: () => void;
+    onGetTreeNode: (id: number) => void;
 }
 
 namespace layout {
@@ -112,6 +113,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
 
     componentDidMount() {
        // this.props.onGetRules(1);
+       this.props.onGetTreeNode(1);
     }
 
     validateTrgger = (): boolean | undefined => {
@@ -435,7 +437,8 @@ export const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) 
         onGetRules: actions.getRules,
         onSaveRule: actions.saveRule,
         onSaveModel: actions.saveModel,
-        onGetService: actions.getService
+        onGetService: actions.getService,
+        onGetTreeNode: actions.tagNodeTree
     },
     dispatch
 );
