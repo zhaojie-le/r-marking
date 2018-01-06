@@ -27,8 +27,6 @@ class PushMessageRule extends React.Component<RuleProps, {}> {
         value: 0
     };
     onChange = (e) =>  {
-        let val = e.target.value;
-        console.log(val);
         this.setState({
             value: e.target.value,
         });
@@ -37,7 +35,6 @@ class PushMessageRule extends React.Component<RuleProps, {}> {
     onSave = () => {
         this.props.form.validateFields(['message'], (err, values) => {
             if (!err) {
-                console.log('value', values);
                 this.computeShowData(values);
                 // 增加防打扰开关字段
                 let sendValue = Object.assign({}, values, {antiDisturb: this.state.value });

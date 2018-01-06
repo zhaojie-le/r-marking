@@ -75,7 +75,6 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
         form.setFieldsValue({
             keys: keys.filter(key => key !== k),
         });
-        console.log('delete', this.allValues);
     }
 
     add = () => {

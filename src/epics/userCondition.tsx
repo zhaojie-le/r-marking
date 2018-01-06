@@ -18,10 +18,10 @@ const tagNodeTreeFail = (error) => {
     };
 };
 
-const getUserAmountSuccess = (num) => {
+const getUserAmountSuccess = (count) => {
     return {
         type: constants.USER_AMOUNT_SUC,
-        num: num
+        count: count
    };
 };
 
@@ -49,7 +49,7 @@ const tagNodeTree: Epic<any, any> = (action$, store) => {
 };
 
 const getUserAmount: Epic<any, any> = (action$, store) => {
-    return action$.ofType(constants.USER_COUNT).
+    return action$.ofType(constants.USER_AMOUNT).
         switchMap(
             (action): Observable<any> => {
                 return ajax.getJSON(`/marketStrategy/getUserAmount?tagSet=${action.tag}`).

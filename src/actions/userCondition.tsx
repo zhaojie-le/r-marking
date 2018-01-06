@@ -6,7 +6,7 @@ export interface TagNodeTree {
 }
 export interface UserAmount {
   type: constants.USER_AMOUNT;
-  tag: any;
+  tag: any[];
 }
 
 export function tagNodeTree(id: string): TagNodeTree {
@@ -16,7 +16,7 @@ export function tagNodeTree(id: string): TagNodeTree {
     };
 }
 
-export function getUserAmount(tag: any): UserAmount {
+export function getUserAmount(tag: any[]): UserAmount {
   return {
       type: constants.USER_AMOUNT,
       tag: tag,

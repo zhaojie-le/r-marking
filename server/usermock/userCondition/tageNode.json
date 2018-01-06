@@ -1,27 +1,87 @@
 {
     "resultCode": 1,
-    "list": [
-        {
-            "isParent": true,
-            "zid": 1,
-            "selectable": false,
-            "name": "新老客",
-            "checked": true,
-            "pid": "0_0",
-            "halfCheck": true,
-            "id": "0_1",
-            "nodeType": 0
-        },
-        {
-            "isParent": true,
-            "zid": 2,
-            "selectable": false,
-            "name": "保洁用户标签",
-            "checked": true,
-            "pid": "0_0",
-            "halfCheck": true,
-            "id": "0_2",
-            "nodeType": 0
-        }
-    ]
+    "list": [{
+        "title": "这是测试",
+        "key": "0-0",
+        "children": [
+            {
+                "title": "22",
+                "key": "444444",
+                "children": [{
+                    "title": "22",
+                    "key": "44445",
+                    "children": [{
+                        "title": "22",
+                        "key": "44446",
+                        "children": [{
+                            "title": "22",
+                            "key": "44447",
+                            "children": [{
+                                "title": "22",
+                                "key": "44448",
+                                "children": [{
+                                    "title": "33",
+                                    "key": "444449"
+                                }]
+                            }]
+                        }]
+                    }]
+                }]
+            },
+            {
+            "title": "我也是测试",
+            "key": "0-0-0",
+            "children": [{
+                    "title": "还是个测试",
+                    "key": "0-0-0-0"
+                },
+                {
+                    "title": "为什么还是测试",
+                    "key": "0-0-0-1"
+                },
+                {
+                    "title": "反正还是测试2",
+                    "key": "0-0-0-2"
+                }
+            ]
+        }, {
+            "title": "有问题啊",
+            "key": "0-0-1",
+            "children": [{
+                    "title": "不是很准确",
+                    "key": "0-0-1-0"
+                },
+                {
+                    "title": "按照title测试",
+                    "key": "0-0-1-1"
+                },
+                {
+                    "title": "按照key测试",
+                    "key": "0-0-1-2"
+                }
+            ]
+        }, {
+            "title": "红色",
+            "key": "0-0-2"
+        }]
+    }, {
+        "title": "黄色",
+        "key": "0-1",
+        "children": [{
+                "title": "蓝色",
+                "key": "0-1-0-0"
+            },
+            {
+                "title": "黑色",
+                "key": "0-1-0-1"
+            },
+            {
+                "title": "绿色",
+                "key": "0-1-0-2"
+            }
+        ]
+    }, {
+        "title": "酒色",
+        "key": "0-2"
+    }]
 }

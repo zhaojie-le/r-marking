@@ -11,6 +11,7 @@ var combineMarketStrategy = require('./routes/combineMarketStrategy');
 var combineCreateRules = require('./routes/combineCreateRules');
 var combineDetailRules = require('./routes/combineDetailRules');
 var combineCreateImpRules = require('./routes/combineCreateImpRules');
+var combineUserCondition = require('./routes/combineUserCondition');
 
 var app = express();
 var preview = process.env.preview;
@@ -31,6 +32,7 @@ app.use('/marketStrategy', combineMarketStrategy);
 app.use('/marketStrategy', combineCreateRules);
 app.use('/marketStrategy', combineDetailRules);
 app.use('/marketStrategy', combineCreateImpRules);
+app.use('/marketStrategy', combineUserCondition);
 
 app.use(function (req, res, next) {
     var err = new Error('Not Found');

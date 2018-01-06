@@ -71,7 +71,6 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
     onSave = () => {
       this.props.form.validateFields(['refer', 'orderSource'], (err, values) => {
           if (!err) {
-              console.log('value', values);
               this.computeShowData(values);
               this.props.onChange(values);
           }
@@ -85,7 +84,6 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
         for ( let item of Object.keys(values)) {
             let label: string = '';
             let value: string = '';
-            console.log('item', item);
             switch (item) {
                 case 'refer':
                     label = '服务项';
@@ -115,8 +113,7 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
         let triggerRuleTpl: React.ReactNode = {};
         let wrapperStyle: any = {};
         let btnStyle: any = {};
-        const { rulesD, plainOptions, serviceList } = this.props;
-        console.log('rulesD', rulesD);
+        const { plainOptions, serviceList } = this.props;
         const rules = [ ...this.state.rules ];
         const { getFieldDecorator } = this.props.form;
         if (this.state.editing) {
