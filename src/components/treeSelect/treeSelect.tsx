@@ -106,7 +106,6 @@ class TreeSelect extends React.Component<Props, any> {
     }
 
     onCheck = (checkedKeys, e) => {
-        console.log('checkedKeys', checkedKeys);
         let tag = checkedKeys;
         this.props.onGetUserAmount(tag);
         let newTreeData = filter(_.cloneDeep(this.props.tagNodeTree), checkedKeys);
