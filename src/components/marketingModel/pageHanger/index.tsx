@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { default as switchEditState }  from '../switchEditState';
+import { default as switchEditState } from '../switchEditState';
 import {
     Input,
     Row,
