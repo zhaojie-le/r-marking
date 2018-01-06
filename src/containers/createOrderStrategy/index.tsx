@@ -19,6 +19,8 @@ import {
     RuleCreater,
     StrategyCreater,
     TreeSelect,
+    MarketingModelAdd,
+    LoadElement,
     PageHanger
     // LoadElement,
     // MarketingModelAdd
@@ -98,6 +100,8 @@ namespace layout {
     };
 }
 const userConditions: any = ['2', '4', '5', '6'];
+let uuid: number = 0;
+let uuidSr: number = 0;
 class CreateOrderStrategy extends React.Component<Props, {}> {
     state: any = {
         editing: false,
@@ -105,7 +109,10 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         eventType: 0,
         disabledTrggerCondition: false
     };
-    private validateFieldsType: Array<string> = ['stragyName', 'time', 'pushTimes', 'strategyRule', 'marketingCategory', 'treeSelect', 'marketingModel'];
+    private preEventType: number;
+    private preSrType: number;
+    private marketingModel: any = MarketingModelAdd;
+    private validateFieldsType: Array<string> = ['stragyName', 'time', 'pushTimes', 'marketingCategory', 'strategyRule0', 'marketingModel0'];
     constructor(props: Props, context: any) {
         super(props, context);
     }
@@ -135,11 +142,12 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         if (this.validateTrgger()) {
             return;
         }
-
+        console.log(this.validateFieldsType);
         this.props.form.validateFieldsAndScroll(this.validateFieldsType, (err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
             }
+            console.log(err);
         });
     }
 
@@ -195,6 +203,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 userSelected: '0'
             });
         }
+
+        this.changeMarketingType(NumValue);
+        this.changeStrategyRule(NumValue);
         this.setState({
             disabledTrggerCondition: disabledTrggerCondition,
             eventType: parseInt(value, 10)
@@ -209,14 +220,13 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             return (
                 <FormItem {...layout.formItemLayoutMarketingModel} label="触发规则" hasFeedback={false}>
                     {
-                        getFieldDecorator('strategyRule', {
+                        getFieldDecorator(`strategyRule${uuidSr}`, {
                             rules: [{
                                 required: true, message: '规则不能为空！',
-                            }],
+                            }]
                         })(
                             <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={eventType}/>
-                        )
-                    }
+                        )}
                 </FormItem>
             );
         } else {
@@ -296,6 +306,66 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         return null;
     }
 
+    changeMarketingType = (eventType) => {
+        if (
+            (([1, 2, 4, 5, 6] as any).includes(eventType) && this.preEventType === 1 )
+            || eventType === this.preEventType) {
+            return;
+        }
+        console.log(this.validateFieldsType);
+        this.validateFieldsType.splice(this.validateFieldsType.indexOf(`marketingModel${uuid}`), 1);
+        uuid++;
+        this.validateFieldsType.push(`marketingModel${uuid}`);
+        console.log(this.validateFieldsType);
+        switch (eventType) {
+            case 3:
+                this.marketingModel = LoadElement;
+                this.preEventType = 3;
+                break;
+            case 7:
+                this.marketingModel = PageHanger;
+                this.preEventType = 7;
+                break;
+            default:
+                this.marketingModel = MarketingModelAdd;
+                this.preEventType = 1;
+                break;
+        }
+    }
+
+    changeStrategyRule = (eventType) => {
+        if (eventType === this.preSrType) {
+            return;
+        }
+        console.log(this.validateFieldsType);
+        this.validateFieldsType.splice(this.validateFieldsType.indexOf(`strategyRule${uuidSr}`), 1);
+        uuidSr++;
+        this.validateFieldsType.push(`strategyRule${uuidSr}`);
+        console.log(this.validateFieldsType);
+        this.preSrType = eventType;
+    }
+
+    generatorMarketingModel = () => {
+        const { getFieldDecorator } = this.props.form;
+        let MarketingModel: any = this.marketingModel;
+
+        return (
+            <FormItem {...layout.formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
+                {
+                    getFieldDecorator(`marketingModel${uuid}`, {
+                        rules: [{
+                            required: true, message: '营销方式不能为空！',
+                        }],
+                    })(
+                        <MarketingModel
+                            form={this.props.form}
+                            onChange={this.onMarketingModelChange}
+                        />
+                    )}
+            </FormItem>
+        );
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
         const { history }: any = this.props;
@@ -326,7 +396,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                     {
                                         getFieldDecorator('time', {
                                             rules: [{
-                                                required: true, message: '策略名称不能为空！',
+                                                required: true, message: '时间不能为空！',
                                             }],
                                         })(
                                             <RangePicker
@@ -376,25 +446,12 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                 {this.generatorTreeSelect()}
                                 {this.generateTriggerEvent()}
                                 {this.strategyTriggerEvent()}
-                                <FormItem {...layout.formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
-                                    {
-                                        getFieldDecorator('marketingModel', {
-                                            rules: [{
-                                                required: true, message: '营销方式不能为空！',
-                                            }],
-                                        })(
-                                            <PageHanger
-                                                form={this.props.form}
-                                                onChange={this.onMarketingModelChange}
-                                            />
-                                        )
-                                    }
-                                </FormItem>
+                                {this.generatorMarketingModel()}
                                 <FormItem {...layout.formItemLayout} label="责任人" hasFeedback={false}>
                                     {
                                         getFieldDecorator('owner', {
                                             rules: [{
-                                                required: true, message: '策略名称不能为空！',
+                                                required: true, message: '责任人不能为空！',
                                             }],
                                             initialValue: 'fanxuehui@58daojia.com',
                                         })(
