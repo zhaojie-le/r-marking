@@ -37,11 +37,11 @@ const pageName: Epic<any, any> = (action$, store) => {
         switchMap(
             (action): Observable<any> => {
                 return ajax.getJSON(`/marketStrategy/getPageInfo?pageId=${action.pageId}`).
-                    map((response: {resultCode: number, pageName: string}) => {
+                    map((response: {resultCode: number, pageName?: string, message?: string}) => {
                         if (response.resultCode === 1) {
                             return (pageNameSuccess(response.pageName));
                         } else {
-                            return (pageNameFail(response));
+                            return (pageNameFail(response.message));
                         }
                     });
             }
@@ -53,11 +53,11 @@ const userCount: Epic<any, any> = (action$, store) => {
         switchMap(
             (action): Observable<any> => {
                 return ajax.getJSON(`/marketStrategy/getUserCount?userBatchId=${action.patchId}`).
-                    map((response: {resultCode: number, data?: number}) => {
+                    map((response: {resultCode: number, data?: number, message?: string}) => {
                         if (response.resultCode === 1) {
                             return (userCountSuccess(response.data));
                         } else {
-                            return (userCountFail(response));
+                            return (userCountFail(response.message));
                         }
                     });
             }

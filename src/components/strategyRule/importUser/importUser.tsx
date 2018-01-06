@@ -10,6 +10,7 @@ const FormItem = Form.Item;
 export interface RuleProps {
     form: any;
     count: number;
+    message: string;
     onChange: (value: any) => void;
     userCount: (id: number) => void;
 }
@@ -41,6 +42,15 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
         this.setState({
             batchId: e.target.value
         });
+    }
+    showMessage = (count, message) => {
+        if (!!count) {
+            return (<p>该批次共{count}个用户</p>);
+        } else if (!count && message) {
+            return (<p style={{color: 'red'}}>{message}</p>);
+        } else {
+            return null;
+        }
     }
     onSave = () => {
         this.props.form.validateFields(['userBatchId'], (err, values) => {
@@ -91,7 +101,7 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
         let btnStyle: any = {};
         const rules = [ ...this.state.rules ];
         const { getFieldDecorator } = this.props.form;
-        const { count } = this.props;
+        const { count, message } = this.props;
         if (this.state.editing) {
             triggerRuleTpl = (
                 <section className="editInfo">
@@ -112,7 +122,8 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
                                 <Button onClick={this.getUserCount}>查询</Button>
                         </Col>
                         <Col span={10}>
-                            <p>该批次共{count}个用户</p>
+                            {/* <p>该批次共{count}个用户</p> */}
+                            {this.showMessage(count, message)}
                         </Col>
                     </Row>                
                     <FormItem {...layout.tailFormItemLayout}>
@@ -147,7 +158,8 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
 }
 function mapStateToProps (state: StoreState) {
     return {
-        count: state.strategyRules.userCount
+        count: state.strategyRules.userCount,
+        message: state.strategyRules.message
     };
 }
 const mapDispatchToProps = (dispatch: Dispatch<actions.RulesAction>) => bindActionCreators(

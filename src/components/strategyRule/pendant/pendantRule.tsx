@@ -11,6 +11,7 @@ const CheckboxGroup = Checkbox.Group;
 export interface RuleProps {
     form: any;
     pageName: string;
+    message: string;
     onChange: (value: any) => void;
     getPageName: (id: number) => void;
     rulesD: {strategyType: number; setting: any; };
@@ -135,7 +136,7 @@ class PendantRule extends React.Component<RuleProps, {}> {
         let wrapperStyle: any = {};
         let btnStyle: any = {};
         const rules = [ ...this.state.rules ];
-        const { cityList, plainOptions, pageName } = this.props;
+        const { cityList, plainOptions, pageName, message } = this.props;
         const { getFieldDecorator } = this.props.form;
         // 遍历增加一个key
         const cities = cityList.map((item, index) => {
@@ -151,8 +152,8 @@ class PendantRule extends React.Component<RuleProps, {}> {
                     <p>{pageName}</p>
                 </FormItem>
             );
-        } else {
-            triggerPageName = ('');
+        } else if (!!message) {
+            triggerPageName = (<p>{message}</p>);
         }
         if (this.state.editing) {
             triggerRuleTpl = (
@@ -257,6 +258,7 @@ class PendantRule extends React.Component<RuleProps, {}> {
 function mapStateToProps (state: StoreState) {
     return {
         pageName: state.strategyRules.pageName,
+        message: state.strategyRules.message,
         rulesD: state.createOrderStrategy.rules,
         cityList: state.createOrderStrategy.rules.settings.city ? state.createOrderStrategy.rules.settings.city.list : [],
         plainOptions: state.createOrderStrategy.rules.settings.orderSource ? state.createOrderStrategy.rules.settings.orderSource.list : []
