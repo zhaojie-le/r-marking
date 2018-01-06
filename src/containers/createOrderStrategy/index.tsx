@@ -127,7 +127,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         const { getFieldValue } = this.props.form;
         const triggerConditionValue = getFieldValue('triggerCondition');
         const triggerEventValue = getFieldValue('triggerEvent');
-        if ( !triggerConditionValue && !triggerEventValue) {
+        if ( (!triggerConditionValue || triggerConditionValue === '0')  && (!triggerEventValue || triggerEventValue === '0') ) {
             this.setState({
                 validateStatus: 'error'
             });
@@ -149,7 +149,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             if (!err) {
                 console.log('Received values of form: ', values);
             }
-            console.log(err);
         });
     }
 
@@ -276,7 +275,13 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         let treeSelect = '0';
         if (value === '1') {
             treeSelect = '1';
+            this.validateFieldsType.push('treeSelect');
+        } else {
+            if ( this.validateFieldsType.indexOf('treeSelect') >= 0 ) {
+                this.validateFieldsType.splice(this.validateFieldsType.indexOf('treeSelect'), 1);
+            }
         }
+
         this.setState({
             userSelected: treeSelect
         });
@@ -314,11 +319,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             || eventType === this.preEventType) {
             return;
         }
-        console.log(this.validateFieldsType);
         this.validateFieldsType.splice(this.validateFieldsType.indexOf(`marketingModel${uuid}`), 1);
         uuid++;
         this.validateFieldsType.push(`marketingModel${uuid}`);
-        console.log(this.validateFieldsType);
         switch (eventType) {
             case 3:
                 this.marketingModel = LoadElement;
@@ -339,11 +342,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         if (eventType === this.preSrType) {
             return;
         }
-        console.log(this.validateFieldsType);
         this.validateFieldsType.splice(this.validateFieldsType.indexOf(`strategyRule${uuidSr}`), 1);
         uuidSr++;
         this.validateFieldsType.push(`strategyRule${uuidSr}`);
-        console.log(this.validateFieldsType);
         this.preSrType = eventType;
     }
 
