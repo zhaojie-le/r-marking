@@ -3,15 +3,13 @@ import {
     Row,
     Col
 } from 'antd';
-import { MarketingModel } from '../../components';
+import { MarketingModel, PageHanger } from '../../components';
 
 interface DetailRuleProps {
     form?: any;
     value?: any;
     stage: number;
     page: boolean;
-    // option: any;
-    // onChange: (value: any) => void;
 }
 
 enum ChannelType {
@@ -152,13 +150,11 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
                 },
                 ''
             );
-
             if (label === '支付预约的页面' || label === '页面挂件' || label === '首页运营位') {
                 return (
                     <div key={i}>
                         <Row >
                             <Col span={5} style={{ color: '#462bc3' }}>{label}</Col>
-                            {/* <Col span={16} style={styleSpan as any}><p title={properties as any}>{properties}</p></Col> */}
                         </Row>
                         <Row style={{ margin: '0 0 0 76px' }}>
                             {properties}
@@ -171,7 +167,6 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
                         <Row >
                             <Col span={2} style={{ fontWeight: 'bold', color: '#2b2b2b' }}>渠道{i + 1}</Col>
                             <Col span={5} style={{ color: '#462bc3' }}>{label}</Col>
-                            {/* <Col span={16} style={styleSpan as any}><p title={properties as any}>{properties}</p></Col> */}
                         </Row>
                         <Row style={{ margin: '0 0 0 76px' }}>
                             {properties}
@@ -186,7 +181,7 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
     render() {
         // edit==true 为修改页面
         const { page, value } = this.props;
-        const { showOrderDetailCheck, weChatPush } = this.state;
+        const { showOrderDetailCheck, weChatPush, showData } = this.state;
         if (page === true) {
             return (
                 <div className="wrapperModel">
@@ -194,19 +189,27 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
                 </div>
             );
         } else {
+            if (showData.PagePendant !== undefined) {
+                return (
+                    <MarketingModel
+                        form={this.props.form}
+                        stage={0}
+                        option={weChatPush}
+                        value={value}
+                        showOrderDetailCheck={showOrderDetailCheck}
+                        onChange={this.onMarketingModelChange}
+                    />
+                );
+            } else {
+                return (
+                    <PageHanger
 
-            return (
-                <MarketingModel
-                    form={this.props.form}
-                    stage={0}
-                    option={weChatPush}
-                    value={value}
-                    showOrderDetailCheck={showOrderDetailCheck}
-                    onChange={this.onMarketingModelChange}
-                />
-            );
+                        form={this.props.form}
+                        onChange={this.onMarketingModelChange}
+                    />
+                );
+            }
         }
-
     }
 }
 
