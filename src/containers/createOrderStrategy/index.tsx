@@ -238,11 +238,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     strategyTriggerEvent = () => {
         const { eventType } = this.state;
         const { getFieldDecorator } = this.props.form;
-        // let type = 0;
-        // if (this.state.eventType === this.props.strategyType) {
-        //     type = this.state.eventType;
-        // }
-        if (this.state.eventType !== 0) {
+
+        if (eventType !== 0) {
             return (
                 <FormItem {...layout.formItemLayoutMarketingModel} label="营销类别" hasFeedback={false}>
                     {
@@ -259,7 +256,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         } else {
             return null;
         }
-
     }
 
     disabledDate = (current) => {
@@ -350,23 +346,27 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
 
     generatorMarketingModel = () => {
         const { getFieldDecorator } = this.props.form;
+        const { eventType } = this.state;
         let MarketingModel: any = this.marketingModel;
-
-        return (
-            <FormItem {...layout.formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
-                {
-                    getFieldDecorator(`marketingModel${uuid}`, {
-                        rules: [{
-                            required: true, message: '营销方式不能为空！',
-                        }],
-                    })(
-                        <MarketingModel
-                            form={this.props.form}
-                            onChange={this.onMarketingModelChange}
-                        />
-                    )}
-            </FormItem>
-        );
+        if ( eventType !== 0) {
+            return (
+                <FormItem {...layout.formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
+                    {
+                        getFieldDecorator(`marketingModel${uuid}`, {
+                            rules: [{
+                                required: true, message: '营销方式不能为空！',
+                            }],
+                        })(
+                            <MarketingModel
+                                form={this.props.form}
+                                onChange={this.onMarketingModelChange}
+                            />
+                        )}
+                </FormItem>
+            );
+        } else {
+            return null;
+        }
     }
 
     render() {

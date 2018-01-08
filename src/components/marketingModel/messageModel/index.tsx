@@ -476,6 +476,31 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
         );
     }
 
+    showEveryData = (array) => {
+        return Object.keys(array).map(
+            (lb, index, arr): any => {
+                let typeLabel: any;
+                switch (lb) {
+                    case 'docs':
+                        typeLabel = <span style={{color: '#FF4500'}}>文案</span>;
+                        break;
+                    case 'title':
+                        typeLabel = <span style={{color: '#C71585'}}>标题</span>;
+                        break;
+                    case 'link':
+                        typeLabel = <span style={{color: '#0066FF'}}>链接</span>;
+                        break;
+                    case 'chat':
+                        typeLabel = <span style={{color: '#888800'}}>微信公众号</span>;
+                        break;
+                    default:
+                        return null;
+                }
+                return (<p key={index} >{typeLabel}: {array[lb]}</p>);
+            }
+        );
+    }
+
     generateShowData = () => {
         const { showData } = this.state;
         const styleSpan = {
@@ -508,38 +533,18 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
                     break;
             }
 
-            properties = Object.keys(itemObj).reduce(
-                (last, lb, index, arr): any => {
-                    let msg: string = '';
-                    switch (lb) {
-                        case 'docs':
-                            msg = `${last} 文案: ${itemObj[lb]},`;
-                            break;
-                        case 'title':
-                            msg =  `${last} 标题: ${itemObj[lb]},`;
-                            break;
-                        case 'link':
-                            msg =  `${last} 链接: ${itemObj[lb]},`;
-                            break;
-                        case 'chat':
-                            msg = `${last} 微信公众号: ${itemObj[lb]},`;
-                            break;
-                        default:
-                            msg = last;
-                            break;
-                    }
-
-                    return index === arr.length - 1 ? msg.substring(0, msg.length - 1) : msg;
-                },
-                ''
-            );
+            properties = this.showEveryData(itemObj);
 
             return (
-                <Row key={i}>
-                    <Col span={2} style={{ fontWeight: 'bold', color: '#2b2b2b'}}>渠道{i + 1}</Col>
-                    <Col span={5} style={{ color: '#462bc3'}}>{label}</Col>
-                    <Col span={16} style={styleSpan as any}><p title={properties as any}>{properties}</p></Col>
-                </Row>
+                <div key={i} style={{borderBottom: '1px solid #ccc', paddingBottom: '10px'}}>
+                    <Row>
+                        <Col span={2} style={{ fontWeight: 'bold', color: '#2b2b2b'}}>渠道{i + 1}</Col>
+                        <Col span={5} style={{ color: '#462bc3'}}>{label}</Col>
+                    </Row>
+                    <Row>
+                        <Col span={16} style={styleSpan as any}>{properties}</Col>
+                    </Row>
+                </div>
             );
         });
     }
