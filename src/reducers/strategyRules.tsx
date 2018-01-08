@@ -2,7 +2,8 @@ import * as constants from '../constants';
 
 function form(
     state: any = {
-        pageName: 0
+        pageName: 0,
+        message: ''
     },
     action: any
 ) {
@@ -15,9 +16,17 @@ function form(
             return {
                 ...state, pageName: action.name
             };
+        case constants.PAGE_NAME_FAIL:
+            return {
+                ...state, message: action.error
+            };
         case constants.USER_COUNT_SUC:
             return {
                 ...state, userCount: action.num
+            };
+        case constants.USER_AMOUNT_FAIL:
+            return {
+                ...state, message: action.error
             };
         default:
             return state;

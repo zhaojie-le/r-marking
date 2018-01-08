@@ -4,12 +4,13 @@ import { connect, Dispatch } from 'react-redux';
 import * as actions from '../../../actions';
 import { StoreState } from '../../../types/index';
 import { bindActionCreators } from 'redux';
-import { Form, Button, Input, Row, Col } from 'antd';
+import { Form, Button, Input, Row, Col, message } from 'antd';
 import { default as ShowRule } from '../showRuleInfo';
 const FormItem = Form.Item;
-export interface RuleProps {
+export interface RuleProps { 
     form: any;
     count: number;
+    mes: string;
     onChange: (value: any) => void;
     userCount: (id: number) => void;
 }
@@ -42,12 +43,25 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
             batchId: e.target.value
         });
     }
+    showMessage = (count, mes) => {
+        if (!!count) {
+            return (<p>该批次共{count}个用户</p>);
+        } else if (!count && mes) {
+            return (<p style={{color: 'red'}}>{mes}</p>);
+        } else {
+            return null;
+        }
+    }
     onSave = () => {
-        this.props.form.validateFields(['userBatchId'], (err, values) => {
+        this.props.form.validateFields(['userBatchId', 'usertCount'], (err, values) => {
             if (!err) {
-                let sendValue = Object.assign({}, values, {usertCount: this.props.count });
-                this.computeShowData(sendValue);
-                this.props.onChange(sendValue);
+                if (this.props.count !== 0) {
+                    message.error('用户人数不能为0');
+                } else {
+                    let sendValue = Object.assign({}, values, {usertCount: this.props.count });
+                    this.computeShowData(sendValue);
+                    this.props.onChange(sendValue);
+                } 
             }
         });
     }
@@ -91,7 +105,7 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
         let btnStyle: any = {};
         const rules = [ ...this.state.rules ];
         const { getFieldDecorator } = this.props.form;
-        const { count } = this.props;
+        const { count, mes } = this.props;
         if (this.state.editing) {
             triggerRuleTpl = (
                 <section className="editInfo">
@@ -112,7 +126,8 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
                                 <Button onClick={this.getUserCount}>查询</Button>
                         </Col>
                         <Col span={10}>
-                            <p>该批次共{count}个用户</p>
+                            {/* <p>该批次共{count}个用户</p> */}
+                            {this.showMessage(count, mes)}
                         </Col>
                     </Row>                
                     <FormItem {...layout.tailFormItemLayout}>
@@ -147,7 +162,8 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
 }
 function mapStateToProps (state: StoreState) {
     return {
-        count: state.strategyRules.userCount
+        count: state.strategyRules.userCount,
+        mes: state.strategyRules.message
     };
 }
 const mapDispatchToProps = (dispatch: Dispatch<actions.RulesAction>) => bindActionCreators(

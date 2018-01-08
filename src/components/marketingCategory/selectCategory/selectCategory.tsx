@@ -77,7 +77,7 @@ class SelectCategory extends React.Component<RuleProps, {}> {
     addCoupon = () => {
         const { getFieldDecorator } = this.props.form;
         return this.state.marketingType === '1' ? (
-            <FormItem {...layout.formItemLayout2} label="优惠券" hasFeedback={false}>
+            <FormItem {...layout.formItemLayout2} label="优惠券ID" hasFeedback={false}>
                 {getFieldDecorator('coupon', {
                     rules: [{
                         required: true, message: '优惠券id不能为空！',
