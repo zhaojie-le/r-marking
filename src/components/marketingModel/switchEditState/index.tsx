@@ -44,7 +44,7 @@ export default (check: (rule: any, value: any, callback: any) => void, ShowData:
         }
 
         onSave = () => {
-            const fields = ['yxfs'];
+            const fields = [`yxfs`];
             this.props.form.validateFields(fields, (err, values) => {
                 if (!err) {
                     this.setState({showData: values});
@@ -68,7 +68,7 @@ export default (check: (rule: any, value: any, callback: any) => void, ShowData:
             ? (
                 <div className="wrapperModel">
                     <FormItem {...layout.modelItemLayout} label={`${typelabel}`}>
-                        {getFieldDecorator('yxfs', {
+                        {getFieldDecorator(`yxfs`, {
                             initialValue: this.state.showData.yxfs,
                             rules: [{
                                 required: true,

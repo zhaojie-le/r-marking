@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { default as switchEditState }  from '../switchEditState';
+import { default as switchEditState } from '../switchEditState';
 import {
     Input,
     Row,
@@ -35,7 +35,7 @@ function validate(fields: any[]): string {
     ).substring(1);
 }
 
-class PageHanger extends React.Component<Prop, {}> {
+export class PageHanger extends React.Component<Prop, {}> {
     constructor(props: Prop, context: any) {
         super(props, context);
         this.state = Object.assign({link: '', docs: '', imgUrl: ''}, this.props.value);

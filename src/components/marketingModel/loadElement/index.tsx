@@ -103,7 +103,6 @@ class LoadEelment extends React.Component<Prop, {}> {
 
 export default switchEditState(
     (rule, value, callback) => {
-        console.log(value);
         const wordNumber: number = getBt(value.docs);
         if (value.docs && value.link && wordNumber < 80) {
             callback();
