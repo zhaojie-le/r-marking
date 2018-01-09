@@ -20,11 +20,11 @@ function enthusiasm(
             pkId: '',           // 策略ID
             activityId: '',     // 活动ID
             strategyName: '',   // 策略名称
-            strategyState: 0,   // 策略状态
+            strategyState: -1,   // 策略状态
             effectiveTime: '',  // 起始时间
             invalidTime: '',    // 结束时间
-            strategyType: 0,    // 触发事件
-            marketingType: 0    // 营销类型
+            strategyType: -1,    // 触发事件
+            marketingType: -1    // 营销类型
         },
         data: {}, 
         listData: [], 

@@ -148,32 +148,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         this.props.form.validateFieldsAndScroll(this.validateFieldsType, (err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+            } else {
+                console.log('allValues', values);
             }
-        });
-    }
-
-    addCoupon = () => {
-        const { getFieldDecorator } = this.props.form;
-        return this.state.sendCoupon === '0' ? (
-            this.validateFieldsType.push('coupon'),
-            (
-                <FormItem {...layout.formItemLayout2} label="优惠券" hasFeedback={false}>
-                    {getFieldDecorator('coupon', {
-                        rules: [{
-                            required: true, message: '策略名称不能为空！',
-                        }],
-                        initialValue: 0,
-                    })(
-                        <Input />
-                    )}
-                </FormItem>
-            )
-        ) : '';
-    }
-
-    marketingCategoryChange = (value) => {
-        this.setState({
-            sendCoupon: value
         });
     }
 
