@@ -124,3 +124,9 @@ export function setShowOrderDetailCheck(flag: boolean): ChangeShowOrderDetailChe
         flag: flag,
     };
 }
+
+export function resetWeChatPush() {
+    return {
+        type: constants.RESET_WECHATPUSH
+    };
+}

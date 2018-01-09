@@ -80,6 +80,11 @@ function form(
                 ...state,
                 weChatPush: {...action.result}
             };
+        case constants.RESET_WECHATPUSH:
+            return {
+                ...state,
+                weChatPush: null
+            };
         case constants.SAVE_RULE:
             return {
                 ...state,

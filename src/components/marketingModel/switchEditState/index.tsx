@@ -54,10 +54,6 @@ export default (check: (rule: any, value: any, callback: any) => void, ShowData:
             });
         }
 
-        generateShowData() {
-            console.log(1);
-        }
-
         onYxfsChange(value: D) {
             console.log(value);
         }

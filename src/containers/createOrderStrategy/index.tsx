@@ -38,11 +38,13 @@ export interface Props {
     rules: {strategyType: number; setting: any; };
     formState: any;
     form: any;
+    option: any;
     strategyType: any;
     ruleHadBack: boolean;
     onGetService: () => void;
     onGetRules: (type: number) => void;
     onSaveRule: () => void;
+    onResetWeChatPush: () => void;
     onSaveModel: (modelData: string) => void;
     onGetOrderState: () => void;
     onGetTreeNode: (id: number) => void;
@@ -146,7 +148,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         if (this.validateTrgger()) {
             return;
         }
-        console.log(this.validateFieldsType);
         this.props.form.validateFieldsAndScroll(this.validateFieldsType, (err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
@@ -210,7 +211,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         if ( this.checkCondition(value, null) ) {
             return;
         }
-
+        // this.removeWechat();
         const disabledTrggerCondition = userConditions.includes(value) ? true : false;
         let NumValue = parseInt(value, 10);
         if (NumValue === 1 || NumValue === 3 || NumValue === 7) {
@@ -224,8 +225,10 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             this.setState({
                 userSelected: '0'
             });
+            if ( this.validateFieldsType.indexOf('treeSelect') >= 0 ) {
+                this.validateFieldsType.splice(this.validateFieldsType.indexOf('treeSelect'), 1);
+            }
         }
-
         this.changeMarketingType(NumValue);
         this.changeStrategyRule(NumValue);
         this.setState({
@@ -366,6 +369,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         uuidSr++;
         this.validateFieldsType.push(`strategyRule${uuidSr}`);
         this.preSrType = eventType;
+        this.props.onResetWeChatPush();
     }
 
     generatorMarketingModel = () => {
@@ -408,7 +412,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                         </Breadcrumb>
                         <div className="wrapperContainer">
                             <Form onSubmit={this.saveStrategy}>
-                                <FormItem {...layout.formItemLayout} label="策略名称" validateStatus="error" hasFeedback={false}>
+                                <FormItem {...layout.formItemLayout} label="策略名称" hasFeedback={false}>
                                     {
                                         getFieldDecorator('stragyName', {
                                             rules: [{
@@ -505,6 +509,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
 export function mapStateToProps(state: StoreState) {
     return {
         formState: state.createOrderStrategy.formState,
+        option: state.createOrderStrategy.weChatPush,
     };
 }
 
@@ -512,6 +517,7 @@ export const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) 
     {
         onChangeField: actions.changeField,
         onGetRules: actions.getRules,
+        onResetWeChatPush: actions.resetWeChatPush,
         onGetTreeNode: actions.tagNodeTree
     },
     dispatch
