@@ -11,6 +11,7 @@ const CheckboxGroup = Checkbox.Group;
 export interface RuleProps {
     form: any;
     pageName: string;
+    message: string;
     onChange: (value: any) => void;
     getPageName: (id: number) => void;
     rulesD: {strategyType: number; setting: any; };
@@ -128,14 +129,29 @@ class PendantRule extends React.Component<RuleProps, {}> {
         this.setState({
             pageId: e.target.value
         });
-    } 
+    }
+    triggerPageName = () => {
+        let pageName = this.props.pageName;
+        let mes = this.props.message;
+        if (!!pageName) {
+            return (
+                <FormItem label="页面名称" {...layout.formItemLayout1}>
+                    <p>{pageName}</p>
+                </FormItem>
+            );
+        } else if (!!mes) {
+            return (<p>{mes}</p>);
+        } else {
+            return null;
+        }
+    }
     render() {
         let triggerRuleTpl: React.ReactNode = {};
-        let triggerPageName: any = {};
+        // let triggerPageName: React.ReactNode = {};
         let wrapperStyle: any = {};
         let btnStyle: any = {};
         const rules = [ ...this.state.rules ];
-        const { cityList, plainOptions, pageName } = this.props;
+        const { cityList, plainOptions } = this.props;
         const { getFieldDecorator } = this.props.form;
         // 遍历增加一个key
         const cities = cityList.map((item, index) => {
@@ -145,15 +161,7 @@ class PendantRule extends React.Component<RuleProps, {}> {
                 key: `${item.value}`
             };
         });
-        if (!!pageName) {
-            triggerPageName = (
-                <FormItem label="页面名称" {...layout.formItemLayout1}>
-                    <p>{pageName}</p>
-                </FormItem>
-            );
-        } else {
-            triggerPageName = ('');
-        }
+        
         if (this.state.editing) {
             triggerRuleTpl = (
                 <section className="editInfo">
@@ -175,7 +183,7 @@ class PendantRule extends React.Component<RuleProps, {}> {
                             </FormItem> 
                         </Col>
                         <Col span={10}>
-                            {triggerPageName}
+                            {this.triggerPageName()}
                         </Col>
                     </Row>
                     <FormItem label="城市列表" {...layout.formItemLayout}>
@@ -204,21 +212,21 @@ class PendantRule extends React.Component<RuleProps, {}> {
                             }],
                         })(
                             <div style={{ borderBottom: '1px solid #E9E9E9' }}>
-                            <Checkbox
-                                indeterminate={this.state.indeterminate}
-                                onChange={this.onCheckAllChange}
-                                checked={this.state.checkAll}
-                            >
-                                全部
-                            </Checkbox>
-                            {getFieldDecorator('orderSource', {
-                                rules: [{
-                                    required: true, message: '页面渠道不能为空！',
-                                }],
-                            })(
-                                <CheckboxGroup options={plainOptions} onChange={this.onCheckChange} />
-                            )}
-                        </div>
+                                <Checkbox
+                                    indeterminate={this.state.indeterminate}
+                                    onChange={this.onCheckAllChange}
+                                    checked={this.state.checkAll}
+                                >
+                                    全部
+                                </Checkbox>
+                                {getFieldDecorator('orderSource', {
+                                    rules: [{
+                                        required: true, message: '页面渠道不能为空！',
+                                    }],
+                                })(
+                                    <CheckboxGroup options={plainOptions} onChange={this.onCheckChange} />
+                                )}
+                            </div>
                         )}
                     </FormItem>
                     <FormItem {...layout.tailFormItemLayout}>
@@ -257,6 +265,7 @@ class PendantRule extends React.Component<RuleProps, {}> {
 function mapStateToProps (state: StoreState) {
     return {
         pageName: state.strategyRules.pageName,
+        message: state.strategyRules.message,
         rulesD: state.createOrderStrategy.rules,
         cityList: state.createOrderStrategy.rules.settings.city ? state.createOrderStrategy.rules.settings.city.list : [],
         plainOptions: state.createOrderStrategy.rules.settings.orderSource ? state.createOrderStrategy.rules.settings.orderSource.list : []

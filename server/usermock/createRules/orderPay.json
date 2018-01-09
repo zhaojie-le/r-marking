@@ -21,7 +21,7 @@
                 }
             ]
         },
-        "serviceType": {
+        "refer": {
             "title": "服务项",
             "list": [{
                 "label": "小时工",

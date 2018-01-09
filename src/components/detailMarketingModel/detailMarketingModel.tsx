@@ -3,7 +3,7 @@ import {
     Row,
     Col
 } from 'antd';
-import { MarketingModel, PageHanger } from '../../components';
+import { MarketingModel, PageHangerEdit } from '../../components';
 
 interface DetailRuleProps {
     form?: any;
@@ -172,7 +172,6 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
                             {properties}
                         </Row>
                     </div>
-
                 );
             }
 
@@ -202,9 +201,8 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
                 );
             } else {
                 return (
-                    <PageHanger
-
-                        form={this.props.form}
+                    <PageHangerEdit
+                        value={{ imgUrl: '1', link: '222' }}
                         onChange={this.onMarketingModelChange}
                     />
                 );

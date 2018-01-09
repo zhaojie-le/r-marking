@@ -113,6 +113,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     private preEventType: number;
     private preSrType: number;
     private marketingModel: any = MarketingModelAdd;
+    private stType: string;
+    private usType: string;
     private validateFieldsType: Array<string> = ['stragyName', 'time', 'pushTimes', 'marketingCategory', 'strategyRule0', 'marketingModel0'];
     constructor(props: Props, context: any) {
         super(props, context);
@@ -127,7 +129,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         const { getFieldValue } = this.props.form;
         const triggerConditionValue = getFieldValue('triggerCondition');
         const triggerEventValue = getFieldValue('triggerEvent');
-        if ( (!triggerConditionValue || triggerConditionValue === '0')  && (!triggerEventValue || triggerEventValue === '0') ) {
+        if ( (!triggerConditionValue || triggerConditionValue === '0') && (!triggerEventValue || triggerEventValue === '0') ) {
             this.setState({
                 validateStatus: 'error'
             });
@@ -189,7 +191,26 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         console.log(value);
     }
 
+    checkCondition = (strategyType: string | null, userType: string | null) => {
+        this.stType = strategyType || this.stType;
+        this.usType = userType || this.usType;
+        if ( (!this.stType || this.stType  === '0') && (!this.usType || this.usType === '0') ) {
+            this.setState({
+                validateStatus: 'error'
+            });
+            return true;
+        }
+        this.setState({
+            validateStatus: 'success'
+        });
+        return false;
+    }
+
     onSelectEvent = (value) => {
+        if ( this.checkCondition(value, null) ) {
+            return;
+        }
+
         const disabledTrggerCondition = userConditions.includes(value) ? true : false;
         let NumValue = parseInt(value, 10);
         if (NumValue === 1 || NumValue === 3 || NumValue === 7) {
@@ -238,11 +259,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     strategyTriggerEvent = () => {
         const { eventType } = this.state;
         const { getFieldDecorator } = this.props.form;
-        // let type = 0;
-        // if (this.state.eventType === this.props.strategyType) {
-        //     type = this.state.eventType;
-        // }
-        if (this.state.eventType !== 0) {
+
+        if (eventType !== 0) {
             return (
                 <FormItem {...layout.formItemLayoutMarketingModel} label="营销类别" hasFeedback={false}>
                     {
@@ -259,7 +277,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         } else {
             return null;
         }
-
     }
 
     disabledDate = (current) => {
@@ -272,6 +289,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     onUserBeSelect = (value) => {
+        if ( this.checkCondition(null, value) ) {
+            return;
+        }
         let treeSelect = '0';
         if (value === '1') {
             treeSelect = '1';
@@ -350,23 +370,27 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
 
     generatorMarketingModel = () => {
         const { getFieldDecorator } = this.props.form;
+        const { eventType } = this.state;
         let MarketingModel: any = this.marketingModel;
-
-        return (
-            <FormItem {...layout.formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
-                {
-                    getFieldDecorator(`marketingModel${uuid}`, {
-                        rules: [{
-                            required: true, message: '营销方式不能为空！',
-                        }],
-                    })(
-                        <MarketingModel
-                            form={this.props.form}
-                            onChange={this.onMarketingModelChange}
-                        />
-                    )}
-            </FormItem>
-        );
+        if ( eventType !== 0) {
+            return (
+                <FormItem {...layout.formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
+                    {
+                        getFieldDecorator(`marketingModel${uuid}`, {
+                            rules: [{
+                                required: true, message: '营销方式不能为空！',
+                            }],
+                        })(
+                            <MarketingModel
+                                form={this.props.form}
+                                onChange={this.onMarketingModelChange}
+                            />
+                        )}
+                </FormItem>
+            );
+        } else {
+            return null;
+        }
     }
 
     render() {
@@ -480,22 +504,14 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
 
 export function mapStateToProps(state: StoreState) {
     return {
-        serviceOptions: state.createOrderStrategy.serviceOptions,
-        orderState: state.createOrderStrategy.orderState,
         formState: state.createOrderStrategy.formState,
-        rules: state.createOrderStrategy.rules,
-        strategyType: state.createOrderStrategy.rules.strategyType,
     };
 }
 
 export const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) => bindActionCreators(
     {
         onChangeField: actions.changeField,
-        onGetOrderState: actions.getOrderState,
         onGetRules: actions.getRules,
-        onSaveRule: actions.saveRule,
-        onSaveModel: actions.saveModel,
-        onGetService: actions.getService,
         onGetTreeNode: actions.tagNodeTree
     },
     dispatch
