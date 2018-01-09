@@ -242,6 +242,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
     componentDidUpdate(prevProps: any) {
         if ( this.isDirty === true ) {
             this.deleteChannel(this.currentWechatKey, '58到家公众号');
+            this.setState({showData: {}});
             this.isDirty = false;
         }
     }
