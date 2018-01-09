@@ -20,7 +20,7 @@ import {
     Radio,
     Button
 } from 'antd';
-import { MarketingModel } from '../../components';
+import { DetailMarketingModel } from '../../components';
 const FormItem = Form.Item;
 const { Content, Footer } = Layout;
 const RadioGroup = Radio.Group;
@@ -75,7 +75,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
         endOpen: false,
         editing: true,
         editDis: true,
-        showOrderDetailCheck: false
+        //  false
     };
     constructor(props: Props, context: any) {
         super(props, context);
@@ -368,7 +368,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
     render() {
         const { getFieldDecorator } = this.props.form;
         const { formState, actionParam, strategyMarketingType } = this.props;
-        const { pagetype, editing, editDis, showOrderDetailCheck } = this.state;
+        const { pagetype, editing, editDis, } = this.state;
         return (
             <div id="detailOrder">
                 <Layout>
@@ -498,16 +498,21 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                             required: true, message: '营销方式不能为空！',
                                         }],
                                         initialValue: [
-                                            // { type: '1', value: { type: '1', docs: '111', link: '222' } },
-                                            // { type: '2', value: { type: '2', docs: '111', link: '222', title: '22222' } }
+                                            { type: '1', value: { type: '1', docs: '111', link: '222' } },
+                                            { type: '2', value: { type: '2', docs: '111', link: '222', title: '22222' } }
                                         ]
                                     })(
-                                        <MarketingModel
+                                        // <MarketingModel
+                                        //     form={this.props.form}
+                                        //     stage={0}
+                                        //     option={formState.weChatPush}
+                                        //     showOrderDetailCheck={showOrderDetailCheck}
+                                        //     onChange={this.onMarketingModelChange}
+                                        // />
+                                        <DetailMarketingModel
                                             form={this.props.form}
                                             stage={0}
-                                            option={formState.weChatPush}
-                                            showOrderDetailCheck={showOrderDetailCheck}
-                                            onChange={this.onMarketingModelChange}
+                                            page={pagetype}
                                         />
                                         )}
                                 </FormItem>

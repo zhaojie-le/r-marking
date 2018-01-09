@@ -36,3 +36,5 @@ export type SAVE_MODEL = typeof SAVE_MODEL;
 
 export const CHANGE_SRDC = 'CHANGE_SRDC';
 export type CHANGE_SRDC = typeof CHANGE_SRDC;
+
+export const RESET_WECHATPUSH = 'RESET_WECHATPUSH';

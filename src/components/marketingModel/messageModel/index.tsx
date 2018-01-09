@@ -99,7 +99,8 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
         showData: {},
         channelType: [[1, '短信'], [2, '58到家-APP push'], [3, '58速运-APP push'], [4, '58到家公众号']],
     };
-
+    private isDirty: boolean = false;
+    private currentWechatKey: any = {};
     constructor(props: any, context: any) {
         super(props, context);
         const value = this.props.value || [];
@@ -232,6 +233,20 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
         });
     }
 
+    componentWillReceiveProps(nextProps: any) {
+        if (this.props.option !== nextProps.option && nextProps.option === null) {
+            this.isDirty = true;
+        }
+    }
+
+    componentDidUpdate(prevProps: any) {
+        if ( this.isDirty === true ) {
+            this.deleteChannel(this.currentWechatKey, '58到家公众号');
+            this.setState({showData: {}});
+            this.isDirty = false;
+        }
+    }
+
     deleteChannel = (dlkey, label) => {
         const { type } = dlkey;
         const newChannelType = [...this.state.channelType, [parseInt(type, 10), label]];
@@ -254,7 +269,8 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
         });
     }
 
-    checkSms = (rule, value, callback) => {
+    checkSms = (rule, value1, callback) => {
+        const value = Object.assign({docs: '', link: ''}, value1);
         const wordNumber: number = getBt(value.docs);
 
         if (value.docs && value.link && wordNumber < 80) {
@@ -262,13 +278,14 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
             return;
         }
         callback(validate([
-            {type: 'require', value: value.docs, errMsg: '文案不能为空'},
-            {type: 'require', value: value.link, errMsg: '链接不能为空'},
+            {type: 'require', value: value.docs || '', errMsg: '文案不能为空'},
+            {type: 'require', value: value.link || '', errMsg: '链接不能为空'},
             {type: 'limit', value: value.docs, limitNumber: 80,  errMsg: '文案字数过多'}
         ]));
     }
 
-    checkApp = (rule, value, callback) => {
+    checkApp = (rule, value1, callback) => {
+        const value = Object.assign({docs: '', link: '', title: ''}, value1);
         if (value.docs && value.link && value.title && getBt(value.docs) < 60 && getBt(value.title) < 20) {
             callback();
             return;
@@ -282,7 +299,8 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
         ]));
     }
 
-    checkChatNumber = (rule, value, callback) => {
+    checkChatNumber = (rule, value1, callback) => {
+        const value = Object.assign({first: '', remark: '', link: ''}, value1);
         if (value.first && value.remark && value.link) {
             callback();
             return;
@@ -426,6 +444,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
                         </FormItem>
                     );
                 case ChannelType.ChatNumber:
+                    this.currentWechatKey = key;
                     return (
                         <FormItem {...layout.modelItemLayout} label={`渠道${typeIndex}`} key={typeIndex}>
                             {getFieldDecorator(`chatNumber-${k}`, {
