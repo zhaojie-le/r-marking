@@ -53,15 +53,15 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
         }
     }
     onSave = () => {
-        this.props.form.validateFields(['userBatchId', 'usertCount'], (err, values) => {
+        this.props.form.validateFields(['userBatchId'], (err, values) => {
             if (!err) {
-                if (this.props.count === 0) {
-                    message.error('用户人数不能为0');
-                } else {
+                if (this.props.count && this.props.count !== 0) {
                     let sendValue = Object.assign({}, values, {usertCount: this.props.count });
                     this.computeShowData(sendValue);
-                    this.props.onChange(sendValue);
-                } 
+                    this.props.onChange(JSON.stringify(sendValue));
+                } else {
+                    message.error('用户人数不能为0');
+                }
             }
         });
     }

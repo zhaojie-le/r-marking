@@ -61,6 +61,20 @@ const getWechatPushFail = (error) => {
     };
 };
 
+const saveRuleSuccess = (result) => {
+    return {
+        type: constants.SAVE_RULE_SUCCESS,
+        result: result
+    };
+};
+
+const saveRuleFail = (error) => {
+    return {
+        type: constants.SAVE_RULE_FAIL,
+        error: error
+    };
+};
+
 const getService: Epic<any, any> = (action$, store) => {
     return action$.ofType(constants.GET_SERVICE).
         switchMap(
@@ -132,6 +146,23 @@ const getRules: Epic<any, any> = (action$, store) => {
         );
 };
 
-const epics = [getService, getOrderState, getRules, getWechatPush];
+const saveRule: Epic<any, any> = (action$, store) => {
+    return action$.ofType(constants.SAVE_RULE).
+        switchMap(
+            (action): Observable<any> => {
+                return ajax.post('/marketStrategy/save', { 
+                    ruleJsonString: action.ruleJsonString
+                }).map(response => {
+                    if (response.response.resultCode === 1) {
+                        return (saveRuleSuccess(response.response.message));
+                    } else {
+                        return (saveRuleFail(response.response));
+                    }
+                });
+            }
+        );
+};
+
+const epics = [getService, getOrderState, getRules, getWechatPush, saveRule];
 
 export default epics;

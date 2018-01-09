@@ -42,7 +42,7 @@ export interface Props {
     ruleHadBack: boolean;
     onGetService: () => void;
     onGetRules: (type: number) => void;
-    onSaveRule: () => void;
+    onSaveRule: (rjs: any) => void;
     onSaveModel: (modelData: string) => void;
     onGetOrderState: () => void;
     onGetTreeNode: (id: number) => void;
@@ -115,7 +115,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     private marketingModel: any = MarketingModelAdd;
     private stType: string;
     private usType: string;
-    private validateFieldsType: Array<string> = ['stragyName', 'time', 'pushTimes', 'marketingCategory', 'strategyRule0', 'marketingModel0'];
+    private validateFieldsType: Array<string> = ['stragyName', 'time', 'marketingCategory', 'strategyRule0', 'marketingModel0', 'triggerRule'];
     constructor(props: Props, context: any) {
         super(props, context);
     }
@@ -152,6 +152,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 console.log('Received values of form: ', values);
             } else {
                 console.log('allValues', values);
+                this.props.onSaveRule(values);
             }
         });
     }
@@ -219,7 +220,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             return (
                 <FormItem {...layout.formItemLayoutMarketingModel} label="触发规则" hasFeedback={false}>
                     {
-                        getFieldDecorator(`strategyRule${uuidSr}`, {
+                        getFieldDecorator(`triggerRule`, {
                             rules: [{
                                 required: true, message: '规则不能为空！',
                             }]
@@ -385,7 +386,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                         </Breadcrumb>
                         <div className="wrapperContainer">
                             <Form onSubmit={this.saveStrategy}>
-                                <FormItem {...layout.formItemLayout} label="策略名称" validateStatus="error" hasFeedback={false}>
+                                <FormItem {...layout.formItemLayout} label="策略名称" hasFeedback={false}>
                                     {
                                         getFieldDecorator('stragyName', {
                                             rules: [{
@@ -489,7 +490,8 @@ export const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) 
     {
         onChangeField: actions.changeField,
         onGetRules: actions.getRules,
-        onGetTreeNode: actions.tagNodeTree
+        onGetTreeNode: actions.tagNodeTree,
+        onSaveRule: actions.saveRule,
     },
     dispatch
 );

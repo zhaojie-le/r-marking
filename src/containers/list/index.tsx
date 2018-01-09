@@ -60,7 +60,6 @@ class List extends React.Component<Props, {}> {
     private columns;
     constructor(props: Props, context: any) {
         super(props, context);
-        console.log(this.props);
         // 表格头部设置参数
         this.columns = [
             {title: '策略ID', dataIndex: 'pkId', key: '0',
@@ -215,7 +214,6 @@ class List extends React.Component<Props, {}> {
 
     render() {
         const { data, listData, totalInfo } = this.props;
-        console.log('list', listData);
         // 设置表单的排列间隙
         const formItemLayout = {
             labelCol: {

@@ -104,7 +104,7 @@ export function getRules(type: number): GetRules {
     };
 }
 
-export function saveRule(rjs: string): SaveRule {
+export function saveRule(rjs: any): SaveRule {
     return {
         type: constants.SAVE_RULE,
         ruleJsonString: rjs,

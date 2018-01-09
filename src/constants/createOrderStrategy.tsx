@@ -28,6 +28,8 @@ export const GET_WHCHATPUSH_FAIL = 'GET_WHCHATPUSH_FAIL';
 
 export const SAVE_RULE = 'SAVE_RULE';
 export type SAVE_RULE = typeof SAVE_RULE;
+export const SAVE_RULE_SUCCESS = 'SAVE_RULE_SUCCESS';
+export const SAVE_RULE_FAIL = 'SAVE_RULE_FAIL';
 
 export const SAVE_MODEL = 'SAVE_MODEL';
 export type SAVE_MODEL = typeof SAVE_MODEL;
