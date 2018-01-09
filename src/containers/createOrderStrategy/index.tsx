@@ -189,7 +189,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         if ( this.checkCondition(value, null) ) {
             return;
         }
-        // this.removeWechat();
         const disabledTrggerCondition = userConditions.includes(value) ? true : false;
         let NumValue = parseInt(value, 10);
         if (NumValue === 1 || NumValue === 3 || NumValue === 7) {
@@ -219,7 +218,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         const { getFieldDecorator } = this.props.form;
         const { eventType } = this.state;
 
-        if (this.state.eventType !== 0) {
+        if (eventType !== 0) {
             return (
                 <FormItem {...layout.formItemLayoutMarketingModel} label="触发规则" hasFeedback={false}>
                     {
@@ -238,10 +237,10 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     strategyTriggerEvent = () => {
-        const { eventType } = this.state;
+        const { eventType, userSelected } = this.state;
         const { getFieldDecorator } = this.props.form;
 
-        if (eventType !== 0) {
+        if (eventType !== 0 || userSelected !== 0) {
             return (
                 <FormItem {...layout.formItemLayoutMarketingModel} label="营销类别" hasFeedback={false}>
                     {
@@ -270,9 +269,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     onUserBeSelect = (value) => {
-        if ( this.checkCondition(null, value) ) {
-            return;
-        }
+
         let treeSelect = '0';
         if (value === '1') {
             treeSelect = '1';
@@ -286,6 +283,10 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         this.setState({
             userSelected: treeSelect
         });
+
+        if ( this.checkCondition(null, value) ) {
+            return;
+        }
     }
 
     onTreeSelectChange = (value) => {
@@ -352,9 +353,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
 
     generatorMarketingModel = () => {
         const { getFieldDecorator } = this.props.form;
-        const { eventType } = this.state;
+        const { eventType, userSelected } = this.state;
         let MarketingModel: any = this.marketingModel;
-        if ( eventType !== 0) {
+        if ( eventType !== 0  || userSelected !== 0 ) {
             return (
                 <FormItem {...layout.formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
                     {
