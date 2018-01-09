@@ -408,7 +408,7 @@ function mapStateToProps(state: StoreState) {
         serviceOptions: state.createOrderStrategy.serviceOptions,
         orderState: state.createOrderStrategy.orderState,
         orderSource: state.createOrderStrategy.rules.settings.orderSource ? state.createOrderStrategy.rules.settings.orderSource.list : [],
-        city: state.createOrderStrategy.rules.settings.city ? state.createOrderStrategy.rules.settings.city : [],
+        city: state.createOrderStrategy.rules.settings.city ? state.createOrderStrategy.rules.settings.city : {list: []},
         serviceSelect: state.createOrderStrategy.rules.settings.refer ? state.createOrderStrategy.rules.settings.refer.list : [],
         formState: state.createOrderStrategy.formState
     };

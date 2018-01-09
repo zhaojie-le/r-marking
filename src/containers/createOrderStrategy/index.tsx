@@ -113,6 +113,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     private preEventType: number;
     private preSrType: number;
     private marketingModel: any = MarketingModelAdd;
+    private stType: string;
+    private usType: string;
     private validateFieldsType: Array<string> = ['stragyName', 'time', 'pushTimes', 'marketingCategory', 'strategyRule0', 'marketingModel0'];
     constructor(props: Props, context: any) {
         super(props, context);
@@ -127,7 +129,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         const { getFieldValue } = this.props.form;
         const triggerConditionValue = getFieldValue('triggerCondition');
         const triggerEventValue = getFieldValue('triggerEvent');
-        if ( (!triggerConditionValue || triggerConditionValue === '0')  && (!triggerEventValue || triggerEventValue === '0') ) {
+        if ( (!triggerConditionValue || triggerConditionValue === '0') && (!triggerEventValue || triggerEventValue === '0') ) {
             this.setState({
                 validateStatus: 'error'
             });
@@ -166,7 +168,26 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         console.log(value);
     }
 
+    checkCondition = (strategyType: string | null, userType: string | null) => {
+        this.stType = strategyType || this.stType;
+        this.usType = userType || this.usType;
+        if ( (!this.stType || this.stType  === '0') && (!this.usType || this.usType === '0') ) {
+            this.setState({
+                validateStatus: 'error'
+            });
+            return true;
+        }
+        this.setState({
+            validateStatus: 'success'
+        });
+        return false;
+    }
+
     onSelectEvent = (value) => {
+        if ( this.checkCondition(value, null) ) {
+            return;
+        }
+
         const disabledTrggerCondition = userConditions.includes(value) ? true : false;
         let NumValue = parseInt(value, 10);
         if (NumValue === 1 || NumValue === 3 || NumValue === 7) {
@@ -245,6 +266,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     onUserBeSelect = (value) => {
+        if ( this.checkCondition(null, value) ) {
+            return;
+        }
         let treeSelect = '0';
         if (value === '1') {
             treeSelect = '1';
@@ -457,22 +481,14 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
 
 export function mapStateToProps(state: StoreState) {
     return {
-        serviceOptions: state.createOrderStrategy.serviceOptions,
-        orderState: state.createOrderStrategy.orderState,
         formState: state.createOrderStrategy.formState,
-        rules: state.createOrderStrategy.rules,
-        strategyType: state.createOrderStrategy.rules.strategyType,
     };
 }
 
 export const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) => bindActionCreators(
     {
         onChangeField: actions.changeField,
-        onGetOrderState: actions.getOrderState,
         onGetRules: actions.getRules,
-        onSaveRule: actions.saveRule,
-        onSaveModel: actions.saveModel,
-        onGetService: actions.getService,
         onGetTreeNode: actions.tagNodeTree
     },
     dispatch
