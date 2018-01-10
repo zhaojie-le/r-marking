@@ -158,6 +158,15 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         });
     }
 
+    onTimeChange = (value, dateString) => {
+        // value 未转换格式；dateString 转换后格式
+       let dataArray = dateString;
+       if (dataArray.length > 0) {
+        //    effectiveTime = dataArray[0];
+        //    invalidTime = dataArray[1];
+       }
+   }
+
     onMarketingModelChange = (value) => {
         console.log(value);
     }
@@ -413,6 +422,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 format="YYYY-MM-DD HH:mm"
                                                 disabledDate={this.disabledDate}
                                                 placeholder={['开始时间', '结束时间']}
+                                                onChange={this.onTimeChange}
                                             />
                                         )
                                     }
