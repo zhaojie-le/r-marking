@@ -103,8 +103,8 @@ namespace layout {
     };
 }
 const userConditions: any = ['2', '4', '5', '6'];
-let uuid: number = 0;
-let uuidSr: number = 0;
+// let uuid: number = 0;
+// let uuidSr: number = 0;
 class CreateOrderStrategy extends React.Component<Props, {}> {
     state: any = {
         editing: false,
@@ -344,7 +344,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         }
         // this.validateFieldsType.splice(this.validateFieldsType.indexOf(`marketingModel${uuid}`), 1);
         this.validateFieldsType.splice(this.validateFieldsType.indexOf(`actionParam`), 1);
-        uuid++;
+        // uuid++;
         this.validateFieldsType.push(`actionParam`);
         // this.validateFieldsType.push(`marketingModel${uuid}`);
         switch (eventType) {
@@ -369,7 +369,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         }
         // this.validateFieldsType.splice(this.validateFieldsType.indexOf(`strategyRule${uuidSr}`), 1);
         this.validateFieldsType.splice(this.validateFieldsType.indexOf(`triggerRule`), 1);
-        uuidSr++;
+        // uuidSr++;
         // this.validateFieldsType.push(`strategyRule${uuidSr}`);
         this.validateFieldsType.push(`triggerRule`);
         this.preSrType = eventType;
