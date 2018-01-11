@@ -33,7 +33,7 @@ export default (check: (rule: any, value: any, callback: any) => void, ShowData:
             super(props, context);
             this.state = {
                 editing: false,
-                showData: initialValue
+                showData: initialValue.yxfs ? initialValue : { yxfs: this.props.value }
             };
         }
 
