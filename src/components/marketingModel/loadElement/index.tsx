@@ -136,5 +136,5 @@ export default switchEditState(
         );
     },
     '元素加载',
-    {yxfs: { imgUrl: '', docs: '', link: '' }}
+    {yxfs: null}
 )(LoadEelment);
