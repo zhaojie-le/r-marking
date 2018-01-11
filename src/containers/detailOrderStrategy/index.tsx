@@ -177,22 +177,11 @@ class DetailOrderStrategy extends React.Component<Props, object> {
         const { formState } = this.props;
         const { pagetype } = this.state;
         let editDis = true, invalidTimeDis = true;
-
-        // 修改页面失效时间、失效时间进行判断
         if (pagetype === false) {
-            // 开始有效时间可以选择时间的
-            if (formState.strategyState === '未开始' || formState.strategyState === '待开始') {
-                editDis = false;
-            } else {
-                editDis = true;
-            }
-
-            // 结束有效时间可以选择时间的
-            if (formState.strategyState === '已过期' || formState.strategyState === '已完成') {
-                invalidTimeDis = true;
-            } else {
-                invalidTimeDis = false;
-            }
+            editDis = formState.strategyState === '未开始' || formState.strategyState === '待开始' ?
+                false : true;
+            invalidTimeDis = formState.strategyState === '已过期' || formState.strategyState === '已完成' ?
+                false : true;
         }
         return (
             <div className="displaytime">
@@ -243,58 +232,6 @@ class DetailOrderStrategy extends React.Component<Props, object> {
             </div>
 
         );
-    }
-    orderRules() {
-        // 触发规则拼写规则的拼写规则
-        const { formState } = this.props;
-        let strategyTypeInt = formState.strategyTypeInt;
-        let ruleListArray = formState.ruleList;
-        if (ruleListArray !== undefined && strategyTypeInt !== 0) {
-            ruleListArray = ruleListArray.map((item, i) => {
-                return <p key={i}><label>{item.name}:&nbsp;&nbsp;</label><span >{item.value}</span></p>;
-            });
-            return (
-                <Row style={{ margin: '0 0 20px 0' }}>
-                    <Col style={{ textAlign: 'left', background: '#eee', padding: '10px 0px', border: '1px solid #ccc' }}>
-                        <FormItem className="strategyOrderRules" label="触发规则" {...formItemLayout} style={{ margin: '0' }}>
-                            <div className="orderRules">
-                                <section className="showInfo">
-                                    {ruleListArray}
-                                </section>
-                            </div>
-                        </FormItem>
-                    </Col>
-                </Row>
-            );
-        } else {
-            return ('');
-        }
-    }
-    offendCondition() {
-        // 触发规则条件的拼接
-        const { formState } = this.props;
-        let userCondition = formState.userCondition;
-        let notLoggedMarket = formState.notLoggedMarket;
-        if (userCondition || notLoggedMarket) {
-            userCondition = userCondition.map((item, i) => {
-                return <p key={i}><label>{item.name}</label><span >{item.value}</span></p>;
-            });
-            return (
-                <Row>
-                    <Col style={{ textAlign: 'left', background: '#eee', padding: '10px 0px', border: '1px solid #ccc' }}>
-                        <FormItem className="strategyOrderRules" label="触发条件" {...formItemLayout} style={{ margin: '0' }}>
-                            <div className="orderRules">
-                                <section className="showInfo">
-                                    {userCondition}
-                                </section>
-                            </div>
-                        </FormItem>
-                    </Col>
-                </Row>
-            );
-        } else {
-            return ('');
-        }
     }
     marketingModel() {
         const { formState } = this.props;
@@ -388,32 +325,37 @@ class DetailOrderStrategy extends React.Component<Props, object> {
             return actionExpressionstate;
         }
     }
-    buttonMain() {
+    buttonMain = () => {
         const { pagetype } = this.state;
-        if (pagetype === false) {
-            return (
-                <Row>
-                    <FormItem style={{ width: '100%' }}>
-                        <Button type="primary" onClick={this.onSave} style={{ marginLeft: '138px' }}>创建策略</Button>
-                        <Button style={{ marginLeft: '10px' }}>取消</Button>
-                    </FormItem>
-                </Row>
+        const buttonMainHtml = pagetype === false ?
+            (
+                <div className="buttonmain">
+                    <Row>
+                        <FormItem style={{ width: '100%' }}>
+                            <Button type="primary" onClick={this.onSave} style={{ marginLeft: '138px' }}>创建策略</Button>
+                            <Button style={{ marginLeft: '10px' }}>取消</Button>
+                        </FormItem>
+                    </Row>
+                </div>
+
+            ) :
+            (
+                <div className="buttonmain">
+                    <Row>
+                        <FormItem style={{ width: '100%' }}>
+                            <Button style={{ marginLeft: '138px' }}>返回</Button>
+                        </FormItem>
+                    </Row>
+                </div>
+
             );
-        } else {
-            return (
-                <Row>
-                    <FormItem style={{ width: '100%' }}>
-                        <Button style={{ marginLeft: '138px' }}>返回</Button>
-                    </FormItem>
-                </Row>
-            );
-        }
+        return buttonMainHtml;
     }
     render() {
         const { getFieldDecorator } = this.props.form;
         const { formState, actionParam, strategyMarketingType } = this.props;
         const { pagetype, editing, editDis, } = this.state;
-        console.log('marketingModel====' + JSON.stringify(this.marketingModel()));
+
         return (
             <div id="detailOrder">
                 <Layout>
@@ -450,8 +392,35 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                 </FormItem>
                             </Row>
                             {this.displayTime()}
-                            {this.orderRules()}
-                            {this.offendCondition()}
+                            {formState.ruleList !== undefined && formState.strategyTypeInt !== 0 ?
+                                < Row style={{ margin: '0 0 20px 0' }}>
+                                    <Col style={{ textAlign: 'left', background: '#eee', padding: '10px 0px', border: '1px solid #ccc' }}>
+                                        <FormItem className="strategyOrderRules" label="触发规则" {...formItemLayout} style={{ margin: '0' }}>
+                                            <div className="orderRules">
+                                                <section className="showInfo">
+                                                    {formState.ruleList.map((item, i) => {
+                                                        return <p key={i}><label>{item.name}:&nbsp;&nbsp;</label><span >{item.value}</span></p>;
+                                                    })
+                                                    }
+                                                </section>
+                                            </div>
+                                        </FormItem>
+                                    </Col>
+                                </Row> : ''}
+                            {formState.userCondition || formState.notLoggedMarket ?
+                                <Row>
+                                    <Col style={{ textAlign: 'left', background: '#eee', padding: '10px 0px', border: '1px solid #ccc' }}>
+                                        <FormItem className="strategyOrderRules" label="触发条件" {...formItemLayout} style={{ margin: '0' }}>
+                                            <div className="orderRules">
+                                                <section className="showInfo">
+                                                    {formState.userCondition.map((item, i) => {
+                                                        return <p key={i}><label>{item.name}</label><span >{item.value}</span></p>;
+                                                    })}
+                                                </section>
+                                            </div>
+                                        </FormItem>
+                                    </Col>
+                                </Row> : ''}
                             {formState.strategyType === '订单触发' ?
                                 <Row className="setDelayTime">
                                     <Col span={3} className="delayTimeLabel"><label>延迟时间：</label></Col>
@@ -585,7 +554,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                         北京58到家信息技术有限公司 ©2017 营销系统
                     </Footer>
                 </Layout>
-            </div>
+            </div >
         );
     }
 }
