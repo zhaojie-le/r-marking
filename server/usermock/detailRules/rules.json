@@ -1,36 +1,56 @@
 {
     "data": {
-        "CategoryId": 256,
         "showEdit": true,
-        "strategyName": "lxn订单测试",
-        "pkId": "237968019437985792",
+        "strategyName": "czx挂件+未登录",
+        "pkId": "268694024829804579",
         "marketingType": "拉新",
-        "effectiveTime": "2017-10-18 15:59:11",
+        "pendantContent": {
+            "animation": "左右晃动",
+            "disposeUrl_app": "http://news.baidu.com/guonei?hmsr=daojia_ymgj_268694024829804579_7",
+            "disposeUrl_h5": "http://news.baidu.com/guonei?hmsr=h5_ymgj_268694024829804579_7",
+            "disposeUrl_wechat": "http://news.baidu.com/guonei?hmsr=wechat_ymgj_268694024829804579_7",
+            "imgUrl": "http://img.zcool.cn/community/017274582000cea84a0e282b576a32.jpg",
+            "location": "页面右下角",
+            "openUrl": "http://news.baidu.com/guonei"
+        },
+        "effectiveTime": "2018-01-11 10:53:36",
         "ruleList": [
             {
-                "orderSource": "全部, 到家APP, 微信, 其他h5",
-                "city": "全国",
-                "pageId": "326  页面名称：速运开店"
+                "name": "触发事件",
+                "value": "页面挂件"
+            },
+            {
+                "list": [
+                    {
+                        "name": "城市",
+                        "value": "北京, 上海"
+                    },
+                    {
+                        "name": "订单来源",
+                        "value": "全部, 到家APP, 微信, 其他h5"
+                    },
+                    {
+                        "name": "页面Id",
+                        "value": "661&emsp;&emsp;页面名称：保洁"
+                    }
+                ]
             }
         ],
-        "channel": "[2]",
-        "invalidTime": "2017-10-19 15:59:12",
-        "strategyTypeInt": 1,
-        "appContent": {
-            "appContent": "啥地方",
-            "disposeUrl": "http://s-arch.djtest.cn/Bg1M",
-            "gotoOrderPage": 0,
-            "openUrl": "www.baidu.com",
-            "title": "阿萨德"
-        },
-        "strategyType": "订单触发",
+        "channel": "[7]",
+        "invalidTime": "2018-02-10 10:53:37",
+        "strategyTypeInt": 7,
+        "strategyType": "页面挂件",
         "activityId": 0,
-        "createrEmail": "liuxiaonan@daojia.com",
-        "bussniessId": 112,
+        "createrEmail": "chenzixu@daojia.com",
         "marketingTypeInt": 3,
-        "refer": 5665,
-        "createTime": "2017-10-18 15:59:57",
+        "batchUserInfo": "{\"notLoggedMarket\":1}",
+        "createTime": "2018-01-11 10:54:07",
+        "showButton": 2,
         "strategyMarketingType": [
+            {
+                "name": "未设置",
+                "id": 0
+            },
             {
                 "name": "发券",
                 "id": 1
@@ -72,15 +92,18 @@
                 "id": 10
             }
         ],
-        "orderStatusValue": "0",
+        "triggerEvent": "页面挂件",
         "actionExpression": [
-            2
+            "7"
         ],
-        "marketingLimit": 1,
-        "updateContent": "无",
+        "marketingLimit": 0,
+        "updateContent": "2018-01-11 10:54:10:开始,<br>",
         "actionParam": {
             "appContent": {
-                "$ref": "$.appContent"
+                "appContent": "",
+                "disposeUrl": "",
+                "openUrl": "",
+                "title": ""
             },
             "dayDelay": 0,
             "expressContent": {
@@ -89,7 +112,7 @@
                 "openUrl": "",
                 "title": ""
             },
-            "minuteDelay": 1,
+            "minuteDelay": 0,
             "payOrderContent": {
                 "content": "",
                 "disposeUrl_app": "",
@@ -97,6 +120,9 @@
                 "disposeUrl_wechat": "",
                 "imgUrl": "",
                 "openUrl": ""
+            },
+            "pendantContent": {
+                "$ref": "$.data.pendantContent"
             },
             "smsContent": {
                 "disposeUrl": "",
@@ -114,7 +140,7 @@
                 "validatePeriod": ""
             }
         },
-        "strategyState": "未开始"
+        "strategyState": "进行中"
     },
     "resultCode": 1
 }

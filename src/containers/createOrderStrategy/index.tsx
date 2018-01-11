@@ -103,8 +103,8 @@ namespace layout {
     };
 }
 const userConditions: any = ['2', '4', '5', '6'];
-let uuid: number = 0;
-let uuidSr: number = 0;
+// let uuid: number = 0;
+// let uuidSr: number = 0;
 class CreateOrderStrategy extends React.Component<Props, {}> {
     state: any = {
         editing: false,
@@ -117,7 +117,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     private marketingModel: any = MarketingModelAdd;
     private stType: string;
     private usType: string;
-    private validateFieldsType: Array<string> = ['stragyName', 'time', 'marketingCategory', 'strategyRule0', 'marketingModel0', 'triggerRule'];
+    private saveParams: any = {};
+    private timeMerge: any = {};
+    private validateFieldsType: Array<string> = ['stragyName', 'time', 'marketingCategory', 'marketingType', 'actionParam', 'triggerRule'];
     constructor(props: Props, context: any) {
         super(props, context);
     }
@@ -151,12 +153,31 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         this.props.form.validateFieldsAndScroll(this.validateFieldsType, (err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                this.mergeParmas(values);
+                this.props.onSaveRule(values);
             } else {
                 console.log('allValues', values);
-                this.props.onSaveRule(values);
             }
         });
     }
+
+    mergeParmas = (values) => {
+        this.saveParams = Object.assign({}, this.timeMerge, values);
+        if (values.marketingType) {
+            this.saveParams.marketingType = values.marketingType.marketingType;
+            this.saveParams.activityId = values.marketingType.activityId;
+        }
+        console.log('params', this.saveParams);
+    }
+
+    onTimeChange = (value, dateString) => {
+        // value 未转换格式；dateString 转换后格式
+       let dataArray = dateString;
+       if (dataArray.length > 0) {
+           this.timeMerge.effectiveTime = dataArray[0];
+           this.timeMerge.invalidTime = dataArray[1];
+       }
+   }
 
     onMarketingModelChange = (value) => {
         console.log(value);
@@ -244,7 +265,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             return (
                 <FormItem {...layout.formItemLayoutMarketingModel} label="营销类别" hasFeedback={false}>
                     {
-                        getFieldDecorator('strategytype', {
+                        getFieldDecorator('marketingType', {
                             rules: [{
                                 required: true, message: '营销类别不能为空！',
                             }],
@@ -321,9 +342,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             || eventType === this.preEventType) {
             return;
         }
-        this.validateFieldsType.splice(this.validateFieldsType.indexOf(`marketingModel${uuid}`), 1);
-        uuid++;
-        this.validateFieldsType.push(`marketingModel${uuid}`);
+        // this.validateFieldsType.splice(this.validateFieldsType.indexOf(`marketingModel${uuid}`), 1);
+        this.validateFieldsType.splice(this.validateFieldsType.indexOf(`actionParam`), 1);
+        // uuid++;
+        this.validateFieldsType.push(`actionParam`);
+        // this.validateFieldsType.push(`marketingModel${uuid}`);
         switch (eventType) {
             case 3:
                 this.marketingModel = LoadElement;
@@ -344,9 +367,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         if (eventType === this.preSrType) {
             return;
         }
-        this.validateFieldsType.splice(this.validateFieldsType.indexOf(`strategyRule${uuidSr}`), 1);
-        uuidSr++;
-        this.validateFieldsType.push(`strategyRule${uuidSr}`);
+        // this.validateFieldsType.splice(this.validateFieldsType.indexOf(`strategyRule${uuidSr}`), 1);
+        this.validateFieldsType.splice(this.validateFieldsType.indexOf(`triggerRule`), 1);
+        // uuidSr++;
+        // this.validateFieldsType.push(`strategyRule${uuidSr}`);
+        this.validateFieldsType.push(`triggerRule`);
         this.preSrType = eventType;
         this.props.onResetWeChatPush();
     }
@@ -359,7 +384,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             return (
                 <FormItem {...layout.formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
                     {
-                        getFieldDecorator(`marketingModel${uuid}`, {
+                        getFieldDecorator(`actionParam`, {
                             rules: [{
                                 required: true, message: '营销方式不能为空！',
                             }],
@@ -414,6 +439,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 format="YYYY-MM-DD HH:mm"
                                                 disabledDate={this.disabledDate}
                                                 placeholder={['开始时间', '结束时间']}
+                                                onChange={this.onTimeChange}
                                             />
                                         )
                                     }
