@@ -3,7 +3,7 @@ import {
     Row,
     Col
 } from 'antd';
-import { MarketingModel, PageHangerEdit } from '../../components';
+import { MarketingModel, LoadElement, PageHanger } from '../../components';
 
 interface DetailRuleProps {
     form?: any;
@@ -32,7 +32,6 @@ enum ChannelType {
 // 支付预约的页面{图标、文案、链接}
 // 首页运营位{图标、链接}
 // 页面挂件{图标、链接、动画、位置}
-
 class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
     state: any = {
         showData: {},
@@ -80,7 +79,6 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
     }
     generateShowData() {
         const { showData } = this.state;
-        // const { value } = this.props;
         console.log('valuevalue=' + JSON.stringify(showData));
         return Object.keys(showData).map((item: string, i: number) => {
             let label: any, properties: any[];
@@ -133,13 +131,13 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
                         case 'lastparagraph':
                             msg = <Col> {last} 尾端: {itemObj[lb]}</Col>;
                             break;
-                        case 'icon':
+                        case 'imgUrl':
                             msg = <Col>{last} 图标: {itemObj[lb]}</Col>;
                             break;
                         case 'animation':
                             msg = <Col>{last} 动画: {itemObj[lb]}</Col>;
                             break;
-                        case 'location':
+                        case 'position':
                             msg = <Col>{last} 位置: {itemObj[lb]}</Col>;
                             break;
                         default:
@@ -181,6 +179,7 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
         // edit==true 为修改页面
         const { page, value } = this.props;
         const { showOrderDetailCheck, weChatPush, showData } = this.state;
+        console.log('valuevaluepagepagepage===' + JSON.stringify(value[0].value));
         if (page === true) {
             return (
                 <div className="wrapperModel">
@@ -189,6 +188,24 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
             );
         } else {
             if (showData.PagePendant !== undefined) {
+                // {link: '', imgUrl: '',animation:'',position:''}
+                return (
+                    <PageHanger
+                        form={this.props.form}
+                        value={value[0].value}
+                        onChange={this.onMarketingModelChange}
+                    />
+
+                );
+            } else if (showData.PayAppoint !== undefined) {
+                return (
+                    <LoadElement
+                        form={this.props.form}
+                        value={{ imgUrl: '11', docs: '111', link: '111' }}
+                        onChange={this.onMarketingModelChange}
+                    />
+                );
+            } else {
                 return (
                     <MarketingModel
                         form={this.props.form}
@@ -196,13 +213,6 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
                         option={weChatPush}
                         value={value}
                         showOrderDetailCheck={showOrderDetailCheck}
-                        onChange={this.onMarketingModelChange}
-                    />
-                );
-            } else {
-                return (
-                    <PageHangerEdit
-                        value={{ imgUrl: '1', link: '222' }}
                         onChange={this.onMarketingModelChange}
                     />
                 );

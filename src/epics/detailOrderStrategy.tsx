@@ -38,22 +38,22 @@ const strategyList: Epic<any, any> = (action$, store) => {
         (action): Observable<any> => {
             // 229633399113924614 ${action.id}
             return ajax.getJSON(`/marketStrategy/edit/229633399113924614`)
-                .map((response: {resultCode: number, data: object}) => {
-                if (response.resultCode === 1) {
-                    return (detailOrderSuccess(response.data));
-                } else {
-                    return (detailOrderFail(response));
-                }
-            });
+                .map((response: { resultCode: number, data: object }) => {
+                    if (response.resultCode === 1) {
+                        return (detailOrderSuccess(response.data));
+                    } else {
+                        return (detailOrderFail(response));
+                    }
+                });
         }
-    );
+        );
 };
 
-const onSaveRule: Epic<any, any, any>  = (action$, store) => {
+const onSaveRule: Epic<any, any, any> = (action$, store) => {
     return action$.ofType(constants.ONSAVERULE)
-         .switchMap(
-            (action): Observable<any>  => {
-                return ajax.post('/marketStrategy/update', action.params)
+        .switchMap(
+        (action): Observable<any> => {
+            return ajax.post('/marketStrategy/update', action.params)
                 .map(response => {
                     if (response.response.resultCode === 1) {
                         return (onSaveRuleSuccess(response.response.data));
@@ -61,7 +61,7 @@ const onSaveRule: Epic<any, any, any>  = (action$, store) => {
                         return (onSaveRuleFail(response.response));
                     }
                 });
-            }
+        }
         );
 };
 const detailEpic = [strategyList, onSaveRule];

@@ -68,7 +68,7 @@ const formItemLayoutMarketingModel = {
 };
 
 class DetailOrderStrategy extends React.Component<Props, object> {
-    state = {
+    state: any = {
         pagetype: window.location.href.indexOf('#edit') > 0 ? false : true,
         startValue: '',
         endValue: '',
@@ -118,7 +118,6 @@ class DetailOrderStrategy extends React.Component<Props, object> {
     onEndChange = (value) => {
         this.onChange('endValue', value);
     }
-
     // disabledDate = (current) => {
     //     // Can not select days before today and today
     //     return current && current.valueOf() < Date.now();
@@ -187,6 +186,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
             } else {
                 editDis = true;
             }
+
             // 结束有效时间可以选择时间的
             if (formState.strategyState === '已过期' || formState.strategyState === '已完成') {
                 invalidTimeDis = true;
@@ -247,88 +247,14 @@ class DetailOrderStrategy extends React.Component<Props, object> {
     orderRules() {
         // 触发规则拼写规则的拼写规则
         const { formState } = this.props;
-        let ruleList, ruleListArray, strategyType;
-        ruleList = formState.ruleList;
-        strategyType = formState.strategyType;
-        console.log(formState);
-        if (ruleList !== undefined) {
-            // 订单触发
-            if (strategyType === '订单触发') {
-                ruleListArray = [
-                    {
-                        name: '触发事件：',
-                        value: '订单事件'
-                    },
-                    {
-                        name: '服务项:',
-                        value: formState.ruleList[0].refer
-                    },
-                    {
-                        name: '订单来源:',
-                        value: formState.ruleList[0].orderSource
-                    },
-                    {
-                        name: '订单状态:',
-                        value: formState.ruleList[0].orderStatus
-                    },
-                    {
-                        name: '城市:',
-                        value: formState.ruleList[0].city
-                    },
-                ];
-            }
-            // 导入用户
-            if (strategyType === '导入用户') {
-                ruleListArray = [
-                    {
-                        name: '触发事件：',
-                        value: '导入用户'
-                    },
-                    {
-                        name: '批次id：',
-                        value: formState.batchUserInfo.batchId
-                    },
-                    {
-                        name: '用户数量：',
-                        value: formState.batchUserInfo.userCount
-                    },
-                    {
-                        name: '导入状态：',
-                        value: formState.batchUserInfo.importState === 1 ? '未导入' : formState.batchUserInfo.importState === 2 ? '导入完成' : formState.batchUserInfo.importState === 2 ? '导入完成' : ''
-                    },
-                ];
-            }
-            // 支付预约页面
-            if (strategyType === '支付预约页面') {
-                ruleListArray = [
-                    {
-                        name: '触发事件：',
-                        value: '支付预约页面营销'
-                    },
-                    {
-                        name: '服务项：',
-                        value: formState.ruleList[0].refer
-                    },
-                    {
-                        name: '订单来源：',
-                        value: formState.orderSource
-                    },
-                ];
-            }
-            // 全部用户
-            if (strategyType === '全部用户') {
-                ruleListArray = [
-                    {
-                        name: '触发事件：',
-                        value: '全部用户'
-                    }
-                ];
-            }
+        let strategyTypeInt = formState.strategyTypeInt;
+        let ruleListArray = formState.ruleList;
+        if (ruleListArray !== undefined && strategyTypeInt !== 0) {
             ruleListArray = ruleListArray.map((item, i) => {
-                return <p key={i}><label>{item.name}</label><span >{item.value}</span></p>;
+                return <p key={i}><label>{item.name}:&nbsp;&nbsp;</label><span >{item.value}</span></p>;
             });
             return (
-                <Row>
+                <Row style={{ margin: '0 0 20px 0' }}>
                     <Col style={{ textAlign: 'left', background: '#eee', padding: '10px 0px', border: '1px solid #ccc' }}>
                         <FormItem className="strategyOrderRules" label="触发规则" {...formItemLayout} style={{ margin: '0' }}>
                             <div className="orderRules">
@@ -342,6 +268,124 @@ class DetailOrderStrategy extends React.Component<Props, object> {
             );
         } else {
             return ('');
+        }
+    }
+    offendCondition() {
+        // 触发规则条件的拼接
+        const { formState } = this.props;
+        let userCondition = formState.userCondition;
+        let notLoggedMarket = formState.notLoggedMarket;
+        if (userCondition || notLoggedMarket) {
+            userCondition = userCondition.map((item, i) => {
+                return <p key={i}><label>{item.name}</label><span >{item.value}</span></p>;
+            });
+            return (
+                <Row>
+                    <Col style={{ textAlign: 'left', background: '#eee', padding: '10px 0px', border: '1px solid #ccc' }}>
+                        <FormItem className="strategyOrderRules" label="触发条件" {...formItemLayout} style={{ margin: '0' }}>
+                            <div className="orderRules">
+                                <section className="showInfo">
+                                    {userCondition}
+                                </section>
+                            </div>
+                        </FormItem>
+                    </Col>
+                </Row>
+            );
+        } else {
+            return ('');
+        }
+    }
+    marketingModel() {
+        const { formState } = this.props;
+        const actionExpressionstate: any = [];
+        // 1-微信公众号、2-APP推送，3-短信，4-支付预约页，5-优惠券，6-速运APP，7-页面挂件，9-首页运营位
+        // { type: '4', value: { firparagraph: formState.firstData, lastparagraph: formState.remarkData, link: formState.openUrl } }
+        let actionExpression = formState.actionExpression;
+        if (actionExpression !== undefined) {
+            actionExpression.forEach((item, index) => {
+                switch (item) {
+                    case '1':
+                        actionExpressionstate.push({
+                            type: '4',
+                            value: {
+                                type: '4',
+                                firparagraph: formState.wechatContent.firstData,
+                                lastparagraph: formState.wechatContent.remarkData,
+                                link: formState.wechatContent.openUrl
+                            }
+                        });
+                        break;
+                    case '2':
+                        actionExpressionstate.push({
+                            type: '2',
+                            value: {
+                                type: '2',
+                                docs: formState.appContent.appContent,
+                                link: formState.appContent.openUrl,
+                                title: formState.appContent.title
+                            }
+                        });
+                        break;
+                    case '3':
+                        actionExpressionstate.push({
+                            type: '3',
+                            value: {
+                                type: '3',
+                                docs: formState.smsContent.smsContent,
+                                link: formState.smsContent.openUrl,
+                            }
+                        });
+                        break;
+                    case '4':
+                        actionExpressionstate.push({
+                            type: '5',
+                            value: {
+                                type: '5',
+                                icon: formState.payOrderContent.imgUrl,
+                                docs: formState.payOrderContent.openUrl,
+                                link: formState.payOrderContent.openUrl
+                            }
+                        });
+                        break;
+                    case '6':
+                        actionExpressionstate.push({
+                            type: '1',
+                            value: {
+                                type: '1',
+                                docs: formState.appContent.appContent,
+                                title: formState.appContent.title,
+                                link: formState.appContent.openUrl
+                            }
+                        });
+                        break;
+                    case '7':
+                        actionExpressionstate.push({
+                            type: '6',
+                            value: {
+                                type: '6',
+                                imgUrl: formState.pendantContent.imgUrl,
+                                link: formState.pendantContent.openUrl,
+                                animation: formState.pendantContent.animation,
+                                position: formState.pendantContent.location
+                            }
+                        });
+                        break;
+                    case '9':
+                        actionExpressionstate.push({
+                            type: '7',
+                            value: {
+                                type: '7',
+                                icon: formState.homePageContent.imgUrl,
+                                link: formState.homePageContent.openUrl,
+                            }
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            });
+            return actionExpressionstate;
         }
     }
     buttonMain() {
@@ -369,6 +413,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
         const { getFieldDecorator } = this.props.form;
         const { formState, actionParam, strategyMarketingType } = this.props;
         const { pagetype, editing, editDis, } = this.state;
+        console.log('marketingModel====' + JSON.stringify(this.marketingModel()));
         return (
             <div id="detailOrder">
                 <Layout>
@@ -405,68 +450,70 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                 </FormItem>
                             </Row>
                             {this.displayTime()}
-
                             {this.orderRules()}
-                            <Row className="setDelayTime">
-                                <Col span={3} className="delayTimeLabel"><label>延迟时间：</label></Col>
-                                <Col span={3}>
-                                    <FormItem hasFeedback={false}>
-                                        {getFieldDecorator('dayDelay', {
+                            {this.offendCondition()}
+                            {formState.strategyType === '订单触发' ?
+                                <Row className="setDelayTime">
+                                    <Col span={3} className="delayTimeLabel"><label>延迟时间：</label></Col>
+                                    <Col span={3}>
+                                        <FormItem hasFeedback={false}>
+                                            {getFieldDecorator('dayDelay', {
+                                                rules: [{
+                                                    required: true, message: '延迟时间不能为空！',
+                                                }],
+                                                initialValue: actionParam.dayDelay,
+                                            })(
+                                                <InputNumber
+                                                    min={0}
+                                                    max={100}
+                                                    style={{ width: '90%' }}
+                                                    disabled={editDis}
+                                                />
+                                                )}
+                                        </FormItem>
+                                    </Col>
+                                    <Col span={1}>
+                                        <span className="lh30">天</span>
+                                    </Col>
+                                    <Col span={3}>
+                                        <FormItem>
+                                            {getFieldDecorator('minuteDelay', {
+                                                rules: [{
+                                                    required: true, message: '延迟时间不能为空！',
+                                                }],
+                                                initialValue: actionParam.minuteDelay,
+                                            })(
+                                                <InputNumber
+                                                    min={0}
+                                                    max={100}
+                                                    style={{ width: '90%' }}
+                                                    disabled={editDis}
+                                                />
+                                                )}
+                                        </FormItem>
+                                    </Col>
+                                    <Col span={1}>
+                                        <span className="lh30">分钟</span>
+                                    </Col>
+                                </Row> : ''}
+                            {formState.strategyType === '订单触发' ?
+                                <Row>
+                                    <FormItem label="推送限制" {...formItemLayout} >
+                                        {getFieldDecorator('marketingLimit', {
                                             rules: [{
-                                                required: true, message: '延迟时间不能为空！',
+                                                required: true, message: '推送限制不能为空！',
                                             }],
-                                            initialValue: actionParam.dayDelay,
+                                            initialValue: formState.marketingLimit,
                                         })(
                                             <InputNumber
                                                 min={0}
                                                 max={100}
-                                                style={{ width: '90%' }}
+                                                style={{ width: 80 }}
                                                 disabled={editDis}
                                             />
                                             )}
                                     </FormItem>
-                                </Col>
-                                <Col span={1}>
-                                    <span className="lh30">天</span>
-                                </Col>
-                                <Col span={3}>
-                                    <FormItem>
-                                        {getFieldDecorator('minuteDelay', {
-                                            rules: [{
-                                                required: true, message: '延迟时间不能为空！',
-                                            }],
-                                            initialValue: actionParam.minuteDelay,
-                                        })(
-                                            <InputNumber
-                                                min={0}
-                                                max={100}
-                                                style={{ width: '90%' }}
-                                                disabled={editDis}
-                                            />
-                                            )}
-                                    </FormItem>
-                                </Col>
-                                <Col span={1}>
-                                    <span className="lh30">分钟</span>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <FormItem label="推送限制" {...formItemLayout} >
-                                    {getFieldDecorator('marketingLimit', {
-                                        rules: [{
-                                            required: true, message: '推送限制不能为空！',
-                                        }],
-                                        initialValue: formState.marketingLimit,
-                                    })(
-                                        <InputNumber
-                                            min={0}
-                                            max={100}
-                                            style={{ width: 80 }}
-                                            disabled={editDis}
-                                        />
-                                        )}
-                                </FormItem>
-                            </Row>
+                                </Row> : ''}
                             <Row>
                                 <FormItem className="strategyMarketingType" label="营销类别" {...formTypeLayout} >
                                     <RadioGroup value={formState.marketingTypeInt} onChange={this.onRadioChange} style={{ width: '100%' }}>
@@ -490,34 +537,24 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                         )}
                                 </FormItem>
                             </Row>
-
-                            <Row>
-                                <FormItem {...formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
-                                    {getFieldDecorator('marketingModel', {
-                                        rules: [{
-                                            required: true, message: '营销方式不能为空！',
-                                        }],
-                                        initialValue: [
-                                            { type: '1', value: { type: '1', docs: '111', link: '222' } },
-                                            { type: '2', value: { type: '2', docs: '111', link: '222', title: '22222' } }
-                                        ]
-                                    })(
-                                        // <MarketingModel
-                                        //     form={this.props.form}
-                                        //     stage={0}
-                                        //     option={formState.weChatPush}
-                                        //     showOrderDetailCheck={showOrderDetailCheck}
-                                        //     onChange={this.onMarketingModelChange}
-                                        // />
-                                        <DetailMarketingModel
-                                            form={this.props.form}
-                                            stage={0}
-                                            page={pagetype}
-                                        />
-                                        )}
-                                </FormItem>
-                            </Row>
-                            <Row>
+                            {this.marketingModel() !== undefined ?
+                                <Row>
+                                    <FormItem {...formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
+                                        {getFieldDecorator('marketingModel', {
+                                            rules: [{
+                                                required: true, message: '营销方式不能为空！',
+                                            }],
+                                            initialValue: this.marketingModel(),
+                                        })(
+                                            < DetailMarketingModel
+                                                form={this.props.form}
+                                                stage={formState.strategyState === '待开始' || '未开始' ? 0 : 1}
+                                                page={pagetype}
+                                            />
+                                            )}
+                                    </FormItem>
+                                </Row> : ''}
+                            < Row >
                                 <FormItem label="责任人" {...formItemLayout} >
                                     {getFieldDecorator('createrEmail', {
                                         rules: [{
