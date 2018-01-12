@@ -119,7 +119,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     private usType: string;
     private saveParams: any = {};
     private timeMerge: any = {};
-    private validateFieldsType: Array<string> = ['strategyName', 'time', 'marketingCategory', 'marketingType', 'actionParam', 'triggerRule'];
+    private validateFieldsType: Array<string> = ['strategyName', 'time', 'marketingCategory', 'strategyRule0', 'marketingModel0', 'marketingType'];
     constructor(props: Props, context: any) {
         super(props, context);
     }
@@ -162,11 +162,29 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     mergeParmas = (values) => {
-        this.saveParams.marketingType = values.marketingType ? values.marketingType.marketingType : '';
-        this.saveParams.activityId = values.marketingType ? values.marketingType.activityId : '';
-        this.saveParams = Object.assign({}, this.timeMerge, values, {actionExpression: '2,3'});
-        if (values.actionParam) {
-            this.saveParams.actionParam =  this.actionParamsMap(values.actionParam);
+        let newPar: any = {};
+        let valueArr = Object.entries(values);
+        console.log('valueArr', valueArr);
+        let valueArrLen = valueArr.length;
+        for (let i = 0; i < valueArrLen; i++) {
+            let item0 = valueArr[i][0];
+            let item1 = valueArr[i][1];
+            if (item0.startsWith('strategyRule')) {
+                // 触发规则
+                newPar.triggerRule = item1;
+            } else if (item0.startsWith('marketingModel')) {
+                // 营销方式
+                newPar.actionParam = item1;
+            } else if (item0.startsWith('strategyName')) {
+                // 营销方式
+                newPar.strategyName = item1;
+            } else if (item0.startsWith('marketingType')) {
+                newPar.marketingType = item1.marketingType;
+                newPar.activityId = item1.activityId;
+            }
+        }
+        if (newPar.actionParam) {
+            newPar.actionParam =  this.actionParamsMap(values.actionParam);
         }
         console.log('params', this.saveParams);
     }
@@ -276,7 +294,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             return (
                 <FormItem {...layout.formItemLayoutMarketingModel} label="触发规则" hasFeedback={false}>
                     {
-                        getFieldDecorator(`triggerRule`, {
+                        getFieldDecorator(`strategyRule${uuidSr}`, {
                             rules: [{
                                 required: true, message: '规则不能为空！',
                             }]
@@ -417,7 +435,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             return (
                 <FormItem {...layout.formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
                     {
-                        getFieldDecorator(`actionParam`, {
+                        getFieldDecorator(`marketingModel${uuid}`, {
                             rules: [{
                                 required: true, message: '营销方式不能为空！',
                             }],
