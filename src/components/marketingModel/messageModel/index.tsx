@@ -170,7 +170,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
             if (!err) {
                 this.setState({showData: values});
                 this.onEdit(false);
-                this.props.onChange(values);
+                this.props.onChange(Object.assign({keys: keys.map((item) => item.type)}, values));
             }
         });
     }

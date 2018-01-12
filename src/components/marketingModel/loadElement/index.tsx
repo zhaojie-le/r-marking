@@ -119,21 +119,31 @@ export default switchEditState(
     },
     (props) => {
         const { values } = props;
+
         return (
             <div>
                 <p><span style={{color: 'red'}}>消息推送</span> 优先级：渠道1>渠道2>渠道3 优先渠道送达后，其他渠道将不再推送</p>
-                <Row>
-                    <Col span={3} style={{ color: '#462bc3'}}>图片地址</Col>
-                    <Col span={16}><p title={values.imgUrl}>{values.imgUrl}</p></Col>
-                </Row>
-                <Row>
-                    <Col span={3} style={{ color: '#462bc3'}}>文案</Col>
-                    <Col span={16}><p title={values.docs as any}>{values.docs}</p></Col>
-                </Row>
-                <Row>
-                    <Col span={3} style={{ color: '#462bc3'}}>跳转链接</Col>
-                    <Col span={16}><p title={values.link as any}>{values.link}</p></Col>
-                </Row>
+                {
+                    values ?
+                    (
+                        <div>
+                            <Row>
+                                <Col span={3} style={{ color: '#462bc3'}}>图片地址</Col>
+                                <Col span={16}><p title={values.imgUrl}>{values.imgUrl}</p></Col>
+                            </Row>
+                            <Row>
+                                <Col span={3} style={{ color: '#462bc3'}}>文案</Col>
+                                <Col span={16}><p title={values.docs as any}>{values.docs}</p></Col>
+                            </Row>
+                            <Row>
+                                <Col span={3} style={{ color: '#462bc3'}}>跳转链接</Col>
+                                <Col span={16}><p title={values.link as any}>{values.link}</p></Col>
+                            </Row>
+                        </div>
+
+                    ) :
+                    null
+                }
             </div>
         );
     },
