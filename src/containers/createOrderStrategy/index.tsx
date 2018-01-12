@@ -103,8 +103,8 @@ namespace layout {
     };
 }
 const userConditions: any = ['2', '4', '5', '6'];
-// let uuid: number = 0;
-// let uuidSr: number = 0;
+let uuid: number = 0;
+let uuidSr: number = 0;
 class CreateOrderStrategy extends React.Component<Props, {}> {
     state: any = {
         editing: false,
@@ -162,10 +162,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     mergeParmas = (values) => {
-        if (values.marketingType) {
-            this.saveParams.marketingType = values.marketingType.marketingType;
-            this.saveParams.activityId = values.marketingType.activityId;
-        }
+        this.saveParams.marketingType = values.marketingType ? values.marketingType.marketingType : '';
+        this.saveParams.activityId = values.marketingType ? values.marketingType.activityId : '';
         this.saveParams = Object.assign({}, this.timeMerge, values, {actionExpression: '2,3'});
         if (values.actionParam) {
             this.saveParams.actionParam =  this.actionParamsMap(values.actionParam);
@@ -377,11 +375,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             || eventType === this.preEventType) {
             return;
         }
-        // this.validateFieldsType.splice(this.validateFieldsType.indexOf(`marketingModel${uuid}`), 1);
-        this.validateFieldsType.splice(this.validateFieldsType.indexOf(`actionParam`), 1);
-        // uuid++;
-        this.validateFieldsType.push(`actionParam`);
-        // this.validateFieldsType.push(`marketingModel${uuid}`);
+        this.validateFieldsType.splice(this.validateFieldsType.indexOf(`marketingModel${uuid}`), 1);
+        // this.validateFieldsType.splice(this.validateFieldsType.indexOf(`actionParam`), 1);
+        uuid++;
+        // this.validateFieldsType.push(`actionParam`);
+        this.validateFieldsType.push(`marketingModel${uuid}`);
         switch (eventType) {
             case 3:
                 this.marketingModel = LoadElement;
@@ -402,11 +400,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         if (eventType === this.preSrType) {
             return;
         }
-        // this.validateFieldsType.splice(this.validateFieldsType.indexOf(`strategyRule${uuidSr}`), 1);
-        this.validateFieldsType.splice(this.validateFieldsType.indexOf(`triggerRule`), 1);
-        // uuidSr++;
-        // this.validateFieldsType.push(`strategyRule${uuidSr}`);
-        this.validateFieldsType.push(`triggerRule`);
+        this.validateFieldsType.splice(this.validateFieldsType.indexOf(`strategyRule${uuidSr}`), 1);
+        // this.validateFieldsType.splice(this.validateFieldsType.indexOf(`triggerRule`), 1);
+        uuidSr++;
+        this.validateFieldsType.push(`strategyRule${uuidSr}`);
+        // this.validateFieldsType.push(`triggerRule`);
         this.preSrType = eventType;
         this.props.onResetWeChatPush();
     }
