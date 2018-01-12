@@ -119,7 +119,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     private usType: string;
     private saveParams: any = {};
     private timeMerge: any = {};
-    private validateFieldsType: Array<string> = ['stragyName', 'time', 'marketingCategory', 'marketingType', 'actionParam', 'triggerRule'];
+    private validateFieldsType: Array<string> = ['strategyName', 'time', 'marketingCategory', 'marketingType', 'actionParam', 'triggerRule'];
     constructor(props: Props, context: any) {
         super(props, context);
     }
@@ -154,7 +154,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             if (!err) {
                 console.log('Received values of form: ', values);
                 this.mergeParmas(values);
-                this.props.onSaveRule(values);
+                this.props.onSaveRule(this.saveParams);
             } else {
                 console.log('allValues', values);
             }
@@ -162,12 +162,34 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     mergeParmas = (values) => {
-        this.saveParams = Object.assign({}, this.timeMerge, values);
         if (values.marketingType) {
             this.saveParams.marketingType = values.marketingType.marketingType;
             this.saveParams.activityId = values.marketingType.activityId;
         }
+        this.saveParams = Object.assign({}, this.timeMerge, values);
+        if (values.actionParam) {
+            this.saveParams.actionParam =  this.actionParamsMap(values.actionParam);
+        }
         console.log('params', this.saveParams);
+    }
+
+    actionParamsMap = (obj) => {
+        let actionP: any = {};
+        if (obj) {
+            let objArray = Object.entries(obj);
+            let objArrLen = objArray.length;
+            for (let i = 0; i < objArrLen; i++) {
+                if (objArray[i][0].startsWith('daojiaApp')) {
+                    actionP.appContent = objArray[i][1];
+                } else if (objArray[i][0].startsWith('sms')) {
+                    actionP.smsContent = objArray[i][1];
+                } else if (objArray[i][0].startsWith('suyunApp')) {
+                    actionP.expressContent = objArray[i][1];
+                }
+            }
+            return actionP;
+        }
+        return null;
     }
 
     onTimeChange = (value, dateString) => {
@@ -418,7 +440,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                             <Form onSubmit={this.saveStrategy}>
                                 <FormItem {...layout.formItemLayout} label="策略名称" hasFeedback={false}>
                                     {
-                                        getFieldDecorator('stragyName', {
+                                        getFieldDecorator('strategyName', {
                                             rules: [{
                                                 required: true, message: '策略名称不能为空！',
                                             }],
