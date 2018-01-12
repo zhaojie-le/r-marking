@@ -8,6 +8,7 @@ import {
 
 interface Prop {
     value?: any;
+    stage: boolean;
     onChange: (value: any) => any;
 }
 
@@ -72,12 +73,13 @@ class LoadEelment extends React.Component<Prop, {}> {
     triggerChange = (changedValue) => {
         const onChange = this.props.onChange;
         if (onChange) {
-              onChange(Object.assign({}, this.state, changedValue));
+              onChange(Object.assign({keys: ['4']}, this.state, changedValue));
         }
     }
 
     render() {
         const { docs, imgUrl, link }: any = this.state;
+        const { stage } = this.props;
 
         return (
             <div className="loadElement">
@@ -91,7 +93,7 @@ class LoadEelment extends React.Component<Prop, {}> {
                 </Row>
                 <Row>
                     <Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 跳转链接:</Col>
-                    <Col span={19}><Input placeholder="请输入跳转链接!" onChange={this.linkChange} defaultValue={link}/></Col>
+                    <Col span={19}><Input placeholder="请输入跳转链接!" onChange={this.linkChange} defaultValue={link} disabled={!!stage}/></Col>
                 </Row>
                 <Row>
                     <Col span={19} offset={5} style={{lineHeight: '16px', color: '#2a52be'}}>系统自动加入hmsr参数，无需手动填写hmsr=daojia_clyx_策略id_策略类别_活动id（活动id只有发券类型才有）</Col>
@@ -117,24 +119,34 @@ export default switchEditState(
     },
     (props) => {
         const { values } = props;
+
         return (
             <div>
                 <p><span style={{color: 'red'}}>消息推送</span> 优先级：渠道1>渠道2>渠道3 优先渠道送达后，其他渠道将不再推送</p>
-                <Row>
-                    <Col span={3} style={{ color: '#462bc3'}}>图片地址</Col>
-                    <Col span={16}><p title={values.imgUrl}>{values.imgUrl}</p></Col>
-                </Row>
-                <Row>
-                    <Col span={3} style={{ color: '#462bc3'}}>文案</Col>
-                    <Col span={16}><p title={values.docs as any}>{values.docs}</p></Col>
-                </Row>
-                <Row>
-                    <Col span={3} style={{ color: '#462bc3'}}>跳转链接</Col>
-                    <Col span={16}><p title={values.link as any}>{values.link}</p></Col>
-                </Row>
+                {
+                    values ?
+                    (
+                        <div>
+                            <Row>
+                                <Col span={3} style={{ color: '#462bc3'}}>图片地址</Col>
+                                <Col span={16}><p title={values.imgUrl}>{values.imgUrl}</p></Col>
+                            </Row>
+                            <Row>
+                                <Col span={3} style={{ color: '#462bc3'}}>文案</Col>
+                                <Col span={16}><p title={values.docs as any}>{values.docs}</p></Col>
+                            </Row>
+                            <Row>
+                                <Col span={3} style={{ color: '#462bc3'}}>跳转链接</Col>
+                                <Col span={16}><p title={values.link as any}>{values.link}</p></Col>
+                            </Row>
+                        </div>
+
+                    ) :
+                    null
+                }
             </div>
         );
     },
     '元素加载',
-    {yxfs: { imgUrl: '', docs: '', link: '' }}
+    {yxfs: null}
 )(LoadEelment);

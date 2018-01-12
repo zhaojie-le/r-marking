@@ -8,6 +8,7 @@ const FormItem = Form.Item;
 
 interface Prop {
     value?: any;
+    stage?: any;
     form: { getFieldDecorator: any; validateFields: any; [propName: string]: any; };
     onChange: (value: any) => any;
 }
@@ -33,7 +34,7 @@ export default (check: (rule: any, value: any, callback: any) => void, ShowData:
             super(props, context);
             this.state = {
                 editing: false,
-                showData: initialValue
+                showData: initialValue.yxfs ? initialValue : { yxfs: this.props.value }
             };
         }
 
@@ -60,6 +61,7 @@ export default (check: (rule: any, value: any, callback: any) => void, ShowData:
 
         getContentTpl = () => {
             const { getFieldDecorator } = this.props.form;
+            const stage = this.props.stage;
             const tpl = this.state.editing
             ? (
                 <div className="wrapperModel">
@@ -71,7 +73,7 @@ export default (check: (rule: any, value: any, callback: any) => void, ShowData:
                                 validator: check
                             }],
                         })(
-                            <WrappedComponent onchange={this.onYxfsChange} form={this.props.form} />
+                            <WrappedComponent onchange={this.onYxfsChange} stage={stage} form={this.props.form} />
                         )}
                     </FormItem>
                     <FormItem {...layout.tailFormItemLayout} style={{borderBottom: 'none'}}>
