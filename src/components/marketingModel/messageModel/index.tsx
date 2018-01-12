@@ -176,13 +176,13 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
     }
 
     keysMap = (keys) => {
-        return keys.maop((item) => {
+        return keys.map((item) => {
             switch (item.type) {
-                case 4:
+                case '4':
                     return 1;
-                case 1:
+                case '1':
                     return 3;
-                case 3:
+                case '3':
                     return 6;
                 default:
                     return 2;
@@ -220,7 +220,6 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
         const { form } = this.props;
         const keys = form.getFieldValue('keys');
         const nextKeys = changePosition<MModel>(keys, true, key);
-
         form.setFieldsValue({
             keys: nextKeys,
         });

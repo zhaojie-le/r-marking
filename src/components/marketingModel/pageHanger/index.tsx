@@ -81,7 +81,7 @@ export class PageHanger extends React.Component<Prop, {}> {
     triggerChange = (changedValue) => {
         const onChange = this.props.onChange;
         if (onChange) {
-              onChange(Object.assign({}, this.state, changedValue));
+              onChange(Object.assign({keys: ['7']}, this.state, changedValue));
         }
     }
 

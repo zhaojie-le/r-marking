@@ -21,17 +21,17 @@ class DaojiaAppModel extends React.Component<DaojiaProp, {}> {
         docs: '',
         link: '',
         title: '',
-        type: 2,
+        type: '2',
         showOrderDetailCheck: false,
     };
     private detailLink: string = 'xxx';
- 
+
     constructor(props: any, context: any) {
         super(props, context);
         const value = this.props.value || {};
         this.state = { ...value, type: 2, showOrderDetailCheck: this.props.showOrderDetailCheck };
     }
-    
+
     componentWillReceiveProps(nextProps: any) {
         if ('value' in nextProps) {
             const value = nextProps.value;
@@ -59,9 +59,9 @@ class DaojiaAppModel extends React.Component<DaojiaProp, {}> {
         const isLinkInputDs = event.target.checked;
         const link = event.target.checked ? this.detailLink : event.target.value;
         if (!('value' in this.props)) {
-            this.setState({ 
-                link: link, 
-                linkInput: isLinkInputDs, 
+            this.setState({
+                link: link,
+                linkInput: isLinkInputDs,
             });
         }
         this.triggerChange({ link, linkInput: isLinkInputDs });
