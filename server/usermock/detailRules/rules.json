@@ -1,51 +1,30 @@
 {
     "data": {
-        "showEdit": true,
-        "strategyName": "czx挂件+未登录",
-        "pkId": "268694024829804579",
-        "marketingType": "拉新",
-        "pendantContent": {
-            "animation": "左右晃动",
-            "disposeUrl_app": "http://news.baidu.com/guonei?hmsr=daojia_ymgj_268694024829804579_7",
-            "disposeUrl_h5": "http://news.baidu.com/guonei?hmsr=h5_ymgj_268694024829804579_7",
-            "disposeUrl_wechat": "http://news.baidu.com/guonei?hmsr=wechat_ymgj_268694024829804579_7",
-            "imgUrl": "http://img.zcool.cn/community/017274582000cea84a0e282b576a32.jpg",
-            "location": "页面右下角",
-            "openUrl": "http://news.baidu.com/guonei"
+        "pkId": "268817220207980551",
+        "effectiveTime": "2017-04-05 12:05:04",
+        "channel": "[1, 2, 3]",
+        "invalidTime": "2019-11-30 12:05:04",
+        "strategyTypeInt": 1,
+        "strategyType": "订单触发",
+        "activityId": 18713,
+        "createrEmail": "wangchunshen@163.com",
+        "wechatContent": {
+            "applicationRange": "",
+            "applicationRule": "",
+            "couponValue": "",
+            "disposeUrl": "http://tjztbox73.djtest.cn/h5/baojie/orderDetail?orderid={{orderId}}&hmsr=wxgzh_clyx_219499553940848787_1",
+            "firstData": "公众号",
+            "gotoOrderPage": 1,
+            "openUrl": "",
+            "pushStatus": 1,
+            "remarkData": "尾段",
+            "validatePeriod": ""
         },
-        "effectiveTime": "2018-01-11 10:53:36",
-        "ruleList": [
-            {
-                "name": "触发事件",
-                "value": "页面挂件"
-            },
-            {
-                "list": [
-                    {
-                        "name": "城市",
-                        "value": "北京, 上海"
-                    },
-                    {
-                        "name": "订单来源",
-                        "value": "全部, 到家APP, 微信, 其他h5"
-                    },
-                    {
-                        "name": "页面Id",
-                        "value": "661&emsp;&emsp;页面名称：保洁"
-                    }
-                ]
-            }
-        ],
-        "channel": "[7]",
-        "invalidTime": "2018-02-10 10:53:37",
-        "strategyTypeInt": 7,
-        "strategyType": "页面挂件",
-        "activityId": 0,
-        "createrEmail": "chenzixu@daojia.com",
-        "marketingTypeInt": 3,
-        "batchUserInfo": "{\"notLoggedMarket\":1}",
-        "createTime": "2018-01-11 10:54:07",
-        "showButton": 2,
+        "smsContent": {
+            "disposeUrl": "http://s-arch.djtest.cn/rMFv",
+            "openUrl": "https://www.baidu.com/",
+            "smsContent": "短信文案文案"
+        },
         "strategyMarketingType": [
             {
                 "name": "未设置",
@@ -92,27 +71,42 @@
                 "id": 10
             }
         ],
-        "triggerEvent": "页面挂件",
         "actionExpression": [
-            "7"
+            "1",
+            "2",
+            "3"
         ],
-        "marketingLimit": 0,
-        "updateContent": "2018-01-11 10:54:10:开始,<br>",
+        "marketingLimit": 1,
+        "strategyState": "进行中",
+        "showEdit": true,
+        "strategyName": "wcs策略名称-订单01",
+        "marketingType": "拉新",
+        "categoryId": 201,
+        "bussniessId": 104,
+        "wechatTemplate": {
+            "name": "订单已完成",
+            "value": "4"
+        },
+        "message": "查询规则失败",
+        "appContent": {
+            "appContent": "app文案",
+            "disposeUrl": "http://s-arch.djtest.cn/rMEx",
+            "gotoOrderPage": 0,
+            "openUrl": "https://www.baidu.com/",
+            "title": "appPush"
+        },
+        "marketingTypeInt": 3,
+        "batchUserInfo": "{'batchId':'Uliyong201706071821090765','importNum':0,'importState':1,'userCount':500000}",
+        "createTime": "2018-01-11 19:03:39",
+        "showButton": 2,
+        "triggerEvent": "订单触发",
+        "updateContent": "无",
         "actionParam": {
             "appContent": {
-                "appContent": "",
-                "disposeUrl": "",
-                "openUrl": "",
-                "title": ""
+                "$ref": "$.data.appContent"
             },
-            "dayDelay": 0,
-            "expressContent": {
-                "disposeUrl": "",
-                "expressContent": "",
-                "openUrl": "",
-                "title": ""
-            },
-            "minuteDelay": 0,
+            "dayDelay": 2,
+            "minuteDelay": 1,
             "payOrderContent": {
                 "content": "",
                 "disposeUrl_app": "",
@@ -121,26 +115,13 @@
                 "imgUrl": "",
                 "openUrl": ""
             },
-            "pendantContent": {
-                "$ref": "$.data.pendantContent"
-            },
             "smsContent": {
-                "disposeUrl": "",
-                "openUrl": "",
-                "smsContent": ""
+                "$ref": "$.data.smsContent"
             },
             "wechatContent": {
-                "applicationRange": "",
-                "applicationRule": "",
-                "couponValue": "",
-                "disposeUrl": "",
-                "firstData": "",
-                "openUrl": "",
-                "remarkData": "",
-                "validatePeriod": ""
+                "$ref": "$.data.wechatContent"
             }
-        },
-        "strategyState": "进行中"
+        }
     },
     "resultCode": 1
 }
