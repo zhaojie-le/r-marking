@@ -230,15 +230,16 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                     </FormItem>
                 </Row>
             </div>
-
         );
     }
     marketingModel() {
         const { formState } = this.props;
         const actionExpressionstate: any = [];
+        // [[1, '短信'], [2, '58到家-APP push'], [3, '58速运-APP push'], [4, '58到家公众号'], [5, '支付预约'], [6, '页面挂件'], [7, '首页运营位']]
         // 1-微信公众号、2-APP推送，3-短信，4-支付预约页，5-优惠券，6-速运APP，7-页面挂件，9-首页运营位
         // { type: '4', value: { firparagraph: formState.firstData, lastparagraph: formState.remarkData, link: formState.openUrl } }
         let actionExpression = formState.actionExpression;
+        // formState.wechatContent.openUrl
         if (actionExpression !== undefined) {
             actionExpression.forEach((item, index) => {
                 switch (item) {
@@ -247,9 +248,10 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                             type: '4',
                             value: {
                                 type: '4',
-                                firparagraph: formState.wechatContent.firstData,
-                                lastparagraph: formState.wechatContent.remarkData,
-                                link: formState.wechatContent.openUrl
+                                first: formState.wechatContent.firstData,
+                                remark: formState.wechatContent.remarkData,
+                                link: formState.categoryId === 201 ? '订单详情页面' : (formState.categoryId === 212 || formState.bussniessId === 104) ? '订单评价页面' : formState.wechatContent.openUrl,
+                                tstate: formState.wechatTemplate.value === '1' ? '下单成功' : formState.wechatTemplate.value === '2' ? '待支付通知' : formState.wechatTemplate.value === '4' ? '订单已完成' : '',
                             }
                         });
                         break;
@@ -258,19 +260,19 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                             type: '2',
                             value: {
                                 type: '2',
+                                title: formState.appContent.title,
                                 docs: formState.appContent.appContent,
-                                link: formState.appContent.openUrl,
-                                title: formState.appContent.title
+                                link: formState.categoryId === 201 ? '订单详情页面' : (formState.categoryId === 212 || formState.bussniessId === 104) ? '订单评价页面' : formState.appContent.openUrl,
                             }
                         });
                         break;
                     case '3':
                         actionExpressionstate.push({
-                            type: '3',
+                            type: '1',
                             value: {
-                                type: '3',
+                                type: '1',
                                 docs: formState.smsContent.smsContent,
-                                link: formState.smsContent.openUrl,
+                                link: (formState.categoryId === 212 || formState.bussniessId === 104) ? '订单评价页面' : formState.smsContent.openUrl,
                             }
                         });
                         break;
@@ -287,11 +289,11 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                         break;
                     case '6':
                         actionExpressionstate.push({
-                            type: '1',
+                            type: '3',
                             value: {
-                                type: '1',
-                                docs: formState.appContent.appContent,
+                                type: '3',
                                 title: formState.appContent.title,
+                                docs: formState.appContent.appContent,
                                 link: formState.appContent.openUrl
                             }
                         });
@@ -337,7 +339,6 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                         </FormItem>
                     </Row>
                 </div>
-
             ) :
             (
                 <div className="buttonmain">
@@ -347,7 +348,6 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                         </FormItem>
                     </Row>
                 </div>
-
             );
         return buttonMainHtml;
     }

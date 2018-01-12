@@ -22,16 +22,6 @@ enum ChannelType {
     homeOperation, // 首页运营位
 }
 
-// 短信  { type: '1', docs: '111', link: '222' }
-// 58到家-APP push  { type: '2', docs: '111', link: '222', title: '22222' }
-// 58速运-APP push  {文案、标题、跳转链接}
-// 储存券 {标题、文案、跳转链接}
-// 导出用户{标题、文案、跳转链接}
-// 58到家公众号 {首端、尾端、跳转链接} 
-// 外推消息{首段、尾段、*跳转链接} 没有加数字
-// 支付预约的页面{图标、文案、链接}
-// 首页运营位{图标、链接}
-// 页面挂件{图标、链接、动画、位置}
 class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
     state: any = {
         showData: {},
@@ -43,6 +33,7 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
         super(props, context);
         const value = this.props.value || [];
         console.log('valuevaluevalue=' + JSON.stringify(value));
+
         value.forEach((item) => {
             let trItem: any;
             switch (item.type) {
@@ -94,7 +85,7 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
                     label = '58速运-APP push';
                     break;
                 case ChannelType[4].toUpperCase():
-                    label = '58到家公众号';
+                    label = '58到家公众号-' + itemObj.tstate;
                     break;
                 case ChannelType[5].toUpperCase():
                     label = '支付预约的页面';
@@ -114,31 +105,31 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
                     let msg: any;
                     switch (lb) {
                         case 'docs':
-                            msg = <Col>{last} 文案: {itemObj[lb]}</Col>;
+                            msg = <Col ><span style={{ fontWeight: 'bold' }}>{last}文案:</span> {itemObj[lb]}</Col>;
                             break;
                         case 'title':
-                            msg = <Col>{last} 标题: {itemObj[lb]}</Col>;
+                            msg = <Col><span style={{ fontWeight: 'bold' }}>{last} 标题: </span>{itemObj[lb]}</Col>;
                             break;
                         case 'link':
-                            msg = <Col>{last} 链接: {itemObj[lb]}</Col>;
+                            msg = <Col><span style={{ fontWeight: 'bold' }}>{last} 链接: </span>{itemObj[lb]}</Col>;
                             break;
                         case 'chat':
-                            msg = <Col>{last} 微信公众号: {itemObj[lb]}</Col>;
+                            msg = <Col><span style={{ fontWeight: 'bold' }}>{last} 微信公众号:</span> {itemObj[lb]}</Col>;
                             break;
-                        case 'firparagraph':
-                            msg = <Col>{last} 首端: {itemObj[lb]}</Col>;
+                        case 'first':
+                            msg = <Col><span style={{ fontWeight: 'bold' }}>{last} 首端:</span> {itemObj[lb]}</Col>;
                             break;
-                        case 'lastparagraph':
-                            msg = <Col> {last} 尾端: {itemObj[lb]}</Col>;
+                        case 'remark':
+                            msg = <Col> <span style={{ fontWeight: 'bold' }}>{last} 尾端:</span> {itemObj[lb]}</Col>;
                             break;
                         case 'imgUrl':
-                            msg = <Col>{last} 图标: {itemObj[lb]}</Col>;
+                            msg = <Col><span style={{ fontWeight: 'bold' }}>{last} 图标:</span> {itemObj[lb]}</Col>;
                             break;
                         case 'animation':
-                            msg = <Col>{last} 动画: {itemObj[lb]}</Col>;
+                            msg = <Col> <span style={{ fontWeight: 'bold' }}> {last} 动画:</span> {itemObj[lb]}</Col>;
                             break;
                         case 'position':
-                            msg = <Col>{last} 位置: {itemObj[lb]}</Col>;
+                            msg = <Col> <span style={{ fontWeight: 'bold' }}> {last} 位置: </span>{itemObj[lb]}</Col>;
                             break;
                         default:
                             msg = last;
@@ -154,7 +145,8 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
                         <Row >
                             <Col span={5} style={{ color: '#462bc3' }}>{label}</Col>
                         </Row>
-                        <Row style={{ margin: '0 0 0 76px' }}>
+                        {/* style={{ margin: '0 0 0 86px' }} */}
+                        <Row>
                             {properties}
                         </Row>
                     </div>
@@ -164,9 +156,10 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
                     <div key={i}>
                         <Row >
                             <Col span={2} style={{ fontWeight: 'bold', color: '#2b2b2b' }}>渠道{i + 1}</Col>
-                            <Col span={5} style={{ color: '#462bc3' }}>{label}</Col>
+                            <Col span={5} style={{ color: '#462bc3', fontWeight: 'bold' }}>{label}</Col>
                         </Row>
-                        <Row style={{ margin: '0 0 0 76px' }}>
+                        {/* style={{ margin: '0 0 0 86px' }} */}
+                        <Row>
                             {properties}
                         </Row>
                     </div>
@@ -177,7 +170,7 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
     }
     render() {
         // edit==true 为修改页面
-        const { page, value } = this.props;
+        const { page, value, stage } = this.props;
         const { showOrderDetailCheck, weChatPush, showData } = this.state;
         console.log('valuevaluepagepagepage===' + JSON.stringify(value[0].value));
         if (page === true) {
@@ -209,7 +202,7 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
                 return (
                     <MarketingModel
                         form={this.props.form}
-                        stage={0}
+                        stage={stage}
                         option={weChatPush}
                         value={value}
                         showOrderDetailCheck={showOrderDetailCheck}

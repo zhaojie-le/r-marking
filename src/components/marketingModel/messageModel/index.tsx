@@ -61,9 +61,8 @@ enum ChannelType {
     SuyunApp,
     ChatNumber,
 }
-
 function changePosition<T extends { k: number }>(arr: any[], type: boolean, key: T): T[] {
-    const newKeys: T[] = [ ...arr ];
+    const newKeys: T[] = [...arr];
     const current = arr.indexOf(key);
     const preIndex = type ? current - 1 : current + 1;
     [newKeys[preIndex], newKeys[current]] = [newKeys[current], newKeys[preIndex]];
@@ -168,7 +167,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
         });
         this.props.form.validateFields(fields, (err, values) => {
             if (!err) {
-                this.setState({showData: values});
+                this.setState({ showData: values });
                 this.onEdit(false);
                 this.props.onChange(values);
             }
@@ -193,7 +192,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
             return;
         }
         const keys = form.getFieldValue('keys');
-        const nextKeys = keys.concat({k: uuid++, type: keyType[0], orderState: keyType[1], value: {type: keyType[0]}});
+        const nextKeys = keys.concat({ k: uuid++, type: keyType[0], orderState: keyType[1], value: { type: keyType[0] } });
 
         form.setFieldsValue({
             keys: nextKeys,
@@ -240,9 +239,9 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
     }
 
     componentDidUpdate(prevProps: any) {
-        if ( this.isDirty === true ) {
+        if (this.isDirty === true) {
             this.deleteChannel(this.currentWechatKey, '58到家公众号');
-            this.setState({showData: {}});
+            this.setState({ showData: {} });
             this.isDirty = false;
         }
     }
@@ -270,7 +269,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
     }
 
     checkSms = (rule, value1, callback) => {
-        const value = Object.assign({docs: '', link: ''}, value1);
+        const value = Object.assign({ docs: '', link: '' }, value1);
         const wordNumber: number = getBt(value.docs);
 
         if (value.docs && value.link && wordNumber < 80) {
@@ -278,37 +277,37 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
             return;
         }
         callback(validate([
-            {type: 'require', value: value.docs || '', errMsg: '文案不能为空'},
-            {type: 'require', value: value.link || '', errMsg: '链接不能为空'},
-            {type: 'limit', value: value.docs, limitNumber: 80,  errMsg: '文案字数过多'}
+            { type: 'require', value: value.docs || '', errMsg: '文案不能为空' },
+            { type: 'require', value: value.link || '', errMsg: '链接不能为空' },
+            { type: 'limit', value: value.docs, limitNumber: 80, errMsg: '文案字数过多' }
         ]));
     }
 
     checkApp = (rule, value1, callback) => {
-        const value = Object.assign({docs: '', link: '', title: ''}, value1);
+        const value = Object.assign({ docs: '', link: '', title: '' }, value1);
         if (value.docs && value.link && value.title && getBt(value.docs) < 60 && getBt(value.title) < 20) {
             callback();
             return;
         }
         callback(validate([
-            {type: 'require', value: value.docs, errMsg: '文案不能为空'},
-            {type: 'require', value: value.link, errMsg: '链接不能为空'},
-            {type: 'require', value: value.title, errMsg: '标题不能为空'},
-            {type: 'limit', value: value.docs, limitNumber: 60,  errMsg: '文案字数过多'},
-            {type: 'limit', value: value.title, limitNumber: 20,  errMsg: '标题字数过多'}
+            { type: 'require', value: value.docs, errMsg: '文案不能为空' },
+            { type: 'require', value: value.link, errMsg: '链接不能为空' },
+            { type: 'require', value: value.title, errMsg: '标题不能为空' },
+            { type: 'limit', value: value.docs, limitNumber: 60, errMsg: '文案字数过多' },
+            { type: 'limit', value: value.title, limitNumber: 20, errMsg: '标题字数过多' }
         ]));
     }
 
     checkChatNumber = (rule, value1, callback) => {
-        const value = Object.assign({first: '', remark: '', link: ''}, value1);
+        const value = Object.assign({ first: '', remark: '', link: '' }, value1);
         if (value.first && value.remark && value.link) {
             callback();
             return;
         }
         callback(validate([
-            {type: 'require', value: value.first, errMsg: '首段不能为空'},
-            {type: 'require', value: value.remark, errMsg: '尾段不能为空'},
-            {type: 'require', value: value.link, errMsg: '链接不能为空'},
+            { type: 'require', value: value.first, errMsg: '首段不能为空' },
+            { type: 'require', value: value.remark, errMsg: '尾段不能为空' },
+            { type: 'require', value: value.link, errMsg: '链接不能为空' },
         ]));
     }
 
@@ -377,7 +376,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
 
         return keys.map((key, i) => {
             const props = {
-                first:  i === 0 ? true : false,
+                first: i === 0 ? true : false,
                 last: i === clength - 1 ? true : false,
                 stage: stage,
                 showOrderDetailCheck: showOrderDetailCheck,
@@ -386,8 +385,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
                 onShiftDown: () => this.shiftDown(key)
             };
             const typeIndex = i + 1;
-            const {k, type} = key;
-
+            const { k, type } = key;
             switch (parseInt(type, 10)) {
                 case ChannelType.Sms:
                     return (
@@ -404,7 +402,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
                                     {...props}
                                     onDelete={() => this.deleteChannel(key, '短信')}
                                 />
-                            )}
+                                )}
                         </FormItem>
                     );
                 case ChannelType.DaojiaApp:
@@ -422,7 +420,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
                                     {...props}
                                     onDelete={() => this.deleteChannel(key, '58到家-APP push')}
                                 />
-                            )}
+                                )}
                         </FormItem>
                     );
                 case ChannelType.SuyunApp:
@@ -440,12 +438,13 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
                                     {...props}
                                     onDelete={() => this.deleteChannel(key, '58速运-APP push')}
                                 />
-                            )}
+                                )}
                         </FormItem>
                     );
                 case ChannelType.ChatNumber:
                     this.currentWechatKey = key;
                     return (
+
                         <FormItem {...layout.modelItemLayout} label={`渠道${typeIndex}`} key={typeIndex}>
                             {getFieldDecorator(`chatNumber-${k}`, {
                                 initialValue: key.value,
@@ -454,10 +453,14 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
                                     validator: this.checkChatNumber
                                 }],
                             })(
-                                <ChatNumber onChange={this.onModelFieldChange} {...props} onDelete={() => this.deleteChannel(key, '58到家公众号')}>
+                                <ChatNumber
+                                    onChange={this.onModelFieldChange}
+                                    {...props}
+                                    onDelete={() => this.deleteChannel(key, '58到家公众号')}
+                                >
                                     {this.generateChat(key)}
                                 </ChatNumber>
-                            )}
+                                )}
                         </FormItem>
                     );
                 default:
@@ -487,8 +490,8 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
             </Menu>
         );
         return (
-            <Dropdown overlay={menu} style={{width: '120px'}}>
-                <Button style={{width: '120px'}}>
+            <Dropdown overlay={menu} style={{ width: '120px' }}>
+                <Button style={{ width: '120px' }}>
                     添加渠道 <Icon type="down" />
                 </Button>
             </Dropdown>
@@ -501,16 +504,22 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
                 let typeLabel: any;
                 switch (lb) {
                     case 'docs':
-                        typeLabel = <span style={{color: '#FF4500'}}>文案</span>;
+                        typeLabel = <span style={{ color: '#FF4500' }}>文案</span>;
                         break;
                     case 'title':
-                        typeLabel = <span style={{color: '#C71585'}}>标题</span>;
+                        typeLabel = <span style={{ color: '#C71585' }}>标题</span>;
                         break;
                     case 'link':
-                        typeLabel = <span style={{color: '#0066FF'}}>链接</span>;
+                        typeLabel = <span style={{ color: '#0066FF' }}>链接</span>;
                         break;
                     case 'chat':
-                        typeLabel = <span style={{color: '#888800'}}>微信公众号</span>;
+                        typeLabel = <span style={{ color: '#888800' }}>微信公众号</span>;
+                        break;
+                    case 'first':
+                        typeLabel = <span style={{ color: '#C71585' }}>首端</span>;
+                        break;
+                    case 'remark':
+                        typeLabel = <span style={{ color: '#FF4500' }}>尾端</span>;
                         break;
                     default:
                         return null;
@@ -546,7 +555,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
                     label = '58速运-APP push';
                     break;
                 case ChannelType[4].toUpperCase():
-                    label = '58到家公众号';
+                    label = '58到家公众号—' + itemObj.tstate;
                     break;
                 default:
                     break;
@@ -555,10 +564,10 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
             properties = this.showEveryData(itemObj);
 
             return (
-                <div key={i} style={{borderBottom: '1px solid #ccc', paddingBottom: '10px'}}>
+                <div key={i} style={{ borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
                     <Row>
-                        <Col span={2} style={{ fontWeight: 'bold', color: '#2b2b2b'}}>渠道{i + 1}</Col>
-                        <Col span={5} style={{ color: '#462bc3'}}>{label}</Col>
+                        <Col span={2} style={{ fontWeight: 'bold', color: '#2b2b2b' }}>渠道{i + 1}</Col>
+                        <Col span={5} style={{ color: '#462bc3' }}>{label}</Col>
                     </Row>
                     <Row>
                         <Col span={16} style={styleSpan as any}>{properties}</Col>
@@ -570,22 +579,22 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
 
     getContentTpl = () => {
         const tpl = this.state.editing
-        ? (
-            <div className="wrapperModel">
-                {this.geteratorChannel()}
-                {this.generatorCreateMenu()}
-                <FormItem {...layout.tailFormItemLayout} style={{borderBottom: 'none'}}>
-                    <Button type="primary" onClick={this.onSave}>保存</Button>
-                    <Button onClick={() => this.onEdit(false)} style={{marginLeft: '10px'}}>取消</Button>
-                </FormItem>
-            </div>
-        )
-        : (
-            <div className="wrapperModel">
-                <p><span style={{color: 'red'}}>消息推送</span> 优先级：渠道1>渠道2>渠道3 优先渠道送达后，其他渠道将不再推送</p>
-                {this.generateShowData()}
-            </div>
-        );
+            ? (
+                <div className="wrapperModel">
+                    {this.geteratorChannel()}
+                    {this.generatorCreateMenu()}
+                    <FormItem {...layout.tailFormItemLayout} style={{ borderBottom: 'none' }}>
+                        <Button type="primary" onClick={this.onSave}>保存</Button>
+                        <Button onClick={() => this.onEdit(false)} style={{ marginLeft: '10px' }}>取消</Button>
+                    </FormItem>
+                </div>
+            )
+            : (
+                <div className="wrapperModel">
+                    <p><span style={{ color: 'red' }}>消息推送</span> 优先级：渠道1>渠道2>渠道3 优先渠道送达后，其他渠道将不再推送</p>
+                    {this.generateShowData()}
+                </div>
+            );
 
         return tpl;
     }
@@ -595,10 +604,10 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
         let btnStyle = {};
 
         if (this.state.editing) {
-            btnStyle = {display: 'none'};
+            btnStyle = { display: 'none' };
         } else {
-            wrapperStyle = { background: '#fff', border: 'none'};
-            btnStyle = {display: 'block'};
+            wrapperStyle = { background: '#fff', border: 'none' };
+            btnStyle = { display: 'block' };
         }
 
         return (
