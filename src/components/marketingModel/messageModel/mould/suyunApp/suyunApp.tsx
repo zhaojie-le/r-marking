@@ -34,7 +34,7 @@ class SuyunAppModel extends React.Component<SuyunProp, SunyunState> {
             type: value.type || 3,
         };
     }
-    
+
     componentWillReceiveProps(nextProps: any) {
         if ('value' in nextProps) {
             const value = nextProps.value;
@@ -91,8 +91,8 @@ class SuyunAppModel extends React.Component<SuyunProp, SunyunState> {
                     <Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 跳转链接:</Col>
                     <Col span={19}>
                         <RadioGroup onChange={this.linkChange} value={this.state.link} defaultValue={link} disabled={!!stage}>
-                            <Radio value={1}>58速运App首页</Radio>
-                            <Radio value={2}>58速运App券列表页</Radio>
+                            <Radio value={'app'}>58速运App首页</Radio>
+                            <Radio value={'coupon'}>58速运App券列表页</Radio>
                         </RadioGroup>
                     </Col>
                 </Row>
