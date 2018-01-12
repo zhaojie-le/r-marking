@@ -61,7 +61,7 @@ export default (check: (rule: any, value: any, callback: any) => void, ShowData:
 
         getContentTpl = () => {
             const { getFieldDecorator } = this.props.form;
-            const stage = this.props;
+            const stage = this.props.stage;
             const tpl = this.state.editing
             ? (
                 <div className="wrapperModel">

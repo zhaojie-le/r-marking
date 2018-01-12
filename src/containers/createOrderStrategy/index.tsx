@@ -424,6 +424,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                         })(
                             <MarketingModel
                                 form={this.props.form}
+                                stage={false}
                                 onChange={this.onMarketingModelChange}
                             />
                         )}
