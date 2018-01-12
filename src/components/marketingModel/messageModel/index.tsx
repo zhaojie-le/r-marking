@@ -170,7 +170,22 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
             if (!err) {
                 this.setState({showData: values});
                 this.onEdit(false);
-                this.props.onChange(Object.assign({keys: keys.map((item) => item.type)}, values));
+                this.props.onChange(Object.assign({ keys: this.keysMap(keys) }, values));
+            }
+        });
+    }
+
+    keysMap = (keys) => {
+        return keys.maop((item) => {
+            switch (item.type) {
+                case 4:
+                    return 1;
+                case 1:
+                    return 3;
+                case 3:
+                    return 6;
+                default:
+                    return 2;
             }
         });
     }
