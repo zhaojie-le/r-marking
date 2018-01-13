@@ -146,6 +146,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
         const fields: any[] = [];
         const { form } = this.props;
         const keys = form.getFieldValue('keys');
+        let weChatProperty: string;
 
         keys.forEach((item, i) => {
             switch (parseInt(item.type, 10)) {
@@ -159,6 +160,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
                     fields.push(`suyunApp-${item.k}`);
                     break;
                 case ChannelType.ChatNumber:
+                    weChatProperty = `chatNumber-${item.k}`;
                     fields.push(`chatNumber-${item.k}`);
                     break;
                 default:
@@ -169,6 +171,9 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
             if (!err) {
                 this.setState({ showData: values });
                 this.onEdit(false);
+                if (weChatProperty && values[weChatProperty]) {
+                    values[weChatProperty].pushStatus = this.props.option.value;
+                }
                 this.props.onChange(Object.assign({ keys: this.keysMap(keys) }, values));
             }
         });
