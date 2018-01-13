@@ -37,7 +37,7 @@ const strategyList: Epic<any, any> = (action$, store) => {
         .switchMap(
         (action): Observable<any> => {
             // 229633399113924614 ${action.id}
-            return ajax.getJSON(`/marketStrategy/edit/229633399113924614`)
+            return ajax.getJSON(`/marketStrategy/edit/${action.id}`)
                 .map((response: { resultCode: number, data: object }) => {
                     if (response.resultCode === 1) {
                         return (detailOrderSuccess(response.data));
