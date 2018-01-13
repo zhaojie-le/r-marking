@@ -25,7 +25,7 @@ class ChatNumber extends React.Component<ChatNumberProp, {}> {
         type: 4,
         showOrderDetailCheck: false,
     };
-    private detailLink: string = 'xxx';
+    private detailLink: string = '订单详情页';
  
     constructor(props: any, context: any) {
         super(props, context);
