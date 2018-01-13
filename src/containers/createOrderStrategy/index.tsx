@@ -175,6 +175,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             } else if (item0.startsWith('marketingModel')) {
                 // 营销方式
                 newPar.actionParam = item1;
+                newPar.actionExpression = item1.keys.toString();
             } else if (item0.startsWith('strategyName')) {
                 // 营销方式
                 newPar.strategyName = item1;
@@ -183,10 +184,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 newPar.activityId = item1.activityId;
             }
         }
-        if (newPar.actionParam) {
-            newPar.actionParam =  this.actionParamsMap(values.actionParam);
-        }
-        console.log('params', this.saveParams);
+        newPar.actionParam = newPar.actionParam ? this.actionParamsMap(newPar.actionParam) : null;
+        console.log('newPar', newPar);
     }
 
     actionParamsMap = (obj) => {
@@ -196,11 +195,13 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             let objArrLen = objArray.length;
             for (let i = 0; i < objArrLen; i++) {
                 if (objArray[i][0].startsWith('daojiaApp')) {
-                    actionP.appContent = objArray[i][1];
+                    actionP.appContent = this.contentMap(objArray[i][1]);
                 } else if (objArray[i][0].startsWith('sms')) {
-                    actionP.smsContent = objArray[i][1];
+                    actionP.smsContent = this.contentMap(objArray[i][1]);
                 } else if (objArray[i][0].startsWith('suyunApp')) {
-                    actionP.expressContent = objArray[i][1];
+                    actionP.expressContent = this.contentMap(objArray[i][1]);
+                } else if (objArray[i][0].startsWith('chatNumber')) {
+                    actionP.wechatContent = this.chartNumberMap(objArray[i][1]);
                 }
             }
             return actionP;
@@ -217,7 +218,19 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 newContent.content = objItem.docs;
             } else if (objItem.link) {
                 newContent.openUrl = objItem.link;
-            } 
+            }
+        }
+    }
+    chartNumberMap = (objItem) => {
+        let newContent: any = {};
+        newContent.firstData = objItem.first ? objItem.first : '';
+        newContent.remarkData = objItem.remark ? objItem.remark : '';
+        if (objItem.linkInput) {
+            // 默认订单详情
+            newContent.gotoOrderPage = 1;
+        } else {
+            // 输入的跳转链接
+            newContent.openUrl = objItem.link;
         }
     }
 
