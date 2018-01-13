@@ -117,7 +117,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     private marketingModel: any = MarketingModelAdd;
     private stType: string;
     private usType: string;
-    private saveParams: any = {};
     private timeMerge: any = {};
     private validateFieldsType: Array<string> = ['strategyName', 'time', 'marketingCategory', 'strategyRule0', 'marketingModel0', 'marketingType'];
     constructor(props: Props, context: any) {
@@ -154,7 +153,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             if (!err) {
                 console.log('Received values of form: ', values);
                 this.mergeParmas(values);
-                this.props.onSaveRule(this.saveParams);
+                this.props.onSaveRule(this.mergeParmas(values));
             } else {
                 console.log('allValues', values);
             }
@@ -172,6 +171,12 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             if (item0.startsWith('strategyRule')) {
                 // 触发规则
                 newPar.triggerRule = item1;
+                // 当触发规则为订单事件时，需要处理一下返回的数据
+                if (this.state.eventType === 1) {
+                    newPar.triggerRule.orderStatus = item1.serviceOptions ? item1.serviceOptions : null;
+                    newPar.dayDelay = item1.delayTime.day ? item1.delayTime.day : 0;
+                    newPar.minuteDelay = item1.delayTime.minute ? item1.delayTime.minute : 0;
+                }
             } else if (item0.startsWith('marketingModel')) {
                 // 营销方式
                 newPar.actionParam = item1;
@@ -186,6 +191,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         }
         newPar.actionParam = newPar.actionParam ? this.actionParamsMap(newPar.actionParam) : null;
         console.log('newPar', newPar);
+        return newPar;
     }
 
     actionParamsMap = (obj) => {
@@ -220,18 +226,22 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 newContent.openUrl = objItem.link;
             }
         }
+        return newContent;
     }
     chartNumberMap = (objItem) => {
         let newContent: any = {};
         newContent.firstData = objItem.first ? objItem.first : '';
         newContent.remarkData = objItem.remark ? objItem.remark : '';
+        newContent.pushStatus = objItem.pushStatus ? objItem.pushStatus : '';
         if (objItem.linkInput) {
             // 默认订单详情
             newContent.gotoOrderPage = 1;
         } else {
             // 输入的跳转链接
+            newContent.gotoOrderPage = 0;
             newContent.openUrl = objItem.link;
         }
+        return newContent;
     }
 
     onTimeChange = (value, dateString) => {
