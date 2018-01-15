@@ -20,9 +20,8 @@ export interface RuleProps {
 
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
-
+let dataList: Array<any> = [];
 const generateList = (data) => {
-    let dataList: Array<any> = [];
     for (let i = 0; i < data.length; i++) {
         const node = data[i];
         const key = node.key;
@@ -95,7 +94,9 @@ class TreeSelect extends React.Component<Props, any> {
             searchValue: '',
             newTreeData: []
         };
+        console.log(this.dataList);
         this.dataList = generateList(this.props.tagNodeTree);
+        console.log(this.dataList);
     }
 
     onExpand = (expandedKeys) => {
@@ -193,6 +194,7 @@ class TreeSelect extends React.Component<Props, any> {
 
     render() {
         const { autoExpandParent, expandedKeys } = this.state;
+
         return (
             <div id="treeSelectWrapper">
                 <Row>

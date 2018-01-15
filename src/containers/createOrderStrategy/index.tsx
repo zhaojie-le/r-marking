@@ -103,8 +103,8 @@ namespace layout {
     };
 }
 const userConditions: any = ['2', '4', '5', '6'];
-// let uuid: number = 0;
-// let uuidSr: number = 0;
+let uuid: number = 0;
+let uuidSr: number = 0;
 class CreateOrderStrategy extends React.Component<Props, {}> {
     state: any = {
         editing: false,
@@ -117,9 +117,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     private marketingModel: any = MarketingModelAdd;
     private stType: string;
     private usType: string;
-    private saveParams: any = {};
     private timeMerge: any = {};
-    private validateFieldsType: Array<string> = ['strategyName', 'time', 'marketingCategory', 'marketingType', 'actionParam', 'triggerRule'];
+    private validateFieldsType: Array<string> = ['strategyName', 'time', 'marketingCategory', 'strategyRule0', 'marketingModel0', 'marketingType'];
     constructor(props: Props, context: any) {
         super(props, context);
     }
@@ -154,7 +153,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             if (!err) {
                 console.log('Received values of form: ', values);
                 this.mergeParmas(values);
-                this.props.onSaveRule(this.saveParams);
+                this.props.onSaveRule(this.mergeParmas(values));
             } else {
                 console.log('allValues', values);
             }
@@ -162,15 +161,37 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     mergeParmas = (values) => {
-        if (values.marketingType) {
-            this.saveParams.marketingType = values.marketingType.marketingType;
-            this.saveParams.activityId = values.marketingType.activityId;
+        let newPar: any = {};
+        let valueArr = Object.entries(values);
+        console.log('valueArr', valueArr);
+        let valueArrLen = valueArr.length;
+        for (let i = 0; i < valueArrLen; i++) {
+            let item0 = valueArr[i][0];
+            let item1 = valueArr[i][1];
+            if (item0.startsWith('strategyRule')) {
+                // 触发规则
+                newPar.triggerRule = item1;
+                // 当触发规则为订单事件时，需要处理一下返回的数据
+                if (this.state.eventType === 1) {
+                    newPar.triggerRule.orderStatus = item1.serviceOptions ? item1.serviceOptions : null;
+                    newPar.dayDelay = item1.delayTime.day ? item1.delayTime.day : 0;
+                    newPar.minuteDelay = item1.delayTime.minute ? item1.delayTime.minute : 0;
+                }
+            } else if (item0.startsWith('marketingModel')) {
+                // 营销方式
+                newPar.actionParam = item1;
+                newPar.actionExpression = item1.keys.toString();
+            } else if (item0.startsWith('strategyName')) {
+                // 营销方式
+                newPar.strategyName = item1;
+            } else if (item0.startsWith('marketingType')) {
+                newPar.marketingType = item1.marketingType;
+                newPar.activityId = item1.activityId;
+            }
         }
-        this.saveParams = Object.assign({}, this.timeMerge, values, {actionExpression: '2,3'});
-        if (values.actionParam) {
-            this.saveParams.actionParam =  this.actionParamsMap(values.actionParam);
-        }
-        console.log('params', this.saveParams);
+        newPar.actionParam = newPar.actionParam ? this.actionParamsMap(newPar.actionParam) : null;
+        console.log('newPar', newPar);
+        return newPar;
     }
 
     actionParamsMap = (obj) => {
@@ -180,11 +201,13 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             let objArrLen = objArray.length;
             for (let i = 0; i < objArrLen; i++) {
                 if (objArray[i][0].startsWith('daojiaApp')) {
-                    actionP.appContent = objArray[i][1];
+                    actionP.appContent = this.contentMap(objArray[i][1]);
                 } else if (objArray[i][0].startsWith('sms')) {
-                    actionP.smsContent = objArray[i][1];
+                    actionP.smsContent = this.contentMap(objArray[i][1]);
                 } else if (objArray[i][0].startsWith('suyunApp')) {
-                    actionP.expressContent = objArray[i][1];
+                    actionP.expressContent = this.contentMap(objArray[i][1]);
+                } else if (objArray[i][0].startsWith('chatNumber')) {
+                    actionP.wechatContent = this.chartNumberMap(objArray[i][1]);
                 }
             }
             return actionP;
@@ -201,8 +224,24 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 newContent.content = objItem.docs;
             } else if (objItem.link) {
                 newContent.openUrl = objItem.link;
-            } 
+            }
         }
+        return newContent;
+    }
+    chartNumberMap = (objItem) => {
+        let newContent: any = {};
+        newContent.firstData = objItem.first ? objItem.first : '';
+        newContent.remarkData = objItem.remark ? objItem.remark : '';
+        newContent.pushStatus = objItem.pushStatus ? objItem.pushStatus : '';
+        if (objItem.linkInput) {
+            // 默认订单详情
+            newContent.gotoOrderPage = 1;
+        } else {
+            // 输入的跳转链接
+            newContent.gotoOrderPage = 0;
+            newContent.openUrl = objItem.link;
+        }
+        return newContent;
     }
 
     onTimeChange = (value, dateString) => {
@@ -278,7 +317,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             return (
                 <FormItem {...layout.formItemLayoutMarketingModel} label="触发规则" hasFeedback={false}>
                     {
-                        getFieldDecorator(`triggerRule`, {
+                        getFieldDecorator(`strategyRule${uuidSr}`, {
                             rules: [{
                                 required: true, message: '规则不能为空！',
                             }]
@@ -377,11 +416,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             || eventType === this.preEventType) {
             return;
         }
-        // this.validateFieldsType.splice(this.validateFieldsType.indexOf(`marketingModel${uuid}`), 1);
-        this.validateFieldsType.splice(this.validateFieldsType.indexOf(`actionParam`), 1);
-        // uuid++;
-        this.validateFieldsType.push(`actionParam`);
-        // this.validateFieldsType.push(`marketingModel${uuid}`);
+        this.validateFieldsType.splice(this.validateFieldsType.indexOf(`marketingModel${uuid}`), 1);
+        // this.validateFieldsType.splice(this.validateFieldsType.indexOf(`actionParam`), 1);
+        uuid++;
+        // this.validateFieldsType.push(`actionParam`);
+        this.validateFieldsType.push(`marketingModel${uuid}`);
         switch (eventType) {
             case 3:
                 this.marketingModel = LoadElement;
@@ -402,11 +441,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         if (eventType === this.preSrType) {
             return;
         }
-        // this.validateFieldsType.splice(this.validateFieldsType.indexOf(`strategyRule${uuidSr}`), 1);
-        this.validateFieldsType.splice(this.validateFieldsType.indexOf(`triggerRule`), 1);
-        // uuidSr++;
-        // this.validateFieldsType.push(`strategyRule${uuidSr}`);
-        this.validateFieldsType.push(`triggerRule`);
+        this.validateFieldsType.splice(this.validateFieldsType.indexOf(`strategyRule${uuidSr}`), 1);
+        // this.validateFieldsType.splice(this.validateFieldsType.indexOf(`triggerRule`), 1);
+        uuidSr++;
+        this.validateFieldsType.push(`strategyRule${uuidSr}`);
+        // this.validateFieldsType.push(`triggerRule`);
         this.preSrType = eventType;
         this.props.onResetWeChatPush();
     }
@@ -419,7 +458,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             return (
                 <FormItem {...layout.formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
                     {
-                        getFieldDecorator(`actionParam`, {
+                        getFieldDecorator(`marketingModel${uuid}`, {
                             rules: [{
                                 required: true, message: '营销方式不能为空！',
                             }],
