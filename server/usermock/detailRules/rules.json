@@ -1,30 +1,39 @@
 {
     "data": {
-        "pkId": "268817220207980551",
-        "effectiveTime": "2017-04-05 12:05:04",
-        "channel": "[1, 2, 3]",
-        "invalidTime": "2019-11-30 12:05:04",
-        "strategyTypeInt": 1,
-        "strategyType": "订单触发",
-        "activityId": 18713,
-        "createrEmail": "wangchunshen@163.com",
-        "wechatContent": {
-            "applicationRange": "",
-            "applicationRule": "",
-            "couponValue": "",
-            "disposeUrl": "http://tjztbox73.djtest.cn/h5/baojie/orderDetail?orderid={{orderId}}&hmsr=wxgzh_clyx_219499553940848787_1",
-            "firstData": "公众号",
-            "gotoOrderPage": 1,
-            "openUrl": "",
-            "pushStatus": 1,
-            "remarkData": "尾段",
-            "validatePeriod": ""
+        "expressContent": {
+            "disposeUrl": "app",
+            "expressContent": "以io黏糊糊",
+            "openUrl": "app?hmsr=suyun_clyx_266524983482724377_0",
+            "title": "232"
         },
-        "smsContent": {
-            "disposeUrl": "http://s-arch.djtest.cn/rMFv",
-            "openUrl": "https://www.baidu.com/",
-            "smsContent": "短信文案文案"
-        },
+        "showEdit": true,
+        "strategyName": "用户条件",
+        "pkId": "266524983482724377",
+        "marketingType": "用券",
+        "effectiveTime": "2018-01-10 11:14:12",
+        "userCondition": [
+            {
+                "name": "创建时初始用户数量",
+                "value": "3996"
+            },
+            {
+                "name": "推送周期",
+                "value": "{\"notLoggedMarket\":0,\"period\":3}"
+            },
+            {
+                "name": "用户条件",
+                "value": "家政会员卡沉睡用户1"
+            }
+        ],
+        "invalidTime": "2018-01-12 11:14:15",
+        "strategyTypeInt": 0,
+        "strategyType": "无触发事件",
+        "activityId": 0,
+        "createrEmail": "lifang01@daojia.com",
+        "marketingTypeInt": 2,
+        "batchUserInfo": "{\"notLoggedMarket\":0,\"period\":3}",
+        "createTime": "2018-01-05 11:15:07",
+        "showButton": 1,
         "strategyMarketingType": [
             {
                 "name": "未设置",
@@ -71,42 +80,24 @@
                 "id": 10
             }
         ],
+        "triggerEvent": "用户条件",
         "actionExpression": [
-            "1",
-            "2",
-            "3"
+            "6"
         ],
-        "marketingLimit": 1,
-        "strategyState": "进行中",
-        "showEdit": true,
-        "strategyName": "wcs策略名称-订单01",
-        "marketingType": "拉新",
-        "categoryId": 201,
-        "bussniessId": 104,
-        "wechatTemplate": {
-            "name": "订单已完成",
-            "value": "4"
-        },
-        "message": "查询规则失败",
-        "appContent": {
-            "appContent": "app文案",
-            "disposeUrl": "http://s-arch.djtest.cn/rMEx",
-            "gotoOrderPage": 0,
-            "openUrl": "https://www.baidu.com/",
-            "title": "appPush"
-        },
-        "marketingTypeInt": 3,
-        "batchUserInfo": "{'batchId':'Uliyong201706071821090765','importNum':0,'importState':1,'userCount':500000}",
-        "createTime": "2018-01-11 19:03:39",
-        "showButton": 2,
-        "triggerEvent": "订单触发",
+        "marketingLimit": 0,
         "updateContent": "无",
         "actionParam": {
             "appContent": {
-                "$ref": "$.data.appContent"
+                "appContent": "",
+                "disposeUrl": "",
+                "openUrl": "",
+                "title": ""
             },
-            "dayDelay": 2,
-            "minuteDelay": 1,
+            "dayDelay": 0,
+            "expressContent": {
+                "$ref": "$.data.expressContent"
+            },
+            "minuteDelay": 0,
             "payOrderContent": {
                 "content": "",
                 "disposeUrl_app": "",
@@ -115,13 +106,32 @@
                 "imgUrl": "",
                 "openUrl": ""
             },
+            "pendantContent": {
+                "animation": "",
+                "disposeUrl_app": "",
+                "disposeUrl_h5": "",
+                "disposeUrl_wechat": "",
+                "imgUrl": "",
+                "location": "",
+                "openUrl": ""
+            },
             "smsContent": {
-                "$ref": "$.data.smsContent"
+                "disposeUrl": "",
+                "openUrl": "",
+                "smsContent": ""
             },
             "wechatContent": {
-                "$ref": "$.data.wechatContent"
+                "applicationRange": "",
+                "applicationRule": "",
+                "couponValue": "",
+                "disposeUrl": "",
+                "firstData": "",
+                "openUrl": "",
+                "remarkData": "",
+                "validatePeriod": ""
             }
-        }
+        },
+        "strategyState": "未开始"
     },
     "resultCode": 1
 }

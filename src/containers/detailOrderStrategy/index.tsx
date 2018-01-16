@@ -20,7 +20,7 @@ import {
     Radio,
     Button
 } from 'antd';
-import { DetailMarketingModel } from '../../components';
+import { DetailMarketingModel, StrategyCreater } from '../../components';
 const FormItem = Form.Item;
 const { Content, Footer } = Layout;
 const RadioGroup = Radio.Group;
@@ -75,6 +75,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
         endOpen: false,
         editing: true,
         editDis: true,
+        eventType: 0
         //  false
     };
     constructor(props: Props, context: any) {
@@ -162,7 +163,10 @@ class DetailOrderStrategy extends React.Component<Props, object> {
             }
         });
     }
-
+    // 营销类别
+    onMarketingTypeChange = (value) => {
+        console.log(value);
+    }
     onMarketingModelChange = (value) => {
         console.log(value);
     }
@@ -292,9 +296,9 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                             type: '3',
                             value: {
                                 type: '3',
-                                title: formState.appContent.title,
-                                docs: formState.appContent.appContent,
-                                link: formState.appContent.openUrl
+                                title: formState.expressContent.title,
+                                docs: formState.expressContent.appContent,
+                                link: formState.expressContent.openUrl
                             }
                         });
                         break;
@@ -354,7 +358,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
     render() {
         const { getFieldDecorator } = this.props.form;
         const { formState, actionParam, strategyMarketingType } = this.props;
-        const { pagetype, editing, editDis, } = this.state;
+        const { pagetype, editing, editDis, eventType } = this.state;
 
         return (
             <div id="detailOrder">
@@ -395,7 +399,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                             {formState.ruleList !== undefined && formState.strategyTypeInt !== 0 ?
                                 < Row style={{ margin: '0 0 20px 0' }}>
                                     <Col style={{ textAlign: 'left', background: '#eee', padding: '10px 0px', border: '1px solid #ccc' }}>
-                                        <FormItem className="strategyOrderRules" label="触发规则" {...formItemLayout} style={{ margin: '0' }}>
+                                        <FormItem className="strategyOrderRules" label="触发规则" {...formTypeLayout} style={{ margin: '0' }}>
                                             <div className="orderRules">
                                                 <section className="showInfo">
                                                     {formState.ruleList.map((item, i) => {
@@ -414,7 +418,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                             <div className="orderRules">
                                                 <section className="showInfo">
                                                     {formState.userCondition.map((item, i) => {
-                                                        return <p key={i}><label>{item.name}</label><span >{item.value}</span></p>;
+                                                        return <p key={i}><label>{item.name}:&nbsp;&nbsp;</label><span >{item.value}</span></p>;
                                                     })}
                                                 </section>
                                             </div>
@@ -494,6 +498,17 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                     </RadioGroup>
                                 </FormItem>
                             </Row>
+                            <FormItem {...formTypeLayout} label="营销类别" hasFeedback={false}>
+                                {
+                                    getFieldDecorator('marketingType', {
+                                        rules: [{
+                                            required: true, message: '营销类别不能为空！',
+                                        }],
+                                    })(
+                                        <StrategyCreater onChange={this.onMarketingTypeChange} form={this.props.form} strategyType={eventType} />
+                                        )
+                                }
+                            </FormItem>
                             <Row style={(editing && formState.marketingTypeInt !== 1) ? { display: 'none' } : { display: 'block' }}>
                                 <FormItem label="优惠券" {...formItemLayout} >
                                     {getFieldDecorator('activityId', {
