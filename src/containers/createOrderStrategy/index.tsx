@@ -27,7 +27,7 @@ import {
 } from '../../components';
 import './index.scss';
 
-const {Content, Footer } = Layout;
+const { Content, Footer } = Layout;
 const FormItem = Form.Item;
 const RangePicker: any = DatePicker.RangePicker;
 const Option = Select.Option;
@@ -35,7 +35,7 @@ const Option = Select.Option;
 export interface Props {
     serviceOptions: any[];
     orderState: any[];
-    rules: {strategyType: number; setting: any; };
+    rules: { strategyType: number; setting: any; };
     formState: any;
     form: any;
     option: any;
@@ -124,15 +124,15 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     componentDidMount() {
-       // this.props.onGetRules(1);
-       this.props.onGetTreeNode(1);
+        // this.props.onGetRules(1);
+        this.props.onGetTreeNode(1);
     }
 
     validateTrgger = (): boolean | undefined => {
         const { getFieldValue } = this.props.form;
         const triggerConditionValue = getFieldValue('triggerCondition');
         const triggerEventValue = getFieldValue('triggerEvent');
-        if  ((!triggerConditionValue || triggerConditionValue === '0') && (!triggerEventValue || triggerEventValue === '0')) {
+        if ((!triggerConditionValue || triggerConditionValue === '0') && (!triggerEventValue || triggerEventValue === '0')) {
             this.setState({
                 validateStatus: 'error'
             });
@@ -248,8 +248,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         // value 未转换格式；dateString 转换后格式
         let dataArray = dateString;
         if (dataArray.length > 0) {
-           this.timeMerge.effectiveTime = dataArray[0];
-           this.timeMerge.invalidTime = dataArray[1];
+            this.timeMerge.effectiveTime = dataArray[0];
+            this.timeMerge.invalidTime = dataArray[1];
         }
     }
 
@@ -268,7 +268,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     checkCondition = (strategyType: string | null, userType: string | null) => {
         this.stType = strategyType || this.stType;
         this.usType = userType || this.usType;
-        if ( (!this.stType || this.stType  === '0') && (!this.usType || this.usType === '0') ) {
+        if ((!this.stType || this.stType === '0') && (!this.usType || this.usType === '0')) {
             this.setState({
                 validateStatus: 'error'
             });
@@ -281,23 +281,23 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     onSelectEvent = (value) => {
-        if ( this.checkCondition(value, null) ) {
+        if (this.checkCondition(value, null)) {
             return;
         }
         const disabledTrggerCondition = userConditions.includes(value) ? true : false;
         let NumValue = parseInt(value, 10);
-        if (NumValue === 1 || NumValue === 3 || NumValue === 7) {
+        if (NumValue === 1 || NumValue === 3 || NumValue === 7 || NumValue === 8) {
             this.props.onGetRules(NumValue);
         }
         // this.props.onGetRules(parseInt(value, 10));
-        if ( disabledTrggerCondition ) {
+        if (disabledTrggerCondition) {
             this.props.form.setFieldsValue({
                 triggerCondition: '0',
             });
             this.setState({
                 userSelected: '0'
             });
-            if ( this.validateFieldsType.indexOf('treeSelect') >= 0 ) {
+            if (this.validateFieldsType.indexOf('treeSelect') >= 0) {
                 this.validateFieldsType.splice(this.validateFieldsType.indexOf('treeSelect'), 1);
             }
         }
@@ -322,8 +322,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                 required: true, message: '规则不能为空！',
                             }]
                         })(
-                            <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={eventType}/>
-                        )}
+                            <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={eventType} />
+                            )}
                 </FormItem>
             );
         } else {
@@ -344,8 +344,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                 required: true, message: '营销类别不能为空！',
                             }],
                         })(
-                            <StrategyCreater onChange={this.onMarketingTypeChange} form={this.props.form} strategyType={eventType}/>
-                        )
+                            <StrategyCreater onChange={this.onMarketingTypeChange} form={this.props.form} strategyType={eventType} />
+                            )
                     }
                 </FormItem>
             );
@@ -355,7 +355,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     disabledDate = (current) => {
-        if ( !current ) {
+        if (!current) {
             return current;
         }
         const currentTime = current.valueOf();
@@ -370,7 +370,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             treeSelect = '1';
             this.validateFieldsType.push('treeSelect');
         } else {
-            if ( this.validateFieldsType.indexOf('treeSelect') >= 0 ) {
+            if (this.validateFieldsType.indexOf('treeSelect') >= 0) {
                 this.validateFieldsType.splice(this.validateFieldsType.indexOf('treeSelect'), 1);
             }
         }
@@ -379,7 +379,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             userSelected: treeSelect
         });
 
-        if ( this.checkCondition(null, value) ) {
+        if (this.checkCondition(null, value)) {
             return;
         }
     }
@@ -395,15 +395,15 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         if (userSelected === '1') {
             return (
                 <FormItem {...layout.formItemLayout1} label="用户条件" hasFeedback={false}>
-                {
-                    getFieldDecorator('treeSelect', {
-                        rules: [{
-                            required: true, message: '用户条件不能为空！',
-                        }],
-                    })(
-                        <TreeSelect onChange={this.onTreeSelectChange}/>
-                    )
-                }
+                    {
+                        getFieldDecorator('treeSelect', {
+                            rules: [{
+                                required: true, message: '用户条件不能为空！',
+                            }],
+                        })(
+                            <TreeSelect onChange={this.onTreeSelectChange} />
+                            )
+                    }
                 </FormItem>
             );
         }
@@ -412,7 +412,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
 
     changeMarketingType = (eventType) => {
         if (
-            (([1, 2, 4, 5, 6] as any).includes(eventType) && this.preEventType === 1 )
+            (([1, 2, 4, 5, 6] as any).includes(eventType) && this.preEventType === 1)
             || eventType === this.preEventType) {
             return;
         }
@@ -454,7 +454,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         const { getFieldDecorator } = this.props.form;
         const { eventType, userSelected } = this.state;
         let MarketingModel: any = this.marketingModel;
-        if ( eventType !== 0  || userSelected !== 0 ) {
+        if (eventType !== 0 || userSelected !== 0) {
             return (
                 <FormItem {...layout.formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
                     {
@@ -468,7 +468,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                 stage={false}
                                 onChange={this.onMarketingModelChange}
                             />
-                        )}
+                            )}
                 </FormItem>
             );
         } else {
@@ -498,8 +498,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 required: true, message: '策略名称不能为空！',
                                             }],
                                         })(
-                                            <Input placeholder="请输入策略名称!"/>
-                                        )
+                                            <Input placeholder="请输入策略名称!" />
+                                            )
                                     }
                                 </FormItem>
                                 <FormItem {...layout.formItemLayout} label="生效时间" hasFeedback={false}>
@@ -516,7 +516,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 placeholder={['开始时间', '结束时间']}
                                                 onChange={this.onTimeChange}
                                             />
-                                        )
+                                            )
                                     }
                                 </FormItem>
 
@@ -536,8 +536,10 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 <Option value="5">全部用户</Option>
                                                 <Option value="6">储值返券</Option>
                                                 <Option value="7">页面挂件</Option>
+                                                <Option value="8">浏览激活</Option>
+                                                <Option value="9">首页运营位</Option>
                                             </Select>
-                                        )
+                                            )
                                     }
                                 </FormItem>
                                 <FormItem {...layout.formItemLayout} label="触发条件" validateStatus={validateStatus} hasFeedback={true} help="触发事件和触发条件必选一项!">
@@ -551,7 +553,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 <Option value="0">请选择</Option>
                                                 <Option value="1">用户条件</Option>
                                             </Select>
-                                        )
+                                            )
                                     }
                                 </FormItem>
                                 {this.generatorTreeSelect()}
@@ -566,13 +568,13 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                             }],
                                             initialValue: 'fanxuehui@58daojia.com',
                                         })(
-                                            <Input disabled={true}/>
-                                        )
+                                            <Input disabled={true} />
+                                            )
                                     }
                                 </FormItem>
                                 <FormItem {...layout.tailFormItemLayout}>
                                     <Button type="primary" onClick={this.saveStrategy}>创建策略</Button>
-                                    <Button onClick={() => history.push('/')} style={{marginLeft: '10px'}}>取消</Button>
+                                    <Button onClick={() => history.push('/')} style={{ marginLeft: '10px' }}>取消</Button>
                                 </FormItem>
                             </Form>
                         </div>
@@ -584,7 +586,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             </div>
         );
     }
-  }
+}
 
 export function mapStateToProps(state: StoreState) {
     return {

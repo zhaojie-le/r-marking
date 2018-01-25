@@ -20,7 +20,7 @@ import {
     Radio,
     Button
 } from 'antd';
-import { DetailMarketingModel, StrategyCreater } from '../../components';
+import { DetailMarketingModel } from '../../components';
 const FormItem = Form.Item;
 const { Content, Footer } = Layout;
 const RadioGroup = Radio.Group;
@@ -75,7 +75,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
         endOpen: false,
         editing: true,
         editDis: true,
-        eventType: 0
+        // eventType: 0
         //  false
     };
     constructor(props: Props, context: any) {
@@ -358,7 +358,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
     render() {
         const { getFieldDecorator } = this.props.form;
         const { formState, actionParam, strategyMarketingType } = this.props;
-        const { pagetype, editing, editDis, eventType } = this.state;
+        const { pagetype, editing, editDis } = this.state;
 
         return (
             <div id="detailOrder">
@@ -498,7 +498,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                     </RadioGroup>
                                 </FormItem>
                             </Row>
-                            <FormItem {...formTypeLayout} label="营销类别" hasFeedback={false}>
+                            {/* <FormItem {...formTypeLayout} label="营销类别" hasFeedback={false}>
                                 {
                                     getFieldDecorator('marketingType', {
                                         rules: [{
@@ -508,7 +508,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                         <StrategyCreater onChange={this.onMarketingTypeChange} form={this.props.form} strategyType={eventType} />
                                         )
                                 }
-                            </FormItem>
+                            </FormItem> */}
                             <Row style={(editing && formState.marketingTypeInt !== 1) ? { display: 'none' } : { display: 'block' }}>
                                 <FormItem label="优惠券" {...formItemLayout} >
                                     {getFieldDecorator('activityId', {

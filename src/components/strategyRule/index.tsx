@@ -7,6 +7,8 @@ import { ValueRule } from './storedValue';
 import { PushMessageRule } from './pushMessage';
 import { ImportUserRule } from './importUser';
 import { AllUserRule } from './allUser';
+import { BrowseActiveRule } from './browseActive';
+import { HomeOperateRule } from './homeOperate';
 
 interface Props {
     form: any;
@@ -21,7 +23,7 @@ class RuleCreater extends React.Component<Props, any> {
         const { strategyType, ...props } = this.props;
         let ruleType: any;
 
-        switch ( strategyType ) {
+        switch (strategyType) {
             case 1:
                 ruleType = <StrategyRule {...props} />;
                 break;
@@ -36,12 +38,18 @@ class RuleCreater extends React.Component<Props, any> {
                 break;
             case 5:
                 ruleType = <AllUserRule form={this.props.form} />;
-                break;    
+                break;
             case 6:
                 ruleType = <ValueRule {...props} />;
                 break;
             case 7:
                 ruleType = <PendantRule {...props} />;
+                break;
+            case 8:
+                ruleType = <BrowseActiveRule {...props} />;
+                break;
+            case 9:
+                ruleType = <HomeOperateRule {...props} />;
                 break;
             default:
                 ruleType = <div>请从新选择</div>;

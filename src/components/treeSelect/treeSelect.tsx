@@ -207,6 +207,7 @@ class TreeSelect extends React.Component<Props, any> {
                         <Search style={{ marginBottom: 8, width: '300px', position: 'absolute', top: 0, left: 0 }} placeholder="请输入要搜索的节点" onChange={(e) => { e.persist(); this.onChange(e); }} />
                         <div className="treeSelectBox">
                             <Tree
+                               
                                 checkable={true}
                                 onCheck={this.onCheck}
                                 onExpand={this.onExpand}
