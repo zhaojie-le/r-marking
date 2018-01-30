@@ -414,8 +414,8 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                 type: '1',
                                 docs: formState.smsContent.content,
                                 link: formState.smsContent.openUrl === '' ?
-                                    (formState.appContent.gotoOrderEvaluationPage === 1 ?
-                                        '订单评价页' : '') : formState.appContent.openUrl,
+                                    (formState.smsConten.gotoOrderEvaluationPage === 1 ?
+                                        '订单评价页' : '') : formState.smsConten.openUrl,
                             }
                         });
                         break;
