@@ -1,39 +1,53 @@
 {
     "data": {
-        "expressContent": {
-            "disposeUrl": "app",
-            "expressContent": "以io黏糊糊",
-            "openUrl": "app?hmsr=suyun_clyx_266524983482724377_0",
-            "title": "232"
-        },
-        "showEdit": true,
-        "strategyName": "用户条件",
-        "pkId": "266524983482724377",
-        "marketingType": "用券",
-        "effectiveTime": "2018-01-10 11:14:12",
-        "userCondition": [
+        "pkId": "272756545605939289",
+        "effectiveTime": "2018-01-22 15:53:44",
+        "ruleList": [
             {
-                "name": "创建时初始用户数量",
-                "value": "3996"
+                "name": "触发事件",
+                "value": "订单触发"
             },
             {
-                "name": "推送周期",
-                "value": "{\"notLoggedMarket\":0,\"period\":3}"
+                "name": "订单来源",
+                "value": "全部, 到家APP, 微信, 其他h5"
             },
             {
-                "name": "用户条件",
-                "value": "家政会员卡沉睡用户1"
+                "name": "服务项",
+                "value": "育儿嫂（育儿师）, 月嫂"
+            },
+            {
+                "name": "城市",
+                "value": "北京, 上海"
+            },
+            {
+                "name": "订单状态",
+                "value": "已回访无纠纷"
             }
         ],
-        "invalidTime": "2018-01-12 11:14:15",
-        "strategyTypeInt": 0,
-        "strategyType": "无触发事件",
+        "invalidTime": "2018-03-10 15:53:46",
+        "strategyTypeInt": 1,
+        "strategyType": "订单触发",
         "activityId": 0,
-        "createrEmail": "lifang01@daojia.com",
-        "marketingTypeInt": 2,
-        "batchUserInfo": "{\"notLoggedMarket\":0,\"period\":3}",
-        "createTime": "2018-01-05 11:15:07",
-        "showButton": 1,
+        "createrEmail": "chenzixu@daojia.com",
+        "smsContent": {
+            "content": "",
+            "disposeUrl": "http://s-ht.djtest.cn/G7ST",
+            "gotoOrderEvaluationPage": 0,
+            "openUrl": "https://www.baidu.com/"
+        },
+        "wechatContent": {
+            "applicationRange": "",
+            "applicationRule": "",
+            "couponValue": "",
+            "disposeUrl": "http://s-ht.djtest.cn/FzeR",
+            "firstData": "按时",
+            "gotoOrderEvaluationPage": 0,
+            "gotoOrderPage": 0,
+            "openUrl": "阿萨德",
+            "pushStatus": 4,
+            "remarkData": "阿萨德",
+            "validatePeriod": ""
+        },
         "strategyMarketingType": [
             {
                 "name": "未设置",
@@ -80,18 +94,54 @@
                 "id": 10
             }
         ],
-        "triggerEvent": "用户条件",
+        "orderStatusValue": "5",
         "actionExpression": [
-            "6"
+            "2",
+            "3",
+            "6",
+            "1"
         ],
         "marketingLimit": 0,
-        "updateContent": "无",
+        "strategyState": "未开始",
+        "expressContent": {
+            "content": "",
+            "disposeUrl": "app",
+            "openUrl": "app?hmsr=suyun_clyx_272756545605939289_1",
+            "title": "czx月嫂+条件已生成22-01修"
+        },
+        "showEdit": true,
+        "strategyName": "czx月嫂+条件已生成22-01修",
+        "marketingType": "商品[拼团]",
+        "userCondition": [
+            {
+                "name": "创建时初始用户数量",
+                "value": "30669"
+            },
+            {
+                "name": "用户条件",
+                "value": "家政会员卡余额即将用完的用户"
+            }
+        ],
+        "appContent": {
+            "content": "",
+            "disposeUrl": "http://housecommentbox53.djtest.cn/jzup/comment/index?orderId={{orderId}}&hmsr=daojia_clyx_272756545605939289_1",
+            "gotoOrderEvaluationPage": 1,
+            "gotoOrderPage": 0,
+            "openUrl": "",
+            "title": "czx月嫂+条件已生",
+            "picurl": "http://housecommentbox53.djtest.cn/jzup/comment/index?orderId={{orderId}}&hmsr=daojia_clyx_272756545605939289_1",
+            "endTime": "2016-09-23:6:34:00"
+        },
+        "bussniessId": 104,
+        "marketingTypeInt": 10,
+        "refer": 3662,
+        "createTime": "2018-01-22 15:57:08",
+        "showButton": 1,
+        "triggerEvent": "订单触发/用户条件",
+        "updateContent": "2018-01-22 16:02:55:修改失效时间,修改策略名称,修改营销类别,修改营销方式,<br>2018-01-22 16:06:00:修改推送限制,<br>",
         "actionParam": {
             "appContent": {
-                "appContent": "",
-                "disposeUrl": "",
-                "openUrl": "",
-                "title": ""
+                "$ref": "$.data.appContent"
             },
             "dayDelay": 0,
             "expressContent": {
@@ -116,9 +166,7 @@
                 "openUrl": ""
             },
             "smsContent": {
-                "disposeUrl": "",
-                "openUrl": "",
-                "smsContent": ""
+                "$ref": "$.data.smsContent"
             },
             "wechatContent": {
                 "applicationRange": "",
@@ -131,7 +179,7 @@
                 "validatePeriod": ""
             }
         },
-        "strategyState": "未开始"
+        "categoryId": 205
     },
     "resultCode": 1
 }

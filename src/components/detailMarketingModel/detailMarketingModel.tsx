@@ -10,6 +10,8 @@ interface DetailRuleProps {
     value?: any;
     stage: number;
     page: boolean;
+    showOrderDetailCheck: boolean;
+    onChange: (value: any) => void;
 }
 
 enum ChannelType {
@@ -66,7 +68,9 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
 
     }
     onMarketingModelChange = (value) => {
-        console.log(value);
+        console.log('111' + JSON.stringify(value));
+        this.props.onChange(value);
+
     }
     generateShowData() {
         const { showData } = this.state;
@@ -170,9 +174,9 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
     }
     render() {
         // edit==true 为修改页面
-        const { page, value, stage } = this.props;
-        const { showOrderDetailCheck, weChatPush, showData } = this.state;
-        console.log('valuevaluepagepagepage===' + JSON.stringify(value[0].value));
+        const { page, value, stage, showOrderDetailCheck } = this.props;
+        const { weChatPush, showData } = this.state;
+
         if (page === true) {
             return (
                 <div className="wrapperModel">

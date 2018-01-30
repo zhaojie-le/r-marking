@@ -303,6 +303,39 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
     }
 
     checkApp = (rule, value1, callback) => {
+        if (value1.hasPreActChecked === true) {
+            const value = Object.assign({ docs: '', link: '', title: '', piclink: '', activityendtime: '' }, value1);
+            if (value.docs && value.link && value.title && value.piclink && value.activityendtime && getBt(value.docs) < 60 && getBt(value.title) < 20) {
+                callback();
+                return;
+            }
+            callback(validate([
+                { type: 'require', value: value.piclink, errMsg: '图片链接不能为空' },
+                { type: 'require', value: value.activityendtime, errMsg: '活动结束日期不能为空' },
+                { type: 'require', value: value.docs, errMsg: '文案不能为空' },
+                { type: 'require', value: value.link, errMsg: '链接不能为空' },
+                { type: 'require', value: value.title, errMsg: '标题不能为空' },
+                { type: 'limit', value: value.docs, limitNumber: 60, errMsg: '文案字数过多' },
+                { type: 'limit', value: value.title, limitNumber: 20, errMsg: '标题字数过多' }
+            ]));
+        } else {
+            const value = Object.assign({ docs: '', link: '', title: '', }, value1);
+            if (value.docs && value.link && value.title && getBt(value.docs) < 60 && getBt(value.title) < 20) {
+                callback();
+                return;
+            }
+            callback(validate([
+                { type: 'require', value: value.docs, errMsg: '文案不能为空' },
+                { type: 'require', value: value.link, errMsg: '链接不能为空' },
+                { type: 'require', value: value.title, errMsg: '标题不能为空' },
+                { type: 'limit', value: value.docs, limitNumber: 60, errMsg: '文案字数过多' },
+                { type: 'limit', value: value.title, limitNumber: 20, errMsg: '标题字数过多' }
+            ]));
+        }
+
+    }
+
+    checkSuYunApp = (rule, value1, callback) => {
         const value = Object.assign({ docs: '', link: '', title: '' }, value1);
         if (value.docs && value.link && value.title && getBt(value.docs) < 60 && getBt(value.title) < 20) {
             callback();
@@ -449,7 +482,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
                                 initialValue: key.value,
                                 rules: [{
                                     required: true,
-                                    validator: this.checkApp
+                                    validator: this.checkSuYunApp
                                 }],
                             })(
                                 <SuyunAppModel
@@ -518,10 +551,17 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
     }
 
     showEveryData = (array) => {
+        console.log('aaaaaa' + JSON.stringify(array));
         return Object.keys(array).map(
             (lb, index, arr): any => {
                 let typeLabel: any;
                 switch (lb) {
+                    case 'piclink':
+                        typeLabel = array.hasPreActChecked === true ? <span style={{ color: '#C71585' }}>图片链接</span> : '';
+                        break;
+                    case 'activityendtime':
+                        typeLabel = array.hasPreActChecked === true ? <span style={{ color: '#FF4500' }}>活动结束时间</span> : '';
+                        break;
                     case 'docs':
                         typeLabel = <span style={{ color: '#FF4500' }}>文案</span>;
                         break;
@@ -543,7 +583,8 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
                     default:
                         return null;
                 }
-                return (<p key={index} >{typeLabel}: {array[lb]}</p>);
+                return typeLabel !== '' ?
+                    (<p key={index} >{typeLabel}: {array[lb]}</p>) : '';
             }
         );
     }

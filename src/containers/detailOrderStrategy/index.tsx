@@ -17,13 +17,13 @@ import {
     Breadcrumb,
     DatePicker,
     InputNumber,
-    Radio,
-    Button
+    Button,
+    Select
 } from 'antd';
-import { DetailMarketingModel } from '../../components';
+import { DetailMarketingModel, StrategyCreater } from '../../components';
 const FormItem = Form.Item;
 const { Content, Footer } = Layout;
-const RadioGroup = Radio.Group;
+const Option = Select.Option;
 
 export interface Props {
     param: {};
@@ -75,7 +75,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
         endOpen: false,
         editing: true,
         editDis: true,
-        // eventType: 0
+        eventType: 0
         //  false
     };
     constructor(props: Props, context: any) {
@@ -104,9 +104,9 @@ class DetailOrderStrategy extends React.Component<Props, object> {
         });
     }
 
-    onRadioChange = (e) => {
+    onSelectChange = (e) => {
         this.props.formState.marketingTypeInt = e.target.value;
-        const isEditing = e.target.value === 1 ? false : true;
+        const isEditing = e.target.value === '1' ? false : true;
         this.setState({
             editing: isEditing,
         });
@@ -155,14 +155,87 @@ class DetailOrderStrategy extends React.Component<Props, object> {
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 // 得到的values数据重组
+                console.log('valuesvaluesvalues=' + JSON.stringify(values));
                 const { onSaveRule } = this.props;
                 values.effectiveTime = values.effectiveTime._i;
                 values.invalidTime = values.invalidTime._i;
                 values.marketingTypeInt = this.props.formState.marketingTypeInt;
+                values.marketingModel = this.mergeParmas(values);
+                delete values.keys;
+                console.log('valuesvaluesvalues=' + JSON.stringify(values));
                 onSaveRule(values);
             }
         });
     }
+    mergeParmas = (values) => {
+        let newPar: any = {};
+        let valueArr = Object.entries(values);
+        console.log('valueArr', valueArr);
+        let valueArrLen = valueArr.length;
+        for (let i = 0; i < valueArrLen; i++) {
+            let item0 = valueArr[i][0];
+            let item1 = valueArr[i][1];
+            if (item0.startsWith('marketingModel')) {
+                // 营销方式
+                newPar.actionParam = item1;
+                newPar.actionExpression = item1.keys.toString();
+            }
+        }
+        newPar.actionParam = newPar.actionParam ? this.actionParamsMap(newPar.actionParam) : null;
+        console.log('newPar', newPar);
+        return newPar;
+    }
+
+    actionParamsMap = (obj) => {
+        let actionP: any = {};
+        if (obj) {
+            let objArray = Object.entries(obj);
+            let objArrLen = objArray.length;
+            for (let i = 0; i < objArrLen; i++) {
+                if (objArray[i][0].startsWith('daojiaApp')) {
+                    actionP.appContent = this.contentMap(objArray[i][1]);
+                } else if (objArray[i][0].startsWith('sms')) {
+                    actionP.smsContent = this.contentMap(objArray[i][1]);
+                } else if (objArray[i][0].startsWith('suyunApp')) {
+                    actionP.expressContent = this.contentMap(objArray[i][1]);
+                } else if (objArray[i][0].startsWith('chatNumber')) {
+                    actionP.wechatContent = this.chartNumberMap(objArray[i][1]);
+                }
+            }
+            return actionP;
+        }
+        return null;
+    }
+
+    contentMap = (objItem) => {
+        let newContent: any = {};
+        if (objItem) {
+            if (objItem.title) {
+                newContent.title = objItem.title;
+            } else if (objItem.docs) {
+                newContent.content = objItem.docs;
+            } else if (objItem.link) {
+                newContent.openUrl = objItem.link;
+            }
+        }
+        return newContent;
+    }
+    chartNumberMap = (objItem) => {
+        let newContent: any = {};
+        newContent.firstData = objItem.first ? objItem.first : '';
+        newContent.remarkData = objItem.remark ? objItem.remark : '';
+        newContent.pushStatus = objItem.pushStatus ? objItem.pushStatus : '';
+        if (objItem.linkInput) {
+            // 默认订单详情
+            newContent.gotoOrderPage = 1;
+        } else {
+            // 输入的跳转链接
+            newContent.gotoOrderPage = 0;
+            newContent.openUrl = objItem.link;
+        }
+        return newContent;
+    }
+
     // 营销类别
     onMarketingTypeChange = (value) => {
         console.log(value);
@@ -171,10 +244,63 @@ class DetailOrderStrategy extends React.Component<Props, object> {
         console.log(value);
     }
     componentDidMount() {
-        // 初始请求列表数据，首屏10条数据
         const { strategyList, match } = this.props;
         const id = match.params.id;
         strategyList(id);
+    }
+    marketingType() {
+        const { getFieldDecorator } = this.props.form;
+        const { formState, strategyMarketingType } = this.props;
+        const { eventType, pagetype, editing } = this.state;
+        console.log(pagetype);
+
+        if (pagetype === false) {
+            return (
+                <FormItem {...formTypeLayout} label="营销类别" hasFeedback={false}>
+                    {
+                        getFieldDecorator('marketingType', {
+                            rules: [{
+                                required: true, message: '营销类别不能为空！',
+                            }],
+                        })(
+                            <StrategyCreater onChange={this.onMarketingTypeChange} form={this.props.form} strategyType={eventType} />
+                            )
+                    }
+                </FormItem>
+            );
+        } else {
+            return (
+                <div>
+                    <FormItem className="strategyMarketingType" label="营销类别" {...formTypeLayout} >
+                        <Select
+                            value={(formState.marketingTypeInt === undefined ? 0 : formState.marketingTypeInt).toString()}
+                            style={{ width: '200px' }}
+                            onChange={this.onSelectChange}
+                            disabled={true}
+                        >
+                            {
+                                strategyMarketingType.map((item) => {
+                                    return <Option value={(item.id).toString()} key={item.id}>{item.name}</Option>;
+                                })
+                            }
+                        </Select>
+                    </FormItem>
+                    <Row style={(editing && formState.marketingTypeInt !== 1) ? { display: 'none' } : { display: 'block' }}>
+                        <FormItem label="优惠券" {...formItemLayout} >
+                            {getFieldDecorator('activityId', {
+                                rules: [{
+                                    required: true, message: '优惠券不能为空！',
+                                }],
+                                initialValue: formState.activityId,
+                            })(
+                                <Input style={{ width: 80 }} placeholder={formState.activityId} maxLength="30" disabled={true} />
+                                )}
+                        </FormItem>
+                    </Row>
+                </div>
+
+            );
+        }
     }
     displayTime() {
         const { getFieldDecorator } = this.props.form;
@@ -203,8 +329,6 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                     disabledDate={this.disabledStartDate}
                                     showTime={{ format: 'HH:mm:ss' }}
                                     format="YYYY-MM-DD HH:mm:ss"
-                                    // disabledDate={disabledDate}
-                                    // disabledTime={this.disabledDateTime}
                                     placeholder={formState.effectiveTime}
                                     onChange={this.onStartChange}
                                     disabled={editDis}
@@ -239,11 +363,15 @@ class DetailOrderStrategy extends React.Component<Props, object> {
     marketingModel() {
         const { formState } = this.props;
         const actionExpressionstate: any = [];
-        // [[1, '短信'], [2, '58到家-APP push'], [3, '58速运-APP push'], [4, '58到家公众号'], [5, '支付预约'], [6, '页面挂件'], [7, '首页运营位']]
-        // 1-微信公众号、2-APP推送，3-短信，4-支付预约页，5-优惠券，6-速运APP，7-页面挂件，9-首页运营位
+        // 组件数据对应[[1, '短信'], [2, '58到家-APP push'], [3, '58速运-APP push'], [4, '58到家公众号'], [5, '支付预约'], [6, '页面挂件'], [7, '首页运营位']]
+        // 接口的数据 1-微信公众号、2到家-APP推送，3-短信，4-支付预约页，5-优惠券，6-速运APP，7-页面挂件，9-首页运营位
         // { type: '4', value: { firparagraph: formState.firstData, lastparagraph: formState.remarkData, link: formState.openUrl } }
         let actionExpression = formState.actionExpression;
         // formState.wechatContent.openUrl
+        // 品类只是判断categoryId是否展示按钮
+        // 微信公众号：2，1 link: formState.categoryId === 201 ? '订单详情页面' : (formState.categoryId === 212 || formState.bussniessId === 104) ? '订单评价页面' : formState.wechatContent.openUrl,
+        // 短信：3link: (formState.categoryId === 212 || formState.bussniessId === 104) ? '订单评价页面' : formState.smsContent.openUrl,
+        // 1 formState.wechatTemplate.value === '1' ? '下单成功' : formState.wechatTemplate.value === '2' ? '待支付通知' : formState.wechatTemplate.value === '4' ? '订单已完成' : '',
         if (actionExpression !== undefined) {
             actionExpression.forEach((item, index) => {
                 switch (item) {
@@ -254,8 +382,14 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                 type: '4',
                                 first: formState.wechatContent.firstData,
                                 remark: formState.wechatContent.remarkData,
-                                link: formState.categoryId === 201 ? '订单详情页面' : (formState.categoryId === 212 || formState.bussniessId === 104) ? '订单评价页面' : formState.wechatContent.openUrl,
-                                tstate: formState.wechatTemplate.value === '1' ? '下单成功' : formState.wechatTemplate.value === '2' ? '待支付通知' : formState.wechatTemplate.value === '4' ? '订单已完成' : '',
+                                link: formState.wechatContent.openUrl === '' ?
+                                    (formState.wechatContent.gotoOrderEvaluationPage === 1 ?
+                                        '订单评价页' : formState.wechatContent.gotoOrderPage === 1 ?
+                                            '订单详情页' : '') : formState.wechatContent.openUrl,
+                                tstate: formState.wechatContent.pushStatus === '1' ?
+                                    '下单成功' : formState.wechatContent.pushStatus === '2' ?
+                                        '待支付通知' : formState.wechatContent.pushStatus === '4' ?
+                                            '订单已完成' : '',
                             }
                         });
                         break;
@@ -265,8 +399,11 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                             value: {
                                 type: '2',
                                 title: formState.appContent.title,
-                                docs: formState.appContent.appContent,
-                                link: formState.categoryId === 201 ? '订单详情页面' : (formState.categoryId === 212 || formState.bussniessId === 104) ? '订单评价页面' : formState.appContent.openUrl,
+                                docs: formState.appContent.content,
+                                link: formState.appContent.openUrl === '' ?
+                                    (formState.appContent.gotoOrderEvaluationPage === 1 ?
+                                        '订单评价页' : formState.appContent.gotoOrderPage === 1 ?
+                                            '订单详情页' : '') : formState.appContent.openUrl,
                             }
                         });
                         break;
@@ -275,8 +412,10 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                             type: '1',
                             value: {
                                 type: '1',
-                                docs: formState.smsContent.smsContent,
-                                link: (formState.categoryId === 212 || formState.bussniessId === 104) ? '订单评价页面' : formState.smsContent.openUrl,
+                                docs: formState.smsContent.content,
+                                link: formState.smsContent.openUrl === '' ?
+                                    (formState.appContent.gotoOrderEvaluationPage === 1 ?
+                                        '订单评价页' : '') : formState.appContent.openUrl,
                             }
                         });
                         break;
@@ -297,8 +436,8 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                             value: {
                                 type: '3',
                                 title: formState.expressContent.title,
-                                docs: formState.expressContent.appContent,
-                                link: formState.expressContent.openUrl
+                                docs: formState.expressContent.content,
+                                link: formState.expressContent.disposeUrl
                             }
                         });
                         break;
@@ -328,6 +467,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                         break;
                 }
             });
+            console.log('actionExpressionstate' + JSON.stringify(actionExpressionstate));
             return actionExpressionstate;
         }
     }
@@ -357,8 +497,8 @@ class DetailOrderStrategy extends React.Component<Props, object> {
     }
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { formState, actionParam, strategyMarketingType } = this.props;
-        const { pagetype, editing, editDis } = this.state;
+        const { formState, actionParam } = this.props;
+        const { pagetype, editDis } = this.state;
 
         return (
             <div id="detailOrder">
@@ -413,8 +553,8 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                 </Row> : ''}
                             {formState.userCondition || formState.notLoggedMarket ?
                                 <Row>
-                                    <Col style={{ textAlign: 'left', background: '#eee', padding: '10px 0px', border: '1px solid #ccc' }}>
-                                        <FormItem className="strategyOrderRules" label="触发条件" {...formItemLayout} style={{ margin: '0' }}>
+                                    <Col style={{ textAlign: 'left', background: '#eee', padding: '10px 0px', border: '1px solid #ccc', margin: '0 0 30px 0' }}>
+                                        <FormItem className="strategyOrderRules" label="触发条件" {...formItemLayoutMarketingModel} style={{ margin: '0' }}>
                                             <div className="orderRules">
                                                 <section className="showInfo">
                                                     {formState.userCondition.map((item, i) => {
@@ -487,40 +627,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                             )}
                                     </FormItem>
                                 </Row> : ''}
-                            <Row>
-                                <FormItem className="strategyMarketingType" label="营销类别" {...formTypeLayout} >
-                                    <RadioGroup value={formState.marketingTypeInt} onChange={this.onRadioChange} style={{ width: '100%' }}>
-                                        {
-                                            strategyMarketingType.map((item) => {
-                                                return <Radio value={item.id} key={item.id} disabled={pagetype}>{item.name}</Radio>;
-                                            })
-                                        }
-                                    </RadioGroup>
-                                </FormItem>
-                            </Row>
-                            {/* <FormItem {...formTypeLayout} label="营销类别" hasFeedback={false}>
-                                {
-                                    getFieldDecorator('marketingType', {
-                                        rules: [{
-                                            required: true, message: '营销类别不能为空！',
-                                        }],
-                                    })(
-                                        <StrategyCreater onChange={this.onMarketingTypeChange} form={this.props.form} strategyType={eventType} />
-                                        )
-                                }
-                            </FormItem> */}
-                            <Row style={(editing && formState.marketingTypeInt !== 1) ? { display: 'none' } : { display: 'block' }}>
-                                <FormItem label="优惠券" {...formItemLayout} >
-                                    {getFieldDecorator('activityId', {
-                                        rules: [{
-                                            required: true, message: '优惠券不能为空！',
-                                        }],
-                                        initialValue: formState.activityId,
-                                    })(
-                                        <Input style={{ width: 80 }} placeholder={formState.activityId} maxLength="30" disabled={pagetype} />
-                                        )}
-                                </FormItem>
-                            </Row>
+                            {this.marketingType()}
                             {this.marketingModel() !== undefined ?
                                 <Row>
                                     <FormItem {...formItemLayoutMarketingModel} label="营销方式" hasFeedback={false}>
@@ -534,6 +641,8 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                                 form={this.props.form}
                                                 stage={formState.strategyState === '待开始' || '未开始' ? 0 : 1}
                                                 page={pagetype}
+                                                onChange={this.onMarketingModelChange}
+                                                showOrderDetailCheck={true}
                                             />
                                             )}
                                     </FormItem>
