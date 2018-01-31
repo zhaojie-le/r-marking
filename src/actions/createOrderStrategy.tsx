@@ -44,7 +44,7 @@ export interface SaveModel {
 }
 
 export interface ChangeShowOrderDetailCheck {
-    flag: boolean;
+    number: number;
     type: constants.CHANGE_SRDC;
 }
 
@@ -74,7 +74,7 @@ export function changeField(fields: Filed): ChangeField {
 
 export function getService(sp: ServiceParam): GetService {
     return {
-        type: constants.GET_SERVICE ,
+        type: constants.GET_SERVICE,
         lineId: sp.lineId,
         cateId: sp.cateId,
     };
@@ -82,7 +82,7 @@ export function getService(sp: ServiceParam): GetService {
 
 export function getOrderState(sp: OrderStateParam): GetOrderState {
     return {
-        type: constants.GET_ORDERSTATE ,
+        type: constants.GET_ORDERSTATE,
         serverIds: sp.serverIds,
         cateId: sp.cateId,
     };
@@ -90,7 +90,7 @@ export function getOrderState(sp: OrderStateParam): GetOrderState {
 
 export function getWechatPush(sp: WeChatPushParam): WeChatPushReturn {
     return {
-        type: constants.GET_WHCHATPUSH ,
+        type: constants.GET_WHCHATPUSH,
         lineid: sp.lineid,
         refer: sp.refer,
         orderStatus: sp.orderStatus,
@@ -118,10 +118,10 @@ export function saveModel(mjs: string): SaveModel {
     };
 }
 
-export function setShowOrderDetailCheck(flag: boolean): ChangeShowOrderDetailCheck {
+export function setShowOrderDetailCheck(num: number): ChangeShowOrderDetailCheck {
     return {
         type: constants.CHANGE_SRDC,
-        flag: flag,
+        number: num,
     };
 }
 

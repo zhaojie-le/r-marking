@@ -13,7 +13,7 @@ import withOperator from '../mouldOperate';
 interface DaojiaProp {
     value?: any;
     stage?: number;
-    showOrderDetailCheck?: boolean;
+    showOrderDetailCheck?: number;
     onChange: (value: any) => any;
 }
 
@@ -26,14 +26,16 @@ class DaojiaAppModel extends React.Component<DaojiaProp, {}> {
         type: '2',
         piclink: '',
         activityendtime: '',
-        showOrderDetailCheck: false,
-        hasPreActChecked: true,
+        showOrderDetailCheck: 0,
+        hasPreActChecked: false,
     };
     private detailLink: string = 'xxx';
+    private piclink: string = 'xxx';
 
     constructor(props: any, context: any) {
         super(props, context);
         const value = this.props.value || {};
+        console.log('iiiiiiiii' + this.props.showOrderDetailCheck);
         this.state = { ...this.state, ...value, type: 2, showOrderDetailCheck: this.props.showOrderDetailCheck };
         console.log('DDDDDDDDDD' + JSON.stringify(this.state));
     }
@@ -85,6 +87,7 @@ class DaojiaAppModel extends React.Component<DaojiaProp, {}> {
 
     linkChange = (event) => {
         const isLinkInputDs = event.target.checked;
+        console.log('linkChangelinkChange==' + event.target.checked);
         const link = event.target.checked ? this.detailLink : event.target.value;
         if (!('value' in this.props)) {
             this.setState({
@@ -102,57 +105,66 @@ class DaojiaAppModel extends React.Component<DaojiaProp, {}> {
         }
     }
     preActChange = (event) => {
-        event.target.checked === true ?
+        const isLinkInputDs = event.target.checked;
+        const piclink = event.target.checked ? this.piclink : event.target.value;
+        const activityendtime = event.target.checked ? this.piclink : event.target.value;
+        if (!('value' in this.props)) {
             this.setState({
-                hasPreActChecked: true,
-            }) :
-            this.setState({
-                hasPreActChecked: false,
+                piclink: piclink,
+                activityendtime: piclink,
+                hasPreActChecked: isLinkInputDs,
             });
+        }
+        this.triggerChange({ piclink, activityendtime, hasPreActChecked: isLinkInputDs });
     }
     isHourEmploee = () => {
         let { linkInput, link } = this.state;
         const { stage } = this.props;
-        console.log('link');
         const hasChecked = link === this.detailLink ? true : false;
         linkInput = stage ? true : linkInput;
-
         return (
             <div>
-                {this.state.showOrderDetailCheck ? <Checkbox onChange={this.linkChange} disabled={!!stage} checked={hasChecked}>该订单详情页</Checkbox> : null}
+                {this.state.showOrderDetailCheck ?
+                    <Checkbox onChange={this.linkChange} disabled={!!stage} checked={hasChecked}>
+                        {this.state.showOrderDetailCheck === 1 ?
+                            '该订单详情页' : this.state.showOrderDetailCheck === 2 ?
+                                '该订单评价页' : ''
+                        }
+                    </Checkbox> : null}
                 <Input placeholder="请输入跳转链接!" onChange={this.linkChange} disabled={linkInput} defaultValue={hasChecked ? '' : link} />
             </div>
         );
     }
 
     render() {
-        const { docs, title, piclink, activityendtime, hasPreActChecked }: any = this.state;
-        console.log('hasPreActChecked===' + hasPreActChecked);
-        console.log('hasPreActChecked===' + activityendtime);
+        let { docs, title, piclink, activityendtime, hasPreActChecked }: any = this.state;
+        const { stage } = this.props;
+        const Checked = piclink === this.piclink ? true : false;
+        hasPreActChecked = stage ? true : hasPreActChecked;
+        console.log(activityendtime);
         return (
             <div className="daojiaAppModel">
                 <Row>
-                    <Col span={5}> 消息类型:</Col><Col span={19}> <Checkbox onChange={this.preActChange} checked={hasPreActChecked}>优惠活动</Checkbox></Col>
+                    <Col span={5}> 消息类型:</Col><Col span={19}> <Checkbox onChange={this.preActChange} checked={Checked}>优惠活动</Checkbox></Col>
                 </Row>
-                <div style={(hasPreActChecked === true) ? { display: 'block' } : { display: 'none' }}>
-                    <Row>
-                        <Col span={5}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 图片链接:</Col>
-                        <Col span={19}><Input placeholder="请输入图片链接!" onChange={this.plChange} defaultValue={piclink} /></Col>
-                    </Row>
-                    <Row>
-                        <Col span={5}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 活动结束时间:</Col>
-                        <Col span={19}>
-                            <DatePicker
-                                showTime={true}
-                                format="YYYY-MM-DD HH:mm:ss"
-                                placeholder="请输入结束时间"
-                                // defaultValue={moment('2018-01-30 14:58:06')}
-                                onChange={this.activityEndTime}
-                                onOk={this.onOk}
-                            />
-                        </Col>
-                    </Row>
-                </div>
+                <Row>
+                    <Col span={5}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 图片链接:</Col>
+                    <Col span={19}><Input placeholder="请输入图片链接!" onChange={this.plChange} defaultValue={piclink} disabled={hasPreActChecked} /></Col>
+                </Row>
+                <Row>
+                    <Col span={5}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 活动结束时间:</Col>
+                    <Col span={19}>
+                        <DatePicker
+                            showTime={true}
+                            format="YYYY-MM-DD HH:mm:ss"
+                            placeholder="请输入结束时间"
+                            // defaultValue={moment('2018-01-30 14:58:06')}
+                            onChange={this.activityEndTime}
+                            disabled={hasPreActChecked}
+                            onOk={this.onOk}
+                        />
+                    </Col>
+                </Row>
                 <Row>
                     <Col span={5}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 标题:</Col><Col span={19}><Input placeholder="请输入标题!" onChange={this.ttChange} defaultValue={title} /></Col>
                 </Row>

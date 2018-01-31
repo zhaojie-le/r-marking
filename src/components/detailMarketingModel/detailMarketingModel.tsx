@@ -10,7 +10,7 @@ interface DetailRuleProps {
     value?: any;
     stage: number;
     page: boolean;
-    showOrderDetailCheck: boolean;
+    showOrderDetailCheck: number;
     onChange: (value: any) => void;
 }
 
@@ -28,7 +28,7 @@ class DetailMarketingModel extends React.Component<DetailRuleProps, {}> {
     state: any = {
         showData: {},
         weChatPush: {},
-        showOrderDetailCheck: false,
+        showOrderDetailCheck: 0,
         channelType: [[1, '短信'], [2, '58到家-APP push'], [3, '58速运-APP push'], [4, '58到家公众号'], [5, '支付预约'], [6, '页面挂件'], [7, '首页运营位']],
     };
     constructor(props: DetailRuleProps, context: any) {

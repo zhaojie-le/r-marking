@@ -20,7 +20,7 @@ import {
     Button,
     Select
 } from 'antd';
-import { DetailMarketingModel, StrategyCreater } from '../../components';
+import { DetailMarketingModel } from '../../components';
 const FormItem = Form.Item;
 const { Content, Footer } = Layout;
 const Option = Select.Option;
@@ -74,9 +74,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
         endValue: '',
         endOpen: false,
         editing: true,
-        editDis: true,
-        eventType: 0
-        //  false
+        editDis: true
     };
     constructor(props: Props, context: any) {
         super(props, context);
@@ -105,8 +103,9 @@ class DetailOrderStrategy extends React.Component<Props, object> {
     }
 
     onSelectChange = (e) => {
-        this.props.formState.marketingTypeInt = e.target.value;
-        const isEditing = e.target.value === '1' ? false : true;
+        console.log(e);
+        this.props.formState.marketingTypeInt = e;
+        const isEditing = (e).toString() === '1' ? false : true;
         this.setState({
             editing: isEditing,
         });
@@ -251,56 +250,37 @@ class DetailOrderStrategy extends React.Component<Props, object> {
     marketingType() {
         const { getFieldDecorator } = this.props.form;
         const { formState, strategyMarketingType } = this.props;
-        const { eventType, pagetype, editing } = this.state;
-        console.log(pagetype);
-
-        if (pagetype === false) {
-            return (
-                <FormItem {...formTypeLayout} label="营销类别" hasFeedback={false}>
-                    {
-                        getFieldDecorator('marketingType', {
-                            rules: [{
-                                required: true, message: '营销类别不能为空！',
-                            }],
-                        })(
-                            <StrategyCreater onChange={this.onMarketingTypeChange} form={this.props.form} strategyType={eventType} />
-                            )
-                    }
+        const { pagetype, editing } = this.state;
+        return (
+            <div>
+                <FormItem className="strategyMarketingType" label="营销类别" {...formTypeLayout} >
+                    <Select
+                        value={(formState.marketingTypeInt === undefined ? (0).toString() : formState.marketingTypeInt).toString()}
+                        style={{ width: '200px' }}
+                        onChange={this.onSelectChange}
+                        disabled={pagetype}
+                    >
+                        {
+                            strategyMarketingType.map((item) => {
+                                return <Option value={(item.id).toString()} key={item.id}>{item.name}</Option>;
+                            })
+                        }
+                    </Select>
                 </FormItem>
-            );
-        } else {
-            return (
-                <div>
-                    <FormItem className="strategyMarketingType" label="营销类别" {...formTypeLayout} >
-                        <Select
-                            value={(formState.marketingTypeInt === undefined ? 0 : formState.marketingTypeInt).toString()}
-                            style={{ width: '200px' }}
-                            onChange={this.onSelectChange}
-                            disabled={true}
-                        >
-                            {
-                                strategyMarketingType.map((item) => {
-                                    return <Option value={(item.id).toString()} key={item.id}>{item.name}</Option>;
-                                })
-                            }
-                        </Select>
+                <Row style={(editing && formState.marketingTypeInt !== 1) ? { display: 'none' } : { display: 'block' }}>
+                    <FormItem label="优惠券" {...formItemLayout} >
+                        {getFieldDecorator('activityId', {
+                            rules: [{
+                                required: true, message: '优惠券不能为空！',
+                            }],
+                            initialValue: formState.activityId,
+                        })(
+                            <Input style={{ width: 80 }} placeholder={formState.activityId} maxLength="30" disabled={pagetype} />
+                            )}
                     </FormItem>
-                    <Row style={(editing && formState.marketingTypeInt !== 1) ? { display: 'none' } : { display: 'block' }}>
-                        <FormItem label="优惠券" {...formItemLayout} >
-                            {getFieldDecorator('activityId', {
-                                rules: [{
-                                    required: true, message: '优惠券不能为空！',
-                                }],
-                                initialValue: formState.activityId,
-                            })(
-                                <Input style={{ width: 80 }} placeholder={formState.activityId} maxLength="30" disabled={true} />
-                                )}
-                        </FormItem>
-                    </Row>
-                </div>
-
-            );
-        }
+                </Row>
+            </div>
+        );
     }
     displayTime() {
         const { getFieldDecorator } = this.props.form;
@@ -414,8 +394,8 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                 type: '1',
                                 docs: formState.smsContent.content,
                                 link: formState.smsContent.openUrl === '' ?
-                                    (formState.smsConten.gotoOrderEvaluationPage === 1 ?
-                                        '订单评价页' : '') : formState.smsConten.openUrl,
+                                    (formState.smsContent.gotoOrderEvaluationPage === 1 ?
+                                        '订单评价页' : '') : formState.smsContent.openUrl,
                             }
                         });
                         break;
@@ -642,7 +622,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                                 stage={formState.strategyState === '待开始' || '未开始' ? 0 : 1}
                                                 page={pagetype}
                                                 onChange={this.onMarketingModelChange}
-                                                showOrderDetailCheck={true}
+                                                showOrderDetailCheck={1}
                                             />
                                             )}
                                     </FormItem>

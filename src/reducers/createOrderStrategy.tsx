@@ -9,7 +9,7 @@ function form(
             triggerRule: '',
             marketingModel: '',
             delayTime: {
-                value: {day: 0, minute: 0}
+                value: { day: 0, minute: 0 }
             },
             pushTimes: {
                 value: '0'
@@ -50,7 +50,7 @@ function form(
             }
         },
         weChatPush: null,
-        showOrderDetailCheck: false
+        showOrderDetailCheck: 0
     },
     action: any
 ) {
@@ -78,7 +78,7 @@ function form(
         case constants.GET_WHCHATPUSH_SUCCESS:
             return {
                 ...state,
-                weChatPush: {...action.result}
+                weChatPush: { ...action.result }
             };
         case constants.RESET_WECHATPUSH:
             return {
@@ -98,7 +98,7 @@ function form(
         case constants.CHANGE_SRDC:
             return {
                 ...state,
-                showOrderDetailCheck: action.flag
+                showOrderDetailCheck: action.number
             };
         default:
             return state;

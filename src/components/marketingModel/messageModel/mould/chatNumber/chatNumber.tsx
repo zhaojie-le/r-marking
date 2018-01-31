@@ -10,7 +10,7 @@ import withOperator from '../mouldOperate';
 
 interface ChatNumberProp {
     key: number;
-    showOrderDetailCheck?: boolean;
+    showOrderDetailCheck?: number;
     value: any;
     stage?: number;
     onChange: (value: any) => any;
@@ -23,16 +23,16 @@ class ChatNumber extends React.Component<ChatNumberProp, {}> {
         remark: '',
         link: '',
         type: 4,
-        showOrderDetailCheck: false,
+        showOrderDetailCheck: 0,
     };
     private detailLink: string = '订单详情页';
- 
+
     constructor(props: any, context: any) {
         super(props, context);
         const value = this.props.value || {};
-        this.state = { ...value, type: 4, showOrderDetailCheck: this.props.showOrderDetailCheck};
+        this.state = { ...value, type: 4, showOrderDetailCheck: this.props.showOrderDetailCheck };
     }
-    
+
     componentWillReceiveProps(nextProps: any) {
         if ('value' in nextProps) {
             const value = nextProps.value;
@@ -60,9 +60,9 @@ class ChatNumber extends React.Component<ChatNumberProp, {}> {
         const isLinkInputDs = event.target.checked;
         const link = event.target.checked ? this.detailLink : event.target.value;
         if (!('value' in this.props)) {
-            this.setState({ 
-                link: link, 
-                linkInput: isLinkInputDs, 
+            this.setState({
+                link: link,
+                linkInput: isLinkInputDs,
             });
         }
         this.triggerChange({ link, linkInput: isLinkInputDs });
@@ -71,7 +71,7 @@ class ChatNumber extends React.Component<ChatNumberProp, {}> {
     triggerChange = (changedValue) => {
         const onChange = this.props.onChange;
         if (onChange) {
-              onChange(Object.assign({}, this.state, changedValue));
+            onChange(Object.assign({}, this.state, changedValue));
         }
     }
 
@@ -83,8 +83,14 @@ class ChatNumber extends React.Component<ChatNumberProp, {}> {
 
         return (
             <div>
-                {this.state.showOrderDetailCheck ? <Checkbox onChange={this.linkChange} disabled={!!stage} checked={hasChecked}>该订单详情页</Checkbox> : null}
-                <Input placeholder="请输入跳转链接!" onChange={this.linkChange} disabled={linkInput} defaultValue={hasChecked ? '' : link}/>
+                {this.state.showOrderDetailCheck ?
+                    <Checkbox onChange={this.linkChange} disabled={!!stage} checked={hasChecked}>
+                        {this.state.showOrderDetailCheck === 1 ?
+                            '该订单详情页' : this.state.showOrderDetailCheck === 2 ?
+                                '该订单评价页' : ''
+                        }
+                    </Checkbox> : null}
+                <Input placeholder="请输入跳转链接!" onChange={this.linkChange} disabled={linkInput} defaultValue={hasChecked ? '' : link} />
             </div>
         );
     }
@@ -95,27 +101,27 @@ class ChatNumber extends React.Component<ChatNumberProp, {}> {
         return (
             <div className="daojiaAppModel">
                 <Row>
-                    <Col span={20} offset={5}  style={{ background: '#fff', padding: 10, border: '1px solid #ccc' }}>
+                    <Col span={20} offset={5} style={{ background: '#fff', padding: 10, border: '1px solid #ccc' }}>
                         <h2>下单成功通知</h2>
                         <Row>
-                            <Col span={3}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 首段</Col>
-                            <Col span={20} offset={1}><Input placeholder="请输入标题!" onChange={this.firstChange} defaultValue={docs}/></Col>
+                            <Col span={3}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 首段</Col>
+                            <Col span={20} offset={1}><Input placeholder="请输入标题!" onChange={this.firstChange} defaultValue={docs} /></Col>
                         </Row>
                         {
                             this.props.children
                         }
                         <Row>
-                            <Col span={3}><i style={{color: 'red'}}>*</i> 尾段</Col>
-                            <Col span={20} offset={1}><Input placeholder="请输入标题!" onChange={this.remarkChange} defaultValue={docs}/></Col>
+                            <Col span={3}><i style={{ color: 'red' }}>*</i> 尾段</Col>
+                            <Col span={20} offset={1}><Input placeholder="请输入标题!" onChange={this.remarkChange} defaultValue={docs} /></Col>
                         </Row>
                     </Col>
                 </Row>
-                <Row><Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 跳转链接:</Col><Col span={19}>{this.isHourEmploee()}</Col></Row>
-                <Row><Col span={19} offset={5} style={{lineHeight: '16px', color: '#2a52be'}}>系统自动加入hmsr参数，无需手动填写 .hmsr=wxgzh_clyx_策略id_策略类别_活动id（活动id只有发券类型才有）</Col></Row>
+                <Row><Col span={5}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 跳转链接:</Col><Col span={19}>{this.isHourEmploee()}</Col></Row>
+                <Row><Col span={19} offset={5} style={{ lineHeight: '16px', color: '#2a52be' }}>系统自动加入hmsr参数，无需手动填写 .hmsr=wxgzh_clyx_策略id_策略类别_活动id（活动id只有发券类型才有）</Col></Row>
             </div>
         );
     }
 }
 
-const OUTPUT = withOperator({title: '58到家公众号'})(ChatNumber);
+const OUTPUT = withOperator({ title: '58到家公众号' })(ChatNumber);
 export default OUTPUT;
