@@ -8,7 +8,7 @@ import {
     DatePicker
 } from 'antd';
 import withOperator from '../mouldOperate';
-// import * as moment from 'moment';
+import * as moment from 'moment';
 
 interface DaojiaProp {
     value?: any;
@@ -36,14 +36,15 @@ class DaojiaAppModel extends React.Component<DaojiaProp, {}> {
         super(props, context);
         const value = this.props.value || {};
         console.log('iiiiiiiii' + this.props.showOrderDetailCheck);
-        this.state = { ...this.state, ...value, type: 2, showOrderDetailCheck: this.props.showOrderDetailCheck };
-        console.log('DDDDDDDDDD' + JSON.stringify(this.state));
+        this.state = { ...this.state, type: 2, showOrderDetailCheck: this.props.showOrderDetailCheck, ...value };
+        console.log('DDDDDDDDDDfffffffffffffffffff' + JSON.stringify(this.state));
     }
 
     componentWillReceiveProps(nextProps: any) {
+        console.log('nextProps.valuenextProps.valuenextProps.value===' + JSON.stringify(nextProps.value));
         if ('value' in nextProps) {
             const value = nextProps.value;
-            this.setState({ ...value, showOrderDetailCheck: nextProps.showOrderDetailCheck });
+            this.setState({ showOrderDetailCheck: nextProps.showOrderDetailCheck, ...value });
         }
     }
 
@@ -121,7 +122,8 @@ class DaojiaAppModel extends React.Component<DaojiaProp, {}> {
         let { linkInput, link } = this.state;
         const { stage } = this.props;
         const hasChecked = link === this.detailLink ? true : false;
-        linkInput = stage ? true : linkInput;
+        console.log('linkInputlinkInputlinkInput=====' + linkInput);
+        linkInput = stage ? true : hasChecked === true ? true : linkInput;
         return (
             <div>
                 {this.state.showOrderDetailCheck ?
@@ -137,11 +139,8 @@ class DaojiaAppModel extends React.Component<DaojiaProp, {}> {
     }
 
     render() {
-        let { docs, title, piclink, activityendtime, hasPreActChecked }: any = this.state;
-        const { stage } = this.props;
+        let { docs, title, piclink, activityendtime }: any = this.state;
         const Checked = piclink === this.piclink ? true : false;
-        hasPreActChecked = stage ? true : hasPreActChecked;
-        console.log(activityendtime);
         return (
             <div className="daojiaAppModel">
                 <Row>
@@ -149,20 +148,32 @@ class DaojiaAppModel extends React.Component<DaojiaProp, {}> {
                 </Row>
                 <Row>
                     <Col span={5}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 图片链接:</Col>
-                    <Col span={19}><Input placeholder="请输入图片链接!" onChange={this.plChange} defaultValue={piclink} disabled={hasPreActChecked} /></Col>
+                    <Col span={19}><Input placeholder="请输入图片链接!" onChange={this.plChange} defaultValue={piclink} disabled={Checked} /></Col>
                 </Row>
                 <Row>
                     <Col span={5}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 活动结束时间:</Col>
                     <Col span={19}>
-                        <DatePicker
-                            showTime={true}
-                            format="YYYY-MM-DD HH:mm:ss"
-                            placeholder="请输入结束时间"
-                            // defaultValue={moment('2018-01-30 14:58:06')}
-                            onChange={this.activityEndTime}
-                            disabled={hasPreActChecked}
-                            onOk={this.onOk}
-                        />
+                        {activityendtime === 'xxx' || activityendtime === '' ?
+                            <DatePicker
+                                showTime={true}
+                                format="YYYY-MM-DD HH:mm:ss"
+                                placeholder="请输入结束时间"
+                                onChange={this.activityEndTime}
+                                disabled={Checked}
+                                onOk={this.onOk}
+                            />
+                            :
+                            <DatePicker
+                                showTime={true}
+                                format="YYYY-MM-DD HH:mm:ss"
+                                placeholder="请输入结束时间"
+                                defaultValue={moment(activityendtime)}
+                                onChange={this.activityEndTime}
+                                disabled={Checked}
+                                onOk={this.onOk}
+                            />
+                        }
+
                     </Col>
                 </Row>
                 <Row>

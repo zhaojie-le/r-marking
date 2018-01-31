@@ -352,6 +352,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
         // 微信公众号：2，1 link: formState.categoryId === 201 ? '订单详情页面' : (formState.categoryId === 212 || formState.bussniessId === 104) ? '订单评价页面' : formState.wechatContent.openUrl,
         // 短信：3link: (formState.categoryId === 212 || formState.bussniessId === 104) ? '订单评价页面' : formState.smsContent.openUrl,
         // 1 formState.wechatTemplate.value === '1' ? '下单成功' : formState.wechatTemplate.value === '2' ? '待支付通知' : formState.wechatTemplate.value === '4' ? '订单已完成' : '',
+        // onShowOrderDetailCheck 1订单详情，2订单评价 0不展示
         if (actionExpression !== undefined) {
             actionExpression.forEach((item, index) => {
                 switch (item) {
@@ -362,10 +363,11 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                 type: '4',
                                 first: formState.wechatContent.firstData,
                                 remark: formState.wechatContent.remarkData,
-                                link: formState.wechatContent.openUrl === '' ?
+                                link: formState.wechatContent.openUrl === '' ? 'xxx' : formState.wechatContent.openUrl,
+                                showOrderDetailCheck: formState.wechatContent.openUrl === '' ?
                                     (formState.wechatContent.gotoOrderEvaluationPage === 1 ?
-                                        '订单评价页' : formState.wechatContent.gotoOrderPage === 1 ?
-                                            '订单详情页' : '') : formState.wechatContent.openUrl,
+                                        2 : formState.wechatContent.gotoOrderPage === 1 ?
+                                            1 : 0) : 0,
                                 tstate: formState.wechatContent.pushStatus === '1' ?
                                     '下单成功' : formState.wechatContent.pushStatus === '2' ?
                                         '待支付通知' : formState.wechatContent.pushStatus === '4' ?
@@ -380,10 +382,13 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                 type: '2',
                                 title: formState.appContent.title,
                                 docs: formState.appContent.content,
-                                link: formState.appContent.openUrl === '' ?
+                                piclink: formState.appContent.picurl === '' ? 'xxx' : formState.appContent.picurl,
+                                activityendtime: formState.appContent.endTime === '' ? 'xxx' : formState.appContent.endTime,
+                                link: formState.appContent.openUrl === '' ? 'xxx' : formState.wechatContent.openUrl,
+                                showOrderDetailCheck: formState.appContent.openUrl === '' ?
                                     (formState.appContent.gotoOrderEvaluationPage === 1 ?
-                                        '订单评价页' : formState.appContent.gotoOrderPage === 1 ?
-                                            '订单详情页' : '') : formState.appContent.openUrl,
+                                        2 : formState.appContent.gotoOrderPage === 1 ?
+                                            1 : 0) : 0,
                             }
                         });
                         break;
@@ -393,9 +398,10 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                             value: {
                                 type: '1',
                                 docs: formState.smsContent.content,
-                                link: formState.smsContent.openUrl === '' ?
+                                link: formState.smsContent.openUrl === '' ? 'xxx' : formState.wechatContent.openUrl,
+                                showOrderDetailCheck: formState.smsContent.openUrl === '' ?
                                     (formState.smsContent.gotoOrderEvaluationPage === 1 ?
-                                        '订单评价页' : '') : formState.smsContent.openUrl,
+                                        2 : 0) : 0,
                             }
                         });
                         break;
@@ -447,7 +453,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                         break;
                 }
             });
-            console.log('actionExpressionstate' + JSON.stringify(actionExpressionstate));
+            console.log('actionExpressionstateactionExpressionstateactionExpressionstateactionExpressionstate======' + JSON.stringify(actionExpressionstate));
             return actionExpressionstate;
         }
     }
@@ -622,7 +628,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                                 stage={formState.strategyState === '待开始' || '未开始' ? 0 : 1}
                                                 page={pagetype}
                                                 onChange={this.onMarketingModelChange}
-                                                showOrderDetailCheck={1}
+                                                showOrderDetailCheck={0}
                                             />
                                             )}
                                     </FormItem>

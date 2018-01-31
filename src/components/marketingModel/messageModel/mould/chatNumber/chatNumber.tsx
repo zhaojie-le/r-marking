@@ -30,13 +30,13 @@ class ChatNumber extends React.Component<ChatNumberProp, {}> {
     constructor(props: any, context: any) {
         super(props, context);
         const value = this.props.value || {};
-        this.state = { ...value, type: 4, showOrderDetailCheck: this.props.showOrderDetailCheck };
+        this.state = { showOrderDetailCheck: this.props.showOrderDetailCheck, ...value, type: 4 };
     }
 
     componentWillReceiveProps(nextProps: any) {
         if ('value' in nextProps) {
             const value = nextProps.value;
-            this.setState({ ...value, showOrderDetailCheck: nextProps.showOrderDetailCheck });
+            this.setState({ showOrderDetailCheck: nextProps.showOrderDetailCheck, ...value });
         }
     }
 

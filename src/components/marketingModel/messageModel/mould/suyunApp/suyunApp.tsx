@@ -69,7 +69,7 @@ class SuyunAppModel extends React.Component<SuyunProp, SunyunState> {
     triggerChange = (changedValue) => {
         const onChange = this.props.onChange;
         if (onChange) {
-              onChange(Object.assign({}, this.state, changedValue));
+            onChange(Object.assign({}, this.state, changedValue));
         }
     }
 
@@ -80,15 +80,15 @@ class SuyunAppModel extends React.Component<SuyunProp, SunyunState> {
         return (
             <div className="suyunAppModel">
                 <Row>
-                    <Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 标题:</Col>
-                    <Col span={19}><Input placeholder="请输入标题!" onChange={this.ttChange} defaultValue={title}/></Col>
+                    <Col span={5}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 标题:</Col>
+                    <Col span={19}><Input placeholder="请输入标题!" onChange={this.ttChange} defaultValue={title} /></Col>
                 </Row>
                 <Row>
-                    <Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 文案:</Col>
-                    <Col span={19}><Input placeholder="请输入文案!" onChange={this.wnChange} defaultValue={docs}/></Col>
+                    <Col span={5}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 文案:</Col>
+                    <Col span={19}><Input placeholder="请输入文案!" onChange={this.wnChange} defaultValue={docs} /></Col>
                 </Row>
                 <Row>
-                    <Col span={5}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 跳转链接:</Col>
+                    <Col span={5}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 跳转链接:</Col>
                     <Col span={19}>
                         <RadioGroup onChange={this.linkChange} value={this.state.link} defaultValue={link} disabled={!!stage}>
                             <Radio value={'app'}>58速运App首页</Radio>
@@ -101,5 +101,5 @@ class SuyunAppModel extends React.Component<SuyunProp, SunyunState> {
     }
 }
 
-const OUTPUT = withOperator({title: '58速运App push'})(SuyunAppModel);
+const OUTPUT = withOperator({ title: '58速运App push' })(SuyunAppModel);
 export default OUTPUT;

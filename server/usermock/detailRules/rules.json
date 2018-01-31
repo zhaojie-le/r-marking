@@ -1,23 +1,52 @@
 {
     "data": {
-        "showEdit": true,
-        "strategyName": "czx速运会员返券1",
-        "pkId": "275644801859199196",
-        "marketingType": "发券",
-        "effectiveTime": "2018-01-30 14:42:06",
-        "ruleList": [],
-        "invalidTime": "2018-02-10 14:42:08",
-        "strategyTypeInt": 10,
+        "pkId": "272756545605939289",
+        "effectiveTime": "2018-01-22 15:53:44",
+        "ruleList": [
+            {
+                "name": "触发事件",
+                "value": "订单触发"
+            },
+            {
+                "name": "订单来源",
+                "value": "全部, 到家APP, 微信, 其他h5"
+            },
+            {
+                "name": "服务项",
+                "value": "育儿嫂（育儿师）, 月嫂"
+            },
+            {
+                "name": "城市",
+                "value": "北京, 上海"
+            },
+            {
+                "name": "订单状态",
+                "value": "已回访无纠纷"
+            }
+        ],
+        "invalidTime": "2018-03-10 15:53:46",
+        "strategyTypeInt": 1,
+        "strategyType": "订单触发",
         "activityId": 0,
         "createrEmail": "chenzixu@daojia.com",
-        "marketingTypeInt": 1,
-        "createTime": "2018-01-30 15:14:01",
-        "showButton": 1,
         "smsContent": {
             "content": "",
-            "disposeUrl": "http://s-ht.djtest.cn/GIQD",
+            "disposeUrl": "http://s-ht.djtest.cn/G7ST",
             "gotoOrderEvaluationPage": 0,
             "openUrl": "https://www.baidu.com/"
+        },
+        "wechatContent": {
+            "applicationRange": "",
+            "applicationRule": "",
+            "couponValue": "",
+            "disposeUrl": "http://s-ht.djtest.cn/FzeR",
+            "firstData": "按时",
+            "gotoOrderEvaluationPage": 0,
+            "gotoOrderPage": 0,
+            "openUrl": "阿萨德",
+            "pushStatus": 4,
+            "remarkData": "阿萨德",
+            "validatePeriod": ""
         },
         "strategyMarketingType": [
             {
@@ -65,30 +94,58 @@
                 "id": 10
             }
         ],
+        "orderStatusValue": "5",
         "actionExpression": [
-            "3"
+            "2",
+            "3",
+            "6",
+            "1"
         ],
         "marketingLimit": 0,
-        "updateContent": "无",
+        "strategyState": "未开始",
+        "expressContent": {
+            "content": "",
+            "disposeUrl": "app",
+            "openUrl": "app?hmsr=suyun_clyx_272756545605939289_1",
+            "title": "czx月嫂+条件已生成22-01修"
+        },
+        "showEdit": true,
+        "strategyName": "czx月嫂+条件已生成22-01修",
+        "marketingType": "商品[拼团]",
+        "userCondition": [
+            {
+                "name": "创建时初始用户数量",
+                "value": "30669"
+            },
+            {
+                "name": "用户条件",
+                "value": "家政会员卡余额即将用完的用户"
+            }
+        ],
+        "appContent": {
+            "content": "",
+            "disposeUrl": "http://housecommentbox53.djtest.cn/jzup/comment/index?orderId={{orderId}}&hmsr=daojia_clyx_272756545605939289_1",
+            "gotoOrderEvaluationPage": 1,
+            "gotoOrderPage": 0,
+            "openUrl": "",
+            "title": "czx月嫂+条件已生",
+            "picurl": "",
+            "endTime": ""
+        },
+        "bussniessId": 104,
+        "marketingTypeInt": 10,
+        "refer": 3662,
+        "createTime": "2018-01-22 15:57:08",
+        "showButton": 1,
+        "triggerEvent": "订单触发/用户条件",
+        "updateContent": "2018-01-22 16:02:55:修改失效时间,修改策略名称,修改营销类别,修改营销方式,",
         "actionParam": {
             "appContent": {
-                "content": "",
-                "disposeUrl": "",
-                "openUrl": "",
-                "title": ""
+                "$ref": "$.data.appContent"
             },
             "dayDelay": 0,
             "expressContent": {
-                "content": "",
-                "disposeUrl": "",
-                "openUrl": "",
-                "title": ""
-            },
-            "homePageContent": {
-                "disposeUrl_app": "",
-                "disposeUrl_wechat": "",
-                "imgUrl": "",
-                "openUrl": ""
+                "$ref": "$.data.expressContent"
             },
             "minuteDelay": 0,
             "payOrderContent": {
@@ -122,7 +179,7 @@
                 "validatePeriod": ""
             }
         },
-        "strategyState": "未开始"
+        "categoryId": 205
     },
     "resultCode": 1
 }

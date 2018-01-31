@@ -213,11 +213,9 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
         }
         const keys = form.getFieldValue('keys');
         const nextKeys = keys.concat({ k: uuid++, type: keyType[0], orderState: keyType[1], value: { type: keyType[0] } });
-        console.log('nextKeysnextKeys=========' + JSON.stringify(nextKeys));
         form.setFieldsValue({
             keys: nextKeys,
         });
-        console.log('keyType[0]keyType[0]=======' + keyType[0]);
         this._changeChannelType(keyType[0]);
     }
 

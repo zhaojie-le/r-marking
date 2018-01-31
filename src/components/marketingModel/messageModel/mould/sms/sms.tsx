@@ -27,14 +27,14 @@ class Sms extends React.Component<SmsNumberProp, {}> {
         super(props, context);
 
         const value = this.props.value || {};
-        this.state = { ...value, type: 1, showOrderDetailCheck: this.props.showOrderDetailCheck };
+        this.state = { showOrderDetailCheck: this.props.showOrderDetailCheck, ...value, type: 1 };
     }
     private detailLink: string = 'xxx';
 
     componentWillReceiveProps(nextProps: any) {
         if ('value' in nextProps) {
             const value = nextProps.value;
-            this.setState(value);
+            this.setState({ showOrderDetailCheck: nextProps.showOrderDetailCheck, ...value });
         }
     }
 
