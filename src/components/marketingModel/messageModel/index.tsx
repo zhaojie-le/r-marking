@@ -420,9 +420,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
                 orderState: key.orderState,
                 onShiftDown: () => this.shiftDown(key)
             };
-            console.log('key.valuekey.value=======' + JSON.stringify(key.value));
             key.value.tstate = key.value.type === '4' ? option.name : '';
-            console.log('propspropsprops=====' + JSON.stringify(props));
             const typeIndex = i + 1;
             const { k, type } = key;
             switch (parseInt(type, 10)) {
