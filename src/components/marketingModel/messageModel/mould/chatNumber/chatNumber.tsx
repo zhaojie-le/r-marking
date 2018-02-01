@@ -30,7 +30,9 @@ class ChatNumber extends React.Component<ChatNumberProp, {}> {
     constructor(props: any, context: any) {
         super(props, context);
         const value = this.props.value || {};
-        this.state = { showOrderDetailCheck: this.props.showOrderDetailCheck, ...value, type: 4 };
+        console.log('constructorconstructorconstructorconstructor=======' + JSON.stringify(value));
+        this.state = { ...this.state, showOrderDetailCheck: this.props.showOrderDetailCheck, ...value, type: 4 };
+        console.log('constructorconstructorconstructorconstructor=======' + JSON.stringify(value));
     }
 
     componentWillReceiveProps(nextProps: any) {
@@ -96,23 +98,23 @@ class ChatNumber extends React.Component<ChatNumberProp, {}> {
     }
 
     render() {
-        const { docs }: any = this.state;
+        const { first, remark, tstate }: any = this.state;
 
         return (
             <div className="daojiaAppModel">
                 <Row>
                     <Col span={20} offset={5} style={{ background: '#fff', padding: 10, border: '1px solid #ccc' }}>
-                        <h2>下单成功通知</h2>
+                        <h2>{tstate}通知</h2>
                         <Row>
                             <Col span={3}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 首段</Col>
-                            <Col span={20} offset={1}><Input placeholder="请输入标题!" onChange={this.firstChange} defaultValue={docs} /></Col>
+                            <Col span={20} offset={1}><Input placeholder="请输入标题!" onChange={this.firstChange} defaultValue={first} /></Col>
                         </Row>
                         {
                             this.props.children
                         }
                         <Row>
                             <Col span={3}><i style={{ color: 'red' }}>*</i> 尾段</Col>
-                            <Col span={20} offset={1}><Input placeholder="请输入标题!" onChange={this.remarkChange} defaultValue={docs} /></Col>
+                            <Col span={20} offset={1}><Input placeholder="请输入标题!" onChange={this.remarkChange} defaultValue={remark} /></Col>
                         </Row>
                     </Col>
                 </Row>

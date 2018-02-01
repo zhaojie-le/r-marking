@@ -208,6 +208,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                     refer: values.serviceOptions,
                     orderStatus: values.orderState,
                 });
+                
                 // onShowOrderDetailCheck 1订单详情，2订单评价 0不展示
                 console.log('valuesvaluesvalues==' + values.serviceItem);
                 this.props.onShowOrderDetailCheck((values.serviceItem[1] === '201' ? 1 : values.serviceItem[1] === '212' || values.serviceItem[1] === '205' ? 2 : 0));

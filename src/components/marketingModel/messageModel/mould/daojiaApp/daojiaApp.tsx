@@ -65,8 +65,6 @@ class DaojiaAppModel extends React.Component<DaojiaProp, {}> {
     }
 
     activityEndTime = (value, dateString) => {
-        console.log('Selected Time: ', value);
-        console.log('Formatted Selected Time: ', dateString);
         const activityendtime = dateString;
         if (!('value' in this.props)) {
             this.setState({ activityendtime });

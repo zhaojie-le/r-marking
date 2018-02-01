@@ -154,14 +154,12 @@ class DetailOrderStrategy extends React.Component<Props, object> {
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 // 得到的values数据重组
-                console.log('valuesvaluesvalues=' + JSON.stringify(values));
                 const { onSaveRule } = this.props;
                 values.effectiveTime = values.effectiveTime._i;
                 values.invalidTime = values.invalidTime._i;
                 values.marketingTypeInt = this.props.formState.marketingTypeInt;
                 values.marketingModel = this.mergeParmas(values);
                 delete values.keys;
-                console.log('valuesvaluesvalues=' + JSON.stringify(values));
                 onSaveRule(values);
             }
         });
@@ -368,9 +366,9 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                     (formState.wechatContent.gotoOrderEvaluationPage === 1 ?
                                         2 : formState.wechatContent.gotoOrderPage === 1 ?
                                             1 : 0) : 0,
-                                tstate: formState.wechatContent.pushStatus === '1' ?
-                                    '下单成功' : formState.wechatContent.pushStatus === '2' ?
-                                        '待支付通知' : formState.wechatContent.pushStatus === '4' ?
+                                tstate: formState.wechatContent.pushStatus === 1 ?
+                                    '下单成功' : formState.wechatContent.pushStatus === 2 ?
+                                        '待支付通知' : formState.wechatContent.pushStatus === 4 ?
                                             '订单已完成' : '',
                             }
                         });
@@ -453,7 +451,6 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                         break;
                 }
             });
-            console.log('actionExpressionstateactionExpressionstateactionExpressionstateactionExpressionstate======' + JSON.stringify(actionExpressionstate));
             return actionExpressionstate;
         }
     }

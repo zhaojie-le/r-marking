@@ -398,7 +398,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
 
     geteratorChannel = () => {
         const { getFieldDecorator, getFieldValue } = this.props.form;
-        const { stage, showOrderDetailCheck } = this.props;
+        const { stage, showOrderDetailCheck, option } = this.props;
         const models = this.state.models.map((item) => {
             return {
                 ...item,
@@ -408,7 +408,8 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
         getFieldDecorator('keys', { initialValue: models });
         let keys = getFieldValue('keys');
         const clength = keys.length;
-
+        console.log('keyKEYKEYEKEYYEEE=======' + JSON.stringify(keys));
+        console.log('optionoptionoptiooptionoptionoptionn===' + JSON.stringify(option));
         return keys.map((key, i) => {
             const props = {
                 first: i === 0 ? true : false,
@@ -419,6 +420,8 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
                 orderState: key.orderState,
                 onShiftDown: () => this.shiftDown(key)
             };
+            console.log('key.valuekey.value=======' + JSON.stringify(key.value));
+            key.value.tstate = key.value.type === '4' ? option.name : '';
             console.log('propspropsprops=====' + JSON.stringify(props));
             const typeIndex = i + 1;
             const { k, type } = key;
@@ -442,7 +445,9 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
                         </FormItem>
                     );
                 case ChannelType.DaojiaApp:
+
                     return (
+
                         <FormItem {...layout.modelItemLayout} label={`渠道${typeIndex}`} key={typeIndex}>
                             {getFieldDecorator(`daojiaApp-${k}`, {
                                 initialValue: key.value,
@@ -586,7 +591,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
         return Object.keys(showData).map((item: string, i: number) => {
             let label: any, properties: any[];
             const itemObj = showData[item];
-
+            console.log('showDatashowDatashowDatashowDatashowData===' + JSON.stringify(itemObj));
             switch (item.split('-')[0].toUpperCase()) {
                 case ChannelType[1].toUpperCase():
                     label = '短信';
