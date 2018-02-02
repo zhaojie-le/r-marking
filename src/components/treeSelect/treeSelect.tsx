@@ -193,18 +193,17 @@ class TreeSelect extends React.Component<Props, any> {
             }
             setTimeout(() => {
                 this.props.onGettagNodeTree(treeNode.props.eventKey);
-                // [
-                // { 'isParent': true, 'Description': '最简单', 'title': '新客----最简单的用法，展示可勾选，可选中，禁用，默认展开等功能。最简单的用法，展示可勾选，可选中，禁用，默认展开等功能。', 'key': '00-01-23', 'Disable': true },
-                // { 'isParent': true, 'Description': '最简单的用法，展示可勾选，可选中，禁用，默认展开等功能。最简单的用法，展示可勾选，可选中，禁用，默认展开等功能。', 'title': '老客----最简单的用法，展示可勾选，可选中，禁用，默认展开等功能', 'key': '00-01-24', 'Disable': true }
-                // ]
-                treeNode.props.dataRef.children = this.props.tagNodeTree;
+                // const newObj = this.props.tagNodeTree;
+                // treeNode.props.dataRef.children = newObj;
+                treeNode.props.dataRef.children = [
+                    { 'isParent': true, 'Description': '最简单', 'title': '新客----最简单的用法，展示可勾选，可选中，禁用，默认展开等功能。最简单的用法，展示可勾选，可选中，禁用，默认展开等功能。', 'key': '00-01-23', 'Disable': true },
+                    { 'isParent': true, 'Description': '最简单的用法，展示可勾选，可选中，禁用，默认展开等功能。最简单的用法，展示可勾选，可选中，禁用，默认展开等功能。', 'title': '老客----最简单的用法，展示可勾选，可选中，禁用，默认展开等功能', 'key': '00-01-24', 'Disable': true }
+                ];
                 this.setState({
                     treeData: [...this.state.treeData],
                 });
                 resolve();
-            },
-                1000
-            );
+            }, 1000);
         });
     }
     renderSelectTreeNodes = () => {
@@ -234,12 +233,13 @@ class TreeSelect extends React.Component<Props, any> {
     }
     render() {
         const { autoExpandParent, checkedKeys } = this.state;
+        console.log(33);
         return (
             <div id="treeSelectWrapper">
                 <Row>
                     <Col>
                         根据组合条件共筛选<span style={{ color: 'red' }}>{this.props.totalUser}</span>用户
-</Col>
+                    </Col>
                 </Row>
                 <Row>
                     <Col span={12} style={{ position: 'relative' }}>
