@@ -47,7 +47,7 @@ export interface Props {
     onResetWeChatPush: () => void;
     onSaveModel: (modelData: string) => void;
     onGetOrderState: () => void;
-    onGetTreeNode: (id: number) => void;
+    onGetTreeNode: (id: string) => void;
 }
 
 namespace layout {
@@ -125,7 +125,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
 
     componentDidMount() {
         // this.props.onGetRules(1);
-        this.props.onGetTreeNode(1);
+        this.props.onGetTreeNode('00');
     }
 
     validateTrgger = (): boolean | undefined => {
