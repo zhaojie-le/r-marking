@@ -7,19 +7,18 @@ import _ from 'lodash';
 import './style.scss';
 import {
     Tree,
-    Input,
     InputNumber,
     Row,
     Col
 } from 'antd';
-import Worker from 'worker-loader!./worker';
+// import Worker from 'worker-loader!./worker';
 
 export interface RuleProps {
     form: any;
 }
 
 const TreeNode = Tree.TreeNode;
-const Search = Input.Search;
+// const Search = Input.Search;
 let dataList: Array<any> = [];
 const generateList = (data) => {
     for (let i = 0; i < data.length; i++) {
@@ -81,6 +80,7 @@ interface Props {
     onChange: (value: any) => void;
     totalUser: number;
     tagNodeTree: Array<any>;
+    tagNodeTreeZ: Array<any>;
     onGetUserAmount: (tag: any[]) => void;
     onGettagNodeTree: (id: string) => void;
 
@@ -137,29 +137,29 @@ class TreeSelect extends React.Component<Props, any> {
         }
     }
 
-    onChange = _.debounce(
-        (e) => {
-            e.persist();
-            const value = e.target.value;
-            var worker = new Worker();
-            worker.onmessage = (e1) => {
-                var data = e1.data;
-                this.setState({
-                    expandedKeys: data.zkkeys,
-                    searchValue: value,
-                    autoExpandParent: true,
-                });
-                worker.terminate();
-            };
-            var messageData = {
-                value: value,
-                dataList: this.dataList,
-                treeData: this.props.tagNodeTree
-            };
-            worker.postMessage(messageData);
-        },
-        1000
-    );
+    // onChange = _.debounce(
+    //     (e) => {
+    //         e.persist();
+    //         const value = e.target.value;
+    //         var worker = new Worker();
+    //         worker.onmessage = (e1) => {
+    //             var data = e1.data;
+    //             this.setState({
+    //                 expandedKeys: data.zkkeys,
+    //                 searchValue: value,
+    //                 autoExpandParent: true,
+    //             });
+    //             worker.terminate();
+    //         };
+    //         var messageData = {
+    //             value: value,
+    //             dataList: this.dataList,
+    //             treeData: this.props.tagNodeTree
+    //         };
+    //         worker.postMessage(messageData);
+    //     },
+    //     1000
+    // );
 
     renderTreeNodes = (data) => {
         const { searchValue } = this.state;
@@ -192,13 +192,10 @@ class TreeSelect extends React.Component<Props, any> {
                 return;
             }
             setTimeout(() => {
-                this.props.onGettagNodeTree(treeNode.props.eventKey);
+                // this.props.onGettagNodeTree(treeNode.props.eventKey);
                 // const newObj = this.props.tagNodeTree;
                 // treeNode.props.dataRef.children = newObj;
-                treeNode.props.dataRef.children = [
-                    { 'isParent': true, 'Description': '最简单', 'title': '新客----最简单的用法，展示可勾选，可选中，禁用，默认展开等功能。最简单的用法，展示可勾选，可选中，禁用，默认展开等功能。', 'key': '00-01-23', 'Disable': true },
-                    { 'isParent': true, 'Description': '最简单的用法，展示可勾选，可选中，禁用，默认展开等功能。最简单的用法，展示可勾选，可选中，禁用，默认展开等功能。', 'title': '老客----最简单的用法，展示可勾选，可选中，禁用，默认展开等功能', 'key': '00-01-24', 'Disable': true }
-                ];
+                treeNode.props.dataRef.children = this.props.tagNodeTreeZ;
                 this.setState({
                     treeData: [...this.state.treeData],
                 });
@@ -235,7 +232,6 @@ class TreeSelect extends React.Component<Props, any> {
     }
     render() {
         const { autoExpandParent, checkedKeys } = this.state;
-        console.log(33);
         return (
             <div id="treeSelectWrapper">
                 <Row>
@@ -245,7 +241,8 @@ class TreeSelect extends React.Component<Props, any> {
                 </Row>
                 <Row>
                     <Col span={12} style={{ position: 'relative' }}>
-                        <Search style={{ marginBottom: 8, width: '300px', position: 'absolute', top: 0, left: 0 }} placeholder="请输入要搜索的节点" onChange={(e) => { e.persist(); this.onChange(e); }} />
+                        {/* <Search style={{ marginBottom: 8, width: '300px', position: 'absolute', top: 0, left: 0 }}
+                         placeholder="请输入要搜索的节点" onChange={(e) => { e.persist(); this.onChange(e); }} /> */}
                         <div className="treeSelectBox">
                             <Tree
                                 checkable={true}
@@ -288,6 +285,7 @@ function mapStateToProps(state: StoreState) {
     return {
         totalUser: state.userCondition.totalUser,
         tagNodeTree: state.userCondition.tagNodeTree,
+        tagNodeTreeZ: state.userCondition.tagNodeTreeZ
     };
 }
 
