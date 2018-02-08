@@ -168,7 +168,8 @@ const saveRule: Epic<any, any> = (action$, store) => {
     return action$.ofType(constants.SAVE_RULE).
         switchMap(
         (action): Observable<any> => {
-            return ajax.post('/marketStrategy/save', JSON.stringify(action.params)).map(response => {
+            console.log('action.paramsaction.params=====' + JSON.stringify(action.params));
+            return ajax.post('/marketStrategy/save', action.params).map(response => {
                 if (response.response.resultCode === 1) {
                     return (saveRuleSuccess(response.response.message));
                 } else {
