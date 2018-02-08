@@ -1,5 +1,5 @@
 import * as React from 'react';
-import cfg  from '../cfg';
+import cfg from '../cfg';
 import { Form, Input, Row, Col, Select } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -26,7 +26,7 @@ namespace layout {
  */
 export const arrayAddKey = (arr: any) => {
     if (arr && arr.length > 0) {
-        let array = arr.map( (item, i) => Object.assign({}, item, { key: i }) );
+        let array = arr.map((item, i) => Object.assign({}, item, { key: i }));
         return array;
     }
 };
@@ -60,7 +60,7 @@ class SelectCategory extends React.Component<RuleProps, {}> {
                 activityId: ''
             });
         }
-        this.triggerChange({ marketingType: value  });
+        this.triggerChange({ marketingType: value });
     }
     couponIdChange = (e) => {
         if (!('value' in this.props)) {
@@ -83,8 +83,8 @@ class SelectCategory extends React.Component<RuleProps, {}> {
                         required: true, message: '优惠券id不能为空！',
                     }]
                 })(
-                    <Input placeholder="请输入优惠券ID" onChange={this.couponIdChange}/>
-                )}
+                    <Input placeholder="请输入优惠券ID" onChange={this.couponIdChange} />
+                    )}
             </FormItem>
         ) : '';
     }
@@ -92,7 +92,7 @@ class SelectCategory extends React.Component<RuleProps, {}> {
         const { getFieldDecorator } = this.props.form;
         const { strategyType } = this.props;
         var newMarketingArray: any = [];
-        if (strategyType === 5 || strategyType === 7) {
+        if (strategyType === 5 || strategyType === 7 || strategyType === 9) {
             // 无发券功能
             newMarketingArray = cfg.marketingType;
         } else {
@@ -109,14 +109,14 @@ class SelectCategory extends React.Component<RuleProps, {}> {
                                     required: true, message: '营销类别不能为空',
                                 }],
                             })(
-                                <Select 
-                                    placeholder="请选择营销类别!" 
-                                    style={{ width: 200 }} 
+                                <Select
+                                    placeholder="请选择营销类别!"
+                                    style={{ width: 200 }}
                                     onChange={this.selectType}
                                 >
                                     {selectcChildren(newMarketingArray)}
                                 </Select>
-                            )
+                                )
                         }
                     </FormItem>
                 </Col>

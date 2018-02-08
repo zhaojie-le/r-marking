@@ -4,7 +4,7 @@ import { connect, Dispatch } from 'react-redux';
 import * as actions from '../../../actions';
 import { StoreState } from '../../../types/index';
 import { bindActionCreators } from 'redux';
-import { Form, Checkbox, Button, Cascader } from 'antd';
+import { Form, Checkbox, Button, Cascader, Transfer } from 'antd';
 import { default as ShowRule } from '../showRuleInfo';
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
@@ -14,6 +14,10 @@ export interface RuleProps {
     serviceList: any[];
     onChange: (value: any) => void;
     plainOptions: any;
+    formState: any;
+    serviceOptions: any[];
+    onGetService: (cp: { lineId: number; cateId: number }) => void;
+    onGetOrderState: (cp: { serverIds: string; cateId: number }) => void;
 }
 namespace layout {
     export const formItemLayout = {
@@ -45,7 +49,9 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
         checkedList: [],
         indeterminate: true,
         checkAll: false,
-        rules: []
+        rules: [],
+        serviceOptions: [],
+        selectedLabel: ''
     };
     onCheckAllChange = (e) => {
         this.setState({
@@ -63,31 +69,77 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
             checkAll: checkedList.length === this.props.plainOptions.length,
         });
     }
+    handleServiceTransferChange = (targetServiceKeys) => {
+        // this.props.onGetOrderState({ serverIds: targetServiceKeys.join(), cateId: this.state.cateId });
+        this.setState({ targetServiceKeys });
+    }
+
+    filterOption = (inputValue, option) => {
+        return option.title.indexOf(inputValue) > -1;
+    }
     onEdit = (isEditing) => {
         this.setState({
-            editing: isEditing
+            editing: isEditing,
+            selectedLabel: '',
         });
     }
+    serviceOption = () => {
+        const { getFieldDecorator } = this.props.form;
+        const { serviceOptions } = this.props;
+        const { selectedLabel } = this.state;
+        return selectedLabel !== '' ? (
+            <FormItem label=" " {...layout.formItemLayout}>
+                {getFieldDecorator('serviceOptions', {
+                    rules: [{
+                        required: true, message: '订单状态不能为空！',
+                    }],
+                })(
+                    <Transfer
+                        dataSource={serviceOptions}
+                        showSearch={true}
+                        listStyle={{
+                            background: '#fff',
+                        }}
+                        filterOption={this.filterOption}
+                        targetKeys={this.state.targetServiceKeys}
+                        onChange={this.handleServiceTransferChange}
+                        render={item => item.title}
+                    />
+                    )}
+            </FormItem>
+        ) : '';
+    }
     onSave = () => {
-      this.props.form.validateFields(['refer', 'orderSource'], (err, values) => {
-          if (!err) {
-              this.computeShowData(values);
-              this.props.onChange(values);
-          }
-      });
+        this.props.form.validateFields(['refer', 'serviceOptions', 'orderSource'], (err, values) => {
+            if (!err) {
+                this.computeShowData(values);
+                this.props.onChange(values);
+            }
+        });
     }
-    onServiceChange = (value) => {
+    onServiceChange = (value, selectedOptions) => {
         console.log('service', `${value}`);
+        const labelValue = `${selectedOptions[0].label}, ${selectedOptions[1].label}`;
+        this.setState({
+            cateId: value[1],
+            selectedLabel: labelValue,
+        });
+        this.props.onGetService({ lineId: value[0], cateId: value[1] });
     }
+
     computeShowData = (values: any) => {
         let rules: { label: string; value: string }[] = [];
-        for ( let item of Object.keys(values)) {
+        for (let item of Object.keys(values)) {
             let label: string = '';
             let value: string = '';
             switch (item) {
                 case 'refer':
                     label = '服务项';
-                    value = getKeysValues(this.props.serviceList, values.refer, 'value', 'label');
+                    value = this.state.selectedLabel;
+                    break;
+                case 'serviceOptions':
+                    label = '品类';
+                    value = getKeysValues(this.props.serviceOptions, values.serviceOptions, 'key', 'title');
                     break;
                 case 'orderSource':
                     label = '页面渠道';
@@ -106,6 +158,7 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
         this.setState({
             rules: rules
         });
+
         this.onEdit(false);
     }
 
@@ -114,7 +167,7 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
         let wrapperStyle: any = {};
         let btnStyle: any = {};
         const { plainOptions, serviceList } = this.props;
-        const rules = [ ...this.state.rules ];
+        const rules = [...this.state.rules];
         const { getFieldDecorator } = this.props.form;
         if (this.state.editing) {
             triggerRuleTpl = (
@@ -123,11 +176,13 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
                         {getFieldDecorator('refer', {
                             rules: [{
                                 required: true, message: '服务项不能为空！',
-                            }]
+                            }],
+                            initialValue: this.props.formState.serviceItem.value,
                         })(
                             <Cascader placeholder="请输入服务项！" options={serviceList} onChange={this.onServiceChange} />
-                        )}
+                            )}
                     </FormItem>
+                    {this.serviceOption()}
                     <FormItem label="页面渠道" {...layout.formItemLayout}>
                         {getFieldDecorator('pageWay', {
                             rules: [{
@@ -135,29 +190,29 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
                             }],
                         })(
                             <div style={{ borderBottom: '1px solid #E9E9E9' }}>
-                            <Checkbox
-                                indeterminate={this.state.indeterminate}
-                                onChange={this.onCheckAllChange}
-                                checked={this.state.checkAll}
-                            >
-                                全部
-                            </Checkbox>
-                            {getFieldDecorator('orderSource', {
-                                rules: [{
-                                    required: true, message: '页面渠道不能为空！',
-                                }],
-                            })(
-                                <CheckboxGroup options={plainOptions} onChange={this.onCheckChange} />
+                                <Checkbox
+                                    indeterminate={this.state.indeterminate}
+                                    onChange={this.onCheckAllChange}
+                                    checked={this.state.checkAll}
+                                >
+                                    全部
+                                </Checkbox>
+                                {getFieldDecorator('orderSource', {
+                                    rules: [{
+                                        required: true, message: '页面渠道不能为空！',
+                                    }],
+                                })(
+                                    <CheckboxGroup options={plainOptions} onChange={this.onCheckChange} />
+                                    )}
+                            </div>
                             )}
-                        </div>
-                        )}
                     </FormItem>
                     <FormItem {...layout.tailFormItemLayout}>
-                    <Button type="primary" onClick={this.onSave}>保存</Button>
-                    <Button onClick={() => this.onEdit(false)} style={{marginLeft: '10px'}}>取消</Button>
-                </FormItem>
-                {/* </div> */}
-            </section>
+                        <Button type="primary" onClick={this.onSave}>保存</Button>
+                        <Button onClick={() => this.onEdit(false)} style={{ marginLeft: '10px' }}>取消</Button>
+                    </FormItem>
+                    {/* </div> */}
+                </section>
             );
             btnStyle = {
                 display: 'none'
@@ -185,8 +240,10 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
     }
 }
 
-function mapStateToProps (state: StoreState) {
+function mapStateToProps(state: StoreState) {
     return {
+        formState: state.createOrderStrategy.formState,
+        serviceOptions: state.createOrderStrategy.serviceOptions,
         rulesD: state.createOrderStrategy.rules,
         serviceList: state.createOrderStrategy.rules.settings.refer ? state.createOrderStrategy.rules.settings.refer.list : [],
         plainOptions: state.createOrderStrategy.rules.settings.orderSource ? state.createOrderStrategy.rules.settings.orderSource.list : []
@@ -194,8 +251,9 @@ function mapStateToProps (state: StoreState) {
 }
 const mapDispatchToProps = (dispatch: Dispatch<actions.RulesAction>) => bindActionCreators(
     {
-      
+        onGetOrderState: actions.getOrderState,
+        onGetService: actions.getService,
     },
     dispatch
 );
-export default connect<any, any, { form: any, onChange:  (value: any) => void}>(mapStateToProps, mapDispatchToProps)(OrderPayRule as any);
+export default connect<any, any, { form: any, onChange: (value: any) => void }>(mapStateToProps, mapDispatchToProps)(OrderPayRule as any);

@@ -49,6 +49,7 @@ function form(
                 }
             }
         },
+        getHomePageCount: 0,
         weChatPush: null,
         showOrderDetailCheck: 0
     },
@@ -74,6 +75,11 @@ function form(
             return {
                 ...state,
                 rules: { strategyType: action.strategyType, ruleHadBack: true, settings: action.result }
+            };
+        case constants.GET_HOME_PAGE_COUNT_SUCCESS:
+            return {
+                ...state,
+                getHomePageCount: action.result
             };
         case constants.GET_WHCHATPUSH_SUCCESS:
             return {

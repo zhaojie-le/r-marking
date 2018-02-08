@@ -21,6 +21,7 @@ import {
     TreeSelect,
     MarketingModelAdd,
     LoadElement,
+    HomePageOperation,
     PageHanger
     // LoadElement,
     // MarketingModelAdd
@@ -41,12 +42,12 @@ export interface Props {
     option: any;
     strategyType: any;
     ruleHadBack: boolean;
-    onGetService: () => void;
     onGetRules: (type: number) => void;
     onSaveRule: (rjs: any) => void;
     onResetWeChatPush: () => void;
     onSaveModel: (modelData: string) => void;
     onGetOrderState: () => void;
+    getHomePageCount: () => void;
     onGetTreeNode: (id: string) => void;
 }
 
@@ -286,8 +287,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         }
         const disabledTrggerCondition = userConditions.includes(value) ? true : false;
         let NumValue = parseInt(value, 10);
-        if (NumValue === 1 || NumValue === 3 || NumValue === 7 || NumValue === 8) {
+        if (NumValue === 1 || NumValue === 3 || NumValue === 7 || NumValue === 8 || NumValue === 9) {
             this.props.onGetRules(NumValue);
+        }
+        if (NumValue === 9) {
+            this.props.getHomePageCount();
         }
         // this.props.onGetRules(parseInt(value, 10));
         if (disabledTrggerCondition) {
@@ -305,7 +309,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         this.changeStrategyRule(NumValue);
         this.setState({
             disabledTrggerCondition: disabledTrggerCondition,
-            eventType: parseInt(value, 10)
+            eventType: parseInt(value, 10),
         });
     }
 
@@ -314,18 +318,22 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         const { eventType } = this.state;
 
         if (eventType !== 0) {
-            return (
-                <FormItem {...layout.formItemLayoutMarketingModel} label="触发规则" hasFeedback={false}>
-                    {
-                        getFieldDecorator(`strategyRule${uuidSr}`, {
-                            rules: [{
-                                required: true, message: '规则不能为空！',
-                            }]
-                        })(
-                            <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={eventType} />
-                            )}
-                </FormItem>
-            );
+            if (eventType !== 10) {
+                return (
+                    <FormItem {...layout.formItemLayoutMarketingModel} label="触发规则" hasFeedback={false}>
+                        {
+                            getFieldDecorator(`strategyRule${uuidSr}`, {
+                                rules: [{
+                                    required: true, message: '规则不能为空！',
+                                }]
+                            })(
+                                <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={eventType} />
+                                )}
+                    </FormItem>
+                );
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
@@ -391,7 +399,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     generatorTreeSelect = () => {
         const { userSelected } = this.state;
         const { getFieldDecorator } = this.props.form;
-
+        console.log();
         if (userSelected === '1') {
             return (
                 <FormItem {...layout.formItemLayout1} label="用户条件" hasFeedback={false}>
@@ -411,6 +419,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     changeMarketingType = (eventType) => {
+        console.log('eventTypeeventType======' + eventType);
         if (
             (([1, 2, 4, 5, 6] as any).includes(eventType) && this.preEventType === 1)
             || eventType === this.preEventType) {
@@ -429,6 +438,10 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             case 7:
                 this.marketingModel = PageHanger;
                 this.preEventType = 7;
+                break;
+            case 9:
+                this.marketingModel = HomePageOperation;
+                this.preEventType = 9;
                 break;
             default:
                 this.marketingModel = MarketingModelAdd;
@@ -479,8 +492,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     render() {
         const { getFieldDecorator } = this.props.form;
         const { history }: any = this.props;
-        const { disabledTrggerCondition, validateStatus } = this.state;
-
+        const { disabledTrggerCondition, validateStatus, eventType } = this.state;
+        console.log('eventTypeeventTypeeventType' + typeof (eventType));
         return (
             <div id="orderStrategy">
                 <Layout className="layout">
@@ -519,7 +532,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                             )
                                     }
                                 </FormItem>
-
                                 <FormItem {...layout.formItemLayout} label="触发事件" validateStatus={validateStatus} hasFeedback={true} help="触发事件和触发条件必选一项!">
                                     {
                                         getFieldDecorator('triggerEvent', {
@@ -538,25 +550,29 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 <Option value="7">页面挂件</Option>
                                                 <Option value="8">浏览激活</Option>
                                                 <Option value="9">首页运营位</Option>
+                                                <Option value="10">速运会员返券</Option>
                                             </Select>
                                             )
                                     }
                                 </FormItem>
-                                <FormItem {...layout.formItemLayout} label="触发条件" validateStatus={validateStatus} hasFeedback={true} help="触发事件和触发条件必选一项!">
-                                    {
-                                        getFieldDecorator('triggerCondition', {
-                                            rules: [{
-                                                required: true, message: '触发条件不能为空！',
-                                            }],
-                                        })(
-                                            <Select onChange={this.onUserBeSelect} disabled={disabledTrggerCondition}>
-                                                <Option value="0">请选择</Option>
-                                                <Option value="1">用户条件</Option>
-                                            </Select>
-                                            )
-                                    }
-                                </FormItem>
-                                {this.generatorTreeSelect()}
+                                {eventType !== 10 ?
+                                    <FormItem {...layout.formItemLayout} label="触发条件" validateStatus={validateStatus} hasFeedback={true} help="触发事件和触发条件必选一项!">
+                                        {
+                                            getFieldDecorator('triggerCondition', {
+                                                rules: [{
+                                                    required: true, message: '触发条件不能为空！',
+                                                }],
+                                            })(
+                                                <Select onChange={this.onUserBeSelect} disabled={disabledTrggerCondition} >
+                                                    <Option value="0">请选择</Option>
+                                                    <Option value="1">用户条件</Option>
+                                                </Select>
+                                                )
+                                        }
+                                    </FormItem>
+                                    : null
+                                }
+                                {eventType !== 10 ? this.generatorTreeSelect() : null}
                                 {this.generateTriggerEvent()}
                                 {this.strategyTriggerEvent()}
                                 {this.generatorMarketingModel()}
@@ -601,6 +617,7 @@ export const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) 
         onGetRules: actions.getRules,
         onGetTreeNode: actions.tagNodeTree,
         onSaveRule: actions.saveRule,
+        getHomePageCount: actions.getHomePageCount,
         onResetWeChatPush: actions.resetWeChatPush
     },
     dispatch

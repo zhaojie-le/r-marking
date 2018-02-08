@@ -74,93 +74,126 @@ const saveRuleFail = (error) => {
         error: error
     };
 };
+// getHomePageCountSuccess ,getHomePageCountFail
+const getHomePageCountSuccess = (result) => {
+    return {
+        type: constants.GET_HOME_PAGE_COUNT_SUCCESS,
+        result: result
+    };
+};
 
-const getService: Epic<any, any> = (action$, store) => {
+const getHomePageCountFail = (error) => {
+    return {
+        type: constants.GET_HOME_PAGE_COUNT_FAIL,
+        error: error
+    };
+};
+const getService: Epic<any, any, any> = (action$, store) => {
     return action$.ofType(constants.GET_SERVICE).
         switchMap(
-            (action): Observable<any> => {
-                return ajax.getJSON(`marketStrategy/getService?lineId=${action.lineId}&cateId=${action.cateId}`).
-                    map((response: {resultCode: number, data: any[]}) => {
-                        if (response.resultCode === 1) {
-                            const serviceOptions = response.data.map((item) => {
-                                return {
-                                    title: item.label,
-                                    key: item.value.id,
-                                    val: item.value.val
-                                };
-                            });
-                            return (getServiceSuccess(serviceOptions));
-                        } else {
-                            return (getServiceFail(response));
-                        }
-                    });
-            }
+        (action): Observable<any> => {
+            // if (action && action.serviceType && action.serviceType === 3) {
+            //     //   return  this.getServiceSuccess([]);
+            //     console.log(11);
+            // } else {
+            return ajax.getJSON(`marketStrategy/getService?lineId=${action.lineId}&cateId=${action.cateId}`).
+                map((response: { resultCode: number, data: any[] }) => {
+                    if (response.resultCode === 1) {
+                        const serviceOptions = response.data.map((item) => {
+                            return {
+                                title: item.label,
+                                key: item.value.id,
+                                val: item.value.val
+                            };
+                        });
+                        return (getServiceSuccess(serviceOptions));
+                    } else {
+                        return (getServiceFail(response));
+                    }
+                });
+            // }
+        }
         );
 };
 
 const getOrderState: Epic<any, any> = (action$, store) => {
     return action$.ofType(constants.GET_ORDERSTATE).
         switchMap(
-            (action): Observable<any> => {
-                return ajax.getJSON(`marketStrategy/getOrderState?serverIds=${action.serverIds}&cateId=${action.cateId}`).
-                    map((response: {resultCode: number, data: any[]}) => {
-                        if (response.resultCode === 1) {
-                            return (getOrderStateSuccess(response.data));
-                        } else {
-                            return (getOrderStateFail(response));
-                        }
-                    });
-            }
+        (action): Observable<any> => {
+            return ajax.getJSON(`marketStrategy/getOrderState?serverIds=${action.serverIds}&cateId=${action.cateId}`).
+                map((response: { resultCode: number, data: any[] }) => {
+                    if (response.resultCode === 1) {
+                        return (getOrderStateSuccess(response.data));
+                    } else {
+                        return (getOrderStateFail(response));
+                    }
+                });
+        }
         );
 };
 
 const getWechatPush: Epic<any, any> = (action$, store) => {
     return action$.ofType(constants.GET_WHCHATPUSH).
         switchMap(
-            (action): Observable<any> => {
-                return ajax.getJSON(`marketStrategy/getWechatPush`).
-                    map((response: {resultCode: number, data?: { name: string; value: string }, message?: string }) => {
-                        if (response.resultCode === 1) {
-                            return (getWechatPushSuccess(response.data));
-                        } else {
-                            return (getWechatPushFail(response));
-                        }
-                    });
-            }
+        (action): Observable<any> => {
+            return ajax.getJSON(`marketStrategy/getWechatPush`).
+                map((response: { resultCode: number, data?: { name: string; value: string }, message?: string }) => {
+                    if (response.resultCode === 1) {
+                        return (getWechatPushSuccess(response.data));
+                    } else {
+                        return (getWechatPushFail(response));
+                    }
+                });
+        }
         );
 };
 
 const getRules: Epic<any, any> = (action$, store) => {
     return action$.ofType(constants.GET_RULES).
         switchMap(
-            (action): Observable<any> => {
-                return ajax.getJSON(`marketStrategy/getRule?strategyType=${action.strategyType}`).
-                    map((response: {resultCode: number, data: {}}) => {
-                        if (response.resultCode === 1) {
-                            return (getRulesStateSuccess(response.data, action.strategyType));
-                        } else {
-                            return (getRulesStateFail(response));
-                        }
-                    });
-            }
+        (action): Observable<any> => {
+            return ajax.getJSON(`marketStrategy/getRule?strategyType=${action.strategyType}`).
+                map((response: { resultCode: number, data: {} }) => {
+                    if (response.resultCode === 1) {
+                        return (getRulesStateSuccess(response.data, action.strategyType));
+                    } else {
+                        return (getRulesStateFail(response));
+                    }
+                });
+        }
         );
 };
 
 const saveRule: Epic<any, any> = (action$, store) => {
     return action$.ofType(constants.SAVE_RULE).
         switchMap(
-            (action): Observable<any> => {
-                return ajax.post('/marketStrategy/save', JSON.stringify(action.params)).map(response => {
-                    if (response.response.resultCode === 1) {
-                        return (saveRuleSuccess(response.response.message));
-                    } else {
-                        return (saveRuleFail(response.response));
-                    }
-                });
-            }
+        (action): Observable<any> => {
+            return ajax.post('/marketStrategy/save', JSON.stringify(action.params)).map(response => {
+                if (response.response.resultCode === 1) {
+                    return (saveRuleSuccess(response.response.message));
+                } else {
+                    return (saveRuleFail(response.response));
+                }
+            });
+        }
         );
 };
 
-const epics = [getService, getOrderState, getRules, getWechatPush, saveRule];
+const getHomePageCount: Epic<any, any> = (action$, store) => {
+    return action$.ofType(constants.GET_HOMEPAGECOUNT).
+        switchMap(
+        (action): Observable<any> => {
+            return ajax.getJSON('/marketStrategy/getHomePageCount').map((response: { resultCode: number, data: {}, message?: string }) => {
+                if (response.resultCode === 1) {
+                    return (getHomePageCountSuccess(response.data));
+                } else {
+                    return (getHomePageCountFail(response));
+                }
+            });
+        }
+        );
+};
+
+const epics = [getService, getOrderState, getRules, getWechatPush, saveRule, getHomePageCount];
 
 export default epics;

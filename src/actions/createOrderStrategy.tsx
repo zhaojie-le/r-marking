@@ -51,12 +51,17 @@ export interface ChangeShowOrderDetailCheck {
 export interface ServiceParam {
     cateId: number;
     lineId: number;
+    serviceType: number;
 }
 
 export interface WeChatPushParam {
     lineid: number;
     refer: any;
     orderStatus: any;
+}
+
+export interface GetHomePageCount {
+    type: constants.GET_HOMEPAGECOUNT;
 }
 
 export interface WeChatPushReturn extends WeChatPushParam {
@@ -128,5 +133,11 @@ export function setShowOrderDetailCheck(num: number): ChangeShowOrderDetailCheck
 export function resetWeChatPush() {
     return {
         type: constants.RESET_WECHATPUSH
+    };
+}
+
+export function getHomePageCount(): GetHomePageCount {
+    return {
+        type: constants.GET_HOMEPAGECOUNT
     };
 }

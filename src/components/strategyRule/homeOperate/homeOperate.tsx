@@ -4,7 +4,7 @@ import { connect, Dispatch } from 'react-redux';
 import * as actions from '../../../actions';
 import { StoreState } from '../../../types/index';
 import { bindActionCreators } from 'redux';
-import { Form, Checkbox, Button, Cascader } from 'antd';
+import { Form, Checkbox, Button, Transfer, Input, message } from 'antd';
 import { default as ShowRule } from '../showRuleInfo';
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
@@ -13,12 +13,19 @@ export interface RuleProps {
     rulesD: {};
     serviceList: any[];
     onChange: (value: any) => void;
+    city: { name: string; value: string; type: string; list: any[] };
     plainOptions: any;
+    getHomePageCount: number;
+
 }
 namespace layout {
     export const formItemLayout = {
         labelCol: { xs: { span: 24 }, sm: { span: 4 }, },
         wrapperCol: { xs: { span: 24 }, sm: { span: 15 }, },
+    };
+    export const formItemLayout2 = {
+        labelCol: { xs: { span: 24 }, sm: { span: 4 }, },
+        wrapperCol: { xs: { span: 24 }, sm: { span: 20 }, },
     };
     export const formItemLayout1 = {
         labelCol: { xs: { span: 24 }, sm: { span: 9 }, },
@@ -47,15 +54,7 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
         checkAll: false,
         rules: []
     };
-    onCheckAllChange = (e) => {
-        this.setState({
-            indeterminate: false,
-            checkAll: e.target.checked,
-        });
-        this.props.form.setFieldsValue({
-            orderSource: e.target.checked ? this.props.plainOptions.map((item) => item.value) : [],
-        });
-    }
+
     onCheckChange = (checkedList) => {
         this.setState({
             checkedList,
@@ -68,30 +67,50 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
             editing: isEditing
         });
     }
-    onSave = () => {
-      this.props.form.validateFields(['refer', 'orderSource'], (err, values) => {
-          if (!err) {
-              this.computeShowData(values);
-              this.props.onChange(values);
-          }
-      });
+
+    filterOption = (inputValue, option) => {
+        return option.title.indexOf(inputValue) > -1;
     }
-    onServiceChange = (value) => {
-        console.log('service', `${value}`);
+
+    onSave = () => {
+        this.props.form.validateFields(['pageWay', 'city', 'weight'], (err, values) => {
+            var r = /^\+?[1-9][0-9]*$/; // 正整数
+            var valsort = values.weight.replace(/[\s]/g, '');
+            var flag = r.test(valsort);
+            if (!flag) {
+                message.error('请输入正整数');
+            } else if (values.weight < 1 || values.weight > this.props.getHomePageCount + 1) {
+                message.error('输入的数字已经超过范围');
+            } else {
+                if (!err) {
+                    console.log('valuesssfrferfref====' + JSON.stringify(values));
+                    this.computeShowData(values);
+                    this.props.onChange(values);
+                }
+            }
+        });
+    }
+
+    handleTransferChange = (targetKeys) => {
+        this.setState({ targetKeys });
     }
     computeShowData = (values: any) => {
         let rules: { label: string; value: string }[] = [];
-        for ( let item of Object.keys(values)) {
+        for (let item of Object.keys(values)) {
             let label: string = '';
             let value: string = '';
             switch (item) {
-                case 'refer':
-                    label = '服务项';
-                    value = getKeysValues(this.props.serviceList, values.refer, 'value', 'label');
+                case 'city':
+                    label = '城市';
+                    value = getKeysValues(this.props.city.list, values.city.map((one) => `${parseInt(one, 10)}`), 'value', 'label');
                     break;
-                case 'orderSource':
-                    label = '页面渠道';
-                    value = getKeysValues(this.props.plainOptions, values.orderSource, 'value', 'label');
+                case 'pageWay':
+                    label = '首页渠道';
+                    value = '到家app首页';
+                    break;
+                case 'weight':
+                    label = '权重';
+                    value = values[item];
                     break;
                 default:
                     break;
@@ -113,51 +132,64 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
         let triggerRuleTpl: React.ReactNode = {};
         let wrapperStyle: any = {};
         let btnStyle: any = {};
-        const { plainOptions, serviceList } = this.props;
-        const rules = [ ...this.state.rules ];
+        const { plainOptions, city, getHomePageCount } = this.props;
+        const rules = [...this.state.rules];
         const { getFieldDecorator } = this.props.form;
+        const cities = city.list.map((item, index) => {
+            return {
+                title: item.label,
+                value: item.value,
+                key: `${item.value}`
+            };
+        });
+
         if (this.state.editing) {
             triggerRuleTpl = (
                 <section className="editInfo">
-                    <FormItem label="服务项" {...layout.formItemLayout}>
-                        {getFieldDecorator('refer', {
+                    <FormItem label="首面渠道" {...layout.formItemLayout}>
+                        {getFieldDecorator('pageWay', {
+                            rules: [{
+                                required: true, message: '请选择首页渠道',
+                            }],
+                        })(
+                            <CheckboxGroup options={plainOptions} onChange={this.onCheckChange} />
+                            )}
+                    </FormItem>
+                    <FormItem label="城市" {...layout.formItemLayout}>
+                        {getFieldDecorator('city', {
                             rules: [{
                                 required: true, message: '服务项不能为空！',
                             }]
+
                         })(
-                            <Cascader placeholder="请输入服务项！" options={serviceList} onChange={this.onServiceChange} />
-                        )}
-                    </FormItem>
-                    <FormItem label="页面渠道" {...layout.formItemLayout}>
-                        {getFieldDecorator('pageWay', {
-                            rules: [{
-                                required: true, message: '请选择页面渠道！',
-                            }],
-                        })(
-                            <div style={{ borderBottom: '1px solid #E9E9E9' }}>
-                            <Checkbox
-                                indeterminate={this.state.indeterminate}
-                                onChange={this.onCheckAllChange}
-                                checked={this.state.checkAll}
-                            >
-                                全部
-                            </Checkbox>
-                            {getFieldDecorator('orderSource', {
-                                rules: [{
-                                    required: true, message: '页面渠道不能为空！',
-                                }],
-                            })(
-                                <CheckboxGroup options={plainOptions} onChange={this.onCheckChange} />
+                            <Transfer
+                                dataSource={cities}
+                                showSearch={true}
+                                listStyle={{
+                                    background: '#fff',
+                                }}
+                                filterOption={this.filterOption}
+                                targetKeys={this.state.targetKeys}
+                                onChange={this.handleTransferChange}
+                                render={item => item.title}
+                            />
                             )}
-                        </div>
-                        )}
+                    </FormItem>
+                    <FormItem label="权重" {...layout.formItemLayout2} >
+                        {getFieldDecorator('weight', {
+                            rules: [{ required: true, message: '权重不能为空！' }],
+                        })(
+                            <Input placeholder="请输入权重" style={{ 'width': 200, 'float': 'left', }} />
+                            )}
+                        <span style={{ 'color': 'red', 'lineHeight': '18px', 'display': 'inherit' }}>已有进行策略{getHomePageCount}个，请输入当前策略的顺序限1-{getHomePageCount + 1}
+                            若对同一用户存在多个策略时，策略权重数值越小，优先级越高</span>
                     </FormItem>
                     <FormItem {...layout.tailFormItemLayout}>
-                    <Button type="primary" onClick={this.onSave}>保存</Button>
-                    <Button onClick={() => this.onEdit(false)} style={{marginLeft: '10px'}}>取消</Button>
-                </FormItem>
-                {/* </div> */}
-            </section>
+                        <Button type="primary" onClick={this.onSave}>保存</Button>
+                        <Button onClick={() => this.onEdit(false)} style={{ marginLeft: '10px' }}>取消</Button>
+                    </FormItem>
+                    {/* </div> */}
+                </section>
             );
             btnStyle = {
                 display: 'none'
@@ -185,17 +217,19 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
     }
 }
 
-function mapStateToProps (state: StoreState) {
+function mapStateToProps(state: StoreState) {
     return {
-        rulesD: state.createOrderStrategy.rules,
-        serviceList: state.createOrderStrategy.rules.settings.refer ? state.createOrderStrategy.rules.settings.refer.list : [],
+
+        city: state.createOrderStrategy.rules.settings.city ? state.createOrderStrategy.rules.settings.city : { list: [] },
+        getHomePageCount: state.createOrderStrategy.getHomePageCount,
+        // serviceList: state.createOrderStrategy.rules.settings.refer ? state.createOrderStrategy.rules.settings.refer.list : [],
         plainOptions: state.createOrderStrategy.rules.settings.orderSource ? state.createOrderStrategy.rules.settings.orderSource.list : []
     };
 }
 const mapDispatchToProps = (dispatch: Dispatch<actions.RulesAction>) => bindActionCreators(
     {
-      
+
     },
     dispatch
 );
-export default connect<any, any, { form: any, onChange:  (value: any) => void}>(mapStateToProps, mapDispatchToProps)(OrderPayRule as any);
+export default connect<any, any, { form: any, onChange: (value: any) => void }>(mapStateToProps, mapDispatchToProps)(OrderPayRule as any);

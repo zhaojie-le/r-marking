@@ -31,7 +31,7 @@ function validate(fields: any[]): string {
         ''
     ).substring(1);
 }
-function objToArray (obj: any): any {
+function objToArray(obj: any): any {
     let arr = Object.keys(obj);
     let valueArray: any = [];
     if (obj) {
@@ -40,9 +40,9 @@ function objToArray (obj: any): any {
             valueArray.push(item);
         }
         return valueArray;
-    }       
+    }
 }
-function selectChildren (arr: any): any {
+function selectChildren(arr: any): any {
     if (arr && arr.length > 0) {
         let Children = arr.map((item, index) => {
             return (
@@ -111,20 +111,20 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
                 <FormItem
                     // {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
                     // label={index === 0 ? 'Passengers' : ''}
-                    style={{paddingBottom: 0, borderBottom: 'none'}}
+                    style={{ paddingBottom: 0, borderBottom: 'none' }}
                     required={false}
                     key={k}
                 >
-                <InputItemCategory onChange={(value) => this.onInputItemChange(value, k)} form={this.props.form} />
-                {keys.length > 1 ? (
-                    <Micon
-                        className="dynamic-delete-button"
-                        type="minus-circle-o"
-                        disabled={keys.length === 1}
-                        onClick={() => this.remove(k)}
-                        style={{position: 'absolute', top: 12, right: 0}}
-                    />
-                ) : null}
+                    <InputItemCategory onChange={(value) => this.onInputItemChange(value, k)} form={this.props.form} />
+                    {keys.length > 1 ? (
+                        <Micon
+                            className="dynamic-delete-button"
+                            type="minus-circle-o"
+                            disabled={keys.length === 1}
+                            onClick={() => this.remove(k)}
+                            style={{ position: 'absolute', top: 12, right: 0 }}
+                        />
+                    ) : null}
                 </FormItem>
             );
         });
@@ -155,11 +155,11 @@ export default switchEditState(
                 }
             }
         }
-        callback(         
+        callback(
             validate([
-                {type: 'require', value: objItem.rechargeAmountLow, errMsg: '券金额下限输入不能为空'},
-                {type: 'require', value: objItem.rechargeAmountUp, errMsg: '券金额上限输入不能为空'},
-                {type: 'require', value: objItem.result, errMsg: '券ID输入不能为空'}
+                { type: 'require', value: objItem.rechargeAmountLow, errMsg: '券金额下限输入不能为空' },
+                { type: 'require', value: objItem.rechargeAmountUp, errMsg: '券金额上限输入不能为空' },
+                { type: 'require', value: objItem.result, errMsg: '券ID输入不能为空' }
             ])
         );
     },
@@ -168,5 +168,5 @@ export default switchEditState(
         return selectChildren(values as any);
     },
     '储值返券',
-    {yxfs: { rechargeAmountLow: '', rechargeAmountUp: '', result: '' }}
+    { yxfs: { rechargeAmountLow: '', rechargeAmountUp: '', result: '' } }
 )(DynamicFieldSet);

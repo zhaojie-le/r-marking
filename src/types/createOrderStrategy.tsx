@@ -5,4 +5,5 @@ export interface CreateOrderStrategy {
     rules: { strategyType: number; settings: any; ruleHadBack: boolean };
     weChatPush: any;
     showOrderDetailCheck: boolean;
+    getHomePageCount: number;
 }

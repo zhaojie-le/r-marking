@@ -203,7 +203,9 @@ class TreeSelect extends React.Component<Props, any> {
                     treeData: [...this.state.treeData],
                 });
                 resolve();
-            }, 1000);
+            },
+                1000
+            );
         });
     }
     renderSelectTreeNodes = () => {
