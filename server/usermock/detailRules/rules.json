@@ -1,53 +1,31 @@
 {
     "data": {
-        "pkId": "272756545605939289",
-        "effectiveTime": "2018-01-22 15:53:44",
+        "showEdit": true,
+        "strategyName": "wcs策略名称-导入用户03",
+        "pkId": "279176155020411082",
+        "marketingType": "用券",
+        "effectiveTime": "2017-04-05 12:05:04",
         "ruleList": [
             {
                 "name": "触发事件",
-                "value": "订单触发"
-            },
-            {
-                "name": "订单来源",
-                "value": "全部, 到家APP, 微信, 其他h5"
-            },
-            {
-                "name": "服务项",
-                "value": "育儿嫂（育儿师）, 月嫂"
-            },
-            {
-                "name": "城市",
-                "value": "北京, 上海"
-            },
-            {
-                "name": "订单状态",
-                "value": "已回访无纠纷"
+                "value": "导入用户"
             }
         ],
-        "invalidTime": "2018-03-10 15:53:46",
-        "strategyTypeInt": 1,
-        "strategyType": "订单触发",
-        "activityId": 0,
-        "createrEmail": "chenzixu@daojia.com",
-        "smsContent": {
+        "invalidTime": "2019-11-30 12:05:04",
+        "strategyTypeInt": 2,
+        "appContent": {
             "content": "",
-            "disposeUrl": "http://s-ht.djtest.cn/G7ST",
-            "gotoOrderEvaluationPage": 0,
-            "openUrl": "https://www.baidu.com/"
-        },
-        "wechatContent": {
-            "applicationRange": "",
-            "applicationRule": "",
-            "couponValue": "",
-            "disposeUrl": "http://s-ht.djtest.cn/FzeR",
-            "firstData": "按时",
-            "gotoOrderEvaluationPage": 0,
+            "disposeUrl": "http://s-arch.djtest.cn/rF3L",
             "gotoOrderPage": 0,
-            "openUrl": "阿萨德",
-            "pushStatus": 4,
-            "remarkData": "阿萨德",
-            "validatePeriod": ""
+            "openUrl": "https://www.baidu.com/",
+            "title": "导入用户1"
         },
+        "strategyType": "导入用户",
+        "activityId": 1881,
+        "createrEmail": "wangchunshen@163.com",
+        "marketingTypeInt": 2,
+        "createTime": "2018-02-09 09:06:22",
+        "showButton": 1,
         "strategyMarketingType": [
             {
                 "name": "未设置",
@@ -94,59 +72,17 @@
                 "id": 10
             }
         ],
-        "orderStatusValue": "5",
+        "triggerEvent": "导入用户",
         "actionExpression": [
-            "2",
-            "3",
-            "6",
-            "1"
+            "2"
         ],
         "marketingLimit": 0,
-        "strategyState": "未开始",
-        "expressContent": {
-            "content": "",
-            "disposeUrl": "app",
-            "openUrl": "app?hmsr=suyun_clyx_272756545605939289_1",
-            "title": "czx月嫂+条件已生成22-01修"
-        },
-        "showEdit": true,
-        "strategyName": "czx月嫂+条件已生成22-01修",
-        "marketingType": "商品[拼团]",
-        "userCondition": [
-            {
-                "name": "创建时初始用户数量",
-                "value": "30669"
-            },
-            {
-                "name": "用户条件",
-                "value": "家政会员卡余额即将用完的用户"
-            }
-        ],
-        "appContent": {
-            "content": "",
-            "disposeUrl": "http://housecommentbox53.djtest.cn/jzup/comment/index?orderId={{orderId}}&hmsr=daojia_clyx_272756545605939289_1",
-            "gotoOrderEvaluationPage": 1,
-            "gotoOrderPage": 0,
-            "openUrl": "",
-            "title": "czx月嫂+条件已生",
-            "picurl": "",
-            "endTime": ""
-        },
-        "bussniessId": 104,
-        "marketingTypeInt": 10,
-        "refer": 3662,
-        "createTime": "2018-01-22 15:57:08",
-        "showButton": 1,
-        "triggerEvent": "订单触发/用户条件",
-        "updateContent": "2018-01-22 16:02:55:修改失效时间,修改策略名称,修改营销类别,修改营销方式,",
+        "updateContent": "无",
         "actionParam": {
             "appContent": {
                 "$ref": "$.data.appContent"
             },
             "dayDelay": 0,
-            "expressContent": {
-                "$ref": "$.data.expressContent"
-            },
             "minuteDelay": 0,
             "payOrderContent": {
                 "content": "",
@@ -156,17 +92,10 @@
                 "imgUrl": "",
                 "openUrl": ""
             },
-            "pendantContent": {
-                "animation": "",
-                "disposeUrl_app": "",
-                "disposeUrl_h5": "",
-                "disposeUrl_wechat": "",
-                "imgUrl": "",
-                "location": "",
-                "openUrl": ""
-            },
             "smsContent": {
-                "$ref": "$.data.smsContent"
+                "content": "",
+                "disposeUrl": "",
+                "openUrl": ""
             },
             "wechatContent": {
                 "applicationRange": "",
@@ -179,7 +108,7 @@
                 "validatePeriod": ""
             }
         },
-        "categoryId": 205
+        "strategyState": "未开始"
     },
     "resultCode": 1
 }

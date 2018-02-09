@@ -374,6 +374,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                         });
                         break;
                     case '2':
+                        console.log();
                         actionExpressionstate.push({
                             type: '2',
                             value: {
@@ -382,7 +383,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                 docs: formState.appContent.content,
                                 piclink: formState.appContent.picurl === '' ? 'xxx' : formState.appContent.picurl,
                                 activityendtime: formState.appContent.endTime === '' ? 'xxx' : formState.appContent.endTime,
-                                link: formState.appContent.openUrl === '' ? 'xxx' : formState.wechatContent.openUrl,
+                                link: formState.appContent.openUrl === '' ? 'xxx' : formState.appContent.openUrl,
                                 showOrderDetailCheck: formState.appContent.openUrl === '' ?
                                     (formState.appContent.gotoOrderEvaluationPage === 1 ?
                                         2 : formState.appContent.gotoOrderPage === 1 ?
