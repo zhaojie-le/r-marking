@@ -1,31 +1,41 @@
 {
     "data": {
-        "showEdit": true,
-        "strategyName": "wcs策略名称-导入用户03",
-        "pkId": "279176155020411082",
-        "marketingType": "用券",
-        "effectiveTime": "2017-04-05 12:05:04",
+        "pkId": "278961056452191358",
+        "effectiveTime": "2018-02-08 18:51:07",
         "ruleList": [
             {
                 "name": "触发事件",
-                "value": "导入用户"
+                "value": "订单触发"
+            },
+            {
+                "name": "订单来源",
+                "value": "全部, 到家APP, 微信, 其他h5"
+            },
+            {
+                "name": "城市",
+                "value": "北京"
+            },
+            {
+                "name": "服务项",
+                "value": "菲佣保姆"
+            },
+            {
+                "name": "订单状态",
+                "value": "待确认"
             }
         ],
-        "invalidTime": "2019-11-30 12:05:04",
-        "strategyTypeInt": 2,
-        "appContent": {
+        "invalidTime": "2018-02-09 18:51:08",
+        "strategyTypeInt": 1,
+        "strategyType": "订单触发",
+        "activityId": 0,
+        "createrEmail": "liuxiaonan@daojia.com",
+        "smsContent": {
             "content": "",
-            "disposeUrl": "http://s-arch.djtest.cn/rF3L",
-            "gotoOrderPage": 0,
-            "openUrl": "https://www.baidu.com/",
-            "title": "导入用户1"
+            "disposeUrl": "http://s-ht.djtest.cn/G-3m",
+            "gotoOrderEvaluationPage": 0,
+            "openUrl": "士大夫"
         },
-        "strategyType": "导入用户",
-        "activityId": 1881,
-        "createrEmail": "wangchunshen@163.com",
-        "marketingTypeInt": 2,
-        "createTime": "2018-02-09 09:06:22",
-        "showButton": 1,
+        "orderStatusValue": "0",
         "strategyMarketingType": [
             {
                 "name": "未设置",
@@ -72,17 +82,41 @@
                 "id": 10
             }
         ],
-        "triggerEvent": "导入用户",
         "actionExpression": [
-            "2"
+            "3"
         ],
         "marketingLimit": 0,
+        "strategyState": "未开始",
+        "showEdit": true,
+        "strategyName": "lxn订单测试",
+        "marketingType": "活动",
+        "bussniessId": 101,
+        "marketingTypeInt": 9,
+        "refer": 5327,
+        "createTime": "2018-02-08 18:51:38",
+        "showButton": 1,
+        "triggerEvent": "订单触发",
         "updateContent": "无",
         "actionParam": {
             "appContent": {
-                "$ref": "$.data.appContent"
+                "content": "",
+                "disposeUrl": "",
+                "openUrl": "",
+                "title": ""
             },
             "dayDelay": 0,
+            "expressContent": {
+                "content": "",
+                "disposeUrl": "",
+                "openUrl": "",
+                "title": ""
+            },
+            "homePageContent": {
+                "disposeUrl_app": "",
+                "disposeUrl_wechat": "",
+                "imgUrl": "",
+                "openUrl": ""
+            },
             "minuteDelay": 0,
             "payOrderContent": {
                 "content": "",
@@ -92,10 +126,17 @@
                 "imgUrl": "",
                 "openUrl": ""
             },
-            "smsContent": {
-                "content": "",
-                "disposeUrl": "",
+            "pendantContent": {
+                "animation": "",
+                "disposeUrl_app": "",
+                "disposeUrl_h5": "",
+                "disposeUrl_wechat": "",
+                "imgUrl": "",
+                "location": "",
                 "openUrl": ""
+            },
+            "smsContent": {
+                "$ref": "$.data.smsContent"
             },
             "wechatContent": {
                 "applicationRange": "",
@@ -108,7 +149,7 @@
                 "validatePeriod": ""
             }
         },
-        "strategyState": "未开始"
+        "categoryId": 212
     },
     "resultCode": 1
 }

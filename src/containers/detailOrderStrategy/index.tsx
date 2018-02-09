@@ -397,7 +397,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                             value: {
                                 type: '1',
                                 docs: formState.smsContent.content,
-                                link: formState.smsContent.openUrl === '' ? 'xxx' : formState.wechatContent.openUrl,
+                                link: formState.smsContent.openUrl === '' ? 'xxx' : formState.smsContent.openUrl,
                                 showOrderDetailCheck: formState.smsContent.openUrl === '' ?
                                     (formState.smsContent.gotoOrderEvaluationPage === 1 ?
                                         2 : 0) : 0,
