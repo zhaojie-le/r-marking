@@ -137,7 +137,7 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
                             <Col span={10}>
                                 {/* <p>该批次共{count}个用户</p> */}
 
-                                {this.showMessage(rule.userCount, rule.mes)}
+                                {this.showMessage(rule.userCount, rule.message)}
                             </Col>}
 
                     </Row>
