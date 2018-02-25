@@ -44,6 +44,7 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
 
     inputChange = (e) => {
         this.props.rule.userCount = 0;
+        this.props.rule.message = '';
         this.setState({
             batchId: e.target.value
         });
