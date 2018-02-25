@@ -6,7 +6,6 @@ function form(
             pageName: 0,
             message: ''
         }
-
     },
     action: any
 ) {
@@ -27,7 +26,7 @@ function form(
             return {
                 ...state, rule: { userCount: action.num }
             };
-        case constants.USER_AMOUNT_FAIL:
+        case constants.USER_COUNT_FAIL:
             return {
                 ...state, rule: { message: action.error }
             };
