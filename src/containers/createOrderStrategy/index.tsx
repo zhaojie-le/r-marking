@@ -197,6 +197,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             } else if (item0.startsWith('marketingType')) {
                 newPar.marketingType = item1.marketingType;
                 newPar.activityId = item1.activityId;
+            } else if (item0.startsWith('marketingCategory')) {
+                newPar.strategyType = item1;
+            } else if (item0.startsWith('time')) {
+                newPar.effectiveTime = this.timeMerge.effectiveTime;
+                newPar.invalidTime = this.timeMerge.invalidTime;
             }
         }
         newPar.actionParam = newPar.actionParam ? this.actionParamsMap(newPar.actionParam) : null;
@@ -253,11 +258,13 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 } else if (item.startsWith('imgUrl')) {
                     newContent.imgUrl = objItem[item];
                 } else if (item.startsWith('activityendtime')) {
-                    newContent.activityendtime = objItem[item];
+                    newContent.endTime = objItem[item];
                 } else if (item.startsWith('animation')) {
                     newContent.animation = objItem[item];
                 } else if (item.startsWith('location')) {
                     newContent.location = objItem[item];
+                } else if (item.startsWith('piclink')) {
+                    newContent.picUrl = objItem[item];
                 }
             }
         }
@@ -558,7 +565,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                         })(
                                             <RangePicker
                                                 showTime={{ format: 'HH:mm:ss' }}
-                                                format="YYYY-MM-DD HH:mm"
+                                                format="YYYY-MM-DD HH:mm:ss"
                                                 disabledDate={this.disabledDate}
                                                 placeholder={['开始时间', '结束时间']}
                                                 onChange={this.onTimeChange}
