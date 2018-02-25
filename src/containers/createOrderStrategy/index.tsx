@@ -120,7 +120,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     private stType: string;
     private usType: string;
     private timeMerge: any = {};
-    private validateFieldsType: Array<string> = ['strategyName', 'time', 'marketingCategory', 'strategyRule0', 'marketingModel0', 'marketingType'];
+    private validateFieldsType: Array<string> = ['strategyName', 'time', 'triggerEvent', 'marketingCategory', 'strategyRule0', 'marketingModel0', 'marketingType'];
     constructor(props: Props, context: any) {
         super(props, context);
     }
@@ -186,7 +186,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                     array.push(item1);
                     newPar.triggerRule = JSON.stringify(array);
                 } else {
-                    newPar.triggerRule = array.push(item1);
+                    array.push(item1);
+                    newPar.triggerRule = array;
                 }
 
             } else if (item0.startsWith('marketingModel')) {
@@ -199,7 +200,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             } else if (item0.startsWith('marketingType')) {
                 newPar.marketingType = item1.marketingType;
                 newPar.activityId = item1.activityId;
-            } else if (item0.startsWith('marketingCategory')) {
+            } else if (item0.startsWith('triggerEvent')) {
                 newPar.strategyType = item1;
             } else if (item0.startsWith('time')) {
                 newPar.effectiveTime = this.timeMerge.effectiveTime;
