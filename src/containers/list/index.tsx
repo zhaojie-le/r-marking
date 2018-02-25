@@ -6,18 +6,18 @@ import { bindActionCreators } from 'redux';
 import { connect, Dispatch } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 
-import { 
-        Button, 
-        Layout, 
-        Table, 
-        DatePicker,
-        Form,
-        Input,
-        Row,
-        Col,
-        Select,
-        Pagination,
-    } from 'antd';
+import {
+    Button,
+    Layout,
+    Table,
+    DatePicker,
+    Form,
+    Input,
+    Row,
+    Col,
+    Select,
+    Pagination,
+} from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const { Header, Content } = Layout;
@@ -26,7 +26,7 @@ const { RangePicker } = DatePicker;
 export interface Props {
     data: any;
     listData: any;
-    totalInfo: number; 
+    totalInfo: number;
     strategyList: (params: any) => void;
     editStart: (id: number, index: number) => void;
     editStop: (id: number, index: number) => void;
@@ -39,7 +39,7 @@ export interface Props {
  */
 export const arrayAddKey = (arr: any) => {
     if (arr && arr.length > 0) {
-        let array = arr.map( (item, i) => Object.assign({}, item, { key: i }) );
+        let array = arr.map((item, i) => Object.assign({}, item, { key: i }));
         return array;
     }
 };
@@ -62,19 +62,21 @@ class List extends React.Component<Props, {}> {
         super(props, context);
         // 表格头部设置参数
         this.columns = [
-            {title: '策略ID', dataIndex: 'pkId', key: '0',
+            {
+                title: '策略ID', dataIndex: 'pkId', key: '0',
                 // 跳转连接方式-跳转至详情页
                 render: (text, record) => {
                     let url = '/detailOrderStrategy/' + text;
-                    return (<Link to={url}>{text}</Link>); 
-                }    
-            }, 
-            {title: '策略名称', dataIndex: 'strategyName', key: '1'}, 
-            {title: '策略状态', dataIndex: 'strategyState', key: '2'}, 
-            {title: '创建时间', dataIndex: 'createTime', key: '3'},
+                    return (<Link to={url}>{text}</Link>);
+                }
+            },
+            { title: '策略名称', dataIndex: 'strategyNameNew', key: '1' },
+            { title: '策略状态', dataIndex: 'strategyState', key: '2' },
+            { title: '创建时间', dataIndex: 'createTime', key: '3' },
             // {title: '有效时间', dataIndex: 'effectiveTime', key: '4'}, 
             // {title: '失效时间', dataIndex: 'invalidTime', key: '5'}, 
-            {title: '有效时间', dataIndex: 'time', key: '5',
+            {
+                title: '有效时间', dataIndex: 'time', key: '5',
                 render: text => {
                     let arr = text && text.split('/');
                     let effective = arr && arr[0];
@@ -84,25 +86,26 @@ class List extends React.Component<Props, {}> {
                     );
                 }
             },
-            {title: '触发事件', dataIndex: 'strategyType', key: '6'}, 
-            {title: '营销方式', dataIndex: 'actionExpression', key: '7'}, 
-            {title: '营销类型', dataIndex: 'marketingType', key: '8'}, 
-            {title: '推送人数', dataIndex: 'pushAmount', key: '9'}, 
-            {title: '创建人邮箱', dataIndex: 'createrEmail', key: '10'}, 
-            {title: '操作', dataIndex: 'marketingTypeInt', key: '11',
+            { title: '触发事件', dataIndex: 'triggerEvent', key: '6' },
+            { title: '营销方式', dataIndex: 'actionExpression', key: '7' },
+            { title: '营销类型', dataIndex: 'marketingType', key: '8' },
+            { title: '推送人数', dataIndex: 'pushAmount', key: '9' },
+            { title: '创建人邮箱', dataIndex: 'createrEmail', key: '10' },
+            {
+                title: '操作', dataIndex: 'marketingTypeInt', key: '11',
                 render: (text, record, index) => {
                     let changeBtn: any;
                     let editBtn: any;
                     if (record.showButton === 2) {
-                        changeBtn =  <Button size="small" onClick={this.editStopClick.bind(this, record.pkId, index)}>暂停</Button>;
+                        changeBtn = <Button size="small" onClick={this.editStopClick.bind(this, record.pkId, index)}>暂停</Button>;
                     } else if (record.showButton === 1) {
-                        changeBtn =  <Button size="small" onClick={this.editStartClick.bind(this, record.pkId, index)}>开始</Button>;
+                        changeBtn = <Button size="small" onClick={this.editStartClick.bind(this, record.pkId, index)}>开始</Button>;
                     }
                     if (record.showEdit) {
                         let url = '/detailOrderStrategy/' + record.pkId + '#edit';
-                        editBtn =  <Button size="small" onClick={this.editClick.bind(this, record.pkId, index)} className="btn-edit"><Link to={url}>修改</Link></Button>;
+                        editBtn = <Button size="small" onClick={this.editClick.bind(this, record.pkId, index)} className="btn-edit"><Link to={url}>修改</Link></Button>;
                     } else {
-                        editBtn =  '';
+                        editBtn = '';
                     }
                     return (
                         <div><div>{changeBtn}</div><div>{editBtn}</div></div>
@@ -110,6 +113,7 @@ class List extends React.Component<Props, {}> {
                 }
             }
         ];
+
     }
 
     componentDidMount() {
@@ -134,7 +138,7 @@ class List extends React.Component<Props, {}> {
     }
     // 输入框赋值,策略id
     pkIdChange = (e) => {
-        e.target.value = this.limitNumberInput(e.target.value);   
+        e.target.value = this.limitNumberInput(e.target.value);
         this.props.params.pkId = e.target.value;
     }
     // 输入框赋值,活动id
@@ -160,12 +164,12 @@ class List extends React.Component<Props, {}> {
     }
     // 输入框，限制输入纯数字
     limitNumberInput = (n) => {
-       return n = n.replace(/[^\d]/g, '');  
+        return n = n.replace(/[^\d]/g, '');
     }
 
     // 选择时间后，获取时间
     onTimeChange = (value, dateString) => {
-         // value 未转换格式；dateString 转换后格式
+        // value 未转换格式；dateString 转换后格式
         let dataArray = dateString;
         if (dataArray.length > 0) {
             this.props.params.effectiveTime = dataArray[0];
@@ -183,14 +187,14 @@ class List extends React.Component<Props, {}> {
     searchReset = () => {
         this.props.form.resetFields();
         this.props.params.pkId = '',            // 策略ID
-        this.props.params.pageSize = 10,        // 每页列表数
-        this.props.params.activityId = '',      // 活动ID
-        this.props.params.strategyName = '',    // 策略名称
-        this.props.params.strategyState = '',   // 策略状态
-        this.props.params.effectiveTime = '',   // 起始时间
-        this.props.params.invalidTime = '',     // 结束时间
-        this.props.params.strategyType = '',    // 触发事件
-        this.props.params.marketingType = '';   // 营销类型
+            this.props.params.pageSize = 10,        // 每页列表数
+            this.props.params.activityId = '',      // 活动ID
+            this.props.params.strategyName = '',    // 策略名称
+            this.props.params.strategyState = '',   // 策略状态
+            this.props.params.effectiveTime = '',   // 起始时间
+            this.props.params.invalidTime = '',     // 结束时间
+            this.props.params.strategyType = '',    // 触发事件
+            this.props.params.marketingType = '';   // 营销类型
 
         const { strategyList } = this.props;
         strategyList(this.props.params);
@@ -228,6 +232,10 @@ class List extends React.Component<Props, {}> {
         // 添加input自动校验
         const { getFieldDecorator } = this.props.form;
 
+        listData.map((item, i) => {
+            item.strategyNameNew = item.marketingTypeInt === 9 ? item.priority + '-' + item.strategyName : item.strategyName;
+            return listData;
+        });
         // 输入框固定宽
         const inputWidth = {
             width: '123px'
@@ -239,7 +247,7 @@ class List extends React.Component<Props, {}> {
                     {/* <Select placeholder="新增策略" style={{ marginLeft: '10px', width: '130px' }} onChange={this.newStrategyClick}>
                         {selectcChildren(data.strategyType)}
                     </Select> */}
-                    <Button style={{ marginLeft: '10px'}}><Link to="/createOrderStrategy">新增策略</Link></Button>
+                    <Button style={{ marginLeft: '10px' }}><Link to="/createOrderStrategy">新增策略</Link></Button>
                 </Header>
                 <Layout>
                     <Content className="content-wrap">
@@ -250,21 +258,21 @@ class List extends React.Component<Props, {}> {
                                     <Col span={8}>
                                         <FormItem label="策略ID" {...formItemLayout}>
                                             {getFieldDecorator('pkId')(
-                                                <Input placeholder="请输入策略ID" maxLength="30" style={inputWidth} onChange={this.pkIdChange}/>
+                                                <Input placeholder="请输入策略ID" maxLength="30" style={inputWidth} onChange={this.pkIdChange} />
                                             )}
                                         </FormItem>
                                     </Col>
                                     <Col span={8} >
                                         <FormItem label="活动ID" {...formItemLayout} >
                                             {getFieldDecorator('activityId')(
-                                                <Input placeholder="请输入活动ID" maxLength="30" style={inputWidth} onChange={this.activityIdChange}/>
+                                                <Input placeholder="请输入活动ID" maxLength="30" style={inputWidth} onChange={this.activityIdChange} />
                                             )}
                                         </FormItem>
                                     </Col>
                                     <Col span={8} >
                                         <FormItem label="策略名称" {...formItemLayout} >
                                             {getFieldDecorator('strategyName')(
-                                                <Input placeholder="请输入策略名称" style={inputWidth} onChange={this.strategyNameChange}/>
+                                                <Input placeholder="请输入策略名称" style={inputWidth} onChange={this.strategyNameChange} />
                                             )}
                                         </FormItem>
                                     </Col>
@@ -293,22 +301,22 @@ class List extends React.Component<Props, {}> {
                                                 <Select placeholder="请选择" style={inputWidth} onChange={this.marketingTypeChange}>
                                                     {selectcChildren(data.marketingType)}
                                                 </Select>
-                                            )}   
+                                            )}
                                         </FormItem>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col span={8} >
                                         <FormItem label="策略时间" {...formItemLayout} >
-                                        {getFieldDecorator('strategyTime')(
-                                            <RangePicker
-                                                showTime={{ format: 'HH:mm' }}
-                                                format="YYYY-MM-DD HH:mm"
-                                                placeholder={['Start Time', 'End Time']}
-                                                onChange={this.onTimeChange}
-                                                style={{width: 250}}
-                                            />
-                                        )} 
+                                            {getFieldDecorator('strategyTime')(
+                                                <RangePicker
+                                                    showTime={{ format: 'HH:mm' }}
+                                                    format="YYYY-MM-DD HH:mm"
+                                                    placeholder={['Start Time', 'End Time']}
+                                                    onChange={this.onTimeChange}
+                                                    style={{ width: 250 }}
+                                                />
+                                            )}
                                         </FormItem>
                                     </Col>
                                     <Col span={8} >
@@ -321,10 +329,10 @@ class List extends React.Component<Props, {}> {
                             </Form>
                         </div>
                         {/* 列表表格 */}
-                        <div style={{background: '#fff'}}>
-                            <Table style={{background: '#fff'}} columns={this.columns} dataSource={listData} bordered={true} pagination={false}/>
-                            <div style={{position: 'relative', height: '70px'}}>
-                                <Pagination style={{position: 'absolute', right: '20px', top: '18px'}} onChange={this.pageChange} defaultCurrent={1} total={totalInfo} />
+                        <div style={{ background: '#fff' }}>
+                            <Table style={{ background: '#fff' }} columns={this.columns} dataSource={listData} bordered={true} pagination={false} />
+                            <div style={{ position: 'relative', height: '70px' }}>
+                                <Pagination style={{ position: 'absolute', right: '20px', top: '18px' }} onChange={this.pageChange} defaultCurrent={1} total={totalInfo} />
                             </div>
                         </div>
                     </Content>
@@ -342,7 +350,7 @@ export function mapStateToProps(state: StoreState) {
         data: state.list.data,                                                                       // 项目数据
         params: state.list.params,                                                                   // 搜索传參
         totalInfo: state.list.totalInfo,                                                             // 列表数据总数
-        listData: state.list.listData && state.list.listData.map( (item, i) => Object.assign({}, item, { key: i }, {time: item.effectiveTime + '/' + item.invalidTime}) ),       // 列表数组－处理后表格展示的数据     
+        listData: state.list.listData && state.list.listData.map((item, i) => Object.assign({}, item, { key: i }, { time: item.effectiveTime + '/' + item.invalidTime })),       // 列表数组－处理后表格展示的数据     
     };
 }
 
@@ -350,7 +358,7 @@ export const mapDispatchToProps = (dispatch: Dispatch<actions.EnthusiasmAction>)
     {
         editStop: actions.EditStop,
         editStart: actions.EditStart,
-        strategyList: actions.StrategyList  
+        strategyList: actions.StrategyList
     },
     dispatch
 );

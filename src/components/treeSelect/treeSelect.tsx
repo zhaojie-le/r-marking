@@ -97,9 +97,11 @@ class TreeSelect extends React.Component<Props, any> {
             searchValue: '',
             newTreeData: [],
             checkedKeys: [],
-            treeData: this.props.tagNodeTree,
+            treeData: [],
             autoExpandParentChild: true
         };
+        this.state = { ...this.state, treeData: this.props.tagNodeTree };
+
         this.dataList = generateList(this.props.tagNodeTree);
     }
 
@@ -191,20 +193,23 @@ class TreeSelect extends React.Component<Props, any> {
                 resolve();
                 return;
             }
-            setTimeout(() => {
-                // this.props.onGettagNodeTree(treeNode.props.eventKey);
-                // const newObj = this.props.tagNodeTree;
-                // treeNode.props.dataRef.children = newObj;
-                treeNode.props.dataRef.children = this.props.tagNodeTreeZ;
-                this.setState({
-                    treeData: [...this.state.treeData],
-                });
-                resolve();
-            },
-                1000
-            );
+            // this.props.onGettagNodeTree(treeNode.props.eventKey);
+            // const newObj = this.props.tagNodeTree;
+            fetch('/marketStrategy/getTagNodeTree?id=?' + treeNode.props.eventKey).then(function (res: Response) {
+                if (res.ok) {
+                    res.json().then((data: any) => {
+                        treeNode.props.dataRef.children = data.list;
+                    });
+                } else {
+                    console.log('Looks like the response wasnt perfect, got status', res.status);
+                }
+            });
+            this.setState({
+                treeData: [...this.state.treeData],
+            });
         });
     }
+
     renderSelectTreeNodes = () => {
         const { newTreeData } = this.state;
         return newTreeData.map((item) => {
@@ -219,6 +224,7 @@ class TreeSelect extends React.Component<Props, any> {
         });
     }
     renderTreeNode = (data) => {
+        console.log('data=========' + JSON.stringify(data));
         return data.map((item) => {
             if (item.children) {
                 return (
@@ -244,18 +250,19 @@ class TreeSelect extends React.Component<Props, any> {
                         {/* <Search style={{ marginBottom: 8, width: '300px', position: 'absolute', top: 0, left: 0 }}
                          placeholder="请输入要搜索的节点" onChange={(e) => { e.persist(); this.onChange(e); }} /> */}
                         <div className="treeSelectBox">
-                            <Tree
-                                checkable={true}
-                                showLine={true}
-                                loadData={this.onLoadData}
-                                onExpand={this.onExpand}
-                                checkedKeys={checkedKeys}
-                                onCheck={this.onCheck}
-                                autoExpandParent={autoExpandParent}
-                            // defaultCheckedKeys={['1', '0-0-1']}
-                            >
-                                {this.renderTreeNode(this.state.treeData)}
-                            </Tree>
+                            {this.state.treeData.length > 0 ?
+                                <Tree
+                                    checkable={true}
+                                    showLine={true}
+                                    loadData={this.onLoadData}
+                                    onExpand={this.onExpand}
+                                    checkedKeys={checkedKeys}
+                                    onCheck={this.onCheck}
+                                    autoExpandParent={autoExpandParent}
+                                // defaultCheckedKeys={['1', '0-0-1']}
+                                >
+                                    {this.renderTreeNode(this.state.treeData)}
+                                </Tree> : null}
                         </div>
                     </Col>
                     <Col span={12}>

@@ -81,6 +81,19 @@ const getHomePageCountSuccess = (result) => {
         result: result
     };
 };
+const getResponsibleSuccess = (result) => {
+    return {
+        type: constants.GET_RESPONSIBLE_SUCCESS,
+        result: result
+    };
+};
+
+const getResponsibleFail = (result) => {
+    return {
+        type: constants.GET_RESPONSIBLE_FAIL,
+        result: result
+    };
+};
 
 const getHomePageCountFail = (error) => {
     return {
@@ -195,6 +208,21 @@ const getHomePageCount: Epic<any, any> = (action$, store) => {
         );
 };
 
-const epics = [getService, getOrderState, getRules, getWechatPush, saveRule, getHomePageCount];
+const getResponsible: Epic<any, any> = (action$, store) => {
+    return action$.ofType(constants.GET_RESPONSIBLE).
+        switchMap(
+        (action): Observable<any> => {
+            return ajax.post('/marketStrategy/toAdd').map(response => {
+                if (response.response.resultCode === 1) {
+                    return (getResponsibleSuccess(response.response.data));
+                } else {
+                    return (getResponsibleFail(response.response));
+                }
+            });
+        }
+        );
+};
+
+const epics = [getService, getOrderState, getRules, getWechatPush, saveRule, getHomePageCount, getResponsible];
 
 export default epics;

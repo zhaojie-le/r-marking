@@ -104,15 +104,24 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
         super(props, context);
         const value = this.props.value || [];
         let channelType = this.state.channelType;
+        let keys = this.props.form.getFieldValue('keys');
         this.state.models = value.map((item) => {
             channelType = channelType.filter((channel) => {
                 return channel[0] !== parseInt(item.type, 10);
+
             });
             return {
                 ...item,
                 k: uuid++
             };
         });
+
+        keys !== undefined ?
+            keys.map((item) => {
+                channelType = channelType.filter((channel) => {
+                    return channel[0] !== parseInt(item.type, 10);
+                });
+            }) : channelType = channelType;
         this.state.channelType = channelType;
         value.forEach((item) => {
             let trItem: any;
@@ -206,6 +215,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
 
     handleMenuClick = (event) => {
         const keyType = event.key.split('-');
+        console.log('keyTypekeyTypekeyType======' + JSON.stringify(keyType));
         const { form, option } = this.props;
         if (keyType[0] === '4' && option === null) {
             message.error('暂不能使用58到家公众号方式');
@@ -408,8 +418,6 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
         getFieldDecorator('keys', { initialValue: models });
         let keys = getFieldValue('keys');
         const clength = keys.length;
-        console.log('keyKEYKEYEKEYYEEE=======' + JSON.stringify(keys));
-        console.log('optionoptionoptiooptionoptionoptionn===' + JSON.stringify(option));
         return keys.map((key, i) => {
             const props = {
                 first: i === 0 ? true : false,
@@ -423,6 +431,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
             key.value.tstate = key.value.type === '4' ? option.name : '';
             const typeIndex = i + 1;
             const { k, type } = key;
+
             switch (parseInt(type, 10)) {
                 case ChannelType.Sms:
                     return (
@@ -519,6 +528,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
 
     generatorCreateMenu = () => {
         const { option } = this.props;
+
         const menu = (
             <Menu onClick={this.handleMenuClick}>
                 {
@@ -648,7 +658,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
     render() {
         let wrapperStyle = {};
         let btnStyle = {};
-
+        console.log('this.state.editingthis.state.editing' + this.state.editing);
         if (this.state.editing) {
             btnStyle = { display: 'none' };
         } else {

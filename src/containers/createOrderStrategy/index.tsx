@@ -49,6 +49,7 @@ export interface Props {
     onGetOrderState: () => void;
     getHomePageCount: () => void;
     onGetTreeNode: (id: string) => void;
+    onGetResponsible: () => void;
 }
 
 namespace layout {
@@ -127,6 +128,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     componentDidMount() {
         // this.props.onGetRules(1);
         this.props.onGetTreeNode('00');
+        this.props.onGetResponsible();
     }
 
     validateTrgger = (): boolean | undefined => {
@@ -192,41 +194,67 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         }
         newPar.actionParam = newPar.actionParam ? this.actionParamsMap(newPar.actionParam) : null;
         console.log('newPar', newPar);
-        return newPar;
+        return JSON.stringify(newPar);
     }
 
     actionParamsMap = (obj) => {
         let actionP: any = {};
+        let { eventType } = this.state;
         if (obj) {
-            let objArray = Object.entries(obj);
-            let objArrLen = objArray.length;
-            for (let i = 0; i < objArrLen; i++) {
-                if (objArray[i][0].startsWith('daojiaApp')) {
-                    actionP.appContent = this.contentMap(objArray[i][1]);
-                } else if (objArray[i][0].startsWith('sms')) {
-                    actionP.smsContent = this.contentMap(objArray[i][1]);
-                } else if (objArray[i][0].startsWith('suyunApp')) {
-                    actionP.expressContent = this.contentMap(objArray[i][1]);
-                } else if (objArray[i][0].startsWith('chatNumber')) {
-                    actionP.wechatContent = this.chartNumberMap(objArray[i][1]);
+            console.log('eventType=========' + eventType);
+            console.log('objobjobjobj==================' + JSON.stringify(obj));
+            if (eventType === 3) {
+                actionP.payOrderContent = this.contentMap(obj);
+            } else if (eventType === 7) {
+                actionP.pendantContent = this.contentMap(obj);
+            } else if (eventType === 9) {
+                actionP.homePageContent = this.contentMap(obj);
+            } else {
+                let objArray = Object.entries(obj);
+                console.log('objArray==================' + JSON.stringify(objArray));
+                let objArrLen = objArray.length;
+                for (let i = 0; i < objArrLen; i++) {
+                    if (objArray[i][0].startsWith('daojiaApp')) {
+                        actionP.appContent = this.contentMap(objArray[i][1]);
+                    } else if (objArray[i][0].startsWith('sms')) {
+                        actionP.smsContent = this.contentMap(objArray[i][1]);
+                    } else if (objArray[i][0].startsWith('suyunApp')) {
+                        actionP.expressContent = this.contentMap(objArray[i][1]);
+                    } else if (objArray[i][0].startsWith('chatNumber')) {
+                        actionP.wechatContent = this.chartNumberMap(objArray[i][1]);
+                    }
                 }
             }
+            console.log('actionP=====================' + JSON.stringify(actionP));
             return actionP;
+
         }
         return null;
     }
 
     contentMap = (objItem) => {
         let newContent: any = {};
+        console.log('objItem=======' + JSON.stringify(objItem));
         if (objItem) {
-            if (objItem.title) {
-                newContent.title = objItem.title;
-            } else if (objItem.docs) {
-                newContent.content = objItem.docs;
-            } else if (objItem.link) {
-                newContent.openUrl = objItem.link;
+            for (var item in objItem) {
+                if (item.startsWith('title')) {
+                    newContent.title = objItem[item];
+                } else if (item.startsWith('docs')) {
+                    newContent.content = objItem[item];
+                } else if (item.startsWith('link')) {
+                    newContent.openUrl = objItem[item];
+                } else if (item.startsWith('imgUrl')) {
+                    newContent.imgUrl = objItem[item];
+                } else if (item.startsWith('activityendtime')) {
+                    newContent.activityendtime = objItem[item];
+                } else if (item.startsWith('animation')) {
+                    newContent.animation = objItem[item];
+                } else if (item.startsWith('location')) {
+                    newContent.location = objItem[item];
+                }
             }
         }
+        console.log('newContent=======' + JSON.stringify(newContent));
         return newContent;
     }
     chartNumberMap = (objItem) => {
@@ -420,11 +448,12 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
 
     changeMarketingType = (eventType) => {
         console.log('eventTypeeventType======' + eventType);
-        if (
-            (([1, 2, 4, 5, 6] as any).includes(eventType) && this.preEventType === 1)
-            || eventType === this.preEventType) {
-            return;
-        }
+        console.log('this.preEventType===========' + this.preEventType);
+        // if (
+        //     (([1, 2, 4, 5, 6] as any).includes(eventType) && this.preEventType === 1)
+        //     || eventType === this.preEventType) {
+        //     return;
+        // }
         this.validateFieldsType.splice(this.validateFieldsType.indexOf(`marketingModel${uuid}`), 1);
         // this.validateFieldsType.splice(this.validateFieldsType.indexOf(`actionParam`), 1);
         uuid++;
@@ -493,7 +522,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         const { getFieldDecorator } = this.props.form;
         const { history }: any = this.props;
         const { disabledTrggerCondition, validateStatus, eventType } = this.state;
-        console.log('eventTypeeventTypeeventType' + typeof (eventType));
         return (
             <div id="orderStrategy">
                 <Layout className="layout">
@@ -541,7 +569,10 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                         })(
                                             <Select onChange={this.onSelectEvent}>
                                                 <Option value="0">请选择</Option>
-                                                <Option value="1">订单策略</Option>
+                                                {this.props.formState.strategyTypeAdd.strategyType.map((item, i) => {
+                                                    return <Option value={item.id} key={i}>{item.name}</Option>;
+                                                })}
+                                                {/* <Option value="1">订单策略</Option>
                                                 <Option value="2">导入用户</Option>
                                                 <Option value="3">支付预约页面营销</Option>
                                                 <Option value="4">外推消息</Option>
@@ -550,7 +581,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 <Option value="7">页面挂件</Option>
                                                 <Option value="8">浏览激活</Option>
                                                 <Option value="9">首页运营位</Option>
-                                                <Option value="10">速运会员返券</Option>
+                                                <Option value="10">速运会员返券</Option> */}
                                             </Select>
                                             )
                                     }
@@ -582,7 +613,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                             rules: [{
                                                 required: true, message: '责任人不能为空！',
                                             }],
-                                            initialValue: 'fanxuehui@58daojia.com',
+                                            initialValue: this.props.formState.email,
                                         })(
                                             <Input disabled={true} />
                                             )
@@ -618,6 +649,7 @@ export const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) 
         onGetTreeNode: actions.tagNodeTree,
         onSaveRule: actions.saveRule,
         getHomePageCount: actions.getHomePageCount,
+        onGetResponsible: actions.getResponsible,
         onResetWeChatPush: actions.resetWeChatPush
     },
     dispatch
@@ -632,6 +664,7 @@ const WrappedRegistrationForm = Form.create({
         };
     },
     onFieldsChange(props: any, fields: any) {
+        console.log('fieldsfieldsfieldsfieldsfields==========' + JSON.stringify(fields));
         props.onChangeField(fields);
     }
 })(CreateOrderStrategy as any);

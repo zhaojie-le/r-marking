@@ -38,12 +38,20 @@ router.get('/getRule', function (req, res, next) {
     }
 });
 router.get('/getHomePageCount', function (req, res, next) {
-
     fs.readFile(__dirname + '/../usermock/createRules/getHomePageCount.json', 'utf8', (err, data) => {
         console.log('DATA' + JSON.stringify(data));
         res.json(JSON.parse(data));
     });
 });
+
+router.post('/toAdd', function (req, res, next) {
+    console.log(99);
+    fs.readFile(__dirname + '/../usermock/createRules/stateryAdd.json', 'utf8', (err, data) => {
+        console.log('DATA' + JSON.stringify(data));
+        res.json(JSON.parse(data));
+    });
+});
+
 
 router.post('/save', function (req, res, next) {
     fs.readFile(__dirname + '/../usermock/createRules/save.json', 'utf8', (err, data) => {
@@ -86,5 +94,6 @@ router.get('/getUserCount', function (req, res, next) {
         res.json(JSON.parse(data));
     });
 });
+
 
 module.exports = router;

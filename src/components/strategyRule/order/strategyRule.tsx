@@ -268,7 +268,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         let triggerRuleTpl: React.ReactNode = {};
         let btnStyle = {};
         let wrapperStyle: any = {};
-        const rules = [...this.state.rules];
+        const rule = [...this.state.rules];
         const { getFieldDecorator } = this.props.form;
         const cities = this.props.city.list.map((item, index) => {
             return {
@@ -281,12 +281,11 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         const options = this.props.serviceSelect;
 
         if (this.state.selectedLabel) {
-            rules.push({
+            rule.push({
                 label: '品类',
                 value: this.state.selectedLabel
             });
         }
-
         if (this.state.editing) {
             triggerRuleTpl = (
                 <section className="editInfo">
@@ -388,7 +387,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
             wrapperStyle.background = '#fff';
             wrapperStyle.border = 'none';
             triggerRuleTpl = (
-                <ShowRule rules={rules} />
+                <ShowRule rules={rule} />
             );
         }
         return (

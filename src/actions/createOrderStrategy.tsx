@@ -64,6 +64,10 @@ export interface GetHomePageCount {
     type: constants.GET_HOMEPAGECOUNT;
 }
 
+export interface GetResponsible {
+    type: constants.GET_RESPONSIBLE;
+}
+
 export interface WeChatPushReturn extends WeChatPushParam {
     type: constants.GET_WHCHATPUSH;
 }
@@ -139,5 +143,11 @@ export function resetWeChatPush() {
 export function getHomePageCount(): GetHomePageCount {
     return {
         type: constants.GET_HOMEPAGECOUNT
+    };
+}
+
+export function getResponsible(): GetResponsible {
+    return {
+        type: constants.GET_RESPONSIBLE
     };
 }

@@ -8,6 +8,10 @@ function form(
             },
             triggerRule: '',
             marketingModel: '',
+            strategyTypeAdd: {
+                email: '',
+                strategyType: [],
+            },
             delayTime: {
                 value: { day: 0, minute: 0 }
             },
@@ -105,6 +109,11 @@ function form(
             return {
                 ...state,
                 showOrderDetailCheck: action.number
+            };
+        case constants.GET_RESPONSIBLE_SUCCESS:
+            return {
+                ...state,
+                formState: { ...state.formState, strategyTypeAdd: action.result }
             };
         default:
             return state;
