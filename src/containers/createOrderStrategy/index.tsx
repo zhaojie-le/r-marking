@@ -569,7 +569,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                             <Select onChange={this.onSelectEvent}>
                                                 <Option value="0">请选择</Option>
                                                 {this.props.formState.strategyTypeAdd.strategyType.map((item, i) => {
-                                                    return <Option value={item.id} key={i}>{item.name}</Option>;
+                                                    return <Option value={(item.id).toString()} key={i}>{item.name}</Option>;
                                                 })}
                                                 {/* <Option value="1">订单策略</Option>
                                                 <Option value="2">导入用户</Option>
