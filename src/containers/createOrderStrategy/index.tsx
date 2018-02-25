@@ -194,7 +194,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         }
         newPar.actionParam = newPar.actionParam ? this.actionParamsMap(newPar.actionParam) : null;
         console.log('newPar', newPar);
-        return JSON.stringify(newPar);
+        return newPar;
     }
 
     actionParamsMap = (obj) => {
@@ -226,7 +226,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 }
             }
             console.log('actionP=====================' + JSON.stringify(actionP));
-            return actionP;
+            return JSON.stringify(actionP);
 
         }
         return null;
@@ -241,7 +241,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                     newContent.title = objItem[item];
                 } else if (item.startsWith('docs')) {
                     newContent.content = objItem[item];
-                } else if (item.startsWith('link')) {
+                } else if (item === 'link') {
                     newContent.openUrl = objItem[item];
                 } else if (item.startsWith('imgUrl')) {
                     newContent.imgUrl = objItem[item];
@@ -517,7 +517,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             return null;
         }
     }
-
     render() {
         const { getFieldDecorator } = this.props.form;
         const { history }: any = this.props;
@@ -613,7 +612,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                             rules: [{
                                                 required: true, message: '责任人不能为空！',
                                             }],
-                                            initialValue: this.props.formState.email,
+                                            initialValue: this.props.formState.strategyTypeAdd.email,
                                         })(
                                             <Input disabled={true} />
                                             )
@@ -656,13 +655,13 @@ export const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) 
 );
 
 const WrappedRegistrationForm = Form.create({
-    mapPropsToFields(props: any) {
-        return {
-            owner: {
-                value: props.formState.owner.value,
-            },
-        };
-    },
+    // mapPropsToFields(props: any) {
+    //     return {
+    //         owner: {
+    //             value: props.formState.owner.value,
+    //         },
+    //     };
+    // },
     onFieldsChange(props: any, fields: any) {
         console.log('fieldsfieldsfieldsfieldsfields==========' + JSON.stringify(fields));
         props.onChangeField(fields);

@@ -233,7 +233,7 @@ class List extends React.Component<Props, {}> {
         const { getFieldDecorator } = this.props.form;
 
         listData.map((item, i) => {
-            item.strategyNameNew = item.marketingTypeInt === 9 ? item.priority + '-' + item.strategyName : item.strategyName;
+            item.strategyNameNew = item.marketingTypeInt === 9 && item.priority !== undefined ? item.priority + '-' + item.strategyName : item.strategyName;
             return listData;
         });
         // 输入框固定宽
