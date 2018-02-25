@@ -314,7 +314,7 @@ class List extends React.Component<Props, {}> {
                                                     format="YYYY-MM-DD HH:mm:ss"
                                                     placeholder={['Start Time', 'End Time']}
                                                     onChange={this.onTimeChange}
-                                                    style={{ width: 250 }}
+                                                    style={{ width: 300 }}
                                                 />
                                             )}
                                         </FormItem>

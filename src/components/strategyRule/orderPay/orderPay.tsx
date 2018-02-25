@@ -110,7 +110,7 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
         ) : '';
     }
     onSave = () => {
-        this.props.form.validateFields(['refer', 'serviceOptions', 'orderSource'], (err, values) => {
+        this.props.form.validateFields(['refer', 'orderSource'], (err, values) => {
             if (!err) {
                 this.computeShowData(values);
                 this.props.onChange(values);
@@ -137,10 +137,10 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
                     label = '服务项';
                     value = this.state.selectedLabel;
                     break;
-                case 'serviceOptions':
-                    label = '品类';
-                    value = getKeysValues(this.props.serviceOptions, values.serviceOptions, 'key', 'title');
-                    break;
+                // case 'serviceOptions':
+                //     label = '品类';
+                //     value = getKeysValues(this.props.serviceOptions, values.serviceOptions, 'key', 'title');
+                //     break;
                 case 'orderSource':
                     label = '页面渠道';
                     value = getKeysValues(this.props.plainOptions, values.orderSource, 'value', 'label');

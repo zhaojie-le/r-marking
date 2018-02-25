@@ -165,6 +165,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
 
     mergeParmas = (values) => {
         let newPar: any = {};
+        let array: any = [];
         let valueArr = Object.entries(values);
         let { eventType } = this.state;
         console.log('valueArr', valueArr);
@@ -182,9 +183,10 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                     newPar.minuteDelay = item1.delayTime.minute ? item1.delayTime.minute : 0;
                 }
                 if (eventType === 1 || eventType === 3 || eventType === 7) {
-                    newPar.triggerRule = JSON.stringify(item1);
+                    array.push(item1);
+                    newPar.triggerRule = JSON.stringify(array);
                 } else {
-                    newPar.triggerRule = item1;
+                    newPar.triggerRule = array.push(item1);
                 }
 
             } else if (item0.startsWith('marketingModel')) {
