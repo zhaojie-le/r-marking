@@ -166,6 +166,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     mergeParmas = (values) => {
         let newPar: any = {};
         let valueArr = Object.entries(values);
+        let { eventType } = this.state;
         console.log('valueArr', valueArr);
         let valueArrLen = valueArr.length;
         for (let i = 0; i < valueArrLen; i++) {
@@ -180,6 +181,12 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                     newPar.dayDelay = item1.delayTime.day ? item1.delayTime.day : 0;
                     newPar.minuteDelay = item1.delayTime.minute ? item1.delayTime.minute : 0;
                 }
+                if (eventType === 1 || eventType === 3 || eventType === 7) {
+                    newPar.triggerRule = JSON.stringify(item1);
+                } else {
+                    newPar.triggerRule = item1;
+                }
+
             } else if (item0.startsWith('marketingModel')) {
                 // 营销方式
                 newPar.actionParam = item1;
