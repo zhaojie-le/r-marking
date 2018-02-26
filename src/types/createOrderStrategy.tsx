@@ -6,4 +6,5 @@ export interface CreateOrderStrategy {
     weChatPush: any;
     showOrderDetailCheck: boolean;
     getHomePageCount: number;
+    saveRule: any;
 }

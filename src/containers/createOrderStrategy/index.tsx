@@ -11,6 +11,7 @@ import {
     Layout,
     Breadcrumb,
     Button,
+    Alert,
     Select,
     DatePicker
 } from 'antd';
@@ -40,6 +41,7 @@ export interface Props {
     formState: any;
     form: any;
     option: any;
+    saveRule: any;
     strategyType: any;
     ruleHadBack: boolean;
     onGetRules: (type: number) => void;
@@ -640,6 +642,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                     <Button onClick={() => history.push('/')} style={{ marginLeft: '10px' }}>取消</Button>
                                 </FormItem>
                             </Form>
+                            {this.props.saveRule.resultCode === '' ? null :
+                                this.props.saveRule.resultCode === 1 ? history.push('/') :
+                                    <Alert type="error" message={this.props.saveRule.message} />
+                            }
+
                         </div>
                     </Content>
                     <Footer style={{ textAlign: 'center' }}>
@@ -655,6 +662,7 @@ export function mapStateToProps(state: StoreState) {
     return {
         formState: state.createOrderStrategy.formState,
         option: state.createOrderStrategy.weChatPush,
+        saveRule: state.createOrderStrategy.saveRule,
     };
 }
 

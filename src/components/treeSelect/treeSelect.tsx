@@ -199,6 +199,7 @@ class TreeSelect extends React.Component<Props, any> {
                 if (res.ok) {
                     res.json().then((data: any) => {
                         treeNode.props.dataRef.children = data.list;
+
                     });
                 } else {
                     console.log('Looks like the response wasnt perfect, got status', res.status);
