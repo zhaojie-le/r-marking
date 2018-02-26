@@ -185,10 +185,10 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                     newPar.minuteDelay = item1.delayTime.minute ? item1.delayTime.minute : 0;
                 }
                 if (eventType === 1 || eventType === 3 || eventType === 7 || eventType === 9) {
-                    array.push(item1);
+                    array.push(JSON.stringify(item1));
                     newPar.triggerRule = JSON.stringify(array);
                 } else {
-                    array.push(item1);
+                    array.push(JSON.stringify(item1));
                     newPar.triggerRule = '[' + array + ']';
                 }
 
