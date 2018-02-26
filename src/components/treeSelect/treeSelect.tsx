@@ -196,7 +196,7 @@ class TreeSelect extends React.Component<Props, any> {
             console.log(444444);
             fetch('/marketStrategy/getTagNodeTree?&callback=?id=' + treeNode.props.eventKey, {
                 method: 'GET',
-                mode: 'cors',
+                mode: 'no-cors',
                 cache: 'default'
             }).then((res: Response) => {
                 if (res.ok) {

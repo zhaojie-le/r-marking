@@ -189,7 +189,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                     newPar.triggerRule = JSON.stringify(array);
                 } else {
                     array.push(item1);
-                    newPar.triggerRule = array;
+                    newPar.triggerRule = '[' + array + ']';
                 }
 
             } else if (item0.startsWith('marketingModel')) {

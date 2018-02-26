@@ -70,7 +70,7 @@ class List extends React.Component<Props, {}> {
                     return (<Link to={url}>{text}</Link>);
                 }
             },
-            // { title: '策略名称', dataIndex: 'strategyNameNew', key: '1' },
+
             {
                 title: '策略名称', dataIndex: 'strategyName', key: '1',
                 render: (text, record) => {
@@ -246,10 +246,6 @@ class List extends React.Component<Props, {}> {
         // 添加input自动校验
         const { getFieldDecorator } = this.props.form;
 
-        // listData.map((item, i) => {
-        //     item.strategyNameNew = item.marketingTypeInt === 9 && item.priority !== undefined ? item.priority + '-' + item.strategyName : item.strategyName;
-        //     return listData;
-        // });
         // 输入框固定宽
         const inputWidth = {
             width: '123px'
