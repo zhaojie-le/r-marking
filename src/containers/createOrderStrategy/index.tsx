@@ -11,6 +11,7 @@ import {
     Layout,
     Breadcrumb,
     Button,
+    Alert,
     Select,
     DatePicker
 } from 'antd';
@@ -40,6 +41,7 @@ export interface Props {
     formState: any;
     form: any;
     option: any;
+    saveRule: any;
     strategyType: any;
     ruleHadBack: boolean;
     onGetRules: (type: number) => void;
@@ -120,7 +122,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     private stType: string;
     private usType: string;
     private timeMerge: any = {};
-    private validateFieldsType: Array<string> = ['strategyName', 'time', 'marketingCategory', 'strategyRule0', 'marketingModel0', 'marketingType'];
+    private validateFieldsType: Array<string> = ['strategyName', 'time', 'triggerEvent', 'marketingCategory', 'strategyRule0', 'marketingModel0', 'marketingType'];
     constructor(props: Props, context: any) {
         super(props, context);
     }
@@ -165,7 +167,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
 
     mergeParmas = (values) => {
         let newPar: any = {};
+        let array: any = [];
         let valueArr = Object.entries(values);
+        let { eventType } = this.state;
         console.log('valueArr', valueArr);
         let valueArrLen = valueArr.length;
         for (let i = 0; i < valueArrLen; i++) {
@@ -180,6 +184,14 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                     newPar.dayDelay = item1.delayTime.day ? item1.delayTime.day : 0;
                     newPar.minuteDelay = item1.delayTime.minute ? item1.delayTime.minute : 0;
                 }
+                if (eventType === 1 || eventType === 3 || eventType === 7) {
+                    array.push(item1);
+                    newPar.triggerRule = JSON.stringify(array);
+                } else {
+                    array.push(item1);
+                    newPar.triggerRule = array;
+                }
+
             } else if (item0.startsWith('marketingModel')) {
                 // 营销方式
                 newPar.actionParam = item1;
@@ -190,6 +202,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             } else if (item0.startsWith('marketingType')) {
                 newPar.marketingType = item1.marketingType;
                 newPar.activityId = item1.activityId;
+            } else if (item0.startsWith('triggerEvent')) {
+                newPar.strategyType = item1;
+            } else if (item0.startsWith('time')) {
+                newPar.effectiveTime = this.timeMerge.effectiveTime;
+                newPar.invalidTime = this.timeMerge.invalidTime;
             }
         }
         newPar.actionParam = newPar.actionParam ? this.actionParamsMap(newPar.actionParam) : null;
@@ -246,11 +263,13 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 } else if (item.startsWith('imgUrl')) {
                     newContent.imgUrl = objItem[item];
                 } else if (item.startsWith('activityendtime')) {
-                    newContent.activityendtime = objItem[item];
+                    newContent.endTime = objItem[item];
                 } else if (item.startsWith('animation')) {
                     newContent.animation = objItem[item];
                 } else if (item.startsWith('location')) {
                     newContent.location = objItem[item];
+                } else if (item.startsWith('piclink')) {
+                    newContent.picUrl = objItem[item];
                 }
             }
         }
@@ -551,7 +570,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                         })(
                                             <RangePicker
                                                 showTime={{ format: 'HH:mm:ss' }}
-                                                format="YYYY-MM-DD HH:mm"
+                                                format="YYYY-MM-DD HH:mm:ss"
                                                 disabledDate={this.disabledDate}
                                                 placeholder={['开始时间', '结束时间']}
                                                 onChange={this.onTimeChange}
@@ -569,7 +588,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                             <Select onChange={this.onSelectEvent}>
                                                 <Option value="0">请选择</Option>
                                                 {this.props.formState.strategyTypeAdd.strategyType.map((item, i) => {
-                                                    return <Option value={item.id} key={i}>{item.name}</Option>;
+                                                    return <Option value={(item.id).toString()} key={i}>{item.name}</Option>;
                                                 })}
                                                 {/* <Option value="1">订单策略</Option>
                                                 <Option value="2">导入用户</Option>
@@ -623,6 +642,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                     <Button onClick={() => history.push('/')} style={{ marginLeft: '10px' }}>取消</Button>
                                 </FormItem>
                             </Form>
+                            {this.props.saveRule.resultCode === '' ? null :
+                                this.props.saveRule.resultCode === 1 ? history.push('/') :
+                                    <Alert type="error" message={this.props.saveRule.message} />
+                            }
+
                         </div>
                     </Content>
                     <Footer style={{ textAlign: 'center' }}>
@@ -638,6 +662,7 @@ export function mapStateToProps(state: StoreState) {
     return {
         formState: state.createOrderStrategy.formState,
         option: state.createOrderStrategy.weChatPush,
+        saveRule: state.createOrderStrategy.saveRule,
     };
 }
 

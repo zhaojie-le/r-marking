@@ -324,11 +324,11 @@ class List extends React.Component<Props, {}> {
                                         <FormItem label="策略时间" {...formItemLayout} >
                                             {getFieldDecorator('strategyTime')(
                                                 <RangePicker
-                                                    showTime={{ format: 'HH:mm' }}
-                                                    format="YYYY-MM-DD HH:mm"
+                                                    showTime={{ format: 'HH:mm:ss' }}
+                                                    format="YYYY-MM-DD HH:mm:ss"
                                                     placeholder={['Start Time', 'End Time']}
                                                     onChange={this.onTimeChange}
-                                                    style={{ width: 250 }}
+                                                    style={{ width: 300 }}
                                                 />
                                             )}
                                         </FormItem>

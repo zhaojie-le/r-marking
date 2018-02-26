@@ -26,7 +26,7 @@ export interface RuleProps {
     orderSource: { label: string; value: string; }[];
     onGetService: (cp: { lineId: number; cateId: number }) => void;
     onGetWechatPush: (obj: any) => void;
-    onSaveRule: (rjs: string) => void;
+    // onSaveRule: (rjs: string) => void;
     onChange: (value: any) => void;
     onShowOrderDetailCheck: (value: number) => void;
     onGetOrderState: (cp: { serverIds: string; cateId: number }) => void;
@@ -212,7 +212,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                 // onShowOrderDetailCheck 1订单详情，2订单评价 0不展示
                 console.log('valuesvaluesvalues==' + values.serviceItem);
                 this.props.onShowOrderDetailCheck((values.serviceItem[1] === '201' ? 1 : values.serviceItem[1] === '212' || values.serviceItem[1] === '205' ? 2 : 0));
-                this.props.onSaveRule(JSON.stringify(values));
+                // this.props.onSaveRule(JSON.stringify(values));
             }
         });
     }
@@ -419,7 +419,7 @@ function mapStateToProps(state: StoreState) {
 const mapDispatchToProps = (dispatch: Dispatch<actions.ChangeFieldType>) => bindActionCreators(
     {
         onGetOrderState: actions.getOrderState,
-        onSaveRule: actions.saveRule,
+        // onSaveRule: actions.saveRule,
         onGetService: actions.getService,
         onGetWechatPush: actions.getWechatPush,
         onShowOrderDetailCheck: actions.setShowOrderDetailCheck,

@@ -14,7 +14,7 @@ export interface RuleProps {
     message: string;
     onChange: (value: any) => void;
     getPageName: (id: number) => void;
-    rulesD: {strategyType: number; setting: any; };
+    rulesD: { strategyType: number; setting: any; };
     cityList: any;
     plainOptions: any;
 }
@@ -94,7 +94,7 @@ class PendantRule extends React.Component<RuleProps, {}> {
     }
     computeShowData = (values: any) => {
         let rules: { label: string; value: string }[] = [];
-        for ( let item of Object.keys(values)) {
+        for (let item of Object.keys(values)) {
             let label: string = '';
             let value: string = '';
             switch (item) {
@@ -150,7 +150,7 @@ class PendantRule extends React.Component<RuleProps, {}> {
         // let triggerPageName: React.ReactNode = {};
         let wrapperStyle: any = {};
         let btnStyle: any = {};
-        const rules = [ ...this.state.rules ];
+        const rules = [...this.state.rules];
         const { cityList, plainOptions } = this.props;
         const { getFieldDecorator } = this.props.form;
         // 遍历增加一个key
@@ -161,7 +161,7 @@ class PendantRule extends React.Component<RuleProps, {}> {
                 key: `${item.value}`
             };
         });
-        
+
         if (this.state.editing) {
             triggerRuleTpl = (
                 <section className="editInfo">
@@ -173,14 +173,14 @@ class PendantRule extends React.Component<RuleProps, {}> {
                                         required: true, message: 'ID不能为空！',
                                     }]
                                 })(
-                                    <Input onChange={this.pageIdChange}/>
+                                    <Input onChange={this.pageIdChange} />
                                     )}
                             </FormItem>
                         </Col>
                         <Col span={4}>
                             <FormItem {...layout.formItemLayout1}>
-                                <Button style={{'marginLeft': 20}} onClick={this.getPageName}>查询</Button>
-                            </FormItem> 
+                                <Button style={{ 'marginLeft': 20 }} onClick={this.getPageName}>查询</Button>
+                            </FormItem>
                         </Col>
                         <Col span={10}>
                             {this.triggerPageName()}
@@ -225,16 +225,16 @@ class PendantRule extends React.Component<RuleProps, {}> {
                                     }],
                                 })(
                                     <CheckboxGroup options={plainOptions} onChange={this.onCheckChange} />
-                                )}
+                                    )}
                             </div>
-                        )}
+                            )}
                     </FormItem>
                     <FormItem {...layout.tailFormItemLayout}>
-                    <Button type="primary" onClick={this.onSave}>保存</Button>
-                    <Button onClick={() => this.onEdit(false)} style={{marginLeft: '10px'}}>取消</Button>
-                </FormItem>
-                {/* </div> */}
-            </section>
+                        <Button type="primary" onClick={this.onSave}>保存</Button>
+                        <Button onClick={() => this.onEdit(false)} style={{ marginLeft: '10px' }}>取消</Button>
+                    </FormItem>
+                    {/* </div> */}
+                </section>
             );
             btnStyle = {
                 display: 'none'
@@ -262,10 +262,10 @@ class PendantRule extends React.Component<RuleProps, {}> {
     }
 }
 
-function mapStateToProps (state: StoreState) {
+function mapStateToProps(state: StoreState) {
     return {
-        pageName: state.strategyRules.pageName,
-        message: state.strategyRules.message,
+        pageName: state.strategyRules.rule.pageName,
+        message: state.strategyRules.rule.message,
         rulesD: state.createOrderStrategy.rules,
         cityList: state.createOrderStrategy.rules.settings.city ? state.createOrderStrategy.rules.settings.city.list : [],
         plainOptions: state.createOrderStrategy.rules.settings.orderSource ? state.createOrderStrategy.rules.settings.orderSource.list : []
@@ -277,4 +277,4 @@ const mapDispatchToProps = (dispatch: Dispatch<actions.RulesAction>) => bindActi
     },
     dispatch
 );
-export default connect<any, any, { form: any, onChange:  (value: any) => void}>(mapStateToProps, mapDispatchToProps)(PendantRule as any);
+export default connect<any, any, { form: any, onChange: (value: any) => void }>(mapStateToProps, mapDispatchToProps)(PendantRule as any);

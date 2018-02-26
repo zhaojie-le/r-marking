@@ -55,7 +55,11 @@ function form(
         },
         getHomePageCount: 0,
         weChatPush: null,
-        showOrderDetailCheck: 0
+        showOrderDetailCheck: 0,
+        saveRule: {
+            resultCode: '',
+            message: '保存成功',
+        }
     },
     action: any
 ) {
@@ -99,6 +103,16 @@ function form(
             return {
                 ...state,
                 formState: { ...state.formState, triggerRule: action.ruleJsonString, }
+            };
+        case constants.SAVE_RULE_SUCCESS:
+            return {
+                ...state,
+                saveRule: { ...state.saveRule, resultCode: action.result.resultCode, message: action.result.message }
+            };
+        case constants.SAVE_RULE_FAIL:
+            return {
+                ...state,
+                saveRule: { ...state.saveRule, resultCode: action.error.resultCode, message: action.error.message }
             };
         case constants.SAVE_MODEL:
             return {

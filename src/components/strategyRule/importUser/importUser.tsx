@@ -7,10 +7,11 @@ import { bindActionCreators } from 'redux';
 import { Form, Button, Input, Row, Col, message } from 'antd';
 import { default as ShowRule } from '../showRuleInfo';
 const FormItem = Form.Item;
-export interface RuleProps { 
+export interface RuleProps {
     form: any;
     count: number;
     mes: string;
+    rule: any;
     onChange: (value: any) => void;
     userCount: (id: number) => void;
 }
@@ -30,24 +31,31 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
     state: any = {
         deiting: false,
         rules: [],
-        batchId: 0
+        batchId: 0,
+        count: 0
     };
     getUserCount = () => {
         const { userCount } = this.props;
         if (!!this.state.batchId) {
             userCount(this.state.batchId);
         }
+
     }
+
     inputChange = (e) => {
+        this.props.rule.userCount = 0;
+        this.props.rule.message = '';
         this.setState({
             batchId: e.target.value
         });
+
     }
+
     showMessage = (count, mes) => {
         if (!!count) {
             return (<p>该批次共{count}个用户</p>);
         } else if (!count && mes) {
-            return (<p style={{color: 'red'}}>{mes}</p>);
+            return (<p style={{ color: 'red' }}>{mes}</p>);
         } else {
             return null;
         }
@@ -55,8 +63,8 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
     onSave = () => {
         this.props.form.validateFields(['userBatchId'], (err, values) => {
             if (!err) {
-                if (this.props.count && this.props.count !== 0) {
-                    let sendValue = Object.assign({}, values, {usertCount: this.props.count });
+                if (this.props.rule.userCount && this.props.rule.userCount !== 0) {
+                    let sendValue = Object.assign({}, values, { usertCount: this.props.rule.userCount });
                     this.computeShowData(sendValue);
                     this.props.onChange(JSON.stringify(sendValue));
                 } else {
@@ -67,12 +75,13 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
     }
     onEdit = (isEditing) => {
         this.setState({
-            editing: isEditing
+            editing: isEditing,
+            batchId: ''
         });
     }
     computeShowData = (values: any) => {
         let rules: { label: string; value: string }[] = [];
-        for ( let item of Object.keys(values)) {
+        for (let item of Object.keys(values)) {
             let label: string = '';
             let value: string = '';
             switch (item) {
@@ -87,7 +96,7 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
                 default:
                     break;
             }
-            if  (label !== '') {
+            if (label !== '') {
                 rules.push({
                     label: label,
                     value: value
@@ -99,13 +108,13 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
         });
         this.onEdit(false);
     }
-    render () {
+    render() {
         let triggerRuleTpl: React.ReactNode = {};
         let wrapperStyle: any = {};
         let btnStyle: any = {};
-        const rules = [ ...this.state.rules ];
+        const rules = [...this.state.rules];
         const { getFieldDecorator } = this.props.form;
-        const { count, mes } = this.props;
+        const { rule } = this.props;
         if (this.state.editing) {
             triggerRuleTpl = (
                 <section className="editInfo">
@@ -115,24 +124,27 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
                                 {getFieldDecorator('userBatchId', {
                                     rules: [{
                                         required: true, message: '请输入批次Id',
-                                        }]
-                                    })(
-                                        <Input onChange={this.inputChange}/>
+                                    }]
+                                })(
+                                    <Input onChange={this.inputChange} />
                                     )
                                 }
                             </FormItem>
                         </Col>
                         <Col span={4}>
-                                <Button onClick={this.getUserCount}>查询</Button>
+                            <Button onClick={this.getUserCount}>查询</Button>
                         </Col>
-                        <Col span={10}>
-                            {/* <p>该批次共{count}个用户</p> */}
-                            {this.showMessage(count, mes)}
-                        </Col>
-                    </Row>                
+                        {this.state.batchId === '' ? null :
+                            <Col span={10}>
+                                {/* <p>该批次共{count}个用户</p> */}
+
+                                {this.showMessage(rule.userCount, rule.message)}
+                            </Col>}
+
+                    </Row>
                     <FormItem {...layout.tailFormItemLayout}>
                         <Button type="primary" onClick={this.onSave}>保存</Button>
-                        <Button onClick={() => this.onEdit(false)} style={{marginLeft: '10px'}}>取消</Button>
+                        <Button onClick={() => this.onEdit(false)} style={{ marginLeft: '10px' }}>取消</Button>
                     </FormItem>
                 </section>
             );
@@ -160,10 +172,10 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
         );
     }
 }
-function mapStateToProps (state: StoreState) {
+function mapStateToProps(state: StoreState) {
     return {
-        count: state.strategyRules.userCount,
-        mes: state.strategyRules.message
+        rule: state.strategyRules.rule,
+        // mes: state.strategyRules.message
     };
 }
 const mapDispatchToProps = (dispatch: Dispatch<actions.RulesAction>) => bindActionCreators(
@@ -172,4 +184,4 @@ const mapDispatchToProps = (dispatch: Dispatch<actions.RulesAction>) => bindActi
     },
     dispatch
 );
-export default connect<any, any, {form: any, onChange: (value: any) => void}>(mapStateToProps, mapDispatchToProps)(ImportUserRule as any);
+export default connect<any, any, { form: any, onChange: (value: any) => void }>(mapStateToProps, mapDispatchToProps)(ImportUserRule as any);

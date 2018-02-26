@@ -193,21 +193,22 @@ class TreeSelect extends React.Component<Props, any> {
                 resolve();
                 return;
             }
-            // this.props.onGettagNodeTree(treeNode.props.eventKey);
-            // const newObj = this.props.tagNodeTree;
-            fetch('/marketStrategy/getTagNodeTree?id=?' + treeNode.props.eventKey).then(function (res: Response) {
+            fetch('/marketStrategy/getTagNodeTree?id=' + treeNode.props.eventKey, {
+                method: 'GET',
+                mode: 'cors',
+                cache: 'default'
+            }).then((res: Response) => {
                 if (res.ok) {
                     res.json().then((data: any) => {
                         treeNode.props.dataRef.children = data.list;
-                        console.log('000')
+                        this.setState({
+                            treeData: [...this.state.treeData],
+                        });
+                        resolve();
                     });
                 } else {
                     console.log('Looks like the response wasnt perfect, got status', res.status);
                 }
-            });
-            console.log('111')
-            this.setState({
-                treeData: [...this.state.treeData],
             });
         });
     }
