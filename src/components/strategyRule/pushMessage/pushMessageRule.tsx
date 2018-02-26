@@ -26,18 +26,18 @@ class PushMessageRule extends React.Component<RuleProps, {}> {
         rules: [],
         value: 0
     };
-    onChange = (e) =>  {
+    onChange = (e) => {
         this.setState({
             value: e.target.value,
         });
     }
-   
+
     onSave = () => {
-        this.props.form.validateFields(['message'], (err, values) => {
+        this.props.form.validateFields(['sourceKey'], (err, values) => {
             if (!err) {
                 this.computeShowData(values);
                 // 增加防打扰开关字段
-                let sendValue = Object.assign({}, values, {antiDisturb: this.state.value });
+                let sendValue = Object.assign({}, values, { antiDisturb: this.state.value });
                 this.props.onChange(sendValue);
             }
         });
@@ -49,13 +49,13 @@ class PushMessageRule extends React.Component<RuleProps, {}> {
     }
     computeShowData = (values: any) => {
         let rules: { label: string; value: string }[] = [];
-        for ( let item of Object.keys(values)) {
+        for (let item of Object.keys(values)) {
             let label: string = '';
             let value: string = '';
             switch (item) {
-                case 'message':
+                case 'sourceKey':
                     label = '外推消息';
-                    value = `${values.message}`;
+                    value = `${values.sourceKey}`;
                     break;
                 default:
                     break;
@@ -76,7 +76,7 @@ class PushMessageRule extends React.Component<RuleProps, {}> {
         let triggerRuleTpl: React.ReactNode = {};
         let wrapperStyle: any = {};
         let btnStyle: any = {};
-        const rules = [ ...this.state.rules ];
+        const rules = [...this.state.rules];
         const { getFieldDecorator } = this.props.form;
 
         if (this.state.editing) {
@@ -85,26 +85,26 @@ class PushMessageRule extends React.Component<RuleProps, {}> {
                     <Row>
                         <Col span={15}>
                             <FormItem label="外推消息" {...layout.formItemLayout}>
-                                {getFieldDecorator('message', {
+                                {getFieldDecorator('sourceKey', {
                                     rules: [{
                                         required: true, message: '请输入外推消息！',
-                                        }]
-                                    })(
-                                        <Input placeholder="请输入外推消息" />
+                                    }]
+                                })(
+                                    <Input placeholder="请输入外推消息" />
                                     )
                                 }
                             </FormItem>
                         </Col>
                         <Col span={9}>
                             <FormItem label="防打扰开关" {...layout.formItemLayout}>
-                                <Radio onChange={this.onChange} value={1}/>
+                                <Radio onChange={this.onChange} value={1} />
                             </FormItem>
                         </Col>
                     </Row>
-                    
+
                     <FormItem {...layout.tailFormItemLayout}>
                         <Button type="primary" onClick={this.onSave}>保存</Button>
-                        <Button onClick={() => this.onEdit(false)} style={{marginLeft: '10px'}}>取消</Button>
+                        <Button onClick={() => this.onEdit(false)} style={{ marginLeft: '10px' }}>取消</Button>
                     </FormItem>
                 </section>
             );
