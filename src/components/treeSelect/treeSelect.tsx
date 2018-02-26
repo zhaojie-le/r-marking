@@ -194,15 +194,8 @@ class TreeSelect extends React.Component<Props, any> {
                 return;
             }
             console.log(444444);
-            const myHeaders = new Headers({
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'text/plain'
-            });
-            fetch('/marketStrategy/getTagNodeTree?&callback=?id=' + treeNode.props.eventKey, {
+            fetch('/marketStrategy/getTagNodeTree?id=' + treeNode.props.eventKey, {
                 method: 'GET',
-                headers: myHeaders,
-                mode: 'cors',
-                cache: 'default'
             }).then((res: Response) => {
                 if (res.ok) {
                     res.json().then((data: any) => {
