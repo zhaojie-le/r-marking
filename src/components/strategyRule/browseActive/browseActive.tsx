@@ -31,13 +31,13 @@ namespace layout {
     };
 }
 
-function getKeysValues(obj: any, keys: any, key: string = 'value', label: string = 'label'): string {
-    return obj.filter((item) => {
-        return keys.includes(item[key]);
-    }).map((item) => {
-        return item[label];
-    }).join();
-}
+// function getKeysValues(obj: any, keys: any, key: string = 'value', label: string = 'label'): string {
+//     return obj.filter((item) => {
+//         return keys.includes(item[key]);
+//     }).map((item) => {
+//         return item[label];
+//     }).join();
+// }
 class OrderPayRule extends React.Component<RuleProps, {}> {
     constructor(props: any) {
         super(props);
@@ -99,7 +99,7 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
         });
     }
     onSave = () => {
-        this.props.form.validateFields(['refer', 'serviceOptions', 'pushTime', 'hourBrower', 'minuteBrower'], (err, values) => {
+        this.props.form.validateFields(['refer', 'pushTime', 'hourBrower', 'minuteBrower'], (err, values) => {
             if (!err) {
                 if (values.hourBrower !== undefined) {
                     console.log(11);
@@ -145,10 +145,10 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
                     label = '服务项';
                     value = this.state.selectedLabel;
                     break;
-                case 'serviceOptions':
-                    label = '品类';
-                    value = getKeysValues(this.props.serviceOptions, values.serviceOptions, 'key', 'title');
-                    break;
+                // case 'serviceOptions':
+                //     label = '品类';
+                //     value = getKeysValues(this.props.serviceOptions, values.serviceOptions, 'key', 'title');
+                //     break;
                 case 'pushTimeType':
                     label = '推送时间模式';
                     value = this.state.value === 1 ? '延迟时间' : '固定时间推送';
