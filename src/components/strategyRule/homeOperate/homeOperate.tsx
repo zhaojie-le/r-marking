@@ -73,7 +73,7 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
     }
 
     onSave = () => {
-        this.props.form.validateFields(['pageWay', 'city', 'weight'], (err, values) => {
+        this.props.form.validateFields(['orderSource', 'city', 'weight'], (err, values) => {
             var r = /^\+?[1-9][0-9]*$/; // 正整数
             var valsort = values.weight.replace(/[\s]/g, '');
             var flag = r.test(valsort);
@@ -104,7 +104,7 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
                     label = '城市';
                     value = getKeysValues(this.props.city.list, values.city.map((one) => `${parseInt(one, 10)}`), 'value', 'label');
                     break;
-                case 'pageWay':
+                case 'orderSource':
                     label = '首页渠道';
                     value = '到家app首页';
                     break;
@@ -147,7 +147,7 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
             triggerRuleTpl = (
                 <section className="editInfo">
                     <FormItem label="首面渠道" {...layout.formItemLayout}>
-                        {getFieldDecorator('pageWay', {
+                        {getFieldDecorator('orderSource', {
                             rules: [{
                                 required: true, message: '请选择首页渠道',
                             }],

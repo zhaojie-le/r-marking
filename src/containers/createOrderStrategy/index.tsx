@@ -157,7 +157,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         this.props.form.validateFieldsAndScroll(this.validateFieldsType, (err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                this.mergeParmas(values);
+                // this.mergeParmas(values);
                 this.props.onSaveRule(this.mergeParmas(values));
             } else {
                 console.log('allValues', values);
@@ -184,7 +184,13 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                     newPar.dayDelay = item1.delayTime.day ? item1.delayTime.day : 0;
                     newPar.minuteDelay = item1.delayTime.minute ? item1.delayTime.minute : 0;
                 }
+
                 if (eventType === 1 || eventType === 8 || eventType === 3 || eventType === 7 || eventType === 9) {
+                    if (eventType === 9) {
+                        console.log(item1.weight);
+                        newPar.priority = item1.weight;
+                        delete item1.weight;
+                    }
                     array.push(JSON.stringify(item1));
                     newPar.triggerRule = JSON.stringify(array);
                 } else {

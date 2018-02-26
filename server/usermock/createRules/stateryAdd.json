@@ -1,7 +1,6 @@
 {
-    "resultCode": 1,
     "data": {
-        "email": "liuxiaonan @daojia.com",
+        "email": "liuxiaonan@daojia.com",
         "strategyType": [
             {
                 "name": "订单触发",
@@ -16,8 +15,20 @@
                 "id": 3
             },
             {
+                "name": "外推消息",
+                "id": 4
+            },
+            {
                 "name": "全部用户",
                 "id": 5
+            },
+            {
+                "name": "浏览激活",
+                "id": 8
+            },
+            {
+                "name": "首页运营位",
+                "id": 9
             },
             {
                 "name": "储值返券",
@@ -26,11 +37,8 @@
             {
                 "name": "页面挂件",
                 "id": 7
-            },
-            {
-                "name": "用户条件",
-                "id": 8
             }
         ]
-    }
+    },
+    "resultCode": 1
 }
