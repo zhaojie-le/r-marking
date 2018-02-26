@@ -74,9 +74,9 @@ class List extends React.Component<Props, {}> {
             {
                 title: '策略名称', dataIndex: 'strategyNameNew', key: '1',
                 render: (text, record) => {
-                    if (record.marketingTypeInt === 9) {
+                    if (record.marketingTypeInt === 9 && record.priority !== undefined) {
                         return (
-                            <div><span style={{color: 'red'}}>{record.priority}-</span><span>{record.strategyName}</span></div>
+                            <div><span style={{ color: 'red' }}>{record.priority}-</span><span>{record.strategyName}</span></div>
                         );
                     } else {
                         return (
@@ -246,10 +246,10 @@ class List extends React.Component<Props, {}> {
         // 添加input自动校验
         const { getFieldDecorator } = this.props.form;
 
-        listData.map((item, i) => {
-            item.strategyNameNew = item.marketingTypeInt === 9 && item.priority !== undefined ? item.priority + '-' + item.strategyName : item.strategyName;
-            return listData;
-        });
+        // listData.map((item, i) => {
+        //     item.strategyNameNew = item.marketingTypeInt === 9 && item.priority !== undefined ? item.priority + '-' + item.strategyName : item.strategyName;
+        //     return listData;
+        // });
         // 输入框固定宽
         const inputWidth = {
             width: '123px'
@@ -334,7 +334,7 @@ class List extends React.Component<Props, {}> {
                                         </FormItem>
                                     </Col>
                                     <Col span={8} >
-                                        <FormItem label="策略时间" {...formItemLayout} >
+                                        <FormItem label="" {...formItemLayout} style={{ margin: '0 0 0 100px' }}>
                                             <Button type="primary" onClick={this.searchClick}>查询</Button>
                                             <Button onClick={this.searchReset} style={{ marginLeft: '15px' }}>重置</Button>
                                         </FormItem>
