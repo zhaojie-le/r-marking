@@ -202,12 +202,13 @@ class TreeSelect extends React.Component<Props, any> {
                     // 一般会返回JSON或XML数据格式  
                     if (xhr.status === 200) {
                         var responseText = JSON.parse(xhr.responseText);
-                        console.log('responseTextresponseTextresponseText' + JSON.stringify(responseText));
                         treeNode.props.dataRef.children = responseText.list;
                         this.setState({
                             treeData: [...this.state.treeData],
                         });
                         resolve();
+                    } else {
+                        console.log('请求失败');
                     }
 
                 }
@@ -241,7 +242,8 @@ class TreeSelect extends React.Component<Props, any> {
                     </TreeNode>
                 );
             }
-            return <TreeNode {...item} key={item.key} title={item.title} disableCheckbo={item.key === 1 ? false : true} />;
+            console.log('item=======================' + JSON.stringify(item));
+            return <TreeNode {...item} key={item.key} title={item.title} disableCheckbox={item.key === 1 ? false : true} />;
         });
     }
     renderTreeNode = (data) => {
