@@ -221,7 +221,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                     newPar.effectiveTime = this.timeMerge.effectiveTime;
                     newPar.invalidTime = this.timeMerge.invalidTime;
                 }
-
             }
         }
         newPar.actionParam = newPar.actionParam ? this.actionParamsMap(newPar.actionParam) : null;
@@ -285,6 +284,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                     newContent.location = objItem[item];
                 } else if (item.startsWith('piclink')) {
                     newContent.picUrl = objItem[item];
+                } else if (item.startsWith('position')) {
+                    newContent.position = objItem[item];
                 }
             }
         }

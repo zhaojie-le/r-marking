@@ -38,7 +38,7 @@ function validate(fields: any[]): string {
 export class PageHanger extends React.Component<Prop, {}> {
     constructor(props: Prop, context: any) {
         super(props, context);
-        this.state = Object.assign({link: '', docs: '', imgUrl: ''}, this.props.value);
+        this.state = Object.assign({ link: '', imgUrl: '' }, this.props.value);
     }
 
     componentWillReceiveProps(nextProps: any) {
@@ -81,7 +81,7 @@ export class PageHanger extends React.Component<Prop, {}> {
     triggerChange = (changedValue) => {
         const onChange = this.props.onChange;
         if (onChange) {
-              onChange(Object.assign({keys: ['7']}, this.state, changedValue));
+            onChange(Object.assign({ keys: ['7'] }, this.state, changedValue));
         }
     }
 
@@ -91,31 +91,31 @@ export class PageHanger extends React.Component<Prop, {}> {
         return (
             <div className="loadElement">
                 <Row>
-                    <Col span={3}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 图标:</Col>
-                    <Col span={19}><Input placeholder="请输入图片地址!" onChange={this.tbChange} defaultValue={imgUrl}/></Col>
+                    <Col span={3}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 图标:</Col>
+                    <Col span={19}><Input placeholder="请输入图片地址!" onChange={this.tbChange} defaultValue={imgUrl} /></Col>
                 </Row>
                 <Row>
-                    <Col span={3}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 跳转链接:</Col>
-                    <Col span={19}><Input placeholder="请输入跳转链接!" onChange={this.linkChange} defaultValue={link}/></Col>
+                    <Col span={3}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 跳转链接:</Col>
+                    <Col span={19}><Input placeholder="请输入跳转链接!" onChange={this.linkChange} defaultValue={link} /></Col>
                 </Row>
                 <Row>
-                    <Col span={3}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 动画:</Col>
+                    <Col span={3}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 动画:</Col>
                     <Col span={19}>
                         <Select defaultValue={animation} style={{ width: 120 }} onChange={this.asChange}>
-                            <Option value="1">左右摆动</Option>
+                            <Option value="leftRight">左右摆动</Option>
                         </Select>
                     </Col>
                 </Row>
                 <Row>
-                    <Col span={3}><i style={{color: 'red', fontStyle: 'normal'}}>*</i> 位置:</Col>
+                    <Col span={3}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 位置:</Col>
                     <Col span={19}>
                         <Select defaultValue={position} style={{ width: 120 }} onChange={this.positionChange}>
-                            <Option value="1">页面右下角</Option>
+                            <Option value="rightDown">页面右下角</Option>
                         </Select>
                     </Col>
                 </Row>
                 <Row>
-                    <Col span={19} offset={3} style={{lineHeight: '16px', color: '#2a52be'}}>系统自动加入hmsr参数，无需手动填写hmsr=daojia_clyx_策略id_策略类别_活动id（活动id只有发券类型才有）</Col>
+                    <Col span={19} offset={3} style={{ lineHeight: '16px', color: '#2a52be' }}>系统自动加入hmsr参数，无需手动填写hmsr=daojia_clyx_策略id_策略类别_活动id（活动id只有发券类型才有）</Col>
                 </Row>
             </div>
         );
@@ -130,44 +130,44 @@ export default switchEditState(
         }
         callback(
             validate([
-                {type: 'require', value: value.imgUrl, errMsg: '图片地址不能为空'},
-                {type: 'require', value: value.animation, errMsg: '动画不能为空'},
-                {type: 'require', value: value.position, errMsg: '位置不能为空'},
-                {type: 'require', value: value.link, errMsg: '链接不能为空'}
+                { type: 'require', value: value.imgUrl, errMsg: '图片地址不能为空' },
+                { type: 'require', value: value.animation, errMsg: '动画不能为空' },
+                { type: 'require', value: value.position, errMsg: '位置不能为空' },
+                { type: 'require', value: value.link, errMsg: '链接不能为空' }
             ])
         );
     },
     (props) => {
         const { values } = props;
         const animationMap = {
-            '1': '左右摆动',
+            'leftRight': '左右摆动',
         };
         const positionMap = {
-            '1': '页面右下角',
+            'rightDown': '页面右下角',
         };
 
         return (
             <div>
-                <p><span style={{color: 'red'}}>消息推送</span> 优先级：渠道1>渠道2>渠道3 优先渠道送达后，其他渠道将不再推送</p>
+                <p><span style={{ color: 'red' }}>消息推送</span> 优先级：渠道1>渠道2>渠道3 优先渠道送达后，其他渠道将不再推送</p>
                 <Row>
-                    <Col span={3} style={{ color: '#462bc3'}}>图片地址:</Col>
+                    <Col span={3} style={{ color: '#462bc3' }}>图片地址:</Col>
                     <Col span={16}><p title={values.imgUrl}>{values.imgUrl}</p></Col>
                 </Row>
                 <Row>
-                    <Col span={3} style={{ color: '#462bc3'}}>跳转链接:</Col>
+                    <Col span={3} style={{ color: '#462bc3' }}>跳转链接:</Col>
                     <Col span={16}><p title={values.link as any}>{values.link}</p></Col>
                 </Row>
                 <Row>
-                    <Col span={3} style={{ color: '#462bc3'}}>动画:</Col>
+                    <Col span={3} style={{ color: '#462bc3' }}>动画:</Col>
                     <Col span={16}><p title={animationMap[values.animation]}>{animationMap[values.animation]}</p></Col>
                 </Row>
                 <Row>
-                    <Col span={3} style={{ color: '#462bc3'}}>位置:</Col>
+                    <Col span={3} style={{ color: '#462bc3' }}>位置:</Col>
                     <Col span={16}><p title={positionMap[values.position]}>{positionMap[values.position]}</p></Col>
                 </Row>
             </div>
         );
     },
     '页面挂件',
-    {yxfs: { imgUrl: '', link: '', animation: '1', position: '1' }}
+    { yxfs: { imgUrl: '', link: '', animation: 'leftRight', position: 'rightDown' } }
 )(PageHanger);

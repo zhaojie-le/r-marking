@@ -77,6 +77,10 @@ class PendantRule extends React.Component<RuleProps, {}> {
         this.props.form.validateFields(['pageId', 'orderSource', 'city'], (err, values) => {
             if (!err) {
                 this.computeShowData(values);
+                console.log('values================================' + JSON.stringify(values));
+                let array: any = [];
+                array.push(values.pageId);
+                values.pageId = array;
                 this.props.onChange(values);
             }
         });

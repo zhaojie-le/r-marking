@@ -9,7 +9,7 @@ const FormItem = Form.Item;
 interface Prop {
     value?: any;
     stage?: any;
-    form: { getFieldDecorator: any; validateFields: any; [propName: string]: any; };
+    form: { getFieldDecorator: any; validateFields: any;[propName: string]: any; };
     onChange: (value: any) => any;
 }
 
@@ -48,7 +48,7 @@ export default (check: (rule: any, value: any, callback: any) => void, ShowData:
             const fields = [`yxfs`];
             this.props.form.validateFields(fields, (err, values) => {
                 if (!err) {
-                    this.setState({showData: values});
+                    this.setState({ showData: values });
                     this.props.onChange(values.yxfs);
                     this.onEdit(false);
                 }
@@ -56,37 +56,37 @@ export default (check: (rule: any, value: any, callback: any) => void, ShowData:
         }
 
         onYxfsChange(value: D) {
-            console.log(value);
+            console.log('valuevalue11111111============' + value);
         }
 
         getContentTpl = () => {
             const { getFieldDecorator } = this.props.form;
             const stage = this.props.stage;
             const tpl = this.state.editing
-            ? (
-                <div className="wrapperModel">
-                    <FormItem {...layout.modelItemLayout} label={`${typelabel}`}>
-                        {getFieldDecorator(`yxfs`, {
-                            initialValue: this.state.showData.yxfs,
-                            rules: [{
-                                required: true,
-                                validator: check
-                            }],
-                        })(
-                            <WrappedComponent onchange={this.onYxfsChange} stage={stage} form={this.props.form} />
-                        )}
-                    </FormItem>
-                    <FormItem {...layout.tailFormItemLayout} style={{borderBottom: 'none'}}>
-                        <Button type="primary" onClick={this.onSave}>保存</Button>
-                        <Button onClick={() => this.onEdit(false)} style={{marginLeft: '10px'}}>取消</Button>
-                    </FormItem>
-                </div>
-            )
-            : (
-                <div className="wrapperModel">
-                    <ShowData values={this.state.showData.yxfs} />
-                </div>
-            );
+                ? (
+                    <div className="wrapperModel">
+                        <FormItem {...layout.modelItemLayout} label={`${typelabel}`}>
+                            {getFieldDecorator(`yxfs`, {
+                                initialValue: this.state.showData.yxfs,
+                                rules: [{
+                                    required: true,
+                                    validator: check
+                                }],
+                            })(
+                                <WrappedComponent onchange={this.onYxfsChange} stage={stage} form={this.props.form} />
+                                )}
+                        </FormItem>
+                        <FormItem {...layout.tailFormItemLayout} style={{ borderBottom: 'none' }}>
+                            <Button type="primary" onClick={this.onSave}>保存</Button>
+                            <Button onClick={() => this.onEdit(false)} style={{ marginLeft: '10px' }}>取消</Button>
+                        </FormItem>
+                    </div>
+                )
+                : (
+                    <div className="wrapperModel">
+                        <ShowData values={this.state.showData.yxfs} />
+                    </div>
+                );
 
             return tpl;
         }
@@ -96,10 +96,10 @@ export default (check: (rule: any, value: any, callback: any) => void, ShowData:
             let btnStyle = {};
 
             if (this.state.editing) {
-                btnStyle = {display: 'none'};
+                btnStyle = { display: 'none' };
             } else {
-                wrapperStyle = { background: '#fff', border: 'none'};
-                btnStyle = {display: 'block'};
+                wrapperStyle = { background: '#fff', border: 'none' };
+                btnStyle = { display: 'block' };
             }
 
             return (
