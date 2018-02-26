@@ -205,7 +205,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                 this.props.onChange(values);
                 this.props.onGetWechatPush({
                     lineid: values.serviceItem[0],
-                    refer: values.serviceOptions,
+                    refer: values.refer,
                     orderStatus: values.orderState,
                 });
 

@@ -159,6 +159,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 console.log('Received values of form: ', values);
                 // this.mergeParmas(values);
                 this.props.onSaveRule(this.mergeParmas(values));
+
             } else {
                 console.log('allValues', values);
             }
@@ -381,7 +382,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         const { eventType } = this.state;
 
         if (eventType !== 0) {
-            if (eventType !== 10) {
+            if (eventType !== 10 && eventType !== 5) {
                 return (
                     <FormItem {...layout.formItemLayoutMarketingModel} label="触发规则" hasFeedback={false}>
                         {
@@ -392,6 +393,12 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                             })(
                                 <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={eventType} />
                                 )}
+                    </FormItem>
+                );
+            } else if (eventType === 5) {
+                return (
+                    <FormItem {...layout.formItemLayoutMarketingModel} className="strategyOrderRules" label="触发规则">
+                        <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={eventType} />
                     </FormItem>
                 );
             } else {
@@ -662,10 +669,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                 </FormItem>
                             </Form>
                             {this.props.saveRule.resultCode === '' ? null :
-                                this.props.saveRule.resultCode === 1 ? history.push('/') :
+                                this.props.saveRule.resultCode === 1 ? null :
                                     <Alert type="error" message={this.props.saveRule.message} />
                             }
-
                         </div>
                     </Content>
                     <Footer style={{ textAlign: 'center' }}>
