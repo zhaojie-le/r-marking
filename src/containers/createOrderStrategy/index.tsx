@@ -201,7 +201,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                     array.push(JSON.stringify(item1));
                     newPar.triggerRule = '[' + array + ']';
                 }
-
             } else if (item0.startsWith('marketingModel')) {
                 // 营销方式
                 newPar.actionParam = item1;
@@ -215,8 +214,14 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             } else if (item0.startsWith('triggerEvent')) {
                 newPar.strategyType = item1;
             } else if (item0.startsWith('time')) {
-                newPar.effectiveTime = this.timeMerge.effectiveTime;
-                newPar.invalidTime = this.timeMerge.invalidTime;
+                if (this.state.eventType === 4) {
+                    newPar.effectiveTime = '';
+                    newPar.invalidTime = '';
+                } else {
+                    newPar.effectiveTime = this.timeMerge.effectiveTime;
+                    newPar.invalidTime = this.timeMerge.invalidTime;
+                }
+
             }
         }
         newPar.actionParam = newPar.actionParam ? this.actionParamsMap(newPar.actionParam) : null;
@@ -571,23 +576,26 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                             )
                                     }
                                 </FormItem>
-                                <FormItem {...layout.formItemLayout} label="生效时间" hasFeedback={false}>
-                                    {
-                                        getFieldDecorator('time', {
-                                            rules: [{
-                                                required: true, message: '时间不能为空！',
-                                            }],
-                                        })(
-                                            <RangePicker
-                                                showTime={{ format: 'HH:mm:ss' }}
-                                                format="YYYY-MM-DD HH:mm:ss"
-                                                disabledDate={this.disabledDate}
-                                                placeholder={['开始时间', '结束时间']}
-                                                onChange={this.onTimeChange}
-                                            />
-                                            )
-                                    }
-                                </FormItem>
+                                {this.state.eventType === 4 ? null :
+                                    <FormItem {...layout.formItemLayout} label="生效时间" hasFeedback={false}>
+                                        {
+                                            getFieldDecorator('time', {
+                                                rules: [{
+                                                    required: true, message: '时间不能为空！',
+                                                }],
+                                            })(
+                                                <RangePicker
+                                                    showTime={{ format: 'HH:mm:ss' }}
+                                                    format="YYYY-MM-DD HH:mm:ss"
+                                                    disabledDate={this.disabledDate}
+                                                    placeholder={['开始时间', '结束时间']}
+                                                    onChange={this.onTimeChange}
+                                                />
+                                                )
+                                        }
+                                    </FormItem>
+                                }
+
                                 <FormItem {...layout.formItemLayout} label="触发事件" validateStatus={validateStatus} hasFeedback={true} help="触发事件和触发条件必选一项!">
                                     {
                                         getFieldDecorator('triggerEvent', {
