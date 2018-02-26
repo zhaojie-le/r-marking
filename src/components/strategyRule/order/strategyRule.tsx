@@ -199,7 +199,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     }
 
     onSave = () => {
-        this.props.form.validateFields(['serviceItem', 'serviceOptions', 'delayTime', 'orderSource', 'orderState', 'city', 'pushTimes'], (err, values) => {
+        this.props.form.validateFields(['serviceItem', 'delayTime', 'orderSource', 'orderState', 'city', 'pushTimes'], (err, values) => {
             if (!err) {
                 this.computeShowData(values);
                 this.props.onChange(values);
@@ -228,10 +228,10 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                     label = '订单状态';
                     value = getKeysValues(this.props.orderState, values.orderState, 'value', 'label');
                     break;
-                case 'serviceOptions':
-                    label = '服务项';
-                    value = getKeysValues(this.props.serviceOptions, values.serviceOptions, 'key', 'title');
-                    break;
+                // case 'serviceOptions':
+                //     label = '服务项';
+                //     value = getKeysValues(this.props.serviceOptions, values.serviceOptions, 'key', 'title');
+                //     break;
                 case 'orderSource':
                     label = '订单来源';
                     value = getKeysValues(this.props.orderSource, values.orderSource, 'value', 'label');
