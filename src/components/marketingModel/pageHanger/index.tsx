@@ -65,9 +65,9 @@ export class PageHanger extends React.Component<Prop, {}> {
 
     positionChange = (value) => {
         if (!('value' in this.props)) {
-            this.setState({ position: value });
+            this.setState({ location: value });
         }
-        this.triggerChange({ position: value });
+        this.triggerChange({ location: value });
     }
 
     linkChange = (event) => {
@@ -86,7 +86,7 @@ export class PageHanger extends React.Component<Prop, {}> {
     }
 
     render() {
-        const { animation, imgUrl, link, position }: any = this.state;
+        const { animation, imgUrl, link, location }: any = this.state;
 
         return (
             <div className="loadElement">
@@ -109,7 +109,7 @@ export class PageHanger extends React.Component<Prop, {}> {
                 <Row>
                     <Col span={3}><i style={{ color: 'red', fontStyle: 'normal' }}>*</i> 位置:</Col>
                     <Col span={19}>
-                        <Select defaultValue={position} style={{ width: 120 }} onChange={this.positionChange}>
+                        <Select defaultValue={location} style={{ width: 120 }} onChange={this.positionChange}>
                             <Option value="rightDown">页面右下角</Option>
                         </Select>
                     </Col>
@@ -124,7 +124,7 @@ export class PageHanger extends React.Component<Prop, {}> {
 
 export default switchEditState(
     (rule, value, callback) => {
-        if (value.imgUrl && value.link && value.position && value.animation) {
+        if (value.imgUrl && value.link && value.location && value.animation) {
             callback();
             return;
         }
@@ -132,7 +132,7 @@ export default switchEditState(
             validate([
                 { type: 'require', value: value.imgUrl, errMsg: '图片地址不能为空' },
                 { type: 'require', value: value.animation, errMsg: '动画不能为空' },
-                { type: 'require', value: value.position, errMsg: '位置不能为空' },
+                { type: 'require', value: value.location, errMsg: '位置不能为空' },
                 { type: 'require', value: value.link, errMsg: '链接不能为空' }
             ])
         );
@@ -163,11 +163,11 @@ export default switchEditState(
                 </Row>
                 <Row>
                     <Col span={3} style={{ color: '#462bc3' }}>位置:</Col>
-                    <Col span={16}><p title={positionMap[values.position]}>{positionMap[values.position]}</p></Col>
+                    <Col span={16}><p title={positionMap[values.location]}>{positionMap[values.location]}</p></Col>
                 </Row>
             </div>
         );
     },
     '页面挂件',
-    { yxfs: { imgUrl: '', link: '', animation: 'leftRight', position: 'rightDown' } }
+    { yxfs: { imgUrl: '', link: '', animation: 'leftRight', location: 'rightDown' } }
 )(PageHanger);

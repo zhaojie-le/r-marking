@@ -180,27 +180,27 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 // 触发规则
                 newPar.triggerRule = item1;
                 // 当触发规则为订单事件时，需要处理一下返回的数据
-                if (this.state.eventType === 1) {
-                    newPar.triggerRule.orderStatus = item1.serviceOptions ? item1.serviceOptions : null;
-                    newPar.dayDelay = item1.delayTime.day ? item1.delayTime.day : 0;
-                    newPar.minuteDelay = item1.delayTime.minute ? item1.delayTime.minute : 0;
-                }
-
                 if (eventType === 1 || eventType === 8 || eventType === 3 || eventType === 4 || eventType === 7 || eventType === 9) {
                     if (eventType === 9) {
-                        console.log(item1.weight);
                         newPar.priority = item1.weight;
                         delete item1.weight;
                     } else if (eventType === 4) {
-                        console.log(item1.antiDisturb);
                         newPar.antiDisturb = item1.antiDisturb;
                         delete item1.antiDisturb;
+                    } else if (eventType === 1) {
+                        newPar.triggerRule.orderStatus = item1.serviceOptions ? item1.serviceOptions : null;
+                        newPar.dayDelay = item1.delayTime.day ? item1.delayTime.day : 0;
+                        newPar.minuteDelay = item1.delayTime.minute ? item1.delayTime.minute : 0;
                     }
                     array.push(JSON.stringify(item1));
                     newPar.triggerRule = JSON.stringify(array);
                 } else {
-                    array.push(JSON.stringify(item1));
-                    newPar.triggerRule = '[' + array + ']';
+                    if (eventType === 5) {
+                        delete newPar.triggerRule;
+                    } else {
+                        array.push(JSON.stringify(item1));
+                        newPar.triggerRule = '[' + array + ']';
+                    }
                 }
             } else if (item0.startsWith('marketingModel')) {
                 // 营销方式
