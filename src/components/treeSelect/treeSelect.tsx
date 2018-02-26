@@ -194,21 +194,42 @@ class TreeSelect extends React.Component<Props, any> {
                 return;
             }
             console.log(444444);
-            fetch('/marketStrategy/getTagNodeTree?id=' + treeNode.props.eventKey, {
-                method: 'GET',
-            }).then((res: Response) => {
-                if (res.ok) {
-                    res.json().then((data: any) => {
-                        treeNode.props.dataRef.children = data.list;
-                        this.setState({
-                            treeData: [...this.state.treeData],
-                        });
+            let xhr = new XMLHttpRequest();
+            xhr.open('get', '/marketStrategy/getTagNodeTree?id=' + treeNode.props.eventKey, true);
+            // 如果需要像 html 表单那样 POST 数据，请使用 setRequestHeader() 来添加 http 头。
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.withCredentials = true; // 支持跨域发送cookies  
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    // 一般会返回JSON或XML数据格式  
+                    if (xhr.status === 200) {
+                        var responseText = JSON.parse(xhr.responseText);
+                        console.log('responseTextresponseTextresponseText' + JSON.stringify(responseText));
+                        treeNode.props.dataRef.children = responseText.list;
+                        // this.setState({
+                        //     treeData: [...this.state.treeData],
+                        // });
                         resolve();
-                    });
-                } else {
-                    console.log('Looks like the response wasnt perfect, got status', res.status);
+                    }
+
                 }
-            });
+            };
+            xhr.send();
+            // fetch('/marketStrategy/getTagNodeTree?id=' + treeNode.props.eventKey, {
+            //     method: 'GET',
+            // }).then((res: Response) => {
+            //     if (res.ok) {
+            //         res.json().then((data: any) => {
+            //             treeNode.props.dataRef.children = data.list;
+            //             this.setState({
+            //                 treeData: [...this.state.treeData],
+            //             });
+            //             resolve();
+            //         });
+            //     } else {
+            //         console.log('Looks like the response wasnt perfect, got status', res.status);
+            //     }
+            // });
         });
     }
 
