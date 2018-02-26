@@ -70,7 +70,21 @@ class List extends React.Component<Props, {}> {
                     return (<Link to={url}>{text}</Link>);
                 }
             },
-            { title: '策略名称', dataIndex: 'strategyNameNew', key: '1' },
+            // { title: '策略名称', dataIndex: 'strategyNameNew', key: '1' },
+            {
+                title: '策略名称', dataIndex: 'strategyNameNew', key: '1',
+                render: (text, record) => {
+                    if (record.marketingTypeInt === 9) {
+                        return (
+                            <div><span style={{color: 'red'}}>{record.priority}-</span><span>{record.strategyName}</span></div>
+                        );
+                    } else {
+                        return (
+                            <div>{record.strategyNameNew}</div>
+                        );
+                    }
+                }
+            },
             { title: '策略状态', dataIndex: 'strategyState', key: '2' },
             { title: '创建时间', dataIndex: 'createTime', key: '3' },
             // {title: '有效时间', dataIndex: 'effectiveTime', key: '4'}, 
