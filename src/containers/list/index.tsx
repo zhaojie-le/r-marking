@@ -72,7 +72,7 @@ class List extends React.Component<Props, {}> {
             },
             // { title: '策略名称', dataIndex: 'strategyNameNew', key: '1' },
             {
-                title: '策略名称', dataIndex: 'strategyNameNew', key: '1',
+                title: '策略名称', dataIndex: 'strategyName', key: '1',
                 render: (text, record) => {
                     if (record.marketingTypeInt === 9 && record.priority !== undefined) {
                         return (
@@ -80,7 +80,7 @@ class List extends React.Component<Props, {}> {
                         );
                     } else {
                         return (
-                            <div>{record.strategyNameNew}</div>
+                            <div>{record.strategyName}</div>
                         );
                     }
                 }
