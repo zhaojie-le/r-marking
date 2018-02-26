@@ -211,7 +211,6 @@ class TreeSelect extends React.Component<Props, any> {
                     console.log('Looks like the response wasnt perfect, got status', res.status);
                 }
             });
-
         });
     }
 
