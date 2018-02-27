@@ -195,6 +195,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                         newPar.minuteDelay = item1.delayTime.minute ? item1.delayTime.minute : 0;
                         delete item1.serviceOptions;
                         delete item1.delayTime;
+                        delete item1.pushTimes;
+                        delete item1.orderState;
                     }
                     array.push(JSON.stringify(item1));
                     newPar.triggerRule = JSON.stringify(array);
