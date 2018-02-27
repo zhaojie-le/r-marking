@@ -357,17 +357,20 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         });
         return false;
     }
-
+    // 选择事件切换
     onSelectEvent = (value) => {
         if (this.checkCondition(value, null)) {
             return;
         }
         const disabledTrggerCondition = userConditions.includes(value) ? true : false;
         let NumValue = parseInt(value, 10);
+        console.log('numValue~~~~~~~~', NumValue);
         if (NumValue === 1 || NumValue === 3 || NumValue === 7 || NumValue === 8 || NumValue === 9) {
+            // 切换后重新请求触发规则数据，上述几个类型需要获取触发规则数据
             this.props.onGetRules(NumValue);
         }
         if (NumValue === 9) {
+            // 首页运营位时
             this.props.getHomePageCount();
         }
         // this.props.onGetRules(parseInt(value, 10));
@@ -382,7 +385,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 this.validateFieldsType.splice(this.validateFieldsType.indexOf('treeSelect'), 1);
             }
         }
+        // 改变营销方式
         this.changeMarketingType(NumValue);
+        // 改变触发规则
         this.changeStrategyRule(NumValue);
         this.setState({
             disabledTrggerCondition: disabledTrggerCondition,
@@ -500,7 +505,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         }
         return null;
     }
-
+    // 改变营销方式
     changeMarketingType = (eventType) => {
         console.log('eventTypeeventType======' + eventType);
         console.log('this.preEventType===========' + this.preEventType);
@@ -512,6 +517,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         this.validateFieldsType.splice(this.validateFieldsType.indexOf(`marketingModel${uuid}`), 1);
         // this.validateFieldsType.splice(this.validateFieldsType.indexOf(`actionParam`), 1);
         uuid++;
+        console.log('uuid--------', uuid)
         // this.validateFieldsType.push(`actionParam`);
         this.validateFieldsType.push(`marketingModel${uuid}`);
         switch (eventType) {
@@ -533,7 +539,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 break;
         }
     }
-
+    // 改变触发规则
     changeStrategyRule = (eventType) => {
         if (eventType === this.preSrType) {
             return;
