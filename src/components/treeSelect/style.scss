@@ -17,4 +17,10 @@
     .ant-input {
         vertical-align: top;
     }
+    .ant-tree li .ant-tree-node-content-wrapper{
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 320px;
+        overflow: hidden;
+    }
 }
