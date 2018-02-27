@@ -188,7 +188,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                         newPar.antiDisturb = item1.antiDisturb;
                         delete item1.antiDisturb;
                     } else if (eventType === 1) {
+                        console.log('item1item1item1item1item1item1================================================' + JSON.stringify(item1));
                         newPar.triggerRule.orderStatus = item1.serviceOptions ? item1.serviceOptions : null;
+                        delete item1.serviceOptions;
                         newPar.dayDelay = item1.delayTime.day ? item1.delayTime.day : 0;
                         newPar.minuteDelay = item1.delayTime.minute ? item1.delayTime.minute : 0;
                     }

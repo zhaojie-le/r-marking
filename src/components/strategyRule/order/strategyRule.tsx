@@ -199,19 +199,20 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     }
 
     onSave = () => {
-        this.props.form.validateFields(['refer', 'delayTime', 'orderSource', 'orderState', 'city', 'pushTimes'], (err, values) => {
+        this.props.form.validateFields(['refer', 'serviceOptions', 'delayTime', 'orderSource', 'orderState', 'city', 'pushTimes'], (err, values) => {
             if (!err) {
+                // onShowOrderDetailCheck 1订单详情，2订单评价 0不展示
+                console.log('serviceserviceserviceserviceservice====' + JSON.stringify(values));
                 this.computeShowData(values);
+
                 this.props.onChange(values);
                 this.props.onGetWechatPush({
-                    lineid: values.serviceItem[0],
+                    lineid: values.refer[0],
                     refer: values.refer,
                     orderStatus: values.orderState,
                 });
 
-                // onShowOrderDetailCheck 1订单详情，2订单评价 0不展示
-                console.log('valuesvaluesvalues==' + values.serviceItem);
-                this.props.onShowOrderDetailCheck((values.serviceItem[1] === '201' ? 1 : values.serviceItem[1] === '212' || values.serviceItem[1] === '205' ? 2 : 0));
+                this.props.onShowOrderDetailCheck((values.refer[1] === '201' ? 1 : values.refer[1] === '212' || values.refer[1] === '205' ? 2 : 0));
                 // this.props.onSaveRule(JSON.stringify(values));
             }
         });
@@ -228,8 +229,13 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                     label = '订单状态';
                     value = getKeysValues(this.props.orderState, values.orderState, 'value', 'label');
                     break;
+
                 case 'refer':
                     label = '服务项';
+                    value = this.state.selectedLabel;
+                    break;
+                case 'serviceOptions':
+                    label = '品类';
                     value = getKeysValues(this.props.serviceOptions, values.serviceOptions, 'key', 'title');
                     break;
                 case 'orderSource':
@@ -280,12 +286,13 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         const plainOptions = this.props.orderSource;
         const options = this.props.serviceSelect;
 
-        if (this.state.selectedLabel) {
-            rule.push({
-                label: '品类',
-                value: this.state.selectedLabel
-            });
-        }
+        // if (this.props.serviceOptions.length) {
+        //     rule.push({
+        //         label: '品类',
+        //         value: this.state.selectedLabel
+        //     });
+        // }
+        console.log('this.props.formStatethis.props.formState==========' + JSON.stringify(this.props.formState));
         if (this.state.editing) {
             triggerRuleTpl = (
                 <section className="editInfo">
@@ -294,7 +301,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                             rules: [{
                                 required: true, message: '策略名称不能为空！',
                             }],
-                            initialValue: this.props.formState.serviceItem.value,
+                            initialValue: this.props.formState.refer.value,
                         })(
                             <Cascader placeholder="请输入服务项！" options={options} onChange={this.onChange} />
                             )}

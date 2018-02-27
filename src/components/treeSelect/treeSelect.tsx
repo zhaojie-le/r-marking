@@ -87,7 +87,7 @@ interface Props {
 }
 class TreeSelect extends React.Component<Props, any> {
     private value: any = { triggerChange: 1, newTreeData: [] };
-    private dataList: Array<any> = [];
+    // private dataList: Array<any> = [];
     constructor(props: any, context: any) {
         super(props, context);
         this.state = {
@@ -102,7 +102,7 @@ class TreeSelect extends React.Component<Props, any> {
         };
         this.state = { ...this.state, treeData: this.props.tagNodeTree };
 
-        this.dataList = generateList(this.props.tagNodeTree);
+        // this.dataList = generateList(this.props.tagNodeTree);
     }
 
     onExpand = (expandedKeysChild) => {
@@ -256,7 +256,7 @@ class TreeSelect extends React.Component<Props, any> {
                     </TreeNode>
                 );
             }
-            return <TreeNode {...item} dataRef={item} key={item.key} disableCheckbox={item.key === '1-0' ? true : false} />;
+            return <TreeNode {...item} dataRef={item} ccc={4} key={item.key} disableCheckbox={item.key === '1-0' ? true : false} />;
         });
     }
     render() {
