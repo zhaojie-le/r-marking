@@ -121,8 +121,6 @@ class OrderPayRule extends React.Component<RuleProps, {}> {
                     this.computeShowData(values);
                     this.props.onChange(values);
                 }
-
-
             }
         });
     }
