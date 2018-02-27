@@ -283,60 +283,53 @@ class DetailOrderStrategy extends React.Component<Props, object> {
     displayTime() {
         const { getFieldDecorator } = this.props.form;
         const { formState } = this.props;
-        const { pagetype } = this.state;
-        let editDis = true, invalidTimeDis = true;
-        if (pagetype === false) {
-            editDis = formState.strategyState === '未开始' || formState.strategyState === '待开始' ?
-                false : true;
-            invalidTimeDis = formState.strategyState === '已过期' || formState.strategyState === '已完成' ?
-                false : true;
-        }
-        return (
-            <div className="displaytime">
-                <Row>
-                    <Col style={{ textAlign: 'left' }}>
-                        <FormItem label="生效时间" {...formItemLayout} hasFeedback={false}>
-                            {getFieldDecorator('effectiveTime', {
-                                initialValue: moment(formState.effectiveTime),
+        return formState.strategyTypeInt === 4 ? (null) :
+            (
+                <div className="displaytime">
+                    <Row>
+                        <Col style={{ textAlign: 'left' }}>
+                            <FormItem label="生效时间" {...formItemLayout} hasFeedback={false}>
+                                {getFieldDecorator('effectiveTime', {
+                                    initialValue: moment(formState.effectiveTime),
+                                    rules: [{
+                                        required: true, message: '生效时间不能为空！',
+                                    }],
+                                })(
+                                    <DatePicker
+                                        style={{ width: '100%' }}
+                                        disabledDate={this.disabledStartDate}
+                                        showTime={{ format: 'HH:mm:ss' }}
+                                        format="YYYY-MM-DD HH:mm:ss"
+                                        placeholder={formState.effectiveTime}
+                                        onChange={this.onStartChange}
+                                        disabled={formState.strategyState === '未开始' || formState.strategyState === '待开始' ?
+                                            false : true}
+                                    />
+                                    )}
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <FormItem label="失效时间" {...formItemLayout} hasFeedback={false}>
+                            {getFieldDecorator('invalidTime', {
+                                initialValue: moment(formState.invalidTime),
                                 rules: [{
-                                    required: true, message: '生效时间不能为空！',
+                                    required: true, message: '策略名称不能为空！',
                                 }],
                             })(
                                 <DatePicker
                                     style={{ width: '100%' }}
-                                    disabledDate={this.disabledStartDate}
+                                    disabledDate={this.disabledEndDate}
                                     showTime={{ format: 'HH:mm:ss' }}
                                     format="YYYY-MM-DD HH:mm:ss"
-                                    placeholder={formState.effectiveTime}
-                                    onChange={this.onStartChange}
-                                    disabled={editDis}
+                                    placeholder={formState.invalidTime}
+                                    onChange={this.onEndChange}
                                 />
                                 )}
                         </FormItem>
-                    </Col>
-                </Row>
-                <Row>
-                    <FormItem label="失效时间" {...formItemLayout} hasFeedback={false}>
-                        {getFieldDecorator('invalidTime', {
-                            initialValue: moment(formState.invalidTime),
-                            rules: [{
-                                required: true, message: '策略名称不能为空！',
-                            }],
-                        })(
-                            <DatePicker
-                                style={{ width: '100%' }}
-                                disabledDate={this.disabledEndDate}
-                                showTime={{ format: 'HH:mm:ss' }}
-                                format="YYYY-MM-DD HH:mm:ss"
-                                placeholder={formState.invalidTime}
-                                onChange={this.onEndChange}
-                                disabled={invalidTimeDis}
-                            />
-                            )}
-                    </FormItem>
-                </Row>
-            </div>
-        );
+                    </Row>
+                </div>
+            );
     }
     marketingModel() {
         const { formState } = this.props;
@@ -374,7 +367,6 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                         });
                         break;
                     case '2':
-                        console.log();
                         actionExpressionstate.push({
                             type: '2',
                             value: {
@@ -482,7 +474,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
     render() {
         const { getFieldDecorator } = this.props.form;
         const { formState, actionParam } = this.props;
-        const { pagetype, editDis } = this.state;
+        const { pagetype } = this.state;
 
         return (
             <div id="detailOrder">
@@ -535,7 +527,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                         </FormItem>
                                     </Col>
                                 </Row> : ''}
-                            {formState.userCondition || formState.notLoggedMarket ?
+                            {formState.userCondition ?
                                 <Row>
                                     <Col style={{ textAlign: 'left', background: '#eee', padding: '10px 0px', border: '1px solid #ccc', margin: '0 0 30px 0' }}>
                                         <FormItem className="strategyOrderRules" label="触发条件" {...formItemLayoutMarketingModel} style={{ margin: '0' }}>
@@ -549,7 +541,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                         </FormItem>
                                     </Col>
                                 </Row> : ''}
-                            {formState.strategyType === '订单触发' ?
+                            {formState.strategyTypeInt === 1 ?
                                 <Row className="setDelayTime">
                                     <Col span={3} className="delayTimeLabel"><label>延迟时间：</label></Col>
                                     <Col span={3}>
@@ -564,7 +556,8 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                                     min={0}
                                                     max={100}
                                                     style={{ width: '90%' }}
-                                                    disabled={editDis}
+                                                    disabled={formState.strategyState === '未开始' || formState.strategyState === '待开始' ?
+                                                        false : true}
                                                 />
                                                 )}
                                         </FormItem>
@@ -584,7 +577,8 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                                     min={0}
                                                     max={100}
                                                     style={{ width: '90%' }}
-                                                    disabled={editDis}
+                                                    disabled={formState.strategyState === '未开始' || formState.strategyState === '待开始' ?
+                                                        false : true}
                                                 />
                                                 )}
                                         </FormItem>
@@ -593,7 +587,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                         <span className="lh30">分钟</span>
                                     </Col>
                                 </Row> : ''}
-                            {formState.strategyType === '订单触发' ?
+                            {formState.strategyTypeInt === 1 ?
                                 <Row>
                                     <FormItem label="推送限制" {...formItemLayout} >
                                         {getFieldDecorator('marketingLimit', {
@@ -606,7 +600,8 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                                 min={0}
                                                 max={100}
                                                 style={{ width: 80 }}
-                                                disabled={editDis}
+                                                disabled={formState.strategyState === '未开始' || formState.strategyState === '待开始' ?
+                                                    false : true}
                                             />
                                             )}
                                     </FormItem>
