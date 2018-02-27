@@ -60,7 +60,7 @@ function form(
         weChatPush: null,
         showOrderDetailCheck: 0,
         saveRule: {
-            resultCode: '',
+            resultCode: 1,
             message: '保存成功',
         }
     },
