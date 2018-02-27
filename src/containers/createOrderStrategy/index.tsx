@@ -169,13 +169,20 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     mergeParmas = (values) => {
         let newPar: any = {};
         let array: any = [];
+        // 将对象中的key,value转换为数组中某项的第一个值和第二个值
         let valueArr = Object.entries(values);
         let { eventType } = this.state;
         console.log('valueArr', valueArr);
         let valueArrLen = valueArr.length;
         for (let i = 0; i < valueArrLen; i++) {
+            // item0为字段中的key,通过判断key匹配字符来获取对应的value属性
             let item0 = valueArr[i][0];
-            let item1 = valueArr[i][1];
+            let infoItem1:any = {
+                weight: '',
+                antiDisturb: ''
+            }
+            // 对应的value属性
+            let item1 = Object.assign({},infoItem1, valueArr[i][1]);
             if (item0.startsWith('strategyRule')) {
                 // 触发规则
                 newPar.triggerRule = item1;
@@ -350,17 +357,20 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         });
         return false;
     }
-
+    // 选择事件切换
     onSelectEvent = (value) => {
         if (this.checkCondition(value, null)) {
             return;
         }
         const disabledTrggerCondition = userConditions.includes(value) ? true : false;
         let NumValue = parseInt(value, 10);
+        console.log('numValue~~~~~~~~', NumValue);
         if (NumValue === 1 || NumValue === 3 || NumValue === 7 || NumValue === 8 || NumValue === 9) {
+            // 切换后重新请求触发规则数据，上述几个类型需要获取触发规则数据
             this.props.onGetRules(NumValue);
         }
         if (NumValue === 9) {
+            // 首页运营位时
             this.props.getHomePageCount();
         }
         // this.props.onGetRules(parseInt(value, 10));
@@ -375,14 +385,16 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 this.validateFieldsType.splice(this.validateFieldsType.indexOf('treeSelect'), 1);
             }
         }
+        // 改变营销方式
         this.changeMarketingType(NumValue);
+        // 改变触发规则
         this.changeStrategyRule(NumValue);
         this.setState({
             disabledTrggerCondition: disabledTrggerCondition,
             eventType: parseInt(value, 10),
         });
     }
-
+    // 触发规则
     generateTriggerEvent = () => {
         const { getFieldDecorator } = this.props.form;
         const { eventType } = this.state;
@@ -414,7 +426,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             return null;
         }
     }
-
+    // 营销类别
     strategyTriggerEvent = () => {
         const { eventType, userSelected } = this.state;
         const { getFieldDecorator } = this.props.form;
@@ -493,7 +505,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         }
         return null;
     }
-
+    // 改变营销方式
     changeMarketingType = (eventType) => {
         console.log('eventTypeeventType======' + eventType);
         console.log('this.preEventType===========' + this.preEventType);
@@ -505,6 +517,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         this.validateFieldsType.splice(this.validateFieldsType.indexOf(`marketingModel${uuid}`), 1);
         // this.validateFieldsType.splice(this.validateFieldsType.indexOf(`actionParam`), 1);
         uuid++;
+        console.log('uuid--------', uuid)
         // this.validateFieldsType.push(`actionParam`);
         this.validateFieldsType.push(`marketingModel${uuid}`);
         switch (eventType) {
@@ -526,7 +539,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 break;
         }
     }
-
+    // 改变触发规则
     changeStrategyRule = (eventType) => {
         if (eventType === this.preSrType) {
             return;
@@ -539,7 +552,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         this.preSrType = eventType;
         this.props.onResetWeChatPush();
     }
-
+    // 营销方式
     generatorMarketingModel = () => {
         const { getFieldDecorator } = this.props.form;
         const { eventType, userSelected } = this.state;
@@ -654,8 +667,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                     : null
                                 }
                                 {eventType !== 10 ? this.generatorTreeSelect() : null}
+                                {/* 触发规则 */}
                                 {this.generateTriggerEvent()}
+                                {/* 营销类别 */}
                                 {this.strategyTriggerEvent()}
+                                {/* 营销方式 */}
                                 {this.generatorMarketingModel()}
                                 <FormItem {...layout.formItemLayout} label="责任人" hasFeedback={false}>
                                     {

@@ -83,6 +83,7 @@ function form(
                 orderState: [...action.result]
             };
         case constants.GET_RULES_SUCCESS:
+            // 更改类型后，获取触发规则数据
             return {
                 ...state,
                 rules: { strategyType: action.strategyType, ruleHadBack: true, settings: action.result }

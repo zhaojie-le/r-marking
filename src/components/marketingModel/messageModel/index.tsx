@@ -448,7 +448,7 @@ export class MarketingModel extends React.Component<RuleProps, {}> {
                                     {...props}
                                     onDelete={() => this.deleteChannel(key, '短信')}
                                 />
-                                )}
+                            )}
                         </FormItem>
                     );
                 case ChannelType.DaojiaApp:

@@ -135,7 +135,7 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
                 </FormItem>
                 {formItems}
                 <FormItem>
-                    <Button type="dashed" onClick={this.add} style={{ width: '76%', marginLeft: 75 }}>
+                    <Button type="dashed" onClick={this.add} style={{ width: '76%', marginLeft: 100 }}>
                         <Icon type="plus" /> Add (每条数据范围不能一样)
                     </Button>
                 </FormItem>
