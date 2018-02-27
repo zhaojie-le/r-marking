@@ -1,27 +1,26 @@
 {
     "data": [
         {
-            "label":"面包车搬家",
+            "label": "面包车搬家",
             "value": {
-                "id":"20",
-                "val":"1"
+                "id": "20",
+                "val": "1"
             }
         },
         {
-            "label":"厢式货车搬家",
+            "label": "厢式货车搬家",
             "value": {
-                "id":"16",
-                "val":"1"
+                "id": "16",
+                "val": "1"
             }
         },
         {
-            "label":"搬家",
-            "value": 
-            {
-                "id":"2",
-                "val":"3253"
+            "label": "搬家",
+            "value": {
+                "id": "2",
+                "val": "3253"
             }
         }
     ],
-    "resultCode":1
+    "resultCode": 1
 }

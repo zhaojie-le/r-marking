@@ -133,7 +133,7 @@ const getOrderState: Epic<any, any> = (action$, store) => {
     return action$.ofType(constants.GET_ORDERSTATE).
         switchMap(
         (action): Observable<any> => {
-            return ajax.getJSON(`marketStrategy/getOrderState?serverIds=${action.serverIds}&cateId=${action.cateId}`).
+            return ajax.getJSON(`marketStrategy/getOrderState?serverIds=${action.serverIds}`).
                 map((response: { resultCode: number, data: any[] }) => {
                     if (response.resultCode === 1) {
                         return (getOrderStateSuccess(response.data));

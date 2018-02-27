@@ -195,9 +195,15 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                         newPar.antiDisturb = item1.antiDisturb;
                         delete item1.antiDisturb;
                     } else if (eventType === 1) {
+                        console.log('item1item1item1item1item1item1================================================' + JSON.stringify(item1));
                         newPar.triggerRule.orderStatus = item1.serviceOptions ? item1.serviceOptions : null;
+                        newPar.marketingLimit = item1.pushTimes;
                         newPar.dayDelay = item1.delayTime.day ? item1.delayTime.day : 0;
                         newPar.minuteDelay = item1.delayTime.minute ? item1.delayTime.minute : 0;
+                        delete item1.serviceOptions;
+                        delete item1.delayTime;
+                        delete item1.pushTimes;
+                        delete item1.orderState;
                     }
                     array.push(JSON.stringify(item1));
                     newPar.triggerRule = JSON.stringify(array);
@@ -678,7 +684,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                     <Button onClick={() => history.push('/')} style={{ marginLeft: '10px' }}>取消</Button>
                                 </FormItem>
                             </Form>
-                            {this.props.saveRule.resultCode === '' ? null :
+                            {
                                 this.props.saveRule.resultCode === 1 ? null :
                                     <Alert type="error" message={this.props.saveRule.message} />
                             }

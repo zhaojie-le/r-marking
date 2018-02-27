@@ -24,6 +24,9 @@ function form(
             serviceItem: {
                 value: []
             },
+            refer: {
+                value: []
+            },
             serviceOptions: {
                 value: []
             },
