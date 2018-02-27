@@ -183,6 +183,7 @@ const saveRule: Epic<any, any> = (action$, store) => {
         (action): Observable<any> => {
             return ajax.post('/marketStrategy/save', action.params).map(response => {
                 if (response.response.resultCode === 1) {
+                    window.location.href = 'http://usermarket.daojia-inc.com/';
                     return (saveRuleSuccess(response.response));
                 } else {
                     return (saveRuleFail(response.response));

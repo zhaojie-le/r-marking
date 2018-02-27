@@ -47,6 +47,11 @@ body {
                 }
             }
         }
+        .strategyOrderRules .ant-form-item-label label {
+            &:before {
+                @include labelStyle;
+            }
+        }
     }
     .path {
         background: #fff;

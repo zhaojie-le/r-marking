@@ -159,6 +159,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 console.log('Received values of form: ', values);
                 // this.mergeParmas(values);
                 this.props.onSaveRule(this.mergeParmas(values));
+
             } else {
                 console.log('allValues', values);
             }
@@ -179,25 +180,28 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 // 触发规则
                 newPar.triggerRule = item1;
                 // 当触发规则为订单事件时，需要处理一下返回的数据
-                if (this.state.eventType === 1) {
-                    newPar.triggerRule.orderStatus = item1.serviceOptions ? item1.serviceOptions : null;
-                    newPar.dayDelay = item1.delayTime.day ? item1.delayTime.day : 0;
-                    newPar.minuteDelay = item1.delayTime.minute ? item1.delayTime.minute : 0;
-                }
-
-                if (eventType === 1 || eventType === 8 || eventType === 3 || eventType === 7 || eventType === 9) {
+                if (eventType === 1 || eventType === 8 || eventType === 3 || eventType === 4 || eventType === 7 || eventType === 9) {
                     if (eventType === 9) {
-                        console.log(item1.weight);
                         newPar.priority = item1.weight;
                         delete item1.weight;
+                    } else if (eventType === 4) {
+                        newPar.antiDisturb = item1.antiDisturb;
+                        delete item1.antiDisturb;
+                    } else if (eventType === 1) {
+                        newPar.triggerRule.orderStatus = item1.serviceOptions ? item1.serviceOptions : null;
+                        newPar.dayDelay = item1.delayTime.day ? item1.delayTime.day : 0;
+                        newPar.minuteDelay = item1.delayTime.minute ? item1.delayTime.minute : 0;
                     }
                     array.push(JSON.stringify(item1));
                     newPar.triggerRule = JSON.stringify(array);
                 } else {
-                    array.push(JSON.stringify(item1));
-                    newPar.triggerRule = '[' + array + ']';
+                    if (eventType === 5) {
+                        delete newPar.triggerRule;
+                    } else {
+                        array.push(JSON.stringify(item1));
+                        newPar.triggerRule = '[' + array + ']';
+                    }
                 }
-
             } else if (item0.startsWith('marketingModel')) {
                 // 营销方式
                 newPar.actionParam = item1;
@@ -211,8 +215,13 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             } else if (item0.startsWith('triggerEvent')) {
                 newPar.strategyType = item1;
             } else if (item0.startsWith('time')) {
-                newPar.effectiveTime = this.timeMerge.effectiveTime;
-                newPar.invalidTime = this.timeMerge.invalidTime;
+                if (this.state.eventType === 4) {
+                    newPar.effectiveTime = '';
+                    newPar.invalidTime = '';
+                } else {
+                    newPar.effectiveTime = this.timeMerge.effectiveTime;
+                    newPar.invalidTime = this.timeMerge.invalidTime;
+                }
             }
         }
         newPar.actionParam = newPar.actionParam ? this.actionParamsMap(newPar.actionParam) : null;
@@ -276,6 +285,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                     newContent.location = objItem[item];
                 } else if (item.startsWith('piclink')) {
                     newContent.picUrl = objItem[item];
+                } else if (item.startsWith('position')) {
+                    newContent.position = objItem[item];
                 }
             }
         }
@@ -371,7 +382,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         const { eventType } = this.state;
 
         if (eventType !== 0) {
-            if (eventType !== 10) {
+            if (eventType !== 10 && eventType !== 5) {
                 return (
                     <FormItem {...layout.formItemLayoutMarketingModel} label="触发规则" hasFeedback={false}>
                         {
@@ -382,6 +393,12 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                             })(
                                 <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={eventType} />
                                 )}
+                    </FormItem>
+                );
+            } else if (eventType === 5) {
+                return (
+                    <FormItem {...layout.formItemLayoutMarketingModel} className="strategyOrderRules" label="触发规则">
+                        <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={eventType} />
                     </FormItem>
                 );
             } else {
@@ -567,23 +584,26 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                             )
                                     }
                                 </FormItem>
-                                <FormItem {...layout.formItemLayout} label="生效时间" hasFeedback={false}>
-                                    {
-                                        getFieldDecorator('time', {
-                                            rules: [{
-                                                required: true, message: '时间不能为空！',
-                                            }],
-                                        })(
-                                            <RangePicker
-                                                showTime={{ format: 'HH:mm:ss' }}
-                                                format="YYYY-MM-DD HH:mm:ss"
-                                                disabledDate={this.disabledDate}
-                                                placeholder={['开始时间', '结束时间']}
-                                                onChange={this.onTimeChange}
-                                            />
-                                            )
-                                    }
-                                </FormItem>
+                                {this.state.eventType === 4 ? null :
+                                    <FormItem {...layout.formItemLayout} label="生效时间" hasFeedback={false}>
+                                        {
+                                            getFieldDecorator('time', {
+                                                rules: [{
+                                                    required: true, message: '时间不能为空！',
+                                                }],
+                                            })(
+                                                <RangePicker
+                                                    showTime={{ format: 'HH:mm:ss' }}
+                                                    format="YYYY-MM-DD HH:mm:ss"
+                                                    disabledDate={this.disabledDate}
+                                                    placeholder={['开始时间', '结束时间']}
+                                                    onChange={this.onTimeChange}
+                                                />
+                                                )
+                                        }
+                                    </FormItem>
+                                }
+
                                 <FormItem {...layout.formItemLayout} label="触发事件" validateStatus={validateStatus} hasFeedback={true} help="触发事件和触发条件必选一项!">
                                     {
                                         getFieldDecorator('triggerEvent', {
@@ -649,10 +669,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                 </FormItem>
                             </Form>
                             {this.props.saveRule.resultCode === '' ? null :
-                                this.props.saveRule.resultCode === 1 ? history.push('/') :
+                                this.props.saveRule.resultCode === 1 ? null :
                                     <Alert type="error" message={this.props.saveRule.message} />
                             }
-
                         </div>
                     </Content>
                     <Footer style={{ textAlign: 'center' }}>

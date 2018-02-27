@@ -74,7 +74,8 @@ class List extends React.Component<Props, {}> {
             {
                 title: '策略名称', dataIndex: 'strategyName', key: '1',
                 render: (text, record) => {
-                    if (record.marketingTypeInt === 9 && record.priority !== undefined) {
+                    console.log('record===================' + JSON.stringify(record));
+                    if (record.strategyTypeInt === 9 && record.priority !== undefined) {
                         return (
                             <div><span style={{ color: 'red' }}>{record.priority}-</span><span>{record.strategyName}</span></div>
                         );
