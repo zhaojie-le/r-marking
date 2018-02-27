@@ -169,13 +169,20 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     mergeParmas = (values) => {
         let newPar: any = {};
         let array: any = [];
+        // 将对象中的key,value转换为数组中某项的第一个值和第二个值
         let valueArr = Object.entries(values);
         let { eventType } = this.state;
         console.log('valueArr', valueArr);
         let valueArrLen = valueArr.length;
         for (let i = 0; i < valueArrLen; i++) {
+            // item0为字段中的key,通过判断key匹配字符来获取对应的value属性
             let item0 = valueArr[i][0];
-            let item1 = valueArr[i][1];
+            let infoItem1:any = {
+                weight: '',
+                antiDisturb: ''
+            }
+            // 对应的value属性
+            let item1 = Object.assign({},infoItem1, valueArr[i][1]);
             if (item0.startsWith('strategyRule')) {
                 // 触发规则
                 newPar.triggerRule = item1;
@@ -376,7 +383,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             eventType: parseInt(value, 10),
         });
     }
-
+    // 触发规则
     generateTriggerEvent = () => {
         const { getFieldDecorator } = this.props.form;
         const { eventType } = this.state;
@@ -408,7 +415,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             return null;
         }
     }
-
+    // 营销类别
     strategyTriggerEvent = () => {
         const { eventType, userSelected } = this.state;
         const { getFieldDecorator } = this.props.form;
@@ -533,7 +540,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         this.preSrType = eventType;
         this.props.onResetWeChatPush();
     }
-
+    // 营销方式
     generatorMarketingModel = () => {
         const { getFieldDecorator } = this.props.form;
         const { eventType, userSelected } = this.state;
