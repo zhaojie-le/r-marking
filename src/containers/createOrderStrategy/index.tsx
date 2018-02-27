@@ -648,8 +648,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                     : null
                                 }
                                 {eventType !== 10 ? this.generatorTreeSelect() : null}
+                                {/* 触发规则 */}
                                 {this.generateTriggerEvent()}
+                                {/* 营销类别 */}
                                 {this.strategyTriggerEvent()}
+                                {/* 营销方式 */}
                                 {this.generatorMarketingModel()}
                                 <FormItem {...layout.formItemLayout} label="责任人" hasFeedback={false}>
                                     {
