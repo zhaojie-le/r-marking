@@ -29,7 +29,7 @@ export interface RuleProps {
     // onSaveRule: (rjs: string) => void;
     onChange: (value: any) => void;
     onShowOrderDetailCheck: (value: number) => void;
-    onGetOrderState: (cp: { serverIds: string; cateId: number }) => void;
+    onGetOrderState: (cp: { serverIds: string }) => void;
 }
 
 const Option = Select.Option;
@@ -133,7 +133,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     serviceOption = () => {
         const { getFieldDecorator } = this.props.form;
         const { serviceOptions } = this.props;
-
+        console.log('serviceOptions============' + JSON.stringify(serviceOptions));
         return serviceOptions.length ? (
             <FormItem label=" " {...layout.formItemLayout}>
                 {getFieldDecorator('serviceOptions', {
@@ -189,8 +189,10 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         return option.title.indexOf(inputValue) > -1;
     }
 
-    handleServiceTransferChange = (targetServiceKeys) => {
-        this.props.onGetOrderState({ serverIds: targetServiceKeys.join(), cateId: this.state.cateId });
+    handleServiceTransferChange = (targetServiceKeys, direction, moveKeys) => {
+        let getKeysValue = getKeysValues(this.props.serviceOptions, targetServiceKeys, 'key', 'val');
+        // console.log('getKeysValues' + getKeysValues(this.props.serviceOptions, targetServiceKeys, 'key', 'val'));
+        this.props.onGetOrderState({ serverIds: getKeysValue });
         this.setState({ targetServiceKeys });
     }
 
@@ -204,7 +206,6 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                 // onShowOrderDetailCheck 1订单详情，2订单评价 0不展示
                 console.log('serviceserviceserviceserviceservice====' + JSON.stringify(values));
                 this.computeShowData(values);
-
                 this.props.onChange(values);
                 this.props.onGetWechatPush({
                     lineid: values.refer[0],
