@@ -149,7 +149,7 @@ const getWechatPush: Epic<any, any> = (action$, store) => {
     return action$.ofType(constants.GET_WHCHATPUSH).
         switchMap(
         (action): Observable<any> => {
-            return ajax.getJSON(`marketStrategy/getWechatPush?lineId=${action.lineId}&refer=${action.refer}&orderStatus=${action.orderStatus}`).
+            return ajax.getJSON(`marketStrategy/getWechatPush?lineId=${action.lineid}&refer=${action.refer}&orderStatus=${action.orderStatus}`).
                 map((response: { resultCode: number, data?: { name: string; value: string }, message?: string }) => {
                     if (response.resultCode === 1) {
                         return (getWechatPushSuccess(response.data));
