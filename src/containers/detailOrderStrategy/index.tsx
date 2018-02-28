@@ -256,7 +256,8 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                         value={(formState.marketingTypeInt === undefined ? (0).toString() : formState.marketingTypeInt).toString()}
                         style={{ width: '200px' }}
                         onChange={this.onSelectChange}
-                        disabled={pagetype}
+                        disabled={pagetype === false && (formState.strategyState === '未开始' || formState.strategyState === '待开始') ?
+                            false : true}
                     >
                         {
                             strategyMarketingType.map((item) => {
@@ -283,6 +284,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
     displayTime() {
         const { getFieldDecorator } = this.props.form;
         const { formState } = this.props;
+        const { pagetype } = this.state;
         return formState.strategyTypeInt === 4 ? (null) :
             (
                 <div className="displaytime">
@@ -302,7 +304,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                         format="YYYY-MM-DD HH:mm:ss"
                                         placeholder={formState.effectiveTime}
                                         onChange={this.onStartChange}
-                                        disabled={formState.strategyState === '未开始' || formState.strategyState === '待开始' ?
+                                        disabled={pagetype === false && (formState.strategyState === '未开始' || formState.strategyState === '待开始') ?
                                             false : true}
                                     />
                                     )}
@@ -324,6 +326,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                     format="YYYY-MM-DD HH:mm:ss"
                                     placeholder={formState.invalidTime}
                                     onChange={this.onEndChange}
+                                    disabled={pagetype}
                                 />
                                 )}
                         </FormItem>
@@ -454,7 +457,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                 <div className="buttonmain">
                     <Row>
                         <FormItem style={{ width: '100%' }}>
-                            <Button type="primary" onClick={this.onSave} style={{ marginLeft: '138px' }}>创建策略</Button>
+                            <Button type="primary" onClick={this.onSave} style={{ marginLeft: '138px' }}>修改策略</Button>
                             <Button style={{ marginLeft: '10px' }}>取消</Button>
                         </FormItem>
                     </Row>
@@ -556,7 +559,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                                     min={0}
                                                     max={100}
                                                     style={{ width: '90%' }}
-                                                    disabled={formState.strategyState === '未开始' || formState.strategyState === '待开始' ?
+                                                    disabled={pagetype === false && (formState.strategyState === '未开始' || formState.strategyState === '待开始') ?
                                                         false : true}
                                                 />
                                                 )}
@@ -577,7 +580,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                                     min={0}
                                                     max={100}
                                                     style={{ width: '90%' }}
-                                                    disabled={formState.strategyState === '未开始' || formState.strategyState === '待开始' ?
+                                                    disabled={pagetype === false && (formState.strategyState === '未开始' || formState.strategyState === '待开始') ?
                                                         false : true}
                                                 />
                                                 )}
@@ -600,7 +603,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                                 min={0}
                                                 max={100}
                                                 style={{ width: 80 }}
-                                                disabled={formState.strategyState === '未开始' || formState.strategyState === '待开始' ?
+                                                disabled={pagetype === false && (formState.strategyState === '未开始' || formState.strategyState === '待开始') ?
                                                     false : true}
                                             />
                                             )}

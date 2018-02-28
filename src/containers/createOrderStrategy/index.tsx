@@ -177,12 +177,12 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         for (let i = 0; i < valueArrLen; i++) {
             // item0为字段中的key,通过判断key匹配字符来获取对应的value属性
             let item0 = valueArr[i][0];
-            let infoItem1:any = {
+            let infoItem1: any = {
                 weight: '',
                 antiDisturb: ''
-            }
+            };
             // 对应的value属性
-            let item1 = Object.assign({},infoItem1, valueArr[i][1]);
+            let item1 = Object.assign({}, infoItem1, valueArr[i][1]);
             if (item0.startsWith('strategyRule')) {
                 // 触发规则
                 newPar.triggerRule = item1;
@@ -517,7 +517,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         this.validateFieldsType.splice(this.validateFieldsType.indexOf(`marketingModel${uuid}`), 1);
         // this.validateFieldsType.splice(this.validateFieldsType.indexOf(`actionParam`), 1);
         uuid++;
-        console.log('uuid--------', uuid)
+        console.log('uuid--------', uuid);
         // this.validateFieldsType.push(`actionParam`);
         this.validateFieldsType.push(`marketingModel${uuid}`);
         switch (eventType) {

@@ -117,12 +117,13 @@ class TreeSelect extends React.Component<Props, any> {
             autoExpandParentChild: false,
         });
     }
-    onCheck = (checkedKeys, e) => {
+    onCheck = (checkedKeys, e: { checked: any, checkedNodes: any, node: any, event: any }) => {
         let tag = checkedKeys;
         this.props.onGetUserAmount(tag);
         let newTreeData = filter(_.cloneDeep(this.props.tagNodeTree), checkedKeys);
         this.value.newTreeData = newTreeData;
         this.triggerChange({ newTreeData });
+        console.log('eeeee=====================' + JSON.stringify(newTreeData));
         this.setState({ checkedKeys, newTreeData });
     }
 
@@ -203,6 +204,10 @@ class TreeSelect extends React.Component<Props, any> {
                     if (xhr.status === 200) {
                         var responseText = JSON.parse(xhr.responseText);
                         treeNode.props.dataRef.children = responseText.list;
+                        // treeNode.props.dataRef.children = [
+                        //     { title: 'Child Node', key: `${treeNode.props.eventKey}-0` },
+                        //     { title: 'Child Node', key: `${treeNode.props.eventKey}-1` },
+                        // ];
                         this.setState({
                             treeData: [...this.state.treeData],
                         });
