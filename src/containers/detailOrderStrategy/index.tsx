@@ -158,19 +158,28 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                 values.effectiveTime = values.effectiveTime._i;
                 values.invalidTime = values.invalidTime._i;
                 values.marketingTypeInt = this.props.formState.marketingTypeInt;
-                values.marketingModel = this.mergeParmas(values);
                 delete values.keys;
+                delete values.marketingModel;
+                values.actionParam = this.mergeParmas(values).actionParam;
+                values.actionExpression = this.mergeParmas(values).actionExpression;
                 onSaveRule(values);
             }
         });
     }
     mergeParmas = (values) => {
         let newPar: any = {};
+        // 将对象中的key,value转换为数组中某项的第一个值和第二个值
         let valueArr = Object.entries(values);
-        console.log('valueArr', valueArr);
         let valueArrLen = valueArr.length;
         for (let i = 0; i < valueArrLen; i++) {
+            // item0为字段中的key,通过判断key匹配字符来获取对应的value属性
             let item0 = valueArr[i][0];
+            // let infoItem1: any = {
+            //     weight: '',
+            //     antiDisturb: ''
+            // };
+            // 对应的value属性
+            // let item1 = Object.assign({}, infoItem1, valueArr[i][1]);
             let item1 = valueArr[i][1];
             if (item0.startsWith('marketingModel')) {
                 // 营销方式

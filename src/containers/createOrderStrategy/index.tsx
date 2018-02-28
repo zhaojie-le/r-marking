@@ -177,12 +177,13 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         for (let i = 0; i < valueArrLen; i++) {
             // item0为字段中的key,通过判断key匹配字符来获取对应的value属性
             let item0 = valueArr[i][0];
-            let infoItem1: any = {
-                weight: '',
-                antiDisturb: ''
-            };
+            // let infoItem1: any = {
+            //     weight: '',
+            //     antiDisturb: ''
+            // };
             // 对应的value属性
-            let item1 = Object.assign({}, infoItem1, valueArr[i][1]);
+            // let item1 = Object.assign({}, infoItem1, valueArr[i][1]);
+            let item1 = valueArr[i][1];
             if (item0.startsWith('strategyRule')) {
                 // 触发规则
                 newPar.triggerRule = item1;
@@ -195,7 +196,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                         newPar.antiDisturb = item1.antiDisturb;
                         delete item1.antiDisturb;
                     } else if (eventType === 1) {
-                        console.log('item1item1item1item1item1item1================================================' + JSON.stringify(item1));
+
                         newPar.triggerRule.orderStatus = item1.serviceOptions ? item1.serviceOptions : null;
                         newPar.marketingLimit = item1.pushTimes;
                         newPar.dayDelay = item1.delayTime.day ? item1.delayTime.day : 0;
