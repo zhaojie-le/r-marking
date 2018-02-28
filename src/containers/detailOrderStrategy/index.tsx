@@ -164,6 +164,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                 delete values.keys;
                 values.actionParam = this.mergeParmas(values).actionParam;
                 values.actionExpression = this.mergeParmas(values).actionExpression;
+                delete values.marketingModel;
                 onSaveRule(values);
             }
         });
