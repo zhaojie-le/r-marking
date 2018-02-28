@@ -204,10 +204,9 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         this.props.form.validateFields(['refer', 'serviceOptions', 'delayTime', 'orderSource', 'orderState', 'city', 'pushTimes'], (err, values) => {
             if (!err) {
                 // onShowOrderDetailCheck 1订单详情，2订单评价 0不展示
-                console.log('serviceOptionsserviceOptionsserviceOptionsserviceOptions=============' + JSON.stringify(values));
                 this.props.onGetWechatPush({
                     lineid: values.refer[0],
-                    refer: values.serviceOptions,
+                    refer: values.serviceOptions[0],
                     orderStatus: values.orderState,
                 });
                 this.computeShowData(values);
