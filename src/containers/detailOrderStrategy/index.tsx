@@ -154,6 +154,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 // 得到的values数据重组
+                console.log('detailvalues=========================' + JSON.stringify(values));
                 const { onSaveRule } = this.props;
                 values.effectiveTime = values.effectiveTime._i;
                 values.invalidTime = values.invalidTime._i;
@@ -314,7 +315,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                             initialValue: formState.activityId,
                         })(
                             <Input style={{ width: 80 }} placeholder={formState.activityId} maxLength="30" disabled={pagetype} />
-                            )}
+                        )}
                     </FormItem>
                 </Row>
             </div>
@@ -346,7 +347,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                         disabled={pagetype === false && (formState.strategyState === '未开始' || formState.strategyState === '待开始') ?
                                             false : true}
                                     />
-                                    )}
+                                )}
                             </FormItem>
                         </Col>
                     </Row>
@@ -367,7 +368,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                     onChange={this.onEndChange}
                                     disabled={pagetype}
                                 />
-                                )}
+                            )}
                         </FormItem>
                     </Row>
                 </div>
@@ -537,7 +538,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                             initialValue: formState.pkId,
                                         })(
                                             <span>{formState.updateContent}</span>
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -550,7 +551,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                         initialValue: formState.strategyName,
                                     })(
                                         <Input placeholder={formState.strategyName} maxLength="30" disabled={pagetype} />
-                                        )}
+                                    )}
                                 </FormItem>
                             </Row>
                             {this.displayTime()}
@@ -601,7 +602,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                                     disabled={pagetype === false && (formState.strategyState === '未开始' || formState.strategyState === '待开始') ?
                                                         false : true}
                                                 />
-                                                )}
+                                            )}
                                         </FormItem>
                                     </Col>
                                     <Col span={1}>
@@ -622,7 +623,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                                     disabled={pagetype === false && (formState.strategyState === '未开始' || formState.strategyState === '待开始') ?
                                                         false : true}
                                                 />
-                                                )}
+                                            )}
                                         </FormItem>
                                     </Col>
                                     <Col span={1}>
@@ -645,7 +646,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                                 disabled={pagetype === false && (formState.strategyState === '未开始' || formState.strategyState === '待开始') ?
                                                     false : true}
                                             />
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Row> : ''}
                             {this.marketingType()}
@@ -665,7 +666,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                                 onChange={this.onMarketingModelChange}
                                                 showOrderDetailCheck={0}
                                             />
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Row> : ''}
                             < Row >
@@ -677,7 +678,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                         initialValue: formState.createrEmail,
                                     })(
                                         <Input placeholder={formState.createrEmail} maxLength="30" disabled={true} />
-                                        )}
+                                    )}
                                 </FormItem>
                             </Row>
                             <Row>
@@ -689,7 +690,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                                         initialValue: formState.strategyState,
                                     })(
                                         <Input placeholder={formState.strategyState} maxLength="30" disabled={true} />
-                                        )}
+                                    )}
                                 </FormItem>
                             </Row>
                             {this.buttonMain()}
