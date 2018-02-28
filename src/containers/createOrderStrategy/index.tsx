@@ -190,6 +190,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 // 当触发规则为订单事件时，需要处理一下返回的数据
                 if (eventType === 1 || eventType === 8 || eventType === 3 || eventType === 4 || eventType === 7 || eventType === 9) {
                     if (eventType === 9) {
+
                         newPar.priority = item1.weight;
                         delete item1.weight;
                     } else if (eventType === 4) {
@@ -411,7 +412,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                 }]
                             })(
                                 <RuleCreater onChange={this.onStrategyRuleChange} form={this.props.form} strategyType={eventType} />
-                                )}
+                            )}
                     </FormItem>
                 );
             } else if (eventType === 5) {
@@ -442,7 +443,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                             }],
                         })(
                             <StrategyCreater onChange={this.onMarketingTypeChange} form={this.props.form} strategyType={eventType} />
-                            )
+                        )
                     }
                 </FormItem>
             );
@@ -461,7 +462,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
     }
 
     onUserBeSelect = (value) => {
-
         let treeSelect = '0';
         if (value === '1') {
             treeSelect = '1';
@@ -498,8 +498,12 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                 required: true, message: '用户条件不能为空！',
                             }],
                         })(
-                            <TreeSelect onChange={this.onTreeSelectChange} />
-                            )
+                            <TreeSelect
+                                strategyType={this.state.eventType}
+                                onChange={this.onTreeSelectChange}
+
+                            />
+                        )
                     }
                 </FormItem>
             );
@@ -572,7 +576,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                 stage={false}
                                 onChange={this.onMarketingModelChange}
                             />
-                            )}
+                        )}
                 </FormItem>
             );
         } else {
@@ -601,7 +605,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                             }],
                                         })(
                                             <Input placeholder="请输入策略名称!" />
-                                            )
+                                        )
                                     }
                                 </FormItem>
                                 {this.state.eventType === 4 ? null :
@@ -619,7 +623,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                     placeholder={['开始时间', '结束时间']}
                                                     onChange={this.onTimeChange}
                                                 />
-                                                )
+                                            )
                                         }
                                     </FormItem>
                                 }
@@ -647,7 +651,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 <Option value="9">首页运营位</Option>
                                                 <Option value="10">速运会员返券</Option> */}
                                             </Select>
-                                            )
+                                        )
                                     }
                                 </FormItem>
                                 {eventType !== 10 ?
@@ -662,7 +666,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                     <Option value="0">请选择</Option>
                                                     <Option value="1">用户条件</Option>
                                                 </Select>
-                                                )
+                                            )
                                         }
                                     </FormItem>
                                     : null
@@ -683,7 +687,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                             initialValue: this.props.formState.strategyTypeAdd.email,
                                         })(
                                             <Input disabled={true} />
-                                            )
+                                        )
                                     }
                                 </FormItem>
                                 <FormItem {...layout.tailFormItemLayout}>

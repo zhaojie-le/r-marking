@@ -127,7 +127,7 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
                                     }]
                                 })(
                                     <Input onChange={this.inputChange} />
-                                    )
+                                )
                                 }
                             </FormItem>
                         </Col>
@@ -137,7 +137,6 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
                         {this.state.batchId === '' ? null :
                             <Col span={10}>
                                 {/* <p>该批次共{count}个用户</p> */}
-
                                 {this.showMessage(rule.userCount, rule.message)}
                             </Col>}
 

@@ -9,10 +9,10 @@ import {
     Tree,
     InputNumber,
     Row,
+    Checkbox,
     Col
 } from 'antd';
 // import Worker from 'worker-loader!./worker';
-
 export interface RuleProps {
     form: any;
 }
@@ -83,7 +83,7 @@ interface Props {
     tagNodeTreeZ: Array<any>;
     onGetUserAmount: (tag: any[]) => void;
     onGettagNodeTree: (id: string) => void;
-
+    strategyType: number;
 }
 class TreeSelect extends React.Component<Props, any> {
     private value: any = { triggerChange: 1, newTreeData: [] };
@@ -117,8 +117,12 @@ class TreeSelect extends React.Component<Props, any> {
             autoExpandParentChild: false,
         });
     }
+    onChange = (e) => {
+        console.log(`checked = ${e.target.checked}`);
+    }
     onCheck = (checkedKeys, e: { checked: any, checkedNodes: any, node: any, event: any }) => {
         let tag = checkedKeys;
+        console.log('checkedKeys==================================' + checkedKeys);
         this.props.onGetUserAmount(tag);
         let newTreeData = filter(_.cloneDeep(this.props.tagNodeTree), checkedKeys);
         this.value.newTreeData = newTreeData;
@@ -266,6 +270,7 @@ class TreeSelect extends React.Component<Props, any> {
     }
     render() {
         const { autoExpandParent, checkedKeys } = this.state;
+        console.log('this.state.treeDataKKKKKKKKKKKKK=================================' + JSON.stringify(this.state.treeData));
         return (
             <div id="treeSelectWrapper">
                 <Row>
@@ -273,6 +278,17 @@ class TreeSelect extends React.Component<Props, any> {
                         根据组合条件共筛选<span style={{ color: 'red' }}>{this.props.totalUser}</span>用户
                     </Col>
                 </Row>
+                {this.props.strategyType === 7 || this.props.strategyType === 8 || this.props.strategyType === 9 ?
+                    <Row>
+                        <Col span={10}>
+                            <Checkbox onChange={this.onChange}>未登录用户</Checkbox>
+                        </Col>
+                        <Col span={4}>
+                            <p style={{ color: 'red' }}>*针对未登录用户，未登录用户无用户画像</p>
+                        </Col>
+                    </Row> : null
+                }
+
                 <Row>
                     <Col span={12} style={{ position: 'relative' }}>
                         {/* <Search style={{ marginBottom: 8, width: '300px', position: 'absolute', top: 0, left: 0 }}
@@ -304,13 +320,15 @@ class TreeSelect extends React.Component<Props, any> {
                         </div>
                     </Col>
                 </Row>
+                {this.props.strategyType !== undefined ?
+                    <Row>
+                        <Col>
+                            <label style={{ verticalAlign: 'middle' }}>推送周期</label>
+                            <InputNumber style={{ width: '100px', verticalAlign: 'middle', marginLeft: '20px' }} onChange={this.onZqChange} defaultValue={1} min={1} />
+                        </Col>
+                    </Row> : null
+                }
 
-                <Row>
-                    <Col>
-                        <label style={{ verticalAlign: 'middle' }}>推送周期</label>
-                        <InputNumber style={{ width: '100px', verticalAlign: 'middle', marginLeft: '20px' }} onChange={this.onZqChange} defaultValue={1} min={1} />
-                    </Col>
-                </Row>
             </div>
         );
     }
@@ -333,4 +351,4 @@ const mapDispatchToProps = (dispatch: Dispatch<actions.UserAction>) => bindActio
     dispatch
 );
 
-export default connect<any, any, { onChange: (value: any) => void }>(mapStateToProps, mapDispatchToProps)(TreeSelect as any);
+export default connect<any, any, { onChange: (value: any) => void, strategyType: number; }>(mapStateToProps, mapDispatchToProps)(TreeSelect as any);
