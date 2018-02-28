@@ -190,15 +190,13 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 // 当触发规则为订单事件时，需要处理一下返回的数据
                 if (eventType === 1 || eventType === 8 || eventType === 3 || eventType === 4 || eventType === 7 || eventType === 9) {
                     if (eventType === 9) {
-
                         newPar.priority = item1.weight;
                         delete item1.weight;
                     } else if (eventType === 4) {
                         newPar.antiDisturb = item1.antiDisturb;
                         delete item1.antiDisturb;
                     } else if (eventType === 1) {
-
-                        newPar.triggerRule.orderStatus = item1.serviceOptions ? item1.serviceOptions : null;
+                        newPar.triggerRule.orderStatus = item1.orderState;
                         newPar.marketingLimit = item1.pushTimes;
                         newPar.dayDelay = item1.delayTime.day ? item1.delayTime.day : 0;
                         newPar.minuteDelay = item1.delayTime.minute ? item1.delayTime.minute : 0;
@@ -501,7 +499,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                             <TreeSelect
                                 strategyType={this.state.eventType}
                                 onChange={this.onTreeSelectChange}
-
                             />
                         )
                     }

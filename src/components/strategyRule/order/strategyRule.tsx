@@ -209,6 +209,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                     refer: values.serviceOptions[0],
                     orderStatus: values.orderState,
                 });
+                values.refer = values.serviceOptions;
                 this.computeShowData(values);
                 this.props.onChange(values);
                 this.props.onShowOrderDetailCheck((values.refer[1] === '201' ? 1 : values.refer[1] === '212' || values.refer[1] === '205' ? 2 : 0));
