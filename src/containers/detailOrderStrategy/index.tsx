@@ -185,36 +185,66 @@ class DetailOrderStrategy extends React.Component<Props, object> {
 
     actionParamsMap = (obj) => {
         let actionP: any = {};
+        let { formState } = this.props;
         if (obj) {
-            let objArray = Object.entries(obj);
-            let objArrLen = objArray.length;
-            for (let i = 0; i < objArrLen; i++) {
-                if (objArray[i][0].startsWith('daojiaApp')) {
-                    actionP.appContent = this.contentMap(objArray[i][1]);
-                } else if (objArray[i][0].startsWith('sms')) {
-                    actionP.smsContent = this.contentMap(objArray[i][1]);
-                } else if (objArray[i][0].startsWith('suyunApp')) {
-                    actionP.expressContent = this.contentMap(objArray[i][1]);
-                } else if (objArray[i][0].startsWith('chatNumber')) {
-                    actionP.wechatContent = this.chartNumberMap(objArray[i][1]);
+            console.log('eventType=========' + formState.strategyTypeInt);
+            console.log('objobjobjobj==================' + JSON.stringify(obj));
+            if (formState.strategyTypeInt === 3) {
+                actionP.payOrderContent = this.contentMap(obj);
+            } else if (formState.strategyTypeInt === 7) {
+                actionP.pendantContent = this.contentMap(obj);
+            } else if (formState.strategyTypeInt === 9) {
+                actionP.homePageContent = this.contentMap(obj);
+            } else {
+                let objArray = Object.entries(obj);
+                console.log('objArray==================' + JSON.stringify(objArray));
+                let objArrLen = objArray.length;
+                for (let i = 0; i < objArrLen; i++) {
+                    if (objArray[i][0].startsWith('daojiaApp')) {
+                        actionP.appContent = this.contentMap(objArray[i][1]);
+                    } else if (objArray[i][0].startsWith('sms')) {
+                        actionP.smsContent = this.contentMap(objArray[i][1]);
+                    } else if (objArray[i][0].startsWith('suyunApp')) {
+                        actionP.expressContent = this.contentMap(objArray[i][1]);
+                    } else if (objArray[i][0].startsWith('chatNumber')) {
+                        actionP.wechatContent = this.chartNumberMap(objArray[i][1]);
+                    }
                 }
             }
-            return actionP;
+            console.log('actionP=====================' + JSON.stringify(actionP));
+            return JSON.stringify(actionP);
+
         }
         return null;
     }
 
     contentMap = (objItem) => {
         let newContent: any = {};
+        console.log('objItem=======' + JSON.stringify(objItem));
         if (objItem) {
-            if (objItem.title) {
-                newContent.title = objItem.title;
-            } else if (objItem.docs) {
-                newContent.content = objItem.docs;
-            } else if (objItem.link) {
-                newContent.openUrl = objItem.link;
+            for (var item in objItem) {
+                if (item.startsWith('title')) {
+                    newContent.title = objItem[item];
+                } else if (item.startsWith('docs')) {
+                    newContent.content = objItem[item];
+                } else if (item === 'link') {
+                    newContent.openUrl = objItem[item];
+                } else if (item.startsWith('imgUrl')) {
+                    newContent.imgUrl = objItem[item];
+                } else if (item.startsWith('activityendtime')) {
+                    newContent.endTime = objItem[item];
+                } else if (item.startsWith('animation')) {
+                    newContent.animation = objItem[item];
+                } else if (item.startsWith('location')) {
+                    newContent.location = objItem[item];
+                } else if (item.startsWith('piclink')) {
+                    newContent.picUrl = objItem[item];
+                } else if (item.startsWith('position')) {
+                    newContent.position = objItem[item];
+                }
             }
         }
+        console.log('newContent=======' + JSON.stringify(newContent));
         return newContent;
     }
     chartNumberMap = (objItem) => {
