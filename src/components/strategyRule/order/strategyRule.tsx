@@ -153,7 +153,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                         onChange={this.handleServiceTransferChange}
                         render={item => item.title}
                     />
-                    )}
+                )}
             </FormItem>
         ) : '';
     }
@@ -180,7 +180,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                     >
                         {orderState.map((item, i) => (<Option value={item.value} key={i}>{item.label}</Option>))}
                     </Select>
-                    )}
+                )}
             </FormItem>
         ) : '';
     }
@@ -204,10 +204,10 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         this.props.form.validateFields(['refer', 'serviceOptions', 'delayTime', 'orderSource', 'orderState', 'city', 'pushTimes'], (err, values) => {
             if (!err) {
                 // onShowOrderDetailCheck 1订单详情，2订单评价 0不展示
-                console.log('values.refer[0]=======' + values.refer[0]);
+                console.log('serviceOptionsserviceOptionsserviceOptionsserviceOptions=============' + JSON.stringify(values));
                 this.props.onGetWechatPush({
                     lineid: values.refer[0],
-                    refer: values.refer,
+                    refer: values.serviceOptions,
                     orderStatus: values.orderState,
                 });
                 this.computeShowData(values);
@@ -231,11 +231,11 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                     break;
 
                 case 'refer':
-                    label = '服务项';
+                    label = '业务线、品类';
                     value = this.state.selectedLabel;
                     break;
                 case 'serviceOptions':
-                    label = '品类';
+                    label = '服务项';
                     value = getKeysValues(this.props.serviceOptions, values.serviceOptions, 'key', 'title');
                     break;
                 case 'orderSource':
@@ -304,7 +304,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                             initialValue: this.props.formState.refer.value,
                         })(
                             <Cascader placeholder="请输入服务项！" options={options} onChange={this.onChange} />
-                            )}
+                        )}
                     </FormItem>
                     {this.serviceOption()}
                     <FormItem label="订单来源" {...layout.formItemLayout}>
@@ -323,7 +323,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                                 }],
                             })(
                                 <CheckboxGroup options={plainOptions} onChange={this.onCheckChange} />
-                                )}
+                            )}
                         </div>
                     </FormItem>
                     {this.orderState()}
@@ -345,7 +345,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                                 onChange={this.handleTransferChange}
                                 render={item => item.title}
                             />
-                            )}
+                        )}
                     </FormItem>
                     <FormItem {...layout.formItemLayout} label="延迟时间">
                         {
@@ -357,7 +357,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                                 }],
                             })(
                                 <DelayTime />
-                                )
+                            )
                         }
                     </FormItem>
                     <FormItem {...layout.formItemLayout} label="推送次数" hasFeedback={false}>
@@ -379,7 +379,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                                     })
                                 }
                             </Select>
-                            )}
+                        )}
                     </FormItem>
                     <FormItem {...layout.tailFormItemLayout}>
                         <Button type="primary" onClick={this.onSave}>保存</Button>

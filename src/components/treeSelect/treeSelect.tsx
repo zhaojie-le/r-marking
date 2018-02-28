@@ -273,11 +273,6 @@ class TreeSelect extends React.Component<Props, any> {
         console.log('this.state.treeDataKKKKKKKKKKKKK=================================' + JSON.stringify(this.state.treeData));
         return (
             <div id="treeSelectWrapper">
-                <Row>
-                    <Col>
-                        根据组合条件共筛选<span style={{ color: 'red' }}>{this.props.totalUser}</span>用户
-                    </Col>
-                </Row>
                 {this.props.strategyType === 7 || this.props.strategyType === 8 || this.props.strategyType === 9 ?
                     <Row>
                         <Col span={5}>
@@ -288,7 +283,11 @@ class TreeSelect extends React.Component<Props, any> {
                         </Col>
                     </Row> : null
                 }
-
+                <Row>
+                    <Col>
+                        根据组合条件共筛选<span style={{ color: 'red' }}>{this.props.totalUser}</span>用户
+                    </Col>
+                </Row>
                 <Row>
                     <Col span={12} style={{ position: 'relative' }}>
                         {/* <Search style={{ marginBottom: 8, width: '300px', position: 'absolute', top: 0, left: 0 }}
@@ -320,7 +319,7 @@ class TreeSelect extends React.Component<Props, any> {
                         </div>
                     </Col>
                 </Row>
-                {this.props.strategyType !== undefined ?
+                {this.props.strategyType !== undefined && this.props.strategyType !== 0 ?
                     null :
                     <Row>
                         <Col>
