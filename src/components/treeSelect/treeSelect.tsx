@@ -280,10 +280,10 @@ class TreeSelect extends React.Component<Props, any> {
                 </Row>
                 {this.props.strategyType === 7 || this.props.strategyType === 8 || this.props.strategyType === 9 ?
                     <Row>
-                        <Col span={10}>
+                        <Col span={5}>
                             <Checkbox onChange={this.onChange}>未登录用户</Checkbox>
                         </Col>
-                        <Col span={4}>
+                        <Col span={10}>
                             <p style={{ color: 'red' }}>*针对未登录用户，未登录用户无用户画像</p>
                         </Col>
                     </Row> : null
@@ -321,12 +321,13 @@ class TreeSelect extends React.Component<Props, any> {
                     </Col>
                 </Row>
                 {this.props.strategyType !== undefined ?
+                    null :
                     <Row>
                         <Col>
                             <label style={{ verticalAlign: 'middle' }}>推送周期</label>
                             <InputNumber style={{ width: '100px', verticalAlign: 'middle', marginLeft: '20px' }} onChange={this.onZqChange} defaultValue={1} min={1} />
                         </Col>
-                    </Row> : null
+                    </Row>
                 }
 
             </div>
