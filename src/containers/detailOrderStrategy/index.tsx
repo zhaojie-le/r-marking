@@ -158,9 +158,10 @@ class DetailOrderStrategy extends React.Component<Props, object> {
                 const { onSaveRule } = this.props;
                 values.effectiveTime = values.effectiveTime._i;
                 values.invalidTime = values.invalidTime._i;
-                values.marketingTypeInt = this.props.formState.marketingTypeInt;
+                values.marketingType = this.props.formState.marketingTypeInt;
+                delete values.createrEmail;
+                delete values.strategyState;
                 delete values.keys;
-                delete values.marketingModel;
                 values.actionParam = this.mergeParmas(values).actionParam;
                 values.actionExpression = this.mergeParmas(values).actionExpression;
                 onSaveRule(values);
@@ -184,6 +185,7 @@ class DetailOrderStrategy extends React.Component<Props, object> {
             let item1 = valueArr[i][1];
             if (item0.startsWith('marketingModel')) {
                 // 营销方式
+                console.log('marketingModelmarketingModelmarketingModel==================' + JSON.stringify(item1));
                 newPar.actionParam = item1;
                 newPar.actionExpression = item1.keys.toString();
             }
