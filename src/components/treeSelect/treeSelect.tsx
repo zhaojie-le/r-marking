@@ -161,9 +161,10 @@ class TreeSelect extends React.Component<Props, any> {
         let filterarrs = filterkeys.split(',');
         let seledObjs: any = [];
         for (let i = 0; i < filterarrs.length; i++) {
+            console.log('yuanObj[filterarrs[i]]==========' + JSON.stringify(yuanObj[filterarrs[i]]));
+            console.log('yuanObj[filterarrs[i]].nodeUniqueId' + yuanObj[filterarrs[i]].nodeUniqueId);
             seledObjs.push(yuanObj[filterarrs[i]].nodeUniqueId);
         }
-        console.log('seledObjsseledObjs' + typeof seledObjs);
         this.props.onGetUserAmount(seledObjs);
         console.log('seledObjs=========================' + seledObjs);
         console.log('newTreeData===' + JSON.stringify(newTreeData));

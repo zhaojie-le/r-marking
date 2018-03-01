@@ -209,7 +209,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                     orderStatus: values.orderState,
                 });
                 let getKeysValue = getKeysValues(this.props.serviceOptions, values.serviceOptions, 'key', 'val');
-                values.refer = getKeysValue;
+                values.refer = getKeysValue.split(',');
                 console.log('refer========' + values.refer);
                 console.log('VALUESSSSSSS====' + JSON.stringify(values));
                 this.computeShowData(values);
