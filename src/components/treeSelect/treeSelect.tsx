@@ -144,7 +144,7 @@ class TreeSelect extends React.Component<Props, any> {
         let newTreeData = filter(_.cloneDeep(this.props.tagNodeTree), checkedKeys);
         this.value.newTreeData = newTreeData;
         this.triggerChange({ newTreeData });
-        this.setState({ checkedKeys, newTreeData, checked: false });
+        this.setState({ checkedKeys, newTreeData });
         console.log('filterarr===' + filterarr(checkedKeys));
         console.log('filter(_.cloneDeep(this.state.treeData), checkedKeys);===' + JSON.stringify(filter(_.cloneDeep(this.props.tagNodeTree), filterarr(checkedKeys))));
 
