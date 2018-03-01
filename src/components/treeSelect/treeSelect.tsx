@@ -151,15 +151,10 @@ class TreeSelect extends React.Component<Props, any> {
     }
     onCheck = (checkedKeys, e: { checked: any, checkedNodes: any, node: any, event: any }) => {
         let tag = checkedKeys;
-        console.log(tag);
         let newTreeData = filter(_.cloneDeep(this.props.tagNodeTree), checkedKeys);
-        this.value.newTreeData = newTreeData;
-        this.triggerChange({ newTreeData });
-        this.setState({ checkedKeys, newTreeData, checked: false });
-
+        console.log(tag);
         arrToObj(newTreeData);
-
-        let filterkeys = filterarr(checkedKeys);
+        let filterkeys = filterarr(tag);
         let filterarrs = filterkeys.split(',');
         let seledObjs: any = [];
         console.log('checkedKeys===============' + checkedKeys);
@@ -175,6 +170,10 @@ class TreeSelect extends React.Component<Props, any> {
         console.log('seledObjs=========================' + seledObjs);
         console.log('newTreeData===' + JSON.stringify(newTreeData));
         console.log('filterkeys====================' + filterkeys);
+
+        this.value.newTreeData = newTreeData;
+        this.triggerChange({ newTreeData });
+        this.setState({ checkedKeys, newTreeData, checked: false });
     }
 
     onZqChange = (value) => {
