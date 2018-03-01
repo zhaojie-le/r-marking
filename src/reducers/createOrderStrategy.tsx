@@ -13,7 +13,7 @@ function form(
                 strategyType: [],
             },
             delayTime: {
-                value: { day: 0, minute: 0 }
+                value: { day: '', minute: '' }
             },
             pushTimes: {
                 value: '0'

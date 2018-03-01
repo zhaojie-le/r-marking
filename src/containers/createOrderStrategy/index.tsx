@@ -190,6 +190,10 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 // 当触发规则为订单事件时，需要处理一下返回的数据
                 if (eventType === 1 || eventType === 8 || eventType === 3 || eventType === 4 || eventType === 7 || eventType === 9) {
                     if (eventType === 9) {
+                        // let infoItem1: any = {
+                        //     weight: '',
+                        // };
+                        // let item = Object.assign({}, infoItem1, valueArr[i][1]);
                         newPar.priority = item1.weight;
                         delete item1.weight;
                     } else if (eventType === 4) {
@@ -456,7 +460,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         }
         const currentTime = current.valueOf();
         const endTime = moment().add(6, 'M');
-        return currentTime && (currentTime < Date.now()) || current && (currentTime > endTime.valueOf());
+        return currentTime && (currentTime <= Date.now()) || currentTime && (currentTime > endTime.valueOf());
     }
 
     onUserBeSelect = (value) => {

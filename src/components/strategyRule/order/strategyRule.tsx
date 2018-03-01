@@ -85,7 +85,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     }
 
     checkTime = (rule, value, callback) => {
-        if (value.day || value.minute) {
+        if (value.day !== '' || value.minute !== '') {
             callback();
             return;
         }

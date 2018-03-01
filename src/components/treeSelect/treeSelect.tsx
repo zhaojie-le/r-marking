@@ -98,6 +98,7 @@ class TreeSelect extends React.Component<Props, any> {
             newTreeData: [],
             checkedKeys: [],
             treeData: [],
+            checked: false,
             autoExpandParentChild: true
         };
         this.state = { ...this.state, treeData: this.props.tagNodeTree };
@@ -122,13 +123,14 @@ class TreeSelect extends React.Component<Props, any> {
     }
     onCheck = (checkedKeys, e: { checked: any, checkedNodes: any, node: any, event: any }) => {
         let tag = checkedKeys;
-        console.log('checkedKeys==================================' + checkedKeys);
         this.props.onGetUserAmount(tag);
         let newTreeData = filter(_.cloneDeep(this.props.tagNodeTree), checkedKeys);
         this.value.newTreeData = newTreeData;
         this.triggerChange({ newTreeData });
-        console.log('eeeee=====================' + JSON.stringify(newTreeData));
         this.setState({ checkedKeys, newTreeData });
+        if (checkedKeys) {
+            this.setState({ checked: false });
+        }
     }
 
     onZqChange = (value) => {
@@ -136,7 +138,14 @@ class TreeSelect extends React.Component<Props, any> {
         this.value.triggerChange = triggerChange;
         this.triggerChange({ triggerChange });
     }
-
+    onUnloginChange = (e) => {
+        console.log(e.target.checked);
+        if (e.target.checked === true) {
+            this.setState({ checkedKeys: [], newTreeData: [], checked: true });
+        } else {
+            this.setState({ checked: false });
+        }
+    }
     triggerChange = (changedValue) => {
         const onChange = this.props.onChange;
         if (onChange) {
@@ -167,7 +176,16 @@ class TreeSelect extends React.Component<Props, any> {
     //     },
     //     1000
     // );
-
+    // var b=a(str.split(','),str);
+    // function a(b,str){
+    //     b.forEach(function(v,i){
+    //         b.forEach(function(item,j){
+    //             if(item.indexOf(v)>-1&&v!==item){
+    //                 return str.replace(item,'');
+    //             }
+    //         })
+    //    });
+    // }
     renderTreeNodes = (data) => {
         const { searchValue } = this.state;
         return data.map((item) => {
@@ -208,13 +226,13 @@ class TreeSelect extends React.Component<Props, any> {
                     if (xhr.status === 200) {
                         var responseText = JSON.parse(xhr.responseText);
                         treeNode.props.dataRef.children = responseText.list;
-                        // treeNode.props.dataRef.children = [
-                        //     { title: 'Child Node', key: `${treeNode.props.eventKey}-0` },
-                        //     { title: 'Child Node', key: `${treeNode.props.eventKey}-1` },
-                        // ];
-                        this.setState({
-                            treeData: [...this.state.treeData],
-                        });
+                        treeNode.props.dataRef.children = [
+                            { title: 'Child Node', key: `${treeNode.props.eventKey}-0` },
+                            { title: 'Child Node', key: `${treeNode.props.eventKey}-1` },
+                        ];
+                        // this.setState({
+                        //     treeData: [...this.state.treeData],
+                        // });
                         resolve();
                     } else {
                         console.log('请求失败');
@@ -276,7 +294,7 @@ class TreeSelect extends React.Component<Props, any> {
                 {this.props.strategyType === 7 || this.props.strategyType === 8 || this.props.strategyType === 9 ?
                     <Row>
                         <Col span={5}>
-                            <Checkbox onChange={this.onChange}>未登录用户</Checkbox>
+                            <Checkbox onChange={this.onUnloginChange} checked={this.state.checked}>未登录用户</Checkbox>
                         </Col>
                         <Col span={10}>
                             <p style={{ color: 'red' }}>*针对未登录用户，未登录用户无用户画像</p>
