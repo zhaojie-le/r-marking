@@ -156,11 +156,16 @@ class TreeSelect extends React.Component<Props, any> {
         this.value.newTreeData = newTreeData;
         this.triggerChange({ newTreeData });
         this.setState({ checkedKeys, newTreeData, checked: false });
+
         arrToObj(newTreeData);
+
         let filterkeys = filterarr(checkedKeys);
         let filterarrs = filterkeys.split(',');
         let seledObjs: any = [];
+        console.log('newTreeData===============' + JSON.stringify(newTreeData));
+        console.log('filterkeys====' + filterkeys);
         for (let i = 0; i < filterarrs.length; i++) {
+            console.log('filterarrs[i]filterarrs[i]' + filterarrs[i]);
             console.log('yuanObj[filterarrs[i]]==========' + JSON.stringify(yuanObj[filterarrs[i]]));
             console.log('yuanObj[filterarrs[i]].nodeUniqueId' + yuanObj[filterarrs[i]].nodeUniqueId);
             seledObjs.push(yuanObj[filterarrs[i]].nodeUniqueId);
