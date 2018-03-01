@@ -200,7 +200,6 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                         newPar.antiDisturb = item1.antiDisturb;
                         delete item1.antiDisturb;
                     } else if (eventType === 1) {
-                        let arr = [];
                         newPar.triggerRule.orderStatus = (item1.orderState).splte(',');
                         newPar.marketingLimit = item1.pushTimes;
                         newPar.dayDelay = item1.delayTime.day ? item1.delayTime.day : 0;
