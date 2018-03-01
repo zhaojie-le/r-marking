@@ -133,7 +133,6 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     serviceOption = () => {
         const { getFieldDecorator } = this.props.form;
         const { serviceOptions } = this.props;
-        console.log('serviceOptions============' + JSON.stringify(serviceOptions));
         return serviceOptions.length ? (
             <FormItem label=" " {...layout.formItemLayout}>
                 {getFieldDecorator('serviceOptions', {
@@ -191,7 +190,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
 
     handleServiceTransferChange = (targetServiceKeys, direction, moveKeys) => {
         let getKeysValue = getKeysValues(this.props.serviceOptions, targetServiceKeys, 'key', 'val');
-        // console.log('getKeysValues' + getKeysValues(this.props.serviceOptions, targetServiceKeys, 'key', 'val'));
+        console.log('getKeysValues' + getKeysValues(this.props.serviceOptions, targetServiceKeys, 'key', 'val'));
         this.props.onGetOrderState({ serverIds: getKeysValue });
         this.setState({ targetServiceKeys });
     }
@@ -209,7 +208,10 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                     refer: values.serviceOptions[0],
                     orderStatus: values.orderState,
                 });
-                values.refer = values.serviceOptions;
+                let getKeysValue = getKeysValues(this.props.serviceOptions, values.serviceOptions, 'key', 'val');
+                values.refer = getKeysValue;
+                console.log('refer========' + values.refer);
+                console.log('VALUESSSSSSS====' + JSON.stringify(values));
                 this.computeShowData(values);
                 this.props.onChange(values);
                 this.props.onShowOrderDetailCheck((values.refer[1] === '201' ? 1 : values.refer[1] === '212' || values.refer[1] === '205' ? 2 : 0));
@@ -230,11 +232,11 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                     value = getKeysValues(this.props.orderState, values.orderState, 'value', 'label');
                     break;
 
-                case 'refer':
+                case 'serviceOptions':
                     label = '业务线、品类';
                     value = this.state.selectedLabel;
                     break;
-                case 'serviceOptions':
+                case 'refer':
                     label = '服务项';
                     value = getKeysValues(this.props.serviceOptions, values.serviceOptions, 'key', 'title');
                     break;
@@ -285,14 +287,12 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         });
         const plainOptions = this.props.orderSource;
         const options = this.props.serviceSelect;
-
         // if (this.props.serviceOptions.length) {
         //     rule.push({
         //         label: '品类',
         //         value: this.state.selectedLabel
         //     });
         // }
-        console.log('this.props.formStatethis.props.formState==========' + JSON.stringify(this.props.formState));
         if (this.state.editing) {
             triggerRuleTpl = (
                 <section className="editInfo">

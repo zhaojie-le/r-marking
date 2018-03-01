@@ -2,23 +2,26 @@
     "resultCode": 1,
     "list": [
         {
-            "isParent": true,
+            "nodeUniqueId": "0_1",
             "title": "新老客",
+            "isLeaf": false,
             "key": "00-01",
             "Disable": false
         },
         {
-            "isParent": true,
+            "nodeUniqueId": "0_2",
             "title": "保洁用户标签",
+            "isLeaf": false,
             "key": "00-02",
             "Disable": false
         },
         {
-            "isParent": true,
             "Description": "",
+            "nodeUniqueId": "2_13",
             "title": "用户定位城市",
+            "isLeaf": false,
             "key": "00-213",
-            "Disable": true
+            "Disable": false
         }
     ]
 }
