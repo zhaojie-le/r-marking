@@ -237,13 +237,13 @@ class TreeSelect extends React.Component<Props, any> {
                     if (xhr.status === 200) {
                         var responseText = JSON.parse(xhr.responseText);
                         treeNode.props.dataRef.children = responseText.list;
-                        treeNode.props.dataRef.children = [
-                            { title: 'Child Node', key: `${treeNode.props.eventKey}-0` },
-                            { title: 'Child Node', key: `${treeNode.props.eventKey}-1` },
-                        ];
-                        // this.setState({
-                        //     treeData: [...this.state.treeData],
-                        // });
+                        // treeNode.props.dataRef.children = [
+                        //     { title: 'Child Node', key: `${treeNode.props.eventKey}-0` },
+                        //     { title: 'Child Node', key: `${treeNode.props.eventKey}-1` },
+                        // ];
+                        this.setState({
+                            treeData: [...this.state.treeData],
+                        });
                         resolve();
                     } else {
                         console.log('请求失败');
