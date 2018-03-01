@@ -53,6 +53,23 @@ function has(tree: any, keys: any) {
     });
 }
 
+const filterarr = (arr) => {
+    arr.forEach(function (v: any) {
+        arr.forEach(function (item: any, j: any) {
+            if (item.indexOf(v) > -1 && v !== item) {
+                arr.splice(j, 1, '');
+            }
+        });
+    });
+    let i: any;
+    for (i = arr.length - 1; i > 0; i--) {
+        if (arr[i] === '') {
+            arr.splice(i, 1);
+        }
+    }
+    return arr.join(',');
+};
+
 function filter(tree: any, keys: any) {
     let newTree1: any = tree.filter(function (item: any, i: number) {
         if (keys.includes(item.key)) {
@@ -123,8 +140,11 @@ class TreeSelect extends React.Component<Props, any> {
     }
     onCheck = (checkedKeys, e: { checked: any, checkedNodes: any, node: any, event: any }) => {
         let tag = checkedKeys;
+        console.log('filterarr===' + filterarr(checkedKeys));
         this.props.onGetUserAmount(tag);
-        let newTreeData = filter(_.cloneDeep(this.props.tagNodeTree), checkedKeys);
+        // let newTreeData = filter(_.cloneDeep(this.props.tagNodeTree), checkedKeys);
+        let newTreeData = filter(_.cloneDeep(this.state.treeData), checkedKeys);
+        console.log('filter(_.cloneDeep(this.state.treeData), checkedKeys);===' + filter(_.cloneDeep(this.state.treeData), filterarr(checkedKeys)));
         this.value.newTreeData = newTreeData;
         this.triggerChange({ newTreeData });
         this.setState({ checkedKeys, newTreeData });
@@ -176,16 +196,7 @@ class TreeSelect extends React.Component<Props, any> {
     //     },
     //     1000
     // );
-    // var b=a(str.split(','),str);
-    // function a(b,str){
-    //     b.forEach(function(v,i){
-    //         b.forEach(function(item,j){
-    //             if(item.indexOf(v)>-1&&v!==item){
-    //                 return str.replace(item,'');
-    //             }
-    //         })
-    //    });
-    // }
+
     renderTreeNodes = (data) => {
         const { searchValue } = this.state;
         return data.map((item) => {
