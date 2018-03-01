@@ -156,9 +156,12 @@ class TreeSelect extends React.Component<Props, any> {
         console.log('tag....' + tag);
         arrToObj(newTreeData);
         let filterkeys = filterarr(tag);
+        if (filterkeys.substr(0, 1) === ',') {
+            filterkeys = filterkeys.substring(1);
+        }
         let filterarrs = filterkeys.split(',');
         let seledObjs: any = [];
-        console.log('checkedKeys===============' + checkedKeys);
+        console.log('checkedKeys===============' + tag);
         console.log('filterkeys====' + filterkeys);
         console.log('newTreeData===============' + JSON.stringify(newTreeData));
         for (let i = 0; i < filterarrs.length; i++) {
