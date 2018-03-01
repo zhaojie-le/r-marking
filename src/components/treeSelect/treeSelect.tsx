@@ -253,7 +253,8 @@ class TreeSelect extends React.Component<Props, any> {
                 );
             }
             console.log('item=======================' + JSON.stringify(item));
-            return <TreeNode {...item} key={item.key} title={item.title} disableCheckbox={item.key === 1 ? false : true} />;
+            // disableCheckbox={item.key === 1 ? false : true}
+            return <TreeNode {...item} key={item.key} title={item.title} />;
         });
     }
     renderTreeNode = (data) => {
