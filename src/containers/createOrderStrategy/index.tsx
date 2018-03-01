@@ -242,12 +242,11 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             } else if (item0.startsWith('treeSelect')) {
                 if (this.state.eventType === 1) {
                     newPar.batchUserInfo = item1.batchUserInfo;
-                    console.log('item1.tagSetitem1.tagSet==' + typeof (item1.tagSet))
-                    newPar.tagSet = item1.tagSet ? item1.tagSet : '';
+
+                    newPar.tagSet = item1.tagSet ? JSON.stringify(item1.tagSet) : '';
                     newPar.notLoggedMarket = item1.notLoggedMarket ? 1 : 0;
                 } else {
-                    console.log('item=============' + typeof (item1.tagSet));
-                    newPar.tagSet = item1.tagSet ? item1.tagSet : '';
+                    newPar.tagSet = item1.tagSet ? JSON.stringify(item1.tagSet) : '';
                     newPar.notLoggedMarket = item1.notLoggedMarket ? 1 : 0;
                 }
             }
