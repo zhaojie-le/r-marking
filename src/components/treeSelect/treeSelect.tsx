@@ -141,7 +141,6 @@ class TreeSelect extends React.Component<Props, any> {
     onCheck = (checkedKeys, e: { checked: any, checkedNodes: any, node: any, event: any }) => {
         let tag = checkedKeys;
         this.props.onGetUserAmount(tag);
-        // let newTreeData = filter(_.cloneDeep(this.props.tagNodeTree), checkedKeys);
         let newTreeData = filter(_.cloneDeep(this.props.tagNodeTree), checkedKeys);
         this.value.newTreeData = newTreeData;
         this.triggerChange({ newTreeData });
@@ -158,11 +157,11 @@ class TreeSelect extends React.Component<Props, any> {
     }
     onUnloginChange = (e) => {
         console.log(e.target.checked);
-        if (e.target.checked === true) {
-            this.setState({ checkedKeys: [], newTreeData: [], checked: true });
-        } else {
-            this.setState({ checked: false });
-        }
+        // if (e.target.checked === true) {
+        //     this.setState({ checkedKeys: [], newTreeData: [], checked: true });
+        // } else {
+        //     this.setState({ checked: false });
+        // }
     }
     triggerChange = (changedValue) => {
         const onChange = this.props.onChange;
@@ -170,31 +169,6 @@ class TreeSelect extends React.Component<Props, any> {
             onChange(Object.assign({}, this.value, changedValue));
         }
     }
-
-    // onChange = _.debounce(
-    //     (e) => {
-    //         e.persist();
-    //         const value = e.target.value;
-    //         var worker = new Worker();
-    //         worker.onmessage = (e1) => {
-    //             var data = e1.data;
-    //             this.setState({
-    //                 expandedKeys: data.zkkeys,
-    //                 searchValue: value,
-    //                 autoExpandParent: true,
-    //             });
-    //             worker.terminate();
-    //         };
-    //         var messageData = {
-    //             value: value,
-    //             dataList: this.dataList,
-    //             treeData: this.props.tagNodeTree
-    //         };
-    //         worker.postMessage(messageData);
-    //     },
-    //     1000
-    // );
-
     renderTreeNodes = (data) => {
         const { searchValue } = this.state;
         return data.map((item) => {
