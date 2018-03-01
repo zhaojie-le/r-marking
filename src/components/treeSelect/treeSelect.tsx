@@ -162,8 +162,9 @@ class TreeSelect extends React.Component<Props, any> {
         let filterkeys = filterarr(checkedKeys);
         let filterarrs = filterkeys.split(',');
         let seledObjs: any = [];
-        console.log('newTreeData===============' + JSON.stringify(newTreeData));
+        console.log('checkedKeys===============' + checkedKeys);
         console.log('filterkeys====' + filterkeys);
+        console.log('newTreeData===============' + JSON.stringify(newTreeData));
         for (let i = 0; i < filterarrs.length; i++) {
             console.log('filterarrs[i]filterarrs[i]' + filterarrs[i]);
             console.log('yuanObj[filterarrs[i]]==========' + JSON.stringify(yuanObj[filterarrs[i]]));
