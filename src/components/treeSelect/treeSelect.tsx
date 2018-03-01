@@ -156,28 +156,29 @@ class TreeSelect extends React.Component<Props, any> {
         console.log('tag....' + tag);
         arrToObj(newTreeData);
         console.log('tang1' + tag);
-        let filterkeys = filterarr(tag);
-        console.log('tang2git' + tag);
-        if (filterkeys.substr(0, 1) === ',') {
-            filterkeys = filterkeys.substring(1);
-        }
-        let filterarrs = filterkeys.split(',');
         let seledObjs: any = [];
-        console.log('checkedKeys===============' + tag);
-        console.log('filterkeys====' + filterkeys);
-        console.log('newTreeData===============' + JSON.stringify(newTreeData));
-        for (let i = 0; i < filterarrs.length; i++) {
-            console.log('filterarrs[i]filterarrs[i]' + filterarrs[i]);
-            console.log('yuanObj[filterarrs[i]]==========' + JSON.stringify(yuanObj[filterarrs[i]]));
-            console.log('yuanObj[filterarrs[i]].nodeUniqueId' + yuanObj[filterarrs[i]].nodeUniqueId);
-            seledObjs.push(yuanObj[filterarrs[i]].nodeUniqueId);
+        if (tag !== '') {
+            let filterkeys = filterarr(tag);
+            console.log('tang2git' + tag);
+            if (filterkeys.substr(0, 1) === ',') {
+                filterkeys = filterkeys.substring(1);
+            }
+            let filterarrs = filterkeys.split(',');
+            console.log('checkedKeys===============' + tag);
+            console.log('filterkeys====' + filterkeys);
+            console.log('newTreeData===============' + JSON.stringify(newTreeData));
+            for (let i = 0; i < filterarrs.length; i++) {
+                console.log('filterarrs[i]filterarrs[i]' + filterarrs[i]);
+                console.log('yuanObj[filterarrs[i]]==========' + JSON.stringify(yuanObj[filterarrs[i]]));
+                console.log('yuanObj[filterarrs[i]].nodeUniqueId' + yuanObj[filterarrs[i]].nodeUniqueId);
+                seledObjs.push(yuanObj[filterarrs[i]].nodeUniqueId);
+            }
         }
         this.props.onGetUserAmount(seledObjs);
         console.log('seledObjs=========================' + seledObjs);
         console.log('newTreeData===' + JSON.stringify(newTreeData));
-        console.log('filterkeys====================' + filterkeys);
         this.value.newTreeData = newTreeData;
-        this.triggerChange({ newTreeData });
+        this.triggerChange({ newTreeData, tagSet: seledObjs });
         this.setState({ checkedKeys, newTreeData, checked: false });
     }
 
@@ -189,6 +190,7 @@ class TreeSelect extends React.Component<Props, any> {
     onUnloginChange = (e) => {
         console.log(e.target.checked);
         if (e.target.checked === true) {
+            this.triggerChange({ newTreeData: [], notLoggedMarket: 1 });
             this.setState({ checkedKeys: [], newTreeData: [], checked: true });
         } else {
             this.setState({ checked: false });
