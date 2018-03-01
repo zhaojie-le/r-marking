@@ -155,7 +155,9 @@ class TreeSelect extends React.Component<Props, any> {
         let newTreeData = filter(_.cloneDeep(this.props.tagNodeTree), checkedKeys);
         console.log('tag....' + tag);
         arrToObj(newTreeData);
+        console.log('tang1' + tag);
         let filterkeys = filterarr(tag);
+        console.log('tang2' + tag);
         if (filterkeys.substr(0, 1) === ',') {
             filterkeys = filterkeys.substring(1);
         }
