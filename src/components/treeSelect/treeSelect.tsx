@@ -93,6 +93,17 @@ function filter(tree: any, keys: any) {
     return newTree1;
 }
 
+const yuanObj = {};
+const arrToObj = (arr) => {
+    for (let i = 0; i < arr.length; i++) {
+        var item = arr[i];
+        yuanObj[item.key] = item;
+        if (item.children) {
+            arrToObj(item.children);
+        }
+    }
+};
+
 interface Props {
     onChange: (value: any) => void;
     totalUser: number;
@@ -140,15 +151,34 @@ class TreeSelect extends React.Component<Props, any> {
     }
     onCheck = (checkedKeys, e: { checked: any, checkedNodes: any, node: any, event: any }) => {
         let tag = checkedKeys;
-        console.log('checkedKeys======' + checkedKeys);
-        this.props.onGetUserAmount(tag);
+        console.log('tag1' + tag);
         let newTreeData = filter(_.cloneDeep(this.props.tagNodeTree), checkedKeys);
+        console.log('tag....' + tag);
+        arrToObj(newTreeData);
+        console.log('tang1' + tag);
+        let filterkeys = filterarr(tag);
+        console.log('tang2' + tag);
+        if (filterkeys.substr(0, 1) === ',') {
+            filterkeys = filterkeys.substring(1);
+        }
+        let filterarrs = filterkeys.split(',');
+        let seledObjs: any = [];
+        console.log('checkedKeys===============' + tag);
+        console.log('filterkeys====' + filterkeys);
+        console.log('newTreeData===============' + JSON.stringify(newTreeData));
+        for (let i = 0; i < filterarrs.length; i++) {
+            console.log('filterarrs[i]filterarrs[i]' + filterarrs[i]);
+            console.log('yuanObj[filterarrs[i]]==========' + JSON.stringify(yuanObj[filterarrs[i]]));
+            console.log('yuanObj[filterarrs[i]].nodeUniqueId' + yuanObj[filterarrs[i]].nodeUniqueId);
+            seledObjs.push(yuanObj[filterarrs[i]].nodeUniqueId);
+        }
+        this.props.onGetUserAmount(seledObjs);
+        console.log('seledObjs=========================' + seledObjs);
+        console.log('newTreeData===' + JSON.stringify(newTreeData));
+        console.log('filterkeys====================' + filterkeys);
         this.value.newTreeData = newTreeData;
         this.triggerChange({ newTreeData });
-        this.setState({ checkedKeys, newTreeData });
-        console.log('filterarr===' + filterarr(checkedKeys));
-        // console.log('filter(_.cloneDeep(this.state.treeData), checkedKeys);===' + JSON.stringify(filter(_.cloneDeep(this.props.tagNodeTree), filterarr(checkedKeys))));
-
+        this.setState({ checkedKeys, newTreeData, checked: false });
     }
 
     onZqChange = (value) => {
@@ -158,11 +188,11 @@ class TreeSelect extends React.Component<Props, any> {
     }
     onUnloginChange = (e) => {
         console.log(e.target.checked);
-        // if (e.target.checked === true) {
-        //     this.setState({ checkedKeys: [], newTreeData: [], checked: true });
-        // } else {
-        //     this.setState({ checked: false });
-        // }
+        if (e.target.checked === true) {
+            this.setState({ checkedKeys: [], newTreeData: [], checked: true });
+        } else {
+            this.setState({ checked: false });
+        }
     }
     triggerChange = (changedValue) => {
         const onChange = this.props.onChange;
@@ -210,10 +240,6 @@ class TreeSelect extends React.Component<Props, any> {
                     if (xhr.status === 200) {
                         var responseText = JSON.parse(xhr.responseText);
                         treeNode.props.dataRef.children = responseText.list;
-                        // treeNode.props.dataRef.children = [
-                        //     { title: 'Child Node', key: `${treeNode.props.eventKey}-0` },
-                        //     { title: 'Child Node', key: `${treeNode.props.eventKey}-1` },
-                        // ];
                         this.setState({
                             treeData: [...this.state.treeData],
                         });
@@ -253,13 +279,11 @@ class TreeSelect extends React.Component<Props, any> {
                     </TreeNode>
                 );
             }
-            console.log('item=======================' + JSON.stringify(item));
             // disableCheckbox={item.key === 1 ? false : true}
             return <TreeNode {...item} key={item.key} title={item.title} />;
         });
     }
     renderTreeNode = (data) => {
-        console.log('data=========' + JSON.stringify(data));
         return data.map((item) => {
             if (item.children) {
                 return (
@@ -273,7 +297,6 @@ class TreeSelect extends React.Component<Props, any> {
     }
     render() {
         const { autoExpandParent, checkedKeys } = this.state;
-        console.log('this.state.treeDataKKKKKKKKKKKKK=================================' + JSON.stringify(this.state.treeData));
         return (
             <div id="treeSelectWrapper">
                 {this.props.strategyType === 7 || this.props.strategyType === 8 || this.props.strategyType === 9 ?
