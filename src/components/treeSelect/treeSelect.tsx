@@ -127,6 +127,7 @@ class TreeSelect extends React.Component<Props, any> {
             checkedKeys: [],
             treeData: [],
             checked: false,
+
             autoExpandParentChild: true
         };
         this.state = { ...this.state, treeData: this.props.tagNodeTree };
@@ -157,7 +158,9 @@ class TreeSelect extends React.Component<Props, any> {
         arrToObj(newTreeData);
         console.log('tang1' + tag);
         let seledObjs: any = [];
-        if (tag !== '') {
+        console.log('type' + typeof (tag));
+        if (!!tag) {
+            console.log(999);
             let filterkeys = filterarr(tag);
             console.log('tang2git' + tag);
             if (filterkeys.substr(0, 1) === ',') {

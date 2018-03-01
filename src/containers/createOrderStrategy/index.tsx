@@ -239,6 +239,15 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                     newPar.effectiveTime = this.timeMerge.effectiveTime;
                     newPar.invalidTime = this.timeMerge.invalidTime;
                 }
+            } else if (item0.startsWith('treeSelect')) {
+                if (this.state.eventType === 1) {
+                    newPar.batchUserInfo = item1.batchUserInfo;
+                    newPar.tagSet = item1.tagSet ? item1.tagSet : '';
+                    newPar.notLoggedMarket = item1.notLoggedMarket ? 1 : 0;
+                } else {
+                    newPar.tagSet = item1.tagSet ? item1.tagSet : '';
+                    newPar.notLoggedMarket = item1.notLoggedMarket ? 1 : 0;
+                }
             }
         }
         newPar.actionParam = newPar.actionParam ? this.actionParamsMap(newPar.actionParam) : null;
