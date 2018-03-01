@@ -93,18 +93,16 @@ function filter(tree: any, keys: any) {
     return newTree1;
 }
 
-function filterlable(tree: any, keys: any, key: any, id: any) {
-    tree.filter((item) => {
-        return keys.includes(item[key]);
-    }).map((item) => {
-        return item[id];
-    }).join();
-    tree.forEach(function (item: any, i: number) {
+const yuanObj = {};
+const arrToObj = (arr) => {
+    for (let i = 0; i < arr.length; i++) {
+        var item = arr[i];
+        yuanObj[item.key] = item;
         if (item.children) {
-            filterlable(item.children, keys, key, id);
+            arrToObj(item.children);
         }
-    });
-}
+    }
+};
 
 interface Props {
     onChange: (value: any) => void;
@@ -159,13 +157,16 @@ class TreeSelect extends React.Component<Props, any> {
         this.value.newTreeData = newTreeData;
         this.triggerChange({ newTreeData });
         this.setState({ checkedKeys, newTreeData, checked: false });
-        console.log('newTreeData===' + JSON.stringify(newTreeData));
-        // console.log('filterarr===' + filterarr(checkedKeys));
+        arrToObj(newTreeData);
         let filterkeys = filterarr(checkedKeys);
-        let filterlablekeys = filterlable(newTreeData, filterkeys, 'key', 'nodeUniqueId');
+        let filterarrs = filterkeys.split(',');
+        let seledObjs: any = [];
+        for (let i = 0; i < filterarrs.length; i++) {
+            seledObjs.push(yuanObj[filterarrs[i]].nodeUniqueId);
+        }
+        console.log('seledObjs=========================' + seledObjs);
+        console.log('newTreeData===' + JSON.stringify(newTreeData));
         console.log('filterkeys====================' + filterkeys);
-        console.log('filterlablekeys-==============' + filterlablekeys);
-        // console.log('filter(_.cloneDeep(this.state.treeData), checkedKeys);===' + JSON.stringify(filter(_.cloneDeep(this.props.tagNodeTree), filterarr(checkedKeys))));
     }
 
     onZqChange = (value) => {
@@ -227,10 +228,6 @@ class TreeSelect extends React.Component<Props, any> {
                     if (xhr.status === 200) {
                         var responseText = JSON.parse(xhr.responseText);
                         treeNode.props.dataRef.children = responseText.list;
-                        // treeNode.props.dataRef.children = [
-                        //     { title: 'Child Node', key: `${treeNode.props.eventKey}-0` },
-                        //     { title: 'Child Node', key: `${treeNode.props.eventKey}-1` },
-                        // ];
                         this.setState({
                             treeData: [...this.state.treeData],
                         });
