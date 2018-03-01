@@ -56,7 +56,7 @@ function has(tree: any, keys: any) {
 const filterarr = (arr) => {
     arr.forEach(function (v: any) {
         arr.forEach(function (item: any, j: any) {
-            if (item.indexOf(v) > -1 && v !== item) {
+            if ((item).indexOf(v + '-') > -1 && v !== item) {
                 arr.splice(j, 1, '');
             }
         });
@@ -157,7 +157,7 @@ class TreeSelect extends React.Component<Props, any> {
         arrToObj(newTreeData);
         console.log('tang1' + tag);
         let filterkeys = filterarr(tag);
-        console.log('tang2' + tag);
+        console.log('tang2git' + tag);
         if (filterkeys.substr(0, 1) === ',') {
             filterkeys = filterkeys.substring(1);
         }
