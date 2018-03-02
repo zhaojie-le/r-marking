@@ -211,7 +211,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                     array.push(JSON.stringify(item1));
                     newPar.triggerRule = JSON.stringify(array);
                 } else {
-                    if (eventType === 5) {
+                    if (eventType === 5 || eventType === 0) {
                         delete newPar.triggerRule;
                     } else {
                         array.push(JSON.stringify(item1));
