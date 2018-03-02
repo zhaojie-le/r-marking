@@ -9,7 +9,7 @@ const FormItem = Form.Item;
 interface Prop {
     value?: any;
     stage?: any;
-    form: { getFieldDecorator: any; validateFields: any;[propName: string]: any; };
+    form: { getFieldDecorator: any; validateFields: any; [propName: string]: any; };
     onChange: (value: any) => any;
 }
 
