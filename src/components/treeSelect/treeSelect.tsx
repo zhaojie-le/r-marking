@@ -158,8 +158,8 @@ class TreeSelect extends React.Component<Props, any> {
         arrToObj(newTreeData);
         console.log('tang1' + tag);
         let seledObjs: any = [];
-        console.log('type' + typeof (tag));
-        if (tag !== []) {
+        console.log('type' + newTreeData[0]);
+        if (newTreeData[0] !== undefined) {
             console.log(999);
             let filterkeys = filterarr(tag);
             console.log('tang2git' + tag);

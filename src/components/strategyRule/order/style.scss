@@ -48,5 +48,10 @@
         > div:last-child {
             width: 100px;
         }
+        .city label[for=city] {
+            &:before {
+                @include labelStyle;
+            }
+        }
     }
 }

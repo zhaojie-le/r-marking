@@ -14,6 +14,7 @@ import {
     Select,
     Form,
     Transfer,
+    message
 } from 'antd';
 
 export interface RuleProps {
@@ -66,6 +67,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         checkedList: [],
         indeterminate: true,
         checkAll: false,
+        checkAllCity: false,
         selectedLabel: '',
         rules: []
     };
@@ -85,7 +87,7 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     }
 
     checkTime = (rule, value, callback) => {
-        if (value.day !== '' || value.minute !== '') {
+        if (value.day !== '' && value.minute !== '') {
             callback();
             return;
         }
@@ -120,10 +122,19 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         this.setState({
             indeterminate: false,
             checkAll: e.target.checked,
+            checkAllCity: false,
         });
         this.props.form.setFieldsValue({
             orderSource: e.target.checked ? this.props.orderSource.map((item) => item.value) : [],
         });
+    }
+    onCheckAllCity = (e) => {
+        console.log('e.target.checked' + e.target.checked);
+        if (e.target.checked === true) {
+            this.setState({ targetKeys: [], checkAllCity: true });
+        } else {
+            this.setState({ checkAllCity: false });
+        }
     }
 
     handleChange = (value) => {
@@ -196,13 +207,20 @@ class StrategyRule extends React.Component<RuleProps, {}> {
     }
 
     handleTransferChange = (targetKeys) => {
-        this.setState({ targetKeys });
+        this.setState({ targetKeys, checkAllCity: false });
     }
 
     onSave = () => {
-        this.props.form.validateFields(['refer', 'serviceOptions', 'delayTime', 'orderSource', 'orderState', 'city', 'pushTimes'], (err, values) => {
+        this.props.form.validateFields(['refer', 'serviceOptions', 'delayTime', 'orderSource', 'orderState', 'pushTimes'], (err, values) => {
             if (!err) {
                 // onShowOrderDetailCheck 1订单详情，2订单评价 0不展示
+                console.log('this.state.targetKeys ====' + this.state.targetKeys);
+                console.log(typeof this.state.targetKeys);
+                console.log(this.state.targetKeys[0]);
+                if (((this.state.targetKeys[0] === undefined && this.state.checkAllCity === false) || this.state.targetKeys === undefined) && this.state.checkAllCity === false) {
+                    message.error('请填写城市');
+                    return;
+                }
                 this.props.onGetWechatPush({
                     lineid: values.refer[0],
                     refer: values.serviceOptions[0],
@@ -212,7 +230,13 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                 values.refer = getKeysValue.split(',');
                 console.log('refer========' + values.refer);
                 console.log('VALUESSSSSSS====' + JSON.stringify(values));
+                if (this.state.targetKeys !== undefined && this.state.checkAllCity === false) {
+                    values.city = this.state.targetKeys;
+                }
                 this.computeShowData(values);
+                if (this.state.checkAllCity) {
+                    values.city = ['1'];
+                }
                 this.props.onChange(values);
                 this.props.onShowOrderDetailCheck((values.refer[1] === '201' ? 1 : values.refer[1] === '212' || values.refer[1] === '205' ? 2 : 0));
                 // this.props.onSaveRule(JSON.stringify(values));
@@ -293,6 +317,13 @@ class StrategyRule extends React.Component<RuleProps, {}> {
         //         value: this.state.selectedLabel
         //     });
         // }
+
+        if (this.state.checkAllCity) {
+            rule.push({
+                label: '城市',
+                value: '全国'
+            });
+        }
         if (this.state.editing) {
             triggerRuleTpl = (
                 <section className="editInfo">
@@ -327,26 +358,38 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                         </div>
                     </FormItem>
                     {this.orderState()}
-                    <FormItem label="城市" {...layout.formItemLayout}>
-                        {getFieldDecorator('city', {
-                            rules: [{
-                                required: true, message: '请选择城市！',
-                            }],
-                            initialValue: this.props.formState.city.value,
-                        })(
-                            <Transfer
-                                dataSource={cities}
-                                showSearch={true}
-                                listStyle={{
-                                    background: '#fff',
-                                }}
-                                filterOption={this.filterOption}
-                                targetKeys={this.state.targetKeys}
-                                onChange={this.handleTransferChange}
-                                render={item => item.title}
-                            />
-                        )}
-                    </FormItem>
+                    <div className="city">
+                        <FormItem label="城市" {...layout.formItemLayout}>
+                            <Checkbox
+                                // indeterminate={this.state.indeterminate}
+                                onChange={this.onCheckAllCity}
+                                checked={this.state.checkAllCity}
+                                value={'-999'}
+                            >
+                                全国
+                            </Checkbox>
+                            {getFieldDecorator('city', {
+                                rules: [{
+                                    required: false, message: '请选择城市！',
+                                }],
+                                initialValue: this.props.formState.city.value,
+                            })(
+
+                                <Transfer
+                                    dataSource={cities}
+                                    showSearch={true}
+                                    listStyle={{
+                                        background: '#fff',
+                                    }}
+                                    filterOption={this.filterOption}
+                                    targetKeys={this.state.targetKeys}
+                                    onChange={this.handleTransferChange}
+                                    render={item => item.title}
+                                />
+                            )}
+
+                        </FormItem>
+                    </div>
                     <FormItem {...layout.formItemLayout} label="延迟时间">
                         {
                             getFieldDecorator('delayTime', {

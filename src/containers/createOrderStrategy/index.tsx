@@ -190,17 +190,16 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                 // 当触发规则为订单事件时，需要处理一下返回的数据
                 if (eventType === 1 || eventType === 8 || eventType === 3 || eventType === 4 || eventType === 7 || eventType === 9) {
                     if (eventType === 9) {
-                        // let infoItem1: any = {
-                        //     weight: '',
-                        // };
-                        // let item = Object.assign({}, infoItem1, valueArr[i][1]);
-                        newPar.priority = item1.weight;
-                        delete item1.weight;
+                        let item = {
+                            weight: '',
+                        };
+                        newPar.priority = Object.assign({}, item, valueArr[i][1]).weight;
+                        delete Object.assign({}, item, valueArr[i][1]).weight;
                     } else if (eventType === 4) {
                         newPar.antiDisturb = item1.antiDisturb;
                         delete item1.antiDisturb;
                     } else if (eventType === 1) {
-                        newPar.triggerRule.orderStatus = (item1.orderState).splte(',');
+                        newPar.triggerRule.orderStatus = JSON.stringify(item1.orderState);
                         newPar.marketingLimit = item1.pushTimes;
                         newPar.dayDelay = item1.delayTime.day ? item1.delayTime.day : 0;
                         newPar.minuteDelay = item1.delayTime.minute ? item1.delayTime.minute : 0;
@@ -240,14 +239,16 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                     newPar.invalidTime = this.timeMerge.invalidTime;
                 }
             } else if (item0.startsWith('treeSelect')) {
-                if (this.state.eventType === 1) {
-                    newPar.batchUserInfo = item1.batchUserInfo;
-
+                if (this.state.eventType === 0) {
+                    newPar.batchUserInfo = item1.triggerChange;
                     newPar.tagSet = item1.tagSet ? JSON.stringify(item1.tagSet) : '';
-                    newPar.notLoggedMarket = item1.notLoggedMarket ? 1 : 0;
                 } else {
-                    newPar.tagSet = item1.tagSet ? JSON.stringify(item1.tagSet) : '';
-                    newPar.notLoggedMarket = item1.notLoggedMarket ? 1 : 0;
+                    if (item1.tagSet) {
+                        newPar.tagSet = JSON.stringify(item1.tagSet);
+                    }
+                    if (item1.notLoggedMarket) {
+                        newPar.notLoggedMarket = item1.notLoggedMarket;
+                    }
                 }
             }
         }
@@ -470,7 +471,8 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         }
         const currentTime = current.valueOf();
         const endTime = moment().add(6, 'M');
-        return currentTime && (currentTime <= Date.now()) || currentTime && (currentTime > endTime.valueOf());
+        const nowTime = moment().subtract('days', 1);
+        return currentTime < nowTime.valueOf() || currentTime && (currentTime > endTime.valueOf());
     }
 
     onUserBeSelect = (value) => {
@@ -630,7 +632,9 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 <RangePicker
                                                     showTime={{ format: 'HH:mm:ss' }}
                                                     format="YYYY-MM-DD HH:mm:ss"
+
                                                     disabledDate={this.disabledDate}
+                                                    showToday={true}
                                                     placeholder={['开始时间', '结束时间']}
                                                     onChange={this.onTimeChange}
                                                 />
@@ -645,6 +649,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                             rules: [{
                                                 required: true, message: '请输入触发事件！',
                                             }],
+                                            initialValue: '0'
                                         })(
                                             <Select onChange={this.onSelectEvent}>
                                                 <Option value="0">请选择</Option>
@@ -672,6 +677,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
                                                 rules: [{
                                                     required: true, message: '触发条件不能为空！',
                                                 }],
+                                                initialValue: '0'
                                             })(
                                                 <Select onChange={this.onUserBeSelect} disabled={disabledTrggerCondition} >
                                                     <Option value="0">请选择</Option>
@@ -751,7 +757,6 @@ const WrappedRegistrationForm = Form.create({
     //     };
     // },
     onFieldsChange(props: any, fields: any) {
-        console.log('fieldsfieldsfieldsfieldsfields==========' + JSON.stringify(fields));
         props.onChangeField(fields);
     }
 })(CreateOrderStrategy as any);
