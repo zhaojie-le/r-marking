@@ -233,9 +233,10 @@ class StrategyRule extends React.Component<RuleProps, {}> {
                 if (this.state.targetKeys !== undefined && this.state.checkAllCity === false) {
                     values.city = this.state.targetKeys;
                 }
+                values.orderState = values.orderState.split(',');
                 this.computeShowData(values);
                 if (this.state.checkAllCity) {
-                    values.city = ['1'];
+                    values.city = ['-999'];
                 }
                 this.props.onChange(values);
                 this.props.onShowOrderDetailCheck((values.refer[1] === '201' ? 1 : values.refer[1] === '212' || values.refer[1] === '205' ? 2 : 0));
