@@ -73,7 +73,9 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
     private allValues: any = {};
     state: any = {
         deiting: false,
-        rules: []
+        rules: [],
+        endVale: {},
+        allVals: {}
     };
     remove = (k) => {
         const { form } = this.props;
@@ -105,11 +107,15 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
     }
     onSave = () => {
         console.log('save');
-        message.error('输入不能为空');
+        let checkValues = objToArray(this.state.allVals);
+        this.checkValue(checkValues);
     }
     // 获取输入的数值－输入框
     onInputItemChange = (value, key) => {
         console.log('value----------', value);
+        this.setState({
+            endVale: value
+        });
         const { getFieldValue } = this.props.form;
         const keys: any = getFieldValue('keys');
         this.allValues = Object.assign({}, this.allValues);
@@ -121,7 +127,10 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
         console.log('allValues ================+',  this.allValues);
         // 符合要求后传递到创建策略页面
         // this.checkValue(value);
-        this.props.onChange(objToArray(this.allValues));
+        this.setState({
+            allVals: this.allValues
+        });
+        console.log('toArray++++++++++++++', objToArray(this.allValues));
     }
     checkValue = (value) => {
         let valLen = value.length;
@@ -130,8 +139,8 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
             for (let i = 0; i < valLen; i++) {
                 objItem = value[i];
                 if (objItem && objItem.rechargeAmountLow && objItem.rechargeAmountUp && objItem.result) {
-                    console.log(0);
-                    // 校验通过 
+                    this.computeShowData(value);
+                    this.props.onChange(objToArray(value));
                 } else {
                     message.error('输入不能为空');
                 }
@@ -139,6 +148,45 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
         } else {
             message.error('输入不能为空');
         }
+    }
+    computeShowData = (values: any) => {
+        let rules: { label: string; value: string }[] = [];
+        console.log('changeValue------------', values);
+        let len = values.length;
+        for (let i = 0; i < len; i++) {
+            for (let item of Object.keys(values[i])) {
+                let label: string = '';
+                let value: string = '';
+                switch (item) {
+                    case 'rechargeAmountLow':
+                        label = '充值下限';
+                        value = `${values[i].rechargeAmountLow}`;
+                        break;
+                    case 'rechargeAmountUp':
+                        label = '充值上限';
+                        value = `${values[i].rechargeAmountUp}`;
+                        break;
+                    case 'result':
+                        label = '优惠券id';
+                        value = `${values[i].result}`;
+                        break;    
+                    default:
+                        break;
+                }
+                if (label !== '') {
+                    rules.push({
+                        label: label,
+                        value: value
+                    });
+                }
+            }
+            
+        }
+        this.setState({
+            rules: rules
+        });
+        console.log('rules===========', rules);
+        this.onEdit(false);
     }
     onEdit = (isEditing) => {
         this.setState({
@@ -150,9 +198,10 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
         const { getFieldDecorator, getFieldValue } = this.props.form;
         getFieldDecorator('keys', { initialValue: [] });
         const keys: any = getFieldValue('keys');
-        let triggerInput: React.ReactNode = {};
-        let wrapperStyle: any = {};
         let btnStyle: any = {};
+        let wrapperStyle: any = {};
+        let triggerInput: React.ReactNode = {};
+        const rules = [...this.state.rules];
         const formItems = keys.map((k, index) => {
             return (
                 <FormItem
@@ -199,7 +248,6 @@ class DynamicFieldSet extends React.Component<RuleProps, {}> {
         } else {
             wrapperStyle.background = '#fff';
             wrapperStyle.border = 'none';
-            let rules = [];
             triggerInput = (
                 <ShowRule rules={rules} />
             );

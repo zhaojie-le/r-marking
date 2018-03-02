@@ -77,7 +77,7 @@ class ImportUserRule extends React.Component<RuleProps, {}> {
         this.setState({
             editing: isEditing,
             batchId: ''
-        });
+        });       
     }
     computeShowData = (values: any) => {
         let rules: { label: string; value: string }[] = [];
