@@ -35,33 +35,34 @@ const onSaveRuleFail = (error) => {
 const strategyList: Epic<any, any> = (action$, store) => {
     return action$.ofType(constants.DETAILORDER_STRATEGY)
         .switchMap(
-        (action): Observable<any> => {
-            // 229633399113924614 ${action.id}
-            return ajax.getJSON(`/marketStrategy/edit/${action.id}`)
-                .map((response: { resultCode: number, data: object }) => {
-                    if (response.resultCode === 1) {
-                        return (detailOrderSuccess(response.data));
-                    } else {
-                        return (detailOrderFail(response));
-                    }
-                });
-        }
+            (action): Observable<any> => {
+                // 229633399113924614 ${action.id}
+                return ajax.getJSON(`/marketStrategy/edit/${action.id}`)
+                    .map((response: { resultCode: number, data: object }) => {
+                        if (response.resultCode === 1) {
+                            return (detailOrderSuccess(response.data));
+                        } else {
+                            return (detailOrderFail(response));
+                        }
+                    });
+            }
         );
 };
 
 const onSaveRule: Epic<any, any, any> = (action$, store) => {
     return action$.ofType(constants.ONSAVERULE)
         .switchMap(
-        (action): Observable<any> => {
-            return ajax.post('/marketStrategy/update', action.params)
-                .map(response => {
-                    if (response.response.resultCode === 1) {
-                        return (onSaveRuleSuccess(response.response.data));
-                    } else {
-                        return (onSaveRuleFail(response.response));
-                    }
-                });
-        }
+            (action): Observable<any> => {
+                return ajax.post('/marketStrategy/update', action.params)
+                    .map(response => {
+                        if (response.response.resultCode === 1) {
+                            window.location.href = 'http://usermarket.daojia-inc.com/';
+                            return (onSaveRuleSuccess(response.response.data));
+                        } else {
+                            return (onSaveRuleFail(response.response));
+                        }
+                    });
+            }
         );
 };
 const detailEpic = [strategyList, onSaveRule];
