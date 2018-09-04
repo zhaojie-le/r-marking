@@ -165,7 +165,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
             }
         });
     }
-
+    // 各个组件拿到数据后的转换，对应更改大类的key值
     mergeParmas = (values) => {
         let newPar: any = {};
         let array: any = [];
@@ -256,7 +256,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         console.log('newPar', newPar);
         return newPar;
     }
-
+    // 大类解析后，里面的组件字段分类解析
     actionParamsMap = (obj) => {
         let actionP: any = {};
         let { eventType } = this.state;
@@ -291,7 +291,7 @@ class CreateOrderStrategy extends React.Component<Props, {}> {
         }
         return null;
     }
-
+    // 匹配营销方式字段解析
     contentMap = (objItem) => {
         let newContent: any = {};
         console.log('objItem=======' + JSON.stringify(objItem));
